@@ -1,0 +1,12 @@
+{
+  "w": 1000,
+  "h": 574,
+  "bounds": {
+    "lonMin": -12,
+    "lonMax": 96,
+    "latMin": 4,
+    "latMax": 66
+  },
+  "source": "File:BlankMap-World-Equirectangular.svg",
+  "licence": "Public domain"
+}

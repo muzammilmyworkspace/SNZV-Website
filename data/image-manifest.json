@@ -1,0 +1,151 @@
+[
+  {
+    "key": "dest-vilnius",
+    "file": "/images/dest-vilnius.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 3.0",
+    "artist": "Diliff",
+    "page": "https://commons.wikimedia.org/wiki/File:Vilnius_Modern_Skyline_At_Dusk,_Lithuania_-_Diliff.jpg",
+    "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADQAwCdASoUAAoAPzmGulOvKKWisAgB4CcJbACdMoABC6LOQWZ7rhgA+DOabzh1wjctxoGFWMm+QC3ntn8AnlwdbqhzFngtRuWUc9U7b+RtwC9tjTDFeGBfg87FAAAA"
+  },
+  {
+    "key": "dest-vilnius-old",
+    "file": "/images/dest-vilnius-old.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 3.0",
+    "artist": "Vilnius_Lithuania_112.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_113.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_110.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_111.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_097_Gediminas'_Tower_view.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_098_Gediminas'_Tower_view.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_099.jpg: DAVID HOLT from London, England\nVilnius_Lithuania_100.jpg: DAVID HOLT from London, England\nderivative work: Geo Swan",
+    "page": "https://commons.wikimedia.org/wiki/File:Panoramic_view_of_Vilnius_from_Gediminas%27_Tower,_2011_-a.jpg",
+    "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAwCdASoUAAMAPzmIvlOvKScisAgB4CcJQBfnBFIhFj7dCxqloQAA8qH1xviaBLtyjcw40HJhe5gQyAojVEyVnBiqwh9kYZv5NV5i9gAAAA=="
+  },
+  {
+    "key": "dest-berlin",
+    "file": "/images/dest-berlin.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "File:Museumsinsel Berlin Juli 2021 1 (cropped).jpg: Kasa Fue\nderivative work: Georgfotoart",
+    "page": "https://commons.wikimedia.org/wiki/File:Museumsinsel_Berlin_Juli_2021_1_(cropped)_b.jpg",
+    "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAACwAwCdASoUAAwAPzmEuVOvKKWisAgB4CcJQBOgA8+Rd66dobz1sAD8eFPP2xEQg8krnAmG0Eo60zCgk3uxtfPidGzwMzHP9dgP6FcHXdZwoW/Jv0W5GqVsjGf1UAAA"
+  },
+  {
+    "key": "dest-warsaw",
+    "file": "/images/dest-warsaw.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Emptywords",
+    "page": "https://commons.wikimedia.org/wiki/File:Aleja_Niepdleglosci_Warsaw_2022_aerial_(cropped).jpg",
+    "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADQAwCdASoUAAwAPzmEuVOvKKWisAgB4CcJQBOgBFc4JXboA/s5I2AA/q7RzREdFZKE80PgCSjOoS9W7ts0p/B1Ic4BHIqGB7zHDiWLhe9HXtOb3BuBlPYwwOgAAA=="
+  },
+  {
+    "key": "dest-amsterdam",
+    "file": "/images/dest-amsterdam.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY 2.5",
+    "artist": "Diliff",
+    "page": "https://commons.wikimedia.org/wiki/File:Amsterdam_Canals_-_July_2006.jpg",
+    "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACQAwCdASoUAAsAPzmGuVOvKSWisAgB4CcJQBadA+1nANCQeb2AAP5weFd91gZqBkeKfMAJbshzBmEjEpApb++wUi0DxSjFPEINbNLOHci5pAAA"
+  },
+  {
+    "key": "dest-madrid",
+    "file": "/images/dest-madrid.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC0",
+    "artist": "Zarateman",
+    "page": "https://commons.wikimedia.org/wiki/File:Madrid_-_Sky_Bar_360%C2%BA_(Hotel_Riu_Plaza_Espa%C3%B1a),_vistas_19.jpg",
+    "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQBACdASoUAAsAPzmGuVOvKSWisAgB4CcJQBOmUABp7hUcwu5JvZawIAD3Z6TMDubuA1RlMCRXOmELIlmo0gb1KlULck4ScgrYnV5ZR7CXkEmg+NeiscOruiHVwfAA"
+  },
+  {
+    "key": "dest-rome",
+    "file": "/images/dest-rome.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY 3.0",
+    "artist": "Diliff",
+    "page": "https://commons.wikimedia.org/wiki/File:Trevi_Fountain,_Rome,_Italy_2_-_May_2007.jpg",
+    "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAwCdASoUAA0APzmGulQvKSWjMAgB4CcJZQBTAAUkMHvCAc3XbaAA/pfeiK5JUkxDhxErAdBE4SN6rLXkQkKFimCR+FxUB2UeIgXgdDZhYCs8WGAAAA=="
+  },
+  {
+    "key": "dest-prague",
+    "file": "/images/dest-prague.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY 2.0",
+    "artist": "Moyan Brenn from Italy",
+    "page": "https://commons.wikimedia.org/wiki/File:Prague_(6365119737).jpg",
+    "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAACwAwCdASoUAAwAPzmGulQvKSWjMAgB4CcJQBOkFThgfvtEiy3LjAD+1Gb8iM+xRxzgkwk1M3FrAQQsrSgfF5J61Az3WFzDHrGCfe+1+0heSS1BxvkfIkWxYg8wwAAA"
+  },
+  {
+    "key": "dest-bucharest",
+    "file": "/images/dest-bucharest.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC0",
+    "artist": "Madalin Pentelie",
+    "page": "https://commons.wikimedia.org/wiki/File:Bucharest_University_Square_(cropped).jpg",
+    "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADQAwCdASoUAAwAPzmEuVOvKKWisAgB4CcJQBadBDsT253rY3UnHWgA/dWIxqIBdkKTfjcR2aWUGR/9UznpgJrTOua/GwgZGDMA4wqymOqr0zWaR3OIq7685wwAAA=="
+  },
+  {
+    "key": "path-study",
+    "file": "/images/path-study.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1523240795612-9a054b0db644",
+    "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAwCdASoUAA0APzmEuVOvKKWisAgB4CcJYwC06BuxiT0xYNgBN4x4AP7GrB+nAAhZDpr56EY4+IuKGr/j0LoR0wmMscvRcPJJluSf4CHgnad1exXTc9jCoHbWcBek1hETVutSVAAAAA=="
+  },
+  {
+    "key": "path-careers",
+    "file": "/images/path-careers.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1497215728101-856f4ea42174",
+    "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJZwDGfBmjQX99UuUHkcAAzjCci86pHNpK/01o1rtZsvLfsJCMfF5boiRuLDoYRwD/BouXyFbVOnJwvN1GCTyLRNpbmlBhK3q6n4QEYAA="
+  },
+  {
+    "key": "path-business",
+    "file": "/images/path-business.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1486406146926-c627a92ad1ab",
+    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAABQBACdASoUAA0APzmEuVOvKKWisAgB4CcJYwCdB3gAgMdZTHse0fOBkNFAAP39EFrcD+OWGGyVNVajZ4gwGVQt7jknYOQMyXjMC30tWMn4CyZBdCA8rwVrdg3wVeeceWZHmxToEJqo9EEVfOpgsyv9KZmpEAAA"
+  },
+  {
+    "key": "atmos-library",
+    "file": "/images/atmos-library.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1521587760476-6c12a4b040da",
+    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAQBACdASoUAA0APzmEuVOvKKWisAgB4CcJYgCdAB9TCMydoamZYiaiAAD+0SwjMw9LdCZY7OAza/sFwr6HLdH7nCnyZYKce1F+8bI4u+o7LAVtGO194lwTWKbrMr+8qGZFLJXBKbNn4UTMGWE0vs457mFyHUAA"
+  },
+  {
+    "key": "atmos-fintech",
+    "file": "/images/atmos-fintech.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1451187580459-43490279c0fa",
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAwCdASoUAA0APzmGulQvKSWjMAgB4CcJZwDGfCHf5cCtw+WWuAD+69Okptr6w9FM2pPxObBfQHZIcKAAAA=="
+  },
+  {
+    "key": "hero-aerial",
+    "file": "/images/hero-aerial.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1480714378408-67cf0d13bc1b"
+  },
+  {
+    "key": "plate-departure",
+    "file": "/images/plate-departure.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1436491865332-7a61a109cc05"
+  },
+  {
+    "key": "plate-europe-dawn",
+    "file": "/images/plate-europe-dawn.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1531971589569-0d9370cbe1e5"
+  },
+  {
+    "key": "plate-street",
+    "file": "/images/plate-street.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "page": "https://unsplash.com/photos/1449824913935-59a10b8d2000"
+  }
+]

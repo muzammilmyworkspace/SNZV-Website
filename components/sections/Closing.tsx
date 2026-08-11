@@ -1,0 +1,390 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import {
+  Shell,
+  Chapter,
+  MaskedLines,
+  Reveal,
+  RevealGroup,
+  RevealItem,
+  Action,
+  TextLink,
+  Caveat,
+} from "@/components/ui/Editorial";
+import { articles } from "@/data/insights";
+import {
+  trustPoints,
+  stats,
+  testimonials,
+  ecosystem,
+  ecosystemDisclaimer,
+  company,
+} from "@/data/company";
+import { analytics } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
+
+/* ═══════════════════════════════════════ CHAPTER 06 — WHY SNZ ═══ */
+
+export function Why() {
+  const shown = stats.filter((s) => s.verified);
+
+  return (
+    <section id="why" className="relative overflow-hidden bg-abyss py-24 md:py-32">
+      <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
+
+      <Shell className="relative">
+        <Chapter index="06" label="Why SnZ" className="mb-10" />
+
+        <MaskedLines
+          as="h2"
+          className="d-1 max-w-[18ch] text-paper"
+          lines={[
+            <>Because your next move</>,
+            <>
+              deserves more than <span className="d-em">guesswork</span>.
+            </>,
+          ]}
+        />
+
+        {/* Principles as an indexed list, set large */}
+        <RevealGroup as="ol" className="mt-16 rule border-t">
+          {trustPoints.map((t, i) => (
+            <RevealItem
+              as="li"
+              key={t.title}
+              className="group grid gap-3 border-b border-white/10 py-8 md:grid-cols-[4rem_1fr_1fr] md:items-baseline md:gap-10"
+            >
+              <span className="label num text-moss-400/60">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="font-display text-[1.6rem] leading-[1.05] tracking-[-0.02em] text-paper transition-colors duration-500 group-hover:text-moss-200 sm:text-[2rem]">
+                {t.title}
+              </h3>
+              <p className="max-w-md text-[0.9rem] leading-relaxed text-navy-200">
+                {t.body}
+              </p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        {/* Only figures the client can substantiate ever render */}
+        {shown.length > 0 && (
+          <Reveal className="mt-14">
+            <dl className="flex flex-wrap gap-x-16 gap-y-8">
+              {shown.map((s) => (
+                <div key={s.label} className="max-w-[16rem]">
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd>
+                    <span className="block font-display text-[3.4rem] leading-none tracking-[-0.03em] text-moss-400">
+                      {s.value}
+                      {s.suffix}
+                    </span>
+                    <span className="label mt-3 block text-paper">{s.label}</span>
+                    <span className="mt-1.5 block text-[0.82rem] leading-snug text-navy-300">
+                      {s.detail}
+                    </span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        )}
+
+        {/* Ecosystem — context, never endorsement */}
+        <Reveal className="mt-16">
+          <div className="rule border-t pt-8">
+            <span className="label text-navy-300">
+              Operating within Lithuania&rsquo;s business &amp; fintech ecosystem
+            </span>
+            <ul className="mt-5 flex flex-wrap gap-x-10 gap-y-3">
+              {ecosystem.map((e) => (
+                <li
+                  key={e}
+                  className="font-display text-[1.05rem] tracking-[-0.01em] text-navy-300"
+                >
+                  {e}
+                </li>
+              ))}
+            </ul>
+            <Caveat>{ecosystemDisclaimer}</Caveat>
+          </div>
+        </Reveal>
+      </Shell>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════ CHAPTER 07 — PROOF ═══ */
+
+export function Proof() {
+  const has = testimonials.length > 0;
+
+  return (
+    <section id="proof" className="grain relative overflow-hidden bg-void py-24 md:py-32">
+      <div
+        aria-hidden
+        className="bloom-moss pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 opacity-30"
+      />
+
+      <Shell className="relative">
+        <Chapter index="07" label="Proof" className="mb-10" />
+
+        {has ? (
+          <>
+            <MaskedLines
+              as="h2"
+              className="d-1 max-w-[16ch] text-paper"
+              lines={[<>Every journey starts</>, <>with a decision.</>]}
+            />
+            <RevealGroup className="mt-14 grid gap-px border border-white/10 bg-white/10 md:grid-cols-3">
+              {testimonials.map((t) => (
+                <RevealItem key={t.name} className="bg-void p-7">
+                  <blockquote className="font-display text-[1.2rem] leading-snug text-paper">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-6 border-t border-white/10 pt-4">
+                    <span className="label block text-moss-400">{t.name}</span>
+                    <span className="mt-1 block text-[0.82rem] text-navy-300">
+                      {t.role}
+                    </span>
+                  </figcaption>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </>
+        ) : (
+          /* Honest empty state — no fabricated social proof, ever. */
+          <div className="mx-auto max-w-3xl text-center">
+            <MaskedLines
+              as="h2"
+              className="d-1 text-paper"
+              lines={[
+                <>Your story</>,
+                <>
+                  could be <span className="d-em">next</span>.
+                </>,
+              ]}
+            />
+            <Reveal delay={0.15}>
+              <p className="mx-auto mt-7 max-w-xl text-[0.97rem] leading-[1.7] text-navy-200">
+                We don&rsquo;t publish testimonials we can&rsquo;t verify, and
+                we won&rsquo;t invent them. When our clients are ready to put
+                their names to their outcomes, they&rsquo;ll appear here — and
+                you&rsquo;ll be able to check every one.
+              </p>
+            </Reveal>
+            <Reveal delay={0.22}>
+              <div className="mt-10 flex flex-wrap justify-center gap-3">
+                <Action
+                  href="/contact#journey"
+                  magnetic
+                  onClick={() => analytics.ctaClick("Start a conversation", "proof")}
+                >
+                  Start a conversation
+                </Action>
+                <Action href="/insights/questions-to-ask-any-advisor" variant="line">
+                  Questions to ask us first
+                </Action>
+              </div>
+            </Reveal>
+          </div>
+        )}
+      </Shell>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════ CHAPTER 08 — INSIGHTS ═══ */
+
+export function Insights() {
+  const [lead, ...rest] = articles.slice(0, 4);
+
+  return (
+    <section id="insights" className="relative overflow-hidden bg-abyss py-24 md:py-32">
+      <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
+
+      <Shell className="relative">
+        <Chapter index="08" label="Insights" className="mb-10" />
+
+        <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+          <MaskedLines
+            as="h2"
+            className="d-1 max-w-[14ch] text-paper"
+            lines={[<>Know before</>, <>you go.</>]}
+          />
+          <Reveal delay={0.12}>
+            <p className="max-w-sm text-[0.95rem] leading-relaxed text-navy-200">
+              Orientation on the parts people get wrong — written to be useful
+              whether or not you ever contact us.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* Lead feature */}
+        <Reveal className="mt-14">
+          <Link
+            href={`/insights/${lead.slug}`}
+            onClick={() => analytics.articleView(lead.slug, lead.category)}
+            className="group grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-14"
+          >
+            <div className="plate relative aspect-[16/10] overflow-hidden">
+              <Image
+                src={lead.image}
+                alt={lead.imageAlt}
+                fill
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                loading="lazy"
+                className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
+              />
+              <span className="absolute left-4 top-4 z-[3] label bg-moss-400 px-2.5 py-1 text-void">
+                {lead.category}
+              </span>
+            </div>
+            <div>
+              <span className="label text-navy-300">
+                {lead.readMinutes} min read
+              </span>
+              <h3 className="d-2 mt-4 text-paper transition-colors duration-500 group-hover:text-moss-200">
+                {lead.title}
+              </h3>
+              <p className="mt-5 max-w-md text-[0.93rem] leading-relaxed text-navy-200">
+                {lead.excerpt}
+              </p>
+              <span className="label mt-7 inline-flex items-center gap-2 text-moss-300">
+                <span className="draw">Read the guide</span>
+              </span>
+            </div>
+          </Link>
+        </Reveal>
+
+        {/* Secondary */}
+        <RevealGroup className="mt-14 grid gap-px rule border-t sm:grid-cols-3">
+          {rest.map((a) => (
+            <RevealItem key={a.slug}>
+              <Link
+                href={`/insights/${a.slug}`}
+                onClick={() => analytics.articleView(a.slug, a.category)}
+                className="group block border-b border-white/10 py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
+              >
+                <span className="label text-moss-400/80">{a.category}</span>
+                <h3 className="mt-3 font-display text-[1.25rem] leading-snug tracking-[-0.015em] text-paper transition-colors duration-500 group-hover:text-moss-200">
+                  {a.title}
+                </h3>
+                <p className="mt-2.5 text-[0.85rem] leading-relaxed text-navy-300">
+                  {a.excerpt}
+                </p>
+                <span className="label mt-4 block text-navy-400">
+                  {a.readMinutes} min
+                </span>
+              </Link>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <div className="mt-12">
+          <TextLink href="/insights">Read every guide</TextLink>
+        </div>
+      </Shell>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════ CHAPTER 09 — FINAL ═══ */
+
+export function Final() {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end end"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["12%", "0%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
+
+  return (
+    <section
+      ref={ref}
+      className="plate plate-deep grain relative flex min-h-[85svh] items-center overflow-hidden bg-void py-28"
+    >
+      <motion.div
+        className="absolute inset-0 -z-10"
+        style={reduced ? undefined : { y, scale }}
+      >
+        <Image
+          src="/images/plate-departure.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          loading="lazy"
+          className="object-cover"
+        />
+      </motion.div>
+
+      <div
+        aria-hidden
+        className="bloom-moss pointer-events-none absolute -bottom-40 right-[18%] -z-10 h-[34rem] w-[34rem] opacity-45"
+      />
+      <div
+        aria-hidden
+        className="graticule mask-radial pointer-events-none absolute inset-0 -z-10 opacity-60"
+      />
+
+      <Shell className="relative">
+        <div className="max-w-4xl">
+          <Chapter index="09" label="Your move" className="mb-10" />
+
+          <MaskedLines
+            as="h2"
+            className="d-hero text-paper"
+            lines={[
+              <>Your next chapter</>,
+              <>
+                is <span className="d-em">waiting</span>.
+              </>,
+            ]}
+          />
+
+          <Reveal delay={0.2}>
+            <p className="lede mt-9 max-w-xl">
+              You don&rsquo;t need to have everything figured out. You just need
+              to know you&rsquo;re ready to find out what&rsquo;s next.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.28}>
+            <div className="mt-11 flex flex-wrap items-center gap-3">
+              <Action
+                href="/contact#journey"
+                size="lg"
+                magnetic
+                onClick={() => analytics.ctaClick("Start Your Journey", "final")}
+              >
+                Start your journey
+              </Action>
+              <Action
+                href={`https://wa.me/${company.contact.whatsapp}`}
+                external
+                variant="line"
+                size="lg"
+                onClick={() => analytics.whatsapp("final")}
+              >
+                Talk to SnZ Ventures
+              </Action>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.36}>
+            <p className="mt-8 text-[0.82rem] text-navy-300">
+              A real person replies. If we&rsquo;re not the right fit,
+              we&rsquo;ll tell you that too.
+            </p>
+          </Reveal>
+        </div>
+      </Shell>
+    </section>
+  );
+}
