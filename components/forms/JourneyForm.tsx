@@ -203,6 +203,7 @@ export function JourneyForm({
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">(
     "idle"
   );
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
   const started = useRef(false);
   const headingRef = useRef<HTMLParagraphElement>(null);
 
@@ -275,7 +276,13 @@ export function JourneyForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pathway, answers }),
       });
-      if (!res.ok) throw new Error(String(res.status));
+      if (!res.ok) {
+        // The server tells us when delivery is unavailable so we can show the
+        // direct contact route rather than a generic failure.
+        const data = (await res.json().catch(() => ({}))) as { message?: string };
+        setServerMessage(data.message ?? null);
+        throw new Error(String(res.status));
+      }
       analytics.formStep(FORM_ID, 3, TOTAL_STEPS, pathway);
       analytics.formSubmit(FORM_ID, pathway);
       setStatus("done");
@@ -308,19 +315,19 @@ export function JourneyForm({
             />
           </svg>
         </div>
-        <h3 className="d-3 mt-6 text-paper">Thank you — that's enough to work with.</h3>
-        <p className="mx-auto mt-4 max-w-md text-[0.93rem] leading-relaxed text-navy-200">
+        <h3 className="d-3 mt-6 text-fg">Thank you — that's enough to work with.</h3>
+        <p className="mx-auto mt-4 max-w-md text-[0.93rem] leading-relaxed text-muted">
           We'll review what you've told us and come back with an honest read on
           your options — including if we think the route isn't right for you.
         </p>
-        <p className="mt-6 text-[0.85rem] text-navy-300">
+        <p className="mt-6 text-[0.85rem] text-faint">
           Prefer to talk now?{" "}
           <a
             href={`https://wa.me/${company.contact.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => analytics.whatsapp("form_success")}
-            className="text-moss-300 underline underline-offset-4"
+            className="text-accent underline underline-offset-4"
           >
             Message us on WhatsApp
           </a>
@@ -338,12 +345,12 @@ export function JourneyForm({
         <div className="flex items-center justify-between">
           <p
             ref={headingRef}
-            className="label text-navy-300"
+            className="label text-faint"
             aria-live="polite"
           >
             Step {step} of {TOTAL_STEPS}
           </p>
-          <p className="label text-navy-400">
+          <p className="label text-faint">
             {step === 1
               ? "About 60 seconds"
               : step === 2
@@ -352,7 +359,7 @@ export function JourneyForm({
           </p>
         </div>
         <div
-          className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-white/12"
+          className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-raised"
           role="progressbar"
           aria-valuenow={step}
           aria-valuemin={1}
@@ -378,10 +385,10 @@ export function JourneyForm({
             exit={{ opacity: 0, x: -14 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <legend className="d-3 mb-2 text-paper">
+            <legend className="d-3 mb-2 text-fg">
               What are you looking to achieve?
             </legend>
-            <p className="mb-7 text-[0.88rem] text-navy-300">
+            <p className="mb-7 text-[0.88rem] text-faint">
               This decides what we ask next — so you only answer what's
               relevant.
             </p>
@@ -392,19 +399,19 @@ export function JourneyForm({
                   key={opt.key}
                   type="button"
                   onClick={() => choosePathway(opt.key)}
-                  className="group flex items-center gap-4 border border-white/12 bg-white/[0.03] p-5 text-left transition-all duration-300 ease-[var(--ease-out-expo)] hover:border-moss-400/50 hover:bg-white/[0.06]"
+                  className="group flex items-center gap-4 border border-line bg-white/[0.03] p-5 text-left transition-all duration-300 ease-[var(--ease-out-expo)] hover:border-moss-400/50 hover:bg-white/[0.06]"
                 >
                   <span
                     aria-hidden
-                    className="flex h-11 w-11 shrink-0 items-center justify-center border border-white/10 text-lg transition-colors group-hover:border-moss-400/40"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center border border-line text-lg transition-colors group-hover:border-moss-400/40"
                   >
                     {opt.icon}
                   </span>
                   <span className="flex-1">
-                    <span className="block font-display text-[1.25rem] tracking-[-0.015em] text-paper">
+                    <span className="block font-display text-[1.25rem] tracking-[-0.015em] text-fg">
                       {opt.title}
                     </span>
-                    <span className="mt-1 block text-[0.82rem] text-navy-300">
+                    <span className="mt-1 block text-[0.82rem] text-faint">
                       {opt.blurb}
                     </span>
                   </span>
@@ -426,14 +433,14 @@ export function JourneyForm({
             exit={{ opacity: 0, x: -14 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <legend className="d-3 mb-2 text-paper">
+            <legend className="d-3 mb-2 text-fg">
               {pathway === "study"
                 ? "Tell us about your studies"
                 : pathway === "careers"
                   ? "Tell us about your work"
                   : "Tell us about the business"}
             </legend>
-            <p className="mb-7 text-[0.88rem] text-navy-300">
+            <p className="mb-7 text-[0.88rem] text-faint">
               Rough answers are fine. Nothing here is binding.
             </p>
 
@@ -467,8 +474,8 @@ export function JourneyForm({
             exit={{ opacity: 0, x: -14 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <legend className="d-3 mb-2 text-paper">Where should we reply?</legend>
-            <p className="mb-7 text-[0.88rem] text-navy-300">
+            <legend className="d-3 mb-2 text-fg">Where should we reply?</legend>
+            <p className="mb-7 text-[0.88rem] text-faint">
               A real person reads this. You'll get a considered answer, not a
               brochure.
             </p>
@@ -522,24 +529,24 @@ export function JourneyForm({
               <div className="sm:col-span-2">
                 <label
                   htmlFor="jf-notes"
-                  className="mb-1.5 block label text-navy-200"
+                  className="mb-1.5 block label text-muted"
                 >
                   Anything else we should know?{" "}
-                  <span className="text-navy-400">(optional)</span>
+                  <span className="text-faint">(optional)</span>
                 </label>
                 <textarea
                   id="jf-notes"
                   rows={3}
                   value={answers.notes ?? ""}
                   onChange={(e) => set("notes", e.target.value)}
-                  className="w-full resize-y border border-white/15 bg-white/[0.04] px-4 py-3 text-[0.92rem] text-paper outline-none transition-colors placeholder:text-navy-400 focus:border-moss-400"
+                  className="w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.92rem] text-fg outline-none transition-colors placeholder:text-faint focus:border-moss-400"
                   placeholder="Constraints, deadlines, questions…"
                 />
               </div>
             </div>
 
             <div className="mt-4">
-              <label className="flex cursor-pointer items-start gap-2.5 text-[0.82rem] leading-relaxed text-navy-200">
+              <label className="flex cursor-pointer items-start gap-2.5 text-[0.82rem] leading-relaxed text-muted">
                 <input
                   type="checkbox"
                   checked={answers.consent === "yes"}
@@ -552,7 +559,7 @@ export function JourneyForm({
                   line with the{" "}
                   <a
                     href="/legal/privacy-policy"
-                    className="text-moss-300 underline underline-offset-4"
+                    className="text-accent underline underline-offset-4"
                   >
                     Privacy Policy
                   </a>
@@ -571,7 +578,7 @@ export function JourneyForm({
                 role="alert"
                 className="mt-4 border border-red-400/40 bg-red-500/10 px-4 py-3 text-[0.83rem] text-red-200"
               >
-                Something went wrong sending that. Please email{" "}
+                {serverMessage ?? "Something went wrong sending that."} Please email{" "}
                 <a
                   href={`mailto:${company.contact.email}`}
                   className="font-medium underline"
@@ -613,20 +620,20 @@ function Field({
   const id = `jf-${field.name}`;
   const errorId = `${id}-error`;
   const base =
-    "w-full border bg-white/[0.04] px-4 py-3 text-[0.92rem] text-paper outline-none transition-colors placeholder:text-navy-400";
+    "w-full border bg-white/[0.04] px-4 py-3 text-[0.92rem] text-fg outline-none transition-colors placeholder:text-faint";
   const border = error
     ? "border-red-400/70 focus:border-red-400"
-    : "border-white/15 focus:border-moss-400";
+    : "border-line focus:border-moss-400";
 
   return (
     <div>
       <label
         htmlFor={id}
-        className="mb-1.5 block label text-navy-200"
+        className="mb-1.5 block label text-muted"
       >
         {field.label}
         {!field.required && (
-          <span className="text-navy-400"> (optional)</span>
+          <span className="text-faint"> (optional)</span>
         )}
       </label>
 
@@ -637,7 +644,7 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
-          className={cn(base, border, !value && "text-navy-400")}
+          className={cn(base, border, !value && "text-faint")}
         >
           <option value="">Select…</option>
           {field.options?.map((o) => (

@@ -62,7 +62,7 @@ export function HeroMeridian() {
         mx.set(0);
         my.set(0);
       }}
-      className="plate plate-deep grain relative flex min-h-[100svh] items-end overflow-hidden bg-void pb-14 pt-32 md:pb-20"
+      className="plate plate-deep grain relative flex min-h-[94svh] items-end overflow-hidden tone-deep pb-12 pt-28 md:pb-16"
     >
       {/* 1 — plate */}
       <motion.div
@@ -123,8 +123,8 @@ export function HeroMeridian() {
               </span>
               54.6872° N, 25.2797° E
             </span>
-            <span aria-hidden className="hidden h-3 w-px bg-white/20 sm:block" />
-            <span className="label text-navy-200">{company.positioning}</span>
+            <span aria-hidden className="hidden h-3 w-px bg-raised sm:block" />
+            <span className="label text-muted">{company.positioning}</span>
           </motion.div>
 
           {/* Headline */}
@@ -132,7 +132,7 @@ export function HeroMeridian() {
             as="h1"
             animate="mount"
             delay={0.28}
-            className="d-hero max-w-[16ch] text-paper"
+            className="d-hero max-w-[16ch] text-fg"
             lines={[
               <>Your ambition</>,
               <>
@@ -192,8 +192,8 @@ export function HeroMeridian() {
         style={reduced ? undefined : { opacity: fade }}
         className="absolute bottom-6 right-5 z-10 hidden items-center gap-3 sm:right-8 md:flex lg:right-12"
       >
-        <span className="label text-navy-300">Scroll</span>
-        <span className="relative block h-10 w-px overflow-hidden bg-white/20">
+        <span className="label text-faint">Scroll</span>
+        <span className="relative block h-10 w-px overflow-hidden bg-raised">
           <motion.span
             className="absolute inset-x-0 top-0 h-4 bg-moss-400"
             animate={reduced ? {} : { y: ["-100%", "260%"] }}

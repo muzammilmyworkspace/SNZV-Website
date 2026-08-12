@@ -80,7 +80,7 @@ export default function AboutPage() {
               lead="SnZ Ventures is a woman-owned advisory business operating between South Asia, the Middle East and the European Union. We work at both ends of that route — which is unusual, and is the reason we can be straight with people at either end."
             />
             <Reveal>
-              <div className="space-y-4 text-[0.95rem] leading-relaxed text-navy-100">
+              <div className="space-y-4 text-[0.95rem] leading-relaxed text-fg">
                 <p>
                   We do four things: form and run European companies, prepare
                   fintech licence applications, recruit into European employers,
@@ -105,7 +105,7 @@ export default function AboutPage() {
                 {company.attributes.map((a) => (
                   <li
                     key={a}
-                    className="rounded-[var(--radius-xs)] border border-white/15 px-3 py-1 text-[0.78rem] text-navy-200"
+                    className="rounded-[var(--radius-xs)] border border-line px-3 py-1 text-[0.78rem] text-muted"
                   >
                     {a}
                   </li>
@@ -136,13 +136,13 @@ export default function AboutPage() {
             eyebrow="What we believe"
             title="Four positions we're willing to be held to."
           />
-          <RevealGroup className="mt-9 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
+          <RevealGroup className="mt-9 grid gap-px overflow-hidden border border-line bg-raised md:grid-cols-2">
             {beliefs.map((b) => (
-              <RevealItem key={b.title} className="bg-abyss p-6">
-                <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-paper">
+              <RevealItem key={b.title} className="bg-surface p-6">
+                <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-fg">
                   {b.title}
                 </h3>
-                <p className="mt-2 text-[0.88rem] leading-relaxed text-navy-200">
+                <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
                   {b.body}
                 </p>
               </RevealItem>
@@ -165,10 +165,10 @@ export default function AboutPage() {
             </Reveal>
           </div>
 
-          <div className="mt-10 grid gap-8 border-t border-white/12 pt-8 md:grid-cols-2">
+          <div className="mt-10 grid gap-8 border-t border-line pt-8 md:grid-cols-2">
             <div>
               <Eyebrow className="mb-3">Talent source markets</Eyebrow>
-              <p className="text-[0.9rem] leading-relaxed text-navy-200">
+              <p className="text-[0.9rem] leading-relaxed text-muted">
                 {sourceMarkets.join(" · ")}
               </p>
             </div>
@@ -176,7 +176,7 @@ export default function AboutPage() {
               <Eyebrow className="mb-3">
                 Operating within Lithuania&rsquo;s ecosystem
               </Eyebrow>
-              <p className="text-[0.9rem] leading-relaxed text-navy-200">
+              <p className="text-[0.9rem] leading-relaxed text-muted">
                 {ecosystem.join(" · ")}
               </p>
               <Caveat>{ecosystemDisclaimer}</Caveat>
@@ -205,12 +205,12 @@ export default function AboutPage() {
             {trustPoints.map((t) => (
               <RevealItem
                 key={t.title}
-                className="border border-white/12 bg-white/[0.03] p-6"
+                className="border border-line bg-white/[0.03] p-6"
               >
-                <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-paper">
+                <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-fg">
                   {t.title}
                 </h3>
-                <p className="mt-2 text-[0.88rem] leading-relaxed text-navy-200">
+                <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
                   {t.body}
                 </p>
               </RevealItem>

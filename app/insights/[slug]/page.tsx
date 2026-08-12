@@ -78,7 +78,7 @@ export default async function ArticlePage({
       />
 
       {/* Header */}
-      <section className="grain relative overflow-hidden bg-void pb-12 pt-[104px] text-paper md:pt-[128px]">
+      <section className="grain relative overflow-hidden bg-surface pb-12 pt-36 text-fg md:pt-44">
         <Image
           src={article.image}
           alt=""
@@ -89,7 +89,7 @@ export default async function ArticlePage({
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/92 to-navy-950/60"
+          className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/90 to-navy-950/55"
         />
         <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-45" />
 
@@ -102,31 +102,31 @@ export default async function ArticlePage({
             ]}
           />
           <div className="max-w-3xl">
-            <div className="mb-4 flex flex-wrap items-center gap-2.5 text-[0.75rem] text-navy-300">
-              <span className="rounded-[var(--radius-xs)] bg-moss-400 px-2 py-0.5 font-semibold uppercase tracking-wider text-void">
+            <div className="mb-4 flex flex-wrap items-center gap-2.5 text-[0.75rem] text-faint">
+              <span className="rounded-[var(--radius-xs)] bg-moss-400 px-2 py-0.5 font-semibold uppercase tracking-wider text-navy-950">
                 {article.category}
               </span>
               <span>{article.readMinutes} min read</span>
               <span aria-hidden>·</span>
               <time dateTime={article.updated}>Updated {readable}</time>
             </div>
-            <h1 className="d-1 text-paper">{article.title}</h1>
-            <p className="lede mt-5 text-navy-200">{article.excerpt}</p>
+            <h1 className="d-1 text-fg">{article.title}</h1>
+            <p className="lede mt-5 text-muted">{article.excerpt}</p>
           </div>
         </Container>
       </section>
 
       {/* Body */}
-      <Section tone="light">
+      <Section tone="paper" edge>
         <Container size="narrow">
           <article className="max-w-none">
             {article.body.map((block, i) => (
               <Reveal key={block.heading} delay={i * 0.03} className="mb-9">
-                <h2 className="d-3 mb-3 text-paper">{block.heading}</h2>
+                <h2 className="d-3 mb-3 text-fg">{block.heading}</h2>
                 {block.paras.map((p) => (
                   <p
                     key={p.slice(0, 40)}
-                    className="mb-3.5 text-[1rem] leading-[1.72] text-navy-100"
+                    className="mb-3.5 text-[1rem] leading-[1.72] text-fg"
                   >
                     {p}
                   </p>
@@ -136,7 +136,7 @@ export default async function ArticlePage({
                     {block.list.map((item) => (
                       <li
                         key={item}
-                        className="text-[0.95rem] leading-relaxed text-navy-100"
+                        className="text-[0.95rem] leading-relaxed text-fg"
                       >
                         {item}
                       </li>
@@ -157,7 +157,7 @@ export default async function ArticlePage({
       </Section>
 
       {related.length > 0 && (
-        <Section tone="mist" size="tight">
+        <Section tone="soft" size="tight">
           <Container>
             <SectionHeading eyebrow="Keep reading" title="Related guides" />
             <div className="mt-7 grid gap-5 md:grid-cols-3">

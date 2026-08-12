@@ -51,7 +51,7 @@ export default async function LegalPage({
         ])}
       />
 
-      <section className="relative overflow-hidden bg-void pb-12 pt-[104px] text-paper md:pt-[128px]">
+      <section className="relative overflow-hidden bg-surface pb-12 pt-36 text-fg md:pt-44">
         <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-45" />
         <Container className="relative" size="narrow">
           <Breadcrumbs
@@ -63,14 +63,14 @@ export default async function LegalPage({
           <Eyebrow tone="dark" className="mb-4">
             Legal
           </Eyebrow>
-          <h1 className="d-1 text-paper">{doc.title}</h1>
-          <p className="mt-5 text-[0.95rem] leading-relaxed text-navy-200">
+          <h1 className="d-1 text-fg">{doc.title}</h1>
+          <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">
             {doc.intro}
           </p>
         </Container>
       </section>
 
-      <Section tone="light">
+      <Section tone="paper" edge>
         <Container size="narrow">
           {/* Unmissable draft warning — these documents are not launch-ready. */}
           <div className="mb-9 border border-amber-300 bg-amber-50 p-4">
@@ -88,21 +88,21 @@ export default async function LegalPage({
 
           {doc.sections.map((section) => (
             <section key={section.heading} className="mb-9">
-              <h2 className="d-3 mb-3 text-paper">{section.heading}</h2>
+              <h2 className="d-3 mb-3 text-fg">{section.heading}</h2>
               {section.paras.map((p) => (
                 <p
                   key={p.slice(0, 40)}
-                  className="mb-3 text-[0.95rem] leading-[1.7] text-navy-100"
+                  className="mb-3 text-[0.95rem] leading-[1.7] text-fg"
                 >
                   {p}
                 </p>
               ))}
               {section.list && (
-                <ul className="mt-3 space-y-2 border-l-2 border-white/15 pl-5">
+                <ul className="mt-3 space-y-2 border-l-2 border-line pl-5">
                   {section.list.map((item) => (
                     <li
                       key={item}
-                      className="text-[0.92rem] leading-relaxed text-navy-100"
+                      className="text-[0.92rem] leading-relaxed text-fg"
                     >
                       {item}
                     </li>
@@ -112,7 +112,7 @@ export default async function LegalPage({
             </section>
           ))}
 
-          <div className="border-t border-white/12 pt-7">
+          <div className="border-t border-line pt-7">
             <Eyebrow className="mb-3">Contact</Eyebrow>
             <ContactLinks location="legal_page" tone="light" />
             <Caveat>

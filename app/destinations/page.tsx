@@ -88,11 +88,11 @@ export default function DestinationsPage() {
               lead="We work on both sides of the corridor. That is what lets us tell a candidate the truth about their chances, and an employer the truth about the market."
             />
             <Reveal>
-              <ul className="grid grid-cols-2 gap-px overflow-hidden border border-white/12 bg-white/10 sm:grid-cols-4">
+              <ul className="grid grid-cols-2 gap-px overflow-hidden border border-line bg-raised sm:grid-cols-4">
                 {corridors.map((c) => (
                   <li
                     key={c.name}
-                    className="bg-white/[0.03] px-4 py-5 text-center label text-paper"
+                    className="bg-white/[0.03] px-4 py-5 text-center label text-fg"
                   >
                     {c.name}
                   </li>

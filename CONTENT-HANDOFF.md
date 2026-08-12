@@ -12,29 +12,81 @@ plausible-sounding text. This document is the list of gaps.
 
 | # | Item | Where it surfaces | Why it blocks |
 |---|------|-------------------|---------------|
-| 1 | **Lead delivery is not wired up** | `app/api/enquiry/route.ts` | The form validates and returns success, but submissions are only logged server-side. **Real enquiries will be lost.** No mail/CRM credentials were supplied, and inventing them would silently drop leads. |
+| 1 | **Email transport not configured** | `.env.local` | Delivery IS implemented (`lib/mail.ts` → Resend or webhook). Set `RESEND_API_KEY` **or** `MAIL_WEBHOOK_URL` and enquiries reach info@snzventures.com. Until then the API returns 503 and the form shows direct contact details — it never fakes success. |
 | 2 | **Legal pages are structural drafts** | `data/legal.ts` | Privacy Policy, Terms, Cookie Policy and Disclaimer contain `[CONFIRM]` markers where a company fact or legal determination is required. They are `noindex` and carry a visible draft banner until reviewed. |
-| 3 | **Registered legal entity details unknown** | Footer, legal pages, schema | Registered name, company code, VAT number and full street address are not published anywhere. Required for GDPR compliance and Lithuanian business disclosure. |
+| 3 | **Registered legal entity details unknown** | Footer, legal pages, schema | Office address is now supplied and live. Still missing: registered legal name, company code and VAT number — required for GDPR and Lithuanian business disclosure. |
 | 4 | **Cookie consent not implemented** | `components/layout/AnalyticsScripts.tsx` | No analytics tag loads today, so the site is currently compliant. **The moment a GA4/Clarity/Meta ID is set, a consent solution is legally required for EU visitors.** |
 | 5 | **Four headline statistics unverified** | `data/company.ts` → `stats` | See section 3. |
 
 ---
 
-## 2. Lead delivery (blocker #1)
+## 2. Email delivery — one variable away
 
-`deliver()` in `app/api/enquiry/route.ts` is the single function to implement.
-Pick one:
+Delivery is implemented in `lib/mail.ts` and wired into both the enquiry API
+and password resets. Choose a transport in `.env.local`:
 
-- **Email** — Resend, Postmark, SendGrid or SMTP to `info@snzventures.com`
-- **CRM** — HubSpot, Pipedrive or Zoho lead creation
-- **Spreadsheet** — Google Sheets append via a service account
+| Variable | Transport |
+|----------|-----------|
+| `RESEND_API_KEY` | Resend REST API |
+| `MAIL_WEBHOOK_URL` | Any endpoint — Zapier, Make, n8n, a CRM intake, an SMTP relay |
 
-The route already handles validation, field limits, consent enforcement and
-rate limiting (6 submissions / 10 min / IP). Only the delivery call is missing.
+Also set `MAIL_FROM` (a domain you control and have verified with the provider)
+and optionally `MAIL_TO` (defaults to `info@snzventures.com`).
 
-> ⚠ The in-memory rate limiter resets on redeploy and is per-instance. If the
-> site is deployed to multiple instances or a serverless platform, move it to a
-> shared store (Upstash/Redis) or a platform WAF rule.
+**Until one is set**, `POST /api/enquiry` returns 503 and the form shows the
+direct email and WhatsApp details. It never shows a success screen for a
+message nobody received.
+
+> ⚠ The in-process rate limiter (`lib/auth/rate-limit.ts`) resets on redeploy
+> and does not coordinate across replicas. Move it to Redis/Upstash or a WAF
+> rule before running multiple instances.
+
+---
+
+## 2b. Client portal — backend requirements
+
+The portal is **functionally real**: registration, login, logout, password
+reset, protected routes, role-based access and progressive profile saving all
+work today. Verified by test — passwords are scrypt-hashed, tampered session
+cookies are rejected, arbitrary profile fields are ignored (no role
+escalation), and a client-role account is redirected away from
+`/portal/admin`.
+
+**What is NOT production-ready:**
+
+| Area | Current state | Needed |
+|------|---------------|--------|
+| **User storage** | JSON file under `.data/` (gitignored) via `lib/auth/store.ts` | Replace the `UserStore` implementation with Postgres/Prisma. That interface is the only thing the app depends on. File writes are not transactional and will not survive a serverless filesystem. |
+| **Cases, documents, messages, appointments, tasks, notifications** | `lib/portal/data.ts` returns empty arrays; every screen renders an honest empty state | Implement each function against real tables. No component changes needed. |
+| **Document storage** | Upload disabled | Private object storage (S3/R2) with server-signed, short-lived URLs. Documents contain identity data and must never be publicly addressable. |
+| **Email verification** | `emailVerified` flag exists, always false | Send a verification link on registration and gate sensitive actions on it. |
+| **Messaging** | UI complete, no transport | Realtime (WebSocket/SSE) or polling, plus unread state. |
+| **Staff roles** | Assigned manually on the account record | Admin tooling. There is deliberately **no self-service route to staff privileges** — registration only ever creates client roles. |
+
+Suggested schema: `users`, `profiles`, `cases`, `documents`, `tasks`,
+`conversations`, `messages`, `appointments`, `notifications`,
+`opportunities`, `audit_log`.
+
+**Deliberately empty rather than seeded.** Showing a client a fabricated case
+file — invented applications, documents and messages — would be far worse than
+an empty state that explains exactly what will fill it.
+
+---
+
+## 2c. Video content
+
+`data/media.ts` holds three entries, all with `src: null`, so each pillar page
+renders a marked placeholder inside the final frame:
+
+- `[STUDY VIDEO REQUIRED]` — /study-abroad
+- `[JOBS VIDEO REQUIRED]` — /global-careers
+- `[BUSINESS VIDEO REQUIRED]` — /business-setup
+
+Set `src` and `poster` to go live. `provider: "file"` (an mp4/webm in
+`/public`) is fastest and makes no third-party request. `youtube` and `vimeo`
+are also supported and use the no-cookie / do-not-track hosts, loading **only
+after** the visitor presses play. **Supply a WebVTT caption track** — captions
+are an accessibility requirement, not an optional extra.
 
 ---
 
@@ -84,8 +136,8 @@ missed item never reaches a visitor.
 - [ ] Founder / Managing Partner name and short biography
 - [ ] Year the company was founded
 - [ ] Team size and key roles, if these should be public
-- [ ] Registered legal entity name, company code, VAT number
-- [ ] Full registered street address
+- [ ] Registered legal entity name, company code, VAT number (address now supplied)
+- [x] ~~Full registered street address~~ — supplied: T. Ševčenkos g. 16, 03223 Vilnius
 
 ### Study Abroad (`data/pillars.ts` → `study`)
 - [ ] **Exact scope of university application support** — does SnZ submit
@@ -220,14 +272,37 @@ candid regulatory disclosure — which is a genuine differentiator in this secto
 
 ## 11. Pre-launch checklist
 
-- [ ] Implement `deliver()` and send a real test enquiry end-to-end
-- [ ] Legal review of all four legal documents; remove `noIndex` from
-      `app/legal/[slug]/page.tsx` and the `disallow` entries in `app/robots.ts`
-- [ ] Add registered entity details to `data/company.ts` → `legal`
-- [ ] Confirm or remove the four unverified statistics
+**Configuration**
+- [ ] Set `RESEND_API_KEY` **or** `MAIL_WEBHOOK_URL`, plus `MAIL_FROM`, then
+      send a real test enquiry end-to-end and confirm it lands at
+      info@snzventures.com
+- [ ] Set `AUTH_SECRET` (32+ chars) — without it the portal refuses to
+      authenticate anyone
 - [ ] Set `NEXT_PUBLIC_SITE_URL` to the production origin
-- [ ] Implement cookie consent **before** enabling any analytics ID
-- [ ] Verify Google Search Console + Bing Webmaster Tools; submit `/sitemap.xml`
-- [ ] Confirm the WhatsApp number (`+370 603 05146`) is monitored
+
+**Portal infrastructure** (before any real client registers)
+- [ ] Replace the JSON user store (`lib/auth/store.ts`) with a real database
+- [ ] Implement `lib/portal/data.ts` against real tables
+- [ ] Connect private document storage before enabling uploads
+- [ ] Enable email verification on registration
+- [ ] Move rate limiting to a shared store if running more than one instance
+
+**Content**
+- [ ] Supply the three pathway videos with WebVTT caption tracks
+- [ ] Supply testimonials with written consent, or leave the honest placeholder
+- [ ] Confirm or remove the four unverified statistics
 - [ ] Replace or confirm each `[CONTENT REQUIRED]` item in section 5
 - [ ] Add social profile URLs to `data/company.ts` → `social` (only LinkedIn known)
+
+**Legal**
+- [ ] Legal review of all four legal documents; remove `noIndex` from
+      `app/legal/[slug]/page.tsx` and the `disallow` entries in `app/robots.ts`
+- [ ] Add registered entity name, company code and VAT number to
+      `data/company.ts` → `legal`
+- [ ] Implement cookie consent **before** enabling any analytics ID
+- [ ] Review portal privacy wording — it now stores identity and case data
+
+**Verification**
+- [ ] Verify Google Search Console + Bing Webmaster Tools; submit `/sitemap.xml`
+- [ ] Confirm the WhatsApp number (`+370 603 05146`) is monitored
+- [ ] Confirm the office address is correct: T. Ševčenkos g. 16, 03223 Vilnius

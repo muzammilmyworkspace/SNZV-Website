@@ -64,13 +64,13 @@ export function Chapter({
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
           "h-px w-10 origin-left sm:w-16",
-          tone === "dark" ? "bg-white/25" : "bg-ink/20"
+          tone === "dark" ? "bg-raised" : "bg-ink/20"
         )}
       />
       <span
         className={cn(
           "label",
-          tone === "dark" ? "text-navy-200" : "text-mist-500"
+          tone === "dark" ? "text-muted" : "text-mist-500"
         )}
       >
         {label}
@@ -313,15 +313,15 @@ export function Action({
   const variants = {
     solid:
       "bg-moss-400 text-void hover:bg-moss-300 shadow-[0_10px_34px_-14px_rgba(114,196,60,0.75)]",
-    line: "border border-white/25 text-paper hover:border-moss-400/70 hover:text-moss-200 backdrop-blur-[2px]",
+    line: "border border-line text-fg hover:border-moss-400/70 hover:text-accent backdrop-blur-[2px]",
     ghost: "border border-ink/15 text-ink hover:border-moss-600/60 hover:text-moss-700",
-    quiet: "text-paper/80 hover:text-paper",
+    quiet: "text-muted hover:text-fg",
   }[variant];
 
   const inner = (
     <span
       className={cn(
-        "group/act relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-[var(--radius-xs)] font-medium uppercase tracking-[0.13em] transition-all duration-500 ease-[var(--ease-out-expo)]",
+        "group/act relative inline-flex items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-[var(--radius-sm)] font-semibold uppercase tracking-[0.12em] transition-all duration-500 ease-[var(--ease-out-expo)]",
         sizes,
         variants,
         className
@@ -411,7 +411,7 @@ export function TextLink({
 }) {
   const cls = cn(
     "group inline-flex items-center gap-2 label transition-colors",
-    tone === "dark" ? "text-moss-300 hover:text-moss-200" : "text-moss-700 hover:text-moss-600",
+    tone === "dark" ? "text-accent hover:text-accent" : "text-moss-700 hover:text-moss-600",
     className
   );
   const body = (
@@ -449,7 +449,7 @@ export function Caveat({
     <p
       className={cn(
         "mt-8 max-w-2xl border-l pl-5 text-[0.78rem] leading-relaxed",
-        tone === "dark" ? "border-white/15 text-navy-300" : "border-ink/15 text-mist-500",
+        tone === "dark" ? "border-line text-faint" : "border-ink/15 text-mist-500",
         className
       )}
     >

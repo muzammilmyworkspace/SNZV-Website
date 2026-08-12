@@ -35,7 +35,16 @@ export type AnalyticsEvent =
   | "file_download"
   | "faq_open"
   | "article_view"
-  | "outbound_click";
+  | "outbound_click"
+  | "login_click"
+  | "registration_start"
+  | "registration_complete"
+  | "portal_login"
+  | "portal_logout"
+  | "popup_open"
+  | "popup_close"
+  | "popup_path_selected"
+  | "video_play";
 
 type Params = Record<string, string | number | boolean | undefined>;
 
@@ -157,6 +166,24 @@ export const analytics = {
     track("faq_open", { question: question.slice(0, 90), page }),
   download: (file: string) => track("file_download", { file_name: file }),
   outbound: (url: string) => track("outbound_click", { url }),
+
+  /* --- portal + engagement ------------------------------------------- */
+  loginClick: (location: string) => track("login_click", { location }),
+  registrationStart: (pathway: string) =>
+    track("registration_start", { pathway }),
+  registrationComplete: (role: string) => {
+    track("registration_complete", { role });
+    track("generate_lead", { source: "portal_registration", value: 1 });
+  },
+  portalLogin: (role: string) => track("portal_login", { role }),
+  portalLogout: () => track("portal_logout"),
+
+  popupOpen: (page: string) => track("popup_open", { page }),
+  popupClose: (reason: string) => track("popup_close", { reason }),
+  popupPathSelected: (pathway: string) =>
+    track("popup_path_selected", { pathway }),
+
+  videoPlay: (pathway: string) => track("video_play", { pathway }),
 };
 
 /** Which providers are configured — read by <AnalyticsScripts /> */

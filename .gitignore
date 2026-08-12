@@ -46,3 +46,6 @@ next-env.d.ts
 /audit-report.json
 /audit-final.log
 /.server.log
+
+# portal data store (dev file adapter)
+/.data

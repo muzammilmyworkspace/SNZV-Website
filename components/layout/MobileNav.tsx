@@ -78,7 +78,7 @@ export function MobileNav({
           animate={{ clipPath: "inset(0 0 0% 0)" }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
-          className="grain fixed inset-0 z-[60] flex flex-col bg-abyss xl:hidden"
+          className="grain fixed inset-0 z-[60] flex flex-col bg-surface xl:hidden"
         >
           <div
             aria-hidden
@@ -90,12 +90,12 @@ export function MobileNav({
           />
 
           <div className="relative flex items-center justify-between px-5 py-5 sm:px-8">
-            <span className="label text-navy-300">Menu</span>
+            <span className="label text-faint">Menu</span>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close menu"
-              className="flex h-10 w-10 items-center justify-center border border-white/15 text-paper transition-colors hover:border-white/40"
+              className="flex h-10 w-10 items-center justify-center border border-line text-fg transition-colors hover:border-line"
             >
               <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5">
                 <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
@@ -118,7 +118,7 @@ export function MobileNav({
                     delay: 0.18 + i * 0.055,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="border-b border-white/8"
+                  className="border-b border-line"
                 >
                   <Link
                     href={item.href}
@@ -133,8 +133,8 @@ export function MobileNav({
                       className={cn(
                         "font-display text-[2rem] leading-none tracking-[-0.02em] transition-colors",
                         isActive(item.href)
-                          ? "text-moss-300"
-                          : "text-paper group-hover:text-moss-200"
+                          ? "text-accent"
+                          : "text-fg group-hover:text-accent"
                       )}
                     >
                       {item.label}
@@ -149,7 +149,7 @@ export function MobileNav({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.6 }}
-            className="relative border-t border-white/10 px-5 py-6 sm:px-8"
+            className="relative border-t border-line px-5 py-6 sm:px-8"
           >
             <Action
               href="/contact#journey"
@@ -166,14 +166,14 @@ export function MobileNav({
               <a
                 href={`tel:${company.contact.phoneHref}`}
                 onClick={() => analytics.phone("mobile_nav")}
-                className="label text-navy-300 transition-colors hover:text-paper"
+                className="label text-faint transition-colors hover:text-fg"
               >
                 {company.contact.phone}
               </a>
               <a
                 href={`mailto:${company.contact.email}`}
                 onClick={() => analytics.email("mobile_nav")}
-                className="label text-navy-300 transition-colors hover:text-paper"
+                className="label text-faint transition-colors hover:text-fg"
               >
                 Email
               </a>
@@ -182,7 +182,7 @@ export function MobileNav({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => analytics.whatsapp("mobile_nav")}
-                className="label text-navy-300 transition-colors hover:text-paper"
+                className="label text-faint transition-colors hover:text-fg"
               >
                 WhatsApp
               </a>

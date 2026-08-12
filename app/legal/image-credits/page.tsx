@@ -30,7 +30,7 @@ export default function ImageCreditsPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-void pb-12 pt-[104px] text-paper md:pt-[128px]">
+      <section className="relative overflow-hidden bg-surface pb-12 pt-36 text-fg md:pt-44">
         <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-45" />
         <Container className="relative" size="narrow">
           <Breadcrumbs
@@ -42,8 +42,8 @@ export default function ImageCreditsPage() {
           <Eyebrow tone="dark" className="mb-4">
             Attribution
           </Eyebrow>
-          <h1 className="d-1 text-paper">Image credits</h1>
-          <p className="mt-5 text-[0.95rem] leading-relaxed text-navy-200">
+          <h1 className="d-1 text-fg">Image credits</h1>
+          <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">
             Every photograph and map on this site is used under a licence that
             permits commercial use. Creative Commons assets are credited below
             as their licences require.
@@ -51,7 +51,7 @@ export default function ImageCreditsPage() {
         </Container>
       </section>
 
-      <Section tone="light">
+      <Section tone="paper" edge>
         <Container size="narrow">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] border-collapse text-left">
@@ -59,28 +59,28 @@ export default function ImageCreditsPage() {
                 Photography and cartography credits with source and licence
               </caption>
               <thead>
-                <tr className="border-b border-white/15">
+                <tr className="border-b border-line">
                   <th
                     scope="col"
-                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-navy-300"
+                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Asset
                   </th>
                   <th
                     scope="col"
-                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-navy-300"
+                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Author
                   </th>
                   <th
                     scope="col"
-                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-navy-300"
+                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Source
                   </th>
                   <th
                     scope="col"
-                    className="py-3 text-[0.74rem] font-semibold uppercase tracking-wider text-navy-300"
+                    className="py-3 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Licence
                   </th>
@@ -88,11 +88,11 @@ export default function ImageCreditsPage() {
               </thead>
               <tbody>
                 {entries.map((e) => (
-                  <tr key={e.key} className="border-b border-white/12">
-                    <td className="py-3 pr-4 align-top font-mono text-[0.78rem] text-paper">
+                  <tr key={e.key} className="border-b border-line">
+                    <td className="py-3 pr-4 align-top font-mono text-[0.78rem] text-fg">
                       {e.key}
                     </td>
-                    <td className="py-3 pr-4 align-top text-[0.83rem] text-navy-200">
+                    <td className="py-3 pr-4 align-top text-[0.83rem] text-muted">
                       {e.artist?.split("\n")[0] ?? "—"}
                     </td>
                     <td className="py-3 pr-4 align-top text-[0.83rem]">
@@ -101,24 +101,24 @@ export default function ImageCreditsPage() {
                           href={e.page}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-moss-300 underline underline-offset-2"
+                          className="text-accent underline underline-offset-2"
                         >
                           {e.source}
                         </a>
                       ) : (
-                        <span className="text-navy-200">{e.source}</span>
+                        <span className="text-muted">{e.source}</span>
                       )}
                     </td>
-                    <td className="py-3 align-top text-[0.83rem] text-navy-200">
+                    <td className="py-3 align-top text-[0.83rem] text-muted">
                       {e.licence ?? "—"}
                     </td>
                   </tr>
                 ))}
-                <tr className="border-b border-white/12">
-                  <td className="py-3 pr-4 align-top font-mono text-[0.78rem] text-paper">
+                <tr className="border-b border-line">
+                  <td className="py-3 pr-4 align-top font-mono text-[0.78rem] text-fg">
                     corridor-map
                   </td>
-                  <td className="py-3 pr-4 align-top text-[0.83rem] text-navy-200">
+                  <td className="py-3 pr-4 align-top text-[0.83rem] text-muted">
                     Wikimedia contributors
                   </td>
                   <td className="py-3 pr-4 align-top text-[0.83rem]">
@@ -126,12 +126,12 @@ export default function ImageCreditsPage() {
                       href="https://commons.wikimedia.org/wiki/File:BlankMap-World-Equirectangular.svg"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-moss-300 underline underline-offset-2"
+                      className="text-accent underline underline-offset-2"
                     >
                       Wikimedia Commons
                     </a>
                   </td>
-                  <td className="py-3 align-top text-[0.83rem] text-navy-200">
+                  <td className="py-3 align-top text-[0.83rem] text-muted">
                     {mapGeo.licence}
                   </td>
                 </tr>
@@ -139,7 +139,7 @@ export default function ImageCreditsPage() {
             </table>
           </div>
 
-          <p className="mt-8 text-[0.83rem] leading-relaxed text-navy-300">
+          <p className="mt-8 text-[0.83rem] leading-relaxed text-faint">
             The SnZ Ventures logo and brand marks are the property of SnZ
             Ventures. The corridor map is derived from a public-domain
             equirectangular world map, resampled as a dot matrix.

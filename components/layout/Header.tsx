@@ -48,8 +48,8 @@ export function Header() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-[var(--ease-out-expo)]",
           scrolled
-            ? "border-b border-white/10 bg-void/80 backdrop-blur-xl"
-            : "border-b border-white/0 bg-transparent"
+            ? "border-b border-line bg-surface/80 backdrop-blur-xl"
+            : "border-b border-line bg-transparent"
         )}
       >
         <div
@@ -76,7 +76,7 @@ export function Header() {
               )}
             />
             <span className="hidden flex-col leading-none xs:flex">
-              <span className="font-display text-[1.15rem] tracking-[-0.02em] text-paper">
+              <span className="font-display text-[1.15rem] tracking-[-0.02em] text-fg">
                 SnZ Ventures
               </span>
             </span>
@@ -106,8 +106,8 @@ export function Header() {
                       className={cn(
                         "label relative flex items-center gap-1.5 whitespace-nowrap px-3 py-2.5 transition-colors duration-300",
                         active
-                          ? "text-paper"
-                          : "text-navy-200 hover:text-paper"
+                          ? "text-fg"
+                          : "text-muted hover:text-fg"
                       )}
                     >
                       {item.label}
@@ -129,7 +129,7 @@ export function Header() {
                           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                           className="absolute left-0 top-full w-[22rem] pt-3"
                         >
-                          <div className="border border-white/12 bg-abyss/95 p-1.5 backdrop-blur-2xl">
+                          <div className="border border-line bg-surface/95 p-1.5 backdrop-blur-2xl">
                             {item.children!.map((c) => (
                               <Link
                                 key={c.href}
@@ -137,14 +137,14 @@ export function Header() {
                                 className="group/i block px-4 py-3 transition-colors hover:bg-white/[0.05]"
                               >
                                 <span className="flex items-center justify-between gap-4">
-                                  <span className="font-display text-[1.02rem] tracking-[-0.01em] text-paper">
+                                  <span className="font-display text-[1.02rem] tracking-[-0.01em] text-fg">
                                     {c.label}
                                   </span>
                                   <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 shrink-0 text-moss-400 opacity-0 transition-all duration-400 group-hover/i:translate-x-1 group-hover/i:opacity-100">
                                     <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                   </svg>
                                 </span>
-                                <span className="mt-1 block text-[0.8rem] leading-snug text-navy-300">
+                                <span className="mt-1 block text-[0.8rem] leading-snug text-faint">
                                   {c.description}
                                 </span>
                               </Link>
@@ -159,6 +159,17 @@ export function Header() {
           </nav>
 
           <div className="ml-auto flex items-center gap-3 xl:ml-4">
+            <Link
+              href="/login"
+              onClick={() => analytics.loginClick("header")}
+              className="label hidden items-center gap-2 rounded-[var(--radius-sm)] border border-line px-4 py-2.5 text-fg transition-all duration-400 hover:border-moss-400/70 hover:text-accent sm:inline-flex"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-3.5 w-3.5">
+                <path d="M6 2h6a2 2 0 012 2v8a2 2 0 01-2 2H6M9 8H2m0 0l2.5-2.5M2 8l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Login
+            </Link>
+
             <div className="hidden sm:block">
               <Action
                 href="/contact#journey"
@@ -175,7 +186,7 @@ export function Header() {
               aria-label="Open menu"
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
-              className="group flex h-10 w-10 items-center justify-center border border-white/15 transition-colors hover:border-white/40 xl:hidden"
+              className="group flex h-10 w-10 items-center justify-center border border-line transition-colors hover:border-line xl:hidden"
             >
               <span className="flex flex-col gap-[5px]">
                 <span className="block h-px w-4 bg-paper transition-transform duration-400 group-hover:translate-x-0.5" />

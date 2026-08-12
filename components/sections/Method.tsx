@@ -29,7 +29,7 @@ export function Method() {
     <section
       id="method"
       ref={ref}
-      className="relative overflow-hidden bg-abyss py-24 md:py-32"
+      className="relative overflow-hidden tone-light py-16 md:py-20"
     >
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
       <div
@@ -43,13 +43,13 @@ export function Method() {
         <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <MaskedLines
             as="h2"
-            className="d-1 max-w-[14ch] text-paper"
+            className="d-1 max-w-[14ch] text-fg"
             lines={[<>One goal.</>, <>
               One <span className="d-em">clearer</span> path.
             </>]}
           />
           <Reveal delay={0.15}>
-            <p className="max-w-sm text-[0.95rem] leading-relaxed text-navy-200">
+            <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
               Six steps, deliberately unglamorous. Most of the value is in doing
               them in the right order — and in stopping early when the answer
               is no.
@@ -62,7 +62,7 @@ export function Method() {
           {/* rail */}
           <div
             aria-hidden
-            className="absolute left-[11px] top-2 h-[calc(100%-1rem)] w-px bg-white/10 md:left-0 md:top-[11px] md:h-px md:w-full"
+            className="absolute left-[11px] top-2 h-[calc(100%-1rem)] w-px bg-raised md:left-0 md:top-[11px] md:h-px md:w-full"
           >
             <motion.div
               className="h-full w-full origin-top bg-gradient-to-b from-moss-400 to-moss-600 md:origin-left md:bg-gradient-to-r"
@@ -98,10 +98,10 @@ export function Method() {
                 </span>
 
                 <span className="label num block text-moss-400/70">{s.step}</span>
-                <h3 className="mt-2 font-display text-[1.35rem] leading-none tracking-[-0.018em] text-paper">
+                <h3 className="mt-2 font-display text-[1.35rem] leading-none tracking-[-0.018em] text-fg">
                   {s.name}
                 </h3>
-                <p className="mt-2.5 text-[0.85rem] leading-relaxed text-navy-300">
+                <p className="mt-2.5 text-[0.85rem] leading-relaxed text-faint">
                   {s.body}
                 </p>
               </motion.li>

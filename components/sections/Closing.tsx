@@ -33,7 +33,7 @@ export function Why() {
   const shown = stats.filter((s) => s.verified);
 
   return (
-    <section id="why" className="relative overflow-hidden bg-abyss py-24 md:py-32">
+    <section id="why" className="relative overflow-hidden tone-soft py-16 md:py-20">
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
 
       <Shell className="relative">
@@ -41,7 +41,7 @@ export function Why() {
 
         <MaskedLines
           as="h2"
-          className="d-1 max-w-[18ch] text-paper"
+          className="d-1 max-w-[18ch] text-fg"
           lines={[
             <>Because your next move</>,
             <>
@@ -56,15 +56,15 @@ export function Why() {
             <RevealItem
               as="li"
               key={t.title}
-              className="group grid gap-3 border-b border-white/10 py-8 md:grid-cols-[4rem_1fr_1fr] md:items-baseline md:gap-10"
+              className="group grid gap-3 border-b border-line py-8 md:grid-cols-[4rem_1fr_1fr] md:items-baseline md:gap-10"
             >
               <span className="label num text-moss-400/60">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-display text-[1.6rem] leading-[1.05] tracking-[-0.02em] text-paper transition-colors duration-500 group-hover:text-moss-200 sm:text-[2rem]">
+              <h3 className="font-display text-[1.6rem] leading-[1.05] tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[2rem]">
                 {t.title}
               </h3>
-              <p className="max-w-md text-[0.9rem] leading-relaxed text-navy-200">
+              <p className="max-w-md text-[0.9rem] leading-relaxed text-muted">
                 {t.body}
               </p>
             </RevealItem>
@@ -83,8 +83,8 @@ export function Why() {
                       {s.value}
                       {s.suffix}
                     </span>
-                    <span className="label mt-3 block text-paper">{s.label}</span>
-                    <span className="mt-1.5 block text-[0.82rem] leading-snug text-navy-300">
+                    <span className="label mt-3 block text-fg">{s.label}</span>
+                    <span className="mt-1.5 block text-[0.82rem] leading-snug text-faint">
                       {s.detail}
                     </span>
                   </dd>
@@ -97,14 +97,14 @@ export function Why() {
         {/* Ecosystem — context, never endorsement */}
         <Reveal className="mt-16">
           <div className="rule border-t pt-8">
-            <span className="label text-navy-300">
+            <span className="label text-faint">
               Operating within Lithuania&rsquo;s business &amp; fintech ecosystem
             </span>
             <ul className="mt-5 flex flex-wrap gap-x-10 gap-y-3">
               {ecosystem.map((e) => (
                 <li
                   key={e}
-                  className="font-display text-[1.05rem] tracking-[-0.01em] text-navy-300"
+                  className="font-display text-[1.05rem] tracking-[-0.01em] text-faint"
                 >
                   {e}
                 </li>
@@ -124,7 +124,7 @@ export function Proof() {
   const has = testimonials.length > 0;
 
   return (
-    <section id="proof" className="grain relative overflow-hidden bg-void py-24 md:py-32">
+    <section id="proof" className="grain relative overflow-hidden tone-deep py-16 md:py-20">
       <div
         aria-hidden
         className="bloom-moss pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 opacity-30"
@@ -137,18 +137,18 @@ export function Proof() {
           <>
             <MaskedLines
               as="h2"
-              className="d-1 max-w-[16ch] text-paper"
+              className="d-1 max-w-[16ch] text-fg"
               lines={[<>Every journey starts</>, <>with a decision.</>]}
             />
-            <RevealGroup className="mt-14 grid gap-px border border-white/10 bg-white/10 md:grid-cols-3">
+            <RevealGroup className="mt-14 grid gap-px border border-line bg-raised md:grid-cols-3">
               {testimonials.map((t) => (
-                <RevealItem key={t.name} className="bg-void p-7">
-                  <blockquote className="font-display text-[1.2rem] leading-snug text-paper">
+                <RevealItem key={t.name} className="bg-surface p-7">
+                  <blockquote className="font-display text-[1.2rem] leading-snug text-fg">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
-                  <figcaption className="mt-6 border-t border-white/10 pt-4">
+                  <figcaption className="mt-6 border-t border-line pt-4">
                     <span className="label block text-moss-400">{t.name}</span>
-                    <span className="mt-1 block text-[0.82rem] text-navy-300">
+                    <span className="mt-1 block text-[0.82rem] text-faint">
                       {t.role}
                     </span>
                   </figcaption>
@@ -161,7 +161,7 @@ export function Proof() {
           <div className="mx-auto max-w-3xl text-center">
             <MaskedLines
               as="h2"
-              className="d-1 text-paper"
+              className="d-1 text-fg"
               lines={[
                 <>Your story</>,
                 <>
@@ -170,7 +170,7 @@ export function Proof() {
               ]}
             />
             <Reveal delay={0.15}>
-              <p className="mx-auto mt-7 max-w-xl text-[0.97rem] leading-[1.7] text-navy-200">
+              <p className="mx-auto mt-7 max-w-xl text-[0.97rem] leading-[1.7] text-muted">
                 We don&rsquo;t publish testimonials we can&rsquo;t verify, and
                 we won&rsquo;t invent them. When our clients are ready to put
                 their names to their outcomes, they&rsquo;ll appear here — and
@@ -204,7 +204,7 @@ export function Insights() {
   const [lead, ...rest] = articles.slice(0, 4);
 
   return (
-    <section id="insights" className="relative overflow-hidden bg-abyss py-24 md:py-32">
+    <section id="insights" className="relative overflow-hidden tone-light py-16 md:py-20">
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
 
       <Shell className="relative">
@@ -213,11 +213,11 @@ export function Insights() {
         <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <MaskedLines
             as="h2"
-            className="d-1 max-w-[14ch] text-paper"
+            className="d-1 max-w-[14ch] text-fg"
             lines={[<>Know before</>, <>you go.</>]}
           />
           <Reveal delay={0.12}>
-            <p className="max-w-sm text-[0.95rem] leading-relaxed text-navy-200">
+            <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
               Orientation on the parts people get wrong — written to be useful
               whether or not you ever contact us.
             </p>
@@ -245,16 +245,16 @@ export function Insights() {
               </span>
             </div>
             <div>
-              <span className="label text-navy-300">
+              <span className="label text-faint">
                 {lead.readMinutes} min read
               </span>
-              <h3 className="d-2 mt-4 text-paper transition-colors duration-500 group-hover:text-moss-200">
+              <h3 className="d-2 mt-4 text-fg transition-colors duration-500 group-hover:text-accent">
                 {lead.title}
               </h3>
-              <p className="mt-5 max-w-md text-[0.93rem] leading-relaxed text-navy-200">
+              <p className="mt-5 max-w-md text-[0.93rem] leading-relaxed text-muted">
                 {lead.excerpt}
               </p>
-              <span className="label mt-7 inline-flex items-center gap-2 text-moss-300">
+              <span className="label mt-7 inline-flex items-center gap-2 text-accent">
                 <span className="draw">Read the guide</span>
               </span>
             </div>
@@ -268,16 +268,16 @@ export function Insights() {
               <Link
                 href={`/insights/${a.slug}`}
                 onClick={() => analytics.articleView(a.slug, a.category)}
-                className="group block border-b border-white/10 py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
+                className="group block border-b border-line py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
               >
                 <span className="label text-moss-400/80">{a.category}</span>
-                <h3 className="mt-3 font-display text-[1.25rem] leading-snug tracking-[-0.015em] text-paper transition-colors duration-500 group-hover:text-moss-200">
+                <h3 className="mt-3 font-display text-[1.25rem] leading-snug tracking-[-0.015em] text-fg transition-colors duration-500 group-hover:text-accent">
                   {a.title}
                 </h3>
-                <p className="mt-2.5 text-[0.85rem] leading-relaxed text-navy-300">
+                <p className="mt-2.5 text-[0.85rem] leading-relaxed text-faint">
                   {a.excerpt}
                 </p>
-                <span className="label mt-4 block text-navy-400">
+                <span className="label mt-4 block text-faint">
                   {a.readMinutes} min
                 </span>
               </Link>
@@ -308,7 +308,7 @@ export function Final() {
   return (
     <section
       ref={ref}
-      className="plate plate-deep grain relative flex min-h-[85svh] items-center overflow-hidden bg-void py-28"
+      className="plate plate-deep grain relative flex min-h-[70svh] items-center overflow-hidden tone-deep py-20"
     >
       <motion.div
         className="absolute inset-0 -z-10"
@@ -339,7 +339,7 @@ export function Final() {
 
           <MaskedLines
             as="h2"
-            className="d-hero text-paper"
+            className="d-hero text-fg"
             lines={[
               <>Your next chapter</>,
               <>
@@ -378,7 +378,7 @@ export function Final() {
           </Reveal>
 
           <Reveal delay={0.36}>
-            <p className="mt-8 text-[0.82rem] text-navy-300">
+            <p className="mt-8 text-[0.82rem] text-faint">
               A real person replies. If we&rsquo;re not the right fit,
               we&rsquo;ll tell you that too.
             </p>

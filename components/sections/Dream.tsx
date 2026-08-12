@@ -31,7 +31,7 @@ export function Dream() {
     <section
       id="dream"
       ref={ref}
-      className="relative overflow-hidden bg-void py-24 md:py-32"
+      className="relative overflow-hidden tone-deep py-16 md:py-20"
     >
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-50" />
       <div
@@ -45,7 +45,7 @@ export function Dream() {
         <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
           <MaskedLines
             as="h2"
-            className="d-1 max-w-[15ch] text-paper"
+            className="d-1 max-w-[15ch] text-fg"
             lines={[
               <>Some opportunities</>,
               <>
@@ -55,7 +55,7 @@ export function Dream() {
             ]}
           />
           <Reveal delay={0.2}>
-            <p className="max-w-sm text-[0.95rem] leading-relaxed text-navy-200">
+            <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
               Three routes out. They look different from the outside, but the
               question underneath is the same one: is the life you want
               available where you are?
@@ -67,7 +67,7 @@ export function Dream() {
         <div className="mt-16 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
           <ul className="rule border-t">
             {pathways.map((p, i) => (
-              <li key={p.key} className="border-b border-white/10">
+              <li key={p.key} className="border-b border-line">
                 <Link
                   href={p.href}
                   onMouseEnter={() => setActive(i)}
@@ -84,8 +84,8 @@ export function Dream() {
                       className={cn(
                         "block font-display text-[2rem] leading-[0.98] tracking-[-0.024em] transition-colors duration-500 sm:text-[2.9rem]",
                         active === i
-                          ? "text-paper"
-                          : "text-navy-200/45 group-hover:text-paper"
+                          ? "text-fg"
+                          : "text-muted group-hover:text-fg"
                       )}
                     >
                       {p.title}
@@ -99,7 +99,7 @@ export function Dream() {
                       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                       className="block overflow-hidden"
                     >
-                      <span className="mt-2.5 block max-w-md text-[0.9rem] leading-relaxed text-navy-200">
+                      <span className="mt-2.5 block max-w-md text-[0.9rem] leading-relaxed text-muted">
                         {p.hook}
                       </span>
                     </motion.span>
@@ -127,7 +127,7 @@ export function Dream() {
                       "h-4 w-4 shrink-0 transition-all duration-500 ease-[var(--ease-out-expo)]",
                       active === i
                         ? "translate-x-0 text-moss-400 opacity-100"
-                        : "-translate-x-2 text-navy-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                        : "-translate-x-2 text-faint opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
                     )}
                   >
                     <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
@@ -162,7 +162,7 @@ export function Dream() {
                   loading="lazy"
                   className="object-cover"
                 />
-                <span className="absolute bottom-5 left-5 z-[3] label text-paper/80">
+                <span className="absolute bottom-5 left-5 z-[3] label text-muted">
                   {p.eyebrow}
                 </span>
               </motion.div>

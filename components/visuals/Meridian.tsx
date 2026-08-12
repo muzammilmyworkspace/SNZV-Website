@@ -60,7 +60,7 @@ export function Meridian({
       className="pointer-events-none fixed left-0 top-0 z-30 hidden h-screen w-12 select-none xl:block"
     >
       {/* rail */}
-      <div className="absolute left-6 top-[18vh] h-[64vh] w-px bg-white/12">
+      <div className="absolute left-6 top-[18vh] h-[64vh] w-px bg-raised">
         <motion.div
           className="absolute left-0 top-0 w-px origin-top bg-gradient-to-b from-moss-400 via-moss-400/70 to-transparent"
           style={{
@@ -81,7 +81,7 @@ export function Meridian({
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="label block origin-bottom-left translate-y-full rotate-90 whitespace-nowrap text-navy-300"
+          className="label block origin-bottom-left translate-y-full rotate-90 whitespace-nowrap text-faint"
         >
           {current?.label}
         </motion.span>

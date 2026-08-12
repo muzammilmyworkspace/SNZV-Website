@@ -1,44 +1,30 @@
 import { NextResponse } from "next/server";
+import { sendMail, mailConfigured, DEFAULT_TO } from "@/lib/mail";
+import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 
 /**
- * Enquiry intake endpoint.
+ * Enquiry intake — every public form on the site posts here.
  *
- * ⚠ DELIVERY IS NOT YET WIRED UP. No mail provider or CRM credentials were
- * supplied, and inventing them would silently drop real leads. Right now the
- * route validates and logs the submission server-side so nothing is lost in
- * development, and returns success so the UX is complete.
- *
- * TO GO LIVE, implement ONE of the following in `deliver()` below:
- *   • Email  — Resend / Postmark / SendGrid / SMTP to info@snzventures.com
- *   • CRM    — HubSpot, Pipedrive or Zoho lead creation
- *   • Sheet  — Google Sheets append via a service account
- *
- * See CONTENT-HANDOFF.md → "Lead delivery".
+ * Delivery goes to info@snzventures.com via lib/mail (Resend or a webhook,
+ * chosen by environment variable). If no transport is configured the route
+ * returns 503 and the form surfaces the direct email and WhatsApp details,
+ * rather than showing a success screen for a message nobody received.
  */
 
 export const runtime = "nodejs";
 
-const PATHWAYS = new Set(["study", "careers", "business"]);
+const PATHWAYS = new Set(["study", "careers", "business", "general"]);
 const MAX_FIELD = 2000;
 const MAX_FIELDS = 25;
 
 type Payload = { pathway: string; answers: Record<string, string> };
 
-/** Naive in-memory rate limit. Replace with a shared store if multi-instance. */
-const hits = new Map<string, { count: number; resetAt: number }>();
-const WINDOW_MS = 10 * 60_000;
-const MAX_PER_WINDOW = 6;
-
-function rateLimited(ip: string) {
-  const now = Date.now();
-  const entry = hits.get(ip);
-  if (!entry || now > entry.resetAt) {
-    hits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  entry.count += 1;
-  return entry.count > MAX_PER_WINDOW;
-}
+const LABELS: Record<string, string> = {
+  study: "Study abroad",
+  careers: "Global career",
+  business: "Business setup",
+  general: "General enquiry",
+};
 
 function validate(body: unknown): Payload | null {
   if (typeof body !== "object" || body === null) return null;
@@ -57,35 +43,45 @@ function validate(body: unknown): Payload | null {
   }
 
   if (!clean.name?.trim()) return null;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(clean.email?.trim() ?? "")) {
-    return null;
-  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(clean.email?.trim() ?? "")) return null;
   if (clean.consent !== "yes") return null;
 
   return { pathway, answers: clean };
 }
 
-async function deliver(payload: Payload) {
-  // eslint-disable-next-line no-console
-  console.info(
-    "[enquiry] NOT DELIVERED — no provider configured.",
-    JSON.stringify({
-      pathway: payload.pathway,
-      receivedAt: new Date().toISOString(),
-      fields: Object.keys(payload.answers),
-    })
-  );
+function format({ pathway, answers }: Payload): string {
+  const { name, email, phone, preferredContact, notes, consent, ...rest } = answers;
+  void consent;
+
+  const lines = [
+    `New enquiry — ${LABELS[pathway] ?? pathway}`,
+    "",
+    `Name:      ${name}`,
+    `Email:     ${email}`,
+    phone ? `Phone:     ${phone}` : null,
+    preferredContact ? `Prefers:   ${preferredContact}` : null,
+    "",
+    "— Details —",
+    ...Object.entries(rest).map(
+      ([k, v]) => `${k.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase())}: ${v}`
+    ),
+    notes ? `\nNotes:\n${notes}` : null,
+    "",
+    `Received: ${new Date().toISOString()}`,
+  ].filter(Boolean) as string[];
+
+  return lines.join("\n");
 }
 
 export async function POST(request: Request) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "anonymous";
-
-  if (rateLimited(ip)) {
+  const limit = rateLimit(`enquiry:${clientIp(request)}`, {
+    limit: 6,
+    windowMs: 10 * 60_000,
+  });
+  if (!limit.ok) {
     return NextResponse.json(
       { ok: false, error: "Too many submissions. Please try again shortly." },
-      { status: 429 }
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
     );
   }
 
@@ -98,17 +94,38 @@ export async function POST(request: Request) {
 
   const payload = validate(body);
   if (!payload) {
+    return NextResponse.json({ ok: false, error: "Invalid submission." }, { status: 400 });
+  }
+
+  if (!mailConfigured()) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "[enquiry] NOT DELIVERED — no mail transport configured. Set RESEND_API_KEY or MAIL_WEBHOOK_URL.",
+      JSON.stringify({ pathway: payload.pathway, fields: Object.keys(payload.answers) })
+    );
     return NextResponse.json(
-      { ok: false, error: "Invalid submission." },
-      { status: 400 }
+      {
+        ok: false,
+        error: "unconfigured",
+        message:
+          "Our enquiry system isn't accepting messages right now. Please email us directly and we'll pick it up.",
+      },
+      { status: 503 }
     );
   }
 
   try {
-    await deliver(payload);
-  } catch {
+    await sendMail({
+      to: process.env.MAIL_TO ?? DEFAULT_TO,
+      subject: `SnZ enquiry — ${LABELS[payload.pathway] ?? payload.pathway} — ${payload.answers.name}`,
+      text: format(payload),
+      replyTo: payload.answers.email,
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("[enquiry] delivery failed:", error);
     return NextResponse.json(
-      { ok: false, error: "Delivery failed." },
+      { ok: false, error: "Delivery failed. Please email us directly." },
       { status: 502 }
     );
   }

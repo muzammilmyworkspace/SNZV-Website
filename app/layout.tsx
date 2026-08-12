@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { FloatingCTA } from "@/components/layout/FloatingCTA";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { AnalyticsScripts } from "@/components/layout/AnalyticsScripts";
 import { JsonLd } from "@/components/ui/Editorial";
 import {
@@ -16,22 +14,15 @@ import {
 import { company } from "@/data/company";
 
 /**
- * Type pairing: a high-contrast display serif carries the emotional register,
- * a neutral grotesk carries every structural and functional surface. The serif
- * never appears in navigation, forms or data — only where the brand speaks.
+ * One family. The previous display serif read decorative rather than
+ * international; weight, tracking and scale carry the hierarchy instead.
+ * A single variable family also halves the font payload.
  */
-const instrument = Instrument_Serif({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-instrument",
+  variable: "--font-jakarta",
   display: "swap",
-  weight: "400",
-  style: ["normal", "italic"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -62,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#03060D",
+  themeColor: "#0A1730",
   width: "device-width",
   initialScale: 1,
   colorScheme: "dark",
@@ -72,7 +63,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${instrument.variable} ${inter.variable}`}>
+    <html lang="en" className={jakarta.variable}>
       <head>
         {/*
           Reveal animations render as inline opacity:0 in the SSR HTML and are
@@ -83,17 +74,14 @@ export default function RootLayout({
           <style>{`[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
       </head>
-      <body className="min-h-screen bg-void antialiased">
+      <body className="tone-deep min-h-screen antialiased">
         <a href="#main" className="skip-link">
           Skip to content
         </a>
 
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
 
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <FloatingCTA />
+        <SiteChrome>{children}</SiteChrome>
 
         <AnalyticsScripts />
       </body>

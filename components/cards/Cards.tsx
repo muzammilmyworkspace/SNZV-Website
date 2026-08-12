@@ -50,33 +50,33 @@ export function PathwayCard({
             loading="lazy"
             className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.06]"
           />
-          <span className="absolute left-4 top-4 z-[3] label text-paper/70">
+          <span className="absolute left-4 top-4 z-[3] label text-muted">
             {String(index + 1).padStart(2, "0")} / {pathway.eyebrow}
           </span>
         </div>
 
-        <h3 className="mt-6 font-display text-[1.9rem] leading-none tracking-[-0.022em] text-paper transition-colors duration-500 group-hover:text-moss-200">
+        <h3 className="mt-6 font-display text-[1.9rem] leading-none tracking-[-0.022em] text-fg transition-colors duration-500 group-hover:text-accent">
           {pathway.title}
         </h3>
-        <p className="mt-3 text-[0.92rem] leading-snug text-navy-100">
+        <p className="mt-3 text-[0.92rem] leading-snug text-fg">
           {pathway.hook}
         </p>
-        <p className="mt-3 max-w-md text-[0.86rem] leading-relaxed text-navy-300">
+        <p className="mt-3 max-w-md text-[0.86rem] leading-relaxed text-faint">
           {pathway.body}
         </p>
 
-        <ul className="mt-5 border-t border-white/10">
+        <ul className="mt-5 border-t border-line">
           {pathway.bullets.map((b) => (
             <li
               key={b}
-              className="border-b border-white/10 py-2.5 text-[0.83rem] leading-snug text-navy-200"
+              className="border-b border-line py-2.5 text-[0.83rem] leading-snug text-muted"
             >
               {b}
             </li>
           ))}
         </ul>
 
-        <span className="label mt-5 inline-flex items-center gap-2 text-moss-300">
+        <span className="label mt-5 inline-flex items-center gap-2 text-accent">
           <span className="draw">{pathway.cta}</span>
           <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
             <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -124,16 +124,16 @@ export function DestinationCard({
           </span>
         )}
         <div className="absolute inset-x-4 bottom-4 z-[3]">
-          <h3 className="font-display text-[1.55rem] leading-none tracking-[-0.02em] text-paper">
+          <h3 className="font-display text-[1.55rem] leading-none tracking-[-0.02em] text-fg">
             {destination.country}
           </h3>
-          <span className="label mt-1.5 block text-paper/60">
+          <span className="label mt-1.5 block text-muted">
             {destination.city}
           </span>
         </div>
       </div>
 
-      <p className="mt-4 text-[0.85rem] leading-relaxed text-navy-200">
+      <p className="mt-4 text-[0.85rem] leading-relaxed text-muted">
         {destination.blurb}
       </p>
 
@@ -141,17 +141,17 @@ export function DestinationCard({
         {rows.map((r) => (
           <div
             key={r.label}
-            className="flex items-center justify-between border-t border-white/10 py-2"
+            className="flex items-center justify-between border-t border-line py-2"
           >
-            <dt className="label text-navy-400">{r.label}</dt>
+            <dt className="label text-faint">{r.label}</dt>
             <dd
               className={cn(
                 "label",
                 r.value === "core"
                   ? "text-moss-400"
                   : r.value === "available"
-                    ? "text-navy-100"
-                    : "text-navy-400"
+                    ? "text-fg"
+                    : "text-faint"
               )}
             >
               {availabilityLabel[r.value]}
@@ -160,7 +160,7 @@ export function DestinationCard({
         ))}
       </dl>
 
-      <p className="mt-3 border-t border-white/10 pt-3 text-[0.76rem] leading-snug text-navy-400">
+      <p className="mt-3 border-t border-line pt-3 text-[0.76rem] leading-snug text-faint">
         {destination.marketNote}
       </p>
     </motion.article>
@@ -209,19 +209,19 @@ export function InsightCard({
         </div>
 
         <div className={cn(!featured && "mt-5")}>
-          <span className="label text-navy-400">{article.readMinutes} min read</span>
+          <span className="label text-faint">{article.readMinutes} min read</span>
           <h3
             className={cn(
-              "mt-3 font-display leading-tight tracking-[-0.02em] text-paper transition-colors duration-500 group-hover:text-moss-200",
+              "mt-3 font-display leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent",
               featured ? "text-[2rem]" : "text-[1.3rem]"
             )}
           >
             {article.title}
           </h3>
-          <p className="mt-3 max-w-md text-[0.87rem] leading-relaxed text-navy-300">
+          <p className="mt-3 max-w-md text-[0.87rem] leading-relaxed text-faint">
             {article.excerpt}
           </p>
-          <span className="label mt-5 inline-flex items-center gap-2 text-moss-300">
+          <span className="label mt-5 inline-flex items-center gap-2 text-accent">
             <span className="draw">Read the guide</span>
           </span>
         </div>
@@ -243,19 +243,19 @@ export function ServiceCard({
     <motion.article
       {...reveal}
       transition={{ duration: 0.75, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group border-t border-white/12 pt-6"
+      className="group border-t border-line pt-6"
     >
       <Link href={`/services/${service.slug}`} onClick={() => analytics.serviceView(service.slug)}>
         <span className="label num text-moss-400/60">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h3 className="mt-3 font-display text-[1.5rem] leading-tight tracking-[-0.02em] text-paper transition-colors duration-500 group-hover:text-moss-200">
+        <h3 className="mt-3 font-display text-[1.5rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
           {service.name}
         </h3>
-        <p className="mt-3 max-w-sm text-[0.87rem] leading-relaxed text-navy-300">
+        <p className="mt-3 max-w-sm text-[0.87rem] leading-relaxed text-faint">
           {service.tagline}
         </p>
-        <span className="label mt-5 inline-flex items-center gap-2 text-moss-300">
+        <span className="label mt-5 inline-flex items-center gap-2 text-accent">
           <span className="draw">Explore</span>
           <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
             <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

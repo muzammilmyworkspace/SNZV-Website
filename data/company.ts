@@ -32,9 +32,9 @@ export const company = {
     city: "Vilnius",
     country: "Lithuania",
     countryCode: "LT",
-    /** [CONTENT REQUIRED] — full street address not published. */
-    streetAddress: null as string | null,
-    postalCode: null as string | null,
+    /** Client-supplied — office address. */
+    streetAddress: "T. Ševčenkos g. 16",
+    postalCode: "03223",
   },
 
   /** [CONTENT REQUIRED] — legal entity details not published. */

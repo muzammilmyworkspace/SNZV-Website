@@ -46,7 +46,7 @@ export function Logo({
           <span
             className={cn(
               "mt-[3px] hidden text-[0.56rem] font-medium uppercase tracking-[0.2em] whitespace-nowrap xs:block",
-              tone === "dark" ? "text-navy-300" : "text-mist-500"
+              tone === "dark" ? "text-faint" : "text-mist-500"
             )}
           >
             Vilnius · Lithuania

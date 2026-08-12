@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="grain relative flex min-h-[76vh] items-center overflow-hidden bg-void pt-[104px] text-paper">
+    <section className="grain relative flex min-h-[76vh] items-center overflow-hidden bg-surface pt-36 text-fg">
       <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-55" />
       <div
         aria-hidden
@@ -12,11 +12,11 @@ export default function NotFound() {
       />
       <Container className="relative py-16">
         <div className="max-w-2xl">
-          <p className="label text-moss-300">404</p>
-          <h1 className="d-1 mt-4 text-paper">
+          <p className="label text-accent">404</p>
+          <h1 className="d-1 mt-4 text-fg">
             This route doesn&rsquo;t exist.
           </h1>
-          <p className="lede mt-4 text-navy-200">
+          <p className="lede mt-4 text-muted">
             The page you were looking for has moved or was never here. Here are
             the ones that are.
           </p>
@@ -29,7 +29,7 @@ export default function NotFound() {
                   <li key={n.href}>
                     <Link
                       href={n.href}
-                      className="inline-flex rounded-[var(--radius-sm)] border border-white/15 px-3.5 py-2 text-[0.85rem] text-navy-200 transition-colors hover:border-white/40 hover:text-paper"
+                      className="inline-flex rounded-[var(--radius-sm)] border border-line px-3.5 py-2 text-[0.85rem] text-muted transition-colors hover:border-line hover:text-fg"
                     >
                       {n.label}
                     </Link>

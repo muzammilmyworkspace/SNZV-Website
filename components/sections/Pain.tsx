@@ -38,7 +38,7 @@ export function Pain() {
     <section
       id="pain"
       ref={ref}
-      className="grain relative overflow-hidden bg-void py-24 md:py-32"
+      className="grain relative overflow-hidden tone-deep py-16 md:py-20"
     >
       <div
         aria-hidden
@@ -54,7 +54,7 @@ export function Pain() {
 
         <MaskedLines
           as="h2"
-          className="d-1 max-w-[16ch] text-paper"
+          className="d-1 max-w-[16ch] text-fg"
           lines={[
             <>Going global is exciting.</>,
             <>
@@ -82,10 +82,10 @@ export function Pain() {
               className="group flex items-baseline gap-4 py-1.5"
               style={{ paddingLeft: `min(${v.x}, 42vw)` }}
             >
-              <span className="label shrink-0 text-navy-400/70 transition-colors group-hover:text-moss-400/80">
+              <span className="label shrink-0 text-faint transition-colors group-hover:text-moss-400/80">
                 {v.who}
               </span>
-              <span className="font-display text-[1.35rem] leading-snug tracking-[-0.015em] text-navy-200 transition-colors duration-500 group-hover:text-paper sm:text-[1.75rem]">
+              <span className="font-display text-[1.35rem] leading-snug tracking-[-0.015em] text-muted transition-colors duration-500 group-hover:text-fg sm:text-[1.75rem]">
                 &ldquo;{v.q}&rdquo;
               </span>
             </motion.li>
@@ -95,11 +95,11 @@ export function Pain() {
         {/* The turn */}
         <Reveal delay={0.15} className="mt-16">
           <div className="rule flex flex-col gap-6 border-t pt-10 md:flex-row md:items-end md:justify-between">
-            <p className="d-3 max-w-[20ch] text-paper">
+            <p className="d-3 max-w-[20ch] text-fg">
               That&rsquo;s the part we do.
             </p>
             <div className="max-w-md">
-              <p className="text-[0.95rem] leading-relaxed text-navy-200">
+              <p className="text-[0.95rem] leading-relaxed text-muted">
                 Not the excitement — you already have that. The sequencing, the
                 eligibility, the paperwork, and the honest answer about whether
                 your plan holds up.

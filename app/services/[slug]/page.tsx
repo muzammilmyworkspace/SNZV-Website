@@ -100,13 +100,13 @@ export default async function ServicePage({
               title={service.solution.title}
               lead={service.solution.body}
             />
-            <RevealGroup className="grid gap-px overflow-hidden border border-white/12 bg-white/10 sm:grid-cols-2">
+            <RevealGroup className="grid gap-px overflow-hidden border border-line bg-raised sm:grid-cols-2">
               {service.deliverables.map((d) => (
-                <RevealItem key={d.title} className="bg-white/[0.03] p-5">
-                  <h3 className="text-[0.95rem] font-semibold tracking-[-0.01em] text-paper">
+                <RevealItem key={d.title} className="bg-raised p-5">
+                  <h3 className="text-[0.95rem] font-semibold tracking-[-0.01em] text-fg">
                     {d.title}
                   </h3>
-                  <p className="mt-1.5 text-[0.85rem] leading-relaxed text-navy-200">
+                  <p className="mt-1.5 text-[0.85rem] leading-relaxed text-muted">
                     {d.body}
                   </p>
                 </RevealItem>
@@ -126,7 +126,7 @@ export default async function ServicePage({
                 <RevealItem
                   as="li"
                   key={w}
-                  className="flex items-start gap-3 rounded-[var(--radius-sm)] border border-white/12 bg-white/[0.03] px-4 py-3 text-[0.88rem] leading-snug text-paper"
+                  className="flex items-start gap-3 rounded-[var(--radius-sm)] border border-line bg-raised px-4 py-3 text-[0.88rem] leading-snug text-fg"
                 >
                   <span
                     aria-hidden
@@ -169,7 +169,7 @@ export default async function ServicePage({
             <Reveal className="mt-7">
               <Link
                 href="/business-setup"
-                className="group inline-flex items-center gap-1.5 text-[0.88rem] font-medium text-moss-300"
+                className="group inline-flex items-center gap-1.5 text-[0.88rem] font-medium text-accent"
               >
                 <span className="link-draw">See all business services</span>
                 <Arrow />

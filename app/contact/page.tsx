@@ -38,7 +38,7 @@ export default function ContactPage() {
         ])}
       />
 
-      <section className="grain relative overflow-hidden bg-void pb-16 pt-[104px] text-paper md:pb-20 md:pt-[128px]">
+      <section className="grain relative overflow-hidden bg-surface pb-16 pt-36 text-fg md:pb-20 md:pt-44">
         <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-55" />
         <div
           aria-hidden
@@ -59,16 +59,16 @@ export default function ContactPage() {
               <Eyebrow tone="dark" className="mb-4">
                 Start your journey
               </Eyebrow>
-              <h1 className="d-1 text-paper">
+              <h1 className="d-1 text-fg">
                 Tell us where you want to end up.
               </h1>
-              <p className="lede mt-5 max-w-lg text-navy-200">
+              <p className="lede mt-5 max-w-lg text-muted">
                 You don&rsquo;t need a plan. You need to know whether the one
                 you&rsquo;re considering is realistic — and what it would
                 actually involve. That&rsquo;s what this form starts.
               </p>
 
-              <ul className="mt-9 space-y-5 border-t border-white/10 pt-7">
+              <ul className="mt-9 space-y-5 border-t border-line pt-7">
                 {expectations.map((e) => (
                   <li key={e.title} className="flex items-start gap-3.5">
                     <span
@@ -76,10 +76,10 @@ export default function ContactPage() {
                       className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-moss-400"
                     />
                     <span>
-                      <span className="block text-[0.95rem] font-semibold tracking-[-0.01em] text-paper">
+                      <span className="block text-[0.95rem] font-semibold tracking-[-0.01em] text-fg">
                         {e.title}
                       </span>
-                      <span className="mt-0.5 block text-[0.86rem] leading-relaxed text-navy-200">
+                      <span className="mt-0.5 block text-[0.86rem] leading-relaxed text-muted">
                         {e.body}
                       </span>
                     </span>
@@ -87,7 +87,7 @@ export default function ContactPage() {
                 ))}
               </ul>
 
-              <div className="mt-9 border-t border-white/10 pt-7">
+              <div className="mt-9 border-t border-line pt-7">
                 <Eyebrow tone="dark" className="mb-3">
                   Prefer to reach us directly
                 </Eyebrow>
@@ -100,7 +100,7 @@ export default function ContactPage() {
             <Reveal>
               <div
                 id="journey"
-                className="scroll-mt-28 border border-white/12 bg-white/[0.03] p-6 text-paper shadow-[0_30px_70px_-40px_rgba(0,0,0,0.6)] md:p-8"
+                className="scroll-mt-28 border border-line bg-raised p-6 text-fg shadow-[0_30px_70px_-40px_rgba(0,0,0,0.6)] md:p-8"
               >
                 <JourneyForm />
               </div>

@@ -22,14 +22,14 @@ export function FaqAccordion({
   const baseId = useId();
 
   return (
-    <div className="border-t border-white/12">
+    <div className="border-t border-line">
       {faqs.map((faq, i) => {
         const isOpen = open === i;
         const panelId = `${baseId}-p-${i}`;
         const btnId = `${baseId}-b-${i}`;
 
         return (
-          <div key={faq.q} className="border-b border-white/12">
+          <div key={faq.q} className="border-b border-line">
             <h3>
               <button
                 id={btnId}
@@ -50,7 +50,7 @@ export function FaqAccordion({
                 <span
                   className={cn(
                     "flex-1 font-display text-[1.28rem] leading-snug tracking-[-0.015em] transition-colors duration-400 sm:text-[1.5rem]",
-                    isOpen ? "text-moss-200" : "text-paper group-hover:text-moss-200"
+                    isOpen ? "text-accent" : "text-fg group-hover:text-accent"
                   )}
                 >
                   {faq.q}
@@ -86,7 +86,7 @@ export function FaqAccordion({
                   transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="max-w-2xl pb-7 pl-[3.1rem] pr-8 text-[0.92rem] leading-[1.7] text-navy-200 sm:pl-[4.4rem]">
+                  <p className="max-w-2xl pb-7 pl-[3.1rem] pr-8 text-[0.92rem] leading-[1.7] text-muted sm:pl-[4.4rem]">
                     {faq.a}
                   </p>
                 </motion.div>

@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/Primitives";
 import { InsightCard } from "@/components/cards/Cards";
 import { articles } from "@/data/insights";
+import { videoFeatures } from "@/data/media";
+import { VideoFeature } from "./VideoFeature";
+import { Testimonials } from "./Testimonials";
 import type { Pillar } from "@/data/pillars";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 
@@ -69,6 +72,8 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         items={pillar.challenge.items}
       />
 
+      <VideoFeature data={videoFeatures[pillar.key]} />
+
       <ChecklistBlock
         eyebrow="What it takes"
         title={pillar.requires.title}
@@ -105,6 +110,8 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
           </Container>
         </Section>
       )}
+
+      <Testimonials />
 
       <FaqSection
         faqs={pillar.faqs}

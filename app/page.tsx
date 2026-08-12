@@ -5,7 +5,8 @@ import { Journeys } from "@/components/sections/Journeys";
 import { Pain } from "@/components/sections/Pain";
 import { Method } from "@/components/sections/Method";
 import { Atlas } from "@/components/sections/Atlas";
-import { Why, Proof, Insights, Final } from "@/components/sections/Closing";
+import { Why, Insights, Final } from "@/components/sections/Closing";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { Meridian } from "@/components/visuals/Meridian";
 import { buildMetadata } from "@/lib/seo";
 
@@ -39,7 +40,7 @@ export default function HomePage() {
       <Method />
       <Atlas />
       <Why />
-      <Proof />
+      <Testimonials />
       <Insights />
       <Final />
     </>

@@ -102,6 +102,7 @@ export const footerNav = [
       { label: "Insights", href: "/insights" },
       { label: "Contact", href: "/contact" },
       { label: "Book a Consultation", href: "/contact#journey" },
+      { label: "Client Login", href: "/login" },
     ],
   },
   {

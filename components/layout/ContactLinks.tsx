@@ -17,7 +17,7 @@ export function ContactLinks({
   const link = cn(
     "label transition-colors duration-300",
     tone === "dark"
-      ? "text-navy-200 hover:text-moss-300"
+      ? "text-muted hover:text-accent"
       : "text-mist-600 hover:text-moss-700"
   );
 
@@ -49,7 +49,7 @@ export function ContactLinks({
       <span
         className={cn(
           "label",
-          tone === "dark" ? "text-navy-400" : "text-mist-400"
+          tone === "dark" ? "text-faint" : "text-mist-400"
         )}
       >
         {company.contact.city}, {company.contact.country}
