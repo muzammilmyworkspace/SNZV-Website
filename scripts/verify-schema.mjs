@@ -63,6 +63,25 @@ await check("indexes created", async () => {
   if (res.rows[0].n < 25) throw new Error(`only ${res.rows[0].n} indexes`);
 });
 
+await check("row level security enabled on every table", async () => {
+  const res = await db.query(
+    `SELECT c.relname FROM pg_class c
+     JOIN pg_namespace n ON n.oid = c.relnamespace
+     WHERE n.nspname='public' AND c.relkind='r' AND c.relrowsecurity = false`
+  );
+  const open = res.rows
+    .map((r) => r.relname)
+    .filter((t) => EXPECTED.includes(t));
+  if (open.length) throw new Error(`RLS off: ${open.join(", ")}`);
+});
+
+await check("no permissive policy re-opens a table", async () => {
+  // RLS with zero policies denies everything. A policy added later could undo
+  // that, so the schema is expected to carry none at all.
+  const res = await db.query(`SELECT count(*)::int AS n FROM pg_policies WHERE schemaname='public'`);
+  if (res.rows[0].n !== 0) throw new Error(`${res.rows[0].n} policy(ies) present`);
+});
+
 console.log("\nConstraints\n");
 
 await check("email uniqueness is case-insensitive", async () => {

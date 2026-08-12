@@ -52,3 +52,6 @@ next-env.d.ts
 
 # portal review screenshots
 /portal-shots
+
+.vercel
+.env*
