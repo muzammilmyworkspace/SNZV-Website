@@ -5,11 +5,19 @@
  * real database can be dropped in without reshaping the application.
  */
 
-export type Role = "student" | "professional" | "business" | "advisor" | "admin";
+export type Role =
+  | "student"
+  | "professional"
+  | "business"
+  | "advisor"
+  | "admin"
+  | "super_admin";
 
 /** Client-facing roles, i.e. everything that gets a journey dashboard. */
 export const CLIENT_ROLES: Role[] = ["student", "professional", "business"];
-export const STAFF_ROLES: Role[] = ["advisor", "admin"];
+export const STAFF_ROLES: Role[] = ["advisor", "admin", "super_admin"];
+/** Full operational control. */
+export const ADMIN_ROLES: Role[] = ["admin", "super_admin"];
 
 export const ROLE_LABEL: Record<Role, string> = {
   student: "Student",
@@ -17,6 +25,7 @@ export const ROLE_LABEL: Record<Role, string> = {
   business: "Business",
   advisor: "Advisor",
   admin: "Administrator",
+  super_admin: "Super Administrator",
 };
 
 /** Maps the registration question to a role. */

@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth/session";
+import { requireUser } from "@/lib/auth/guard";
+import { isDatabaseConfigured } from "@/lib/db/client";
+import { NotConfigured } from "@/components/portal/NotConfigured";
 import { getDocuments, REQUIRED_DOCUMENTS } from "@/lib/portal/data";
 import {
   PortalHeading,
@@ -10,10 +11,10 @@ import {
 } from "@/components/portal/Pieces";
 
 export default async function DocumentsPage() {
-  const session = await getSession();
-  if (!session) redirect("/login");
+  const { session } = await requireUser();
 
   const documents = await getDocuments(session.userId);
+  const configured = isDatabaseConfigured();
   const required = REQUIRED_DOCUMENTS[session.role] ?? [];
 
   const categories = [...new Set(required.map((r) => r.category))];

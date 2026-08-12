@@ -1,111 +1,144 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth/session";
-import { users } from "@/lib/auth/store";
-import { STAFF_ROLES, ROLE_LABEL, type Role } from "@/lib/auth/types";
+import Link from "next/link";
+import { requireStaff } from "@/lib/auth/guard";
+import { isAdmin } from "@/lib/auth/guard";
+import { listUsers } from "@/lib/db/repos/users";
+import {
+  getAdminMetrics,
+  getAllCases,
+  getCasesForAdvisor,
+  getDocumentsForReview,
+  getAssignedClients,
+} from "@/lib/db/repos/portal";
+import { isDatabaseConfigured } from "@/lib/db/client";
+import { ROLE_LABEL, type Role } from "@/lib/auth/types";
 import {
   PortalHeading,
   Panel,
   EmptyState,
-  BackendRequired,
+  SummaryStat,
+  StatusPill,
+  DataRow,
 } from "@/components/portal/Pieces";
+import { NotConfigured } from "@/components/portal/NotConfigured";
 
 /**
- * Staff overview.
+ * STAFF OVERVIEW
  *
- * Authorisation happens here on the server, not in the UI. A client-role user
- * who guesses this URL is redirected — hiding the nav link is presentation,
- * this is the actual control.
+ * Two views from one route:
+ *   • advisor      → only clients and cases assigned to them
+ *   • admin/super  → everything
  *
- * Every figure below is a real count from the user store. Nothing is seeded:
- * a dashboard that invents its own numbers is worse than an empty one.
+ * The scoping is done in SQL (see lib/db/repos/portal.ts), not by filtering in
+ * this component, so an authorization mistake here still cannot leak rows.
+ * Every figure is a real COUNT — nothing is seeded or estimated.
  */
 export default async function AdminPage() {
-  const session = await getSession();
-  if (!session) redirect("/login");
-  if (!STAFF_ROLES.includes(session.role)) redirect("/portal");
+  const { session, role } = await requireStaff();
+  const admin = isAdmin(role);
 
-  const [all, byRole] = await Promise.all([users.list(), users.countByRole()]);
+  if (!isDatabaseConfigured()) {
+    return (
+      <>
+        <PortalHeading
+          eyebrow="Staff"
+          title={admin ? "Administrator overview" : "Advisor overview"}
+        />
+        <NotConfigured what="Staff tooling" />
+      </>
+    );
+  }
 
-  const clientCounts: { role: Role; label: string; count: number }[] = [
-    { role: "student", label: "Students", count: byRole.student ?? 0 },
-    { role: "professional", label: "Professionals", count: byRole.professional ?? 0 },
-    { role: "business", label: "Business clients", count: byRole.business ?? 0 },
-  ];
-
-  const recent = [...all]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .slice(0, 8);
+  const [metrics, cases, pendingDocs, recentUsers, myClients] = await Promise.all([
+    admin ? getAdminMetrics() : Promise.resolve(null),
+    admin ? getAllCases(12) : getCasesForAdvisor(session.userId),
+    admin ? getDocumentsForReview(10) : Promise.resolve([]),
+    admin ? listUsers({ limit: 8 }) : Promise.resolve([]),
+    admin ? Promise.resolve([]) : getAssignedClients(session.userId),
+  ]);
 
   return (
     <>
       <PortalHeading
-        title="Administrator overview"
-        lead="Live counts from the account store. Case, document and appointment metrics arrive with the database."
+        eyebrow="Staff"
+        title={admin ? "Administrator overview" : "Advisor overview"}
+        lead={
+          admin
+            ? "Live figures from the database. Every number is a real count."
+            : "Your assigned clients and the cases you are responsible for."
+        }
+        meta={
+          metrics ? (
+            <div className="flex flex-wrap gap-x-9 gap-y-5">
+              <SummaryStat label="Total users" value={metrics.totalUsers} />
+              <SummaryStat label="Students" value={metrics.students} />
+              <SummaryStat label="Professionals" value={metrics.professionals} />
+              <SummaryStat label="Businesses" value={metrics.businesses} />
+              <SummaryStat label="Open cases" value={metrics.openCases} />
+              <SummaryStat label="Docs to review" value={metrics.pendingDocuments} />
+              <SummaryStat label="Appointments" value={metrics.appointments} />
+              <SummaryStat label="Unread" value={metrics.unreadMessages} />
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-x-9 gap-y-5">
+              <SummaryStat label="My clients" value={myClients.length} />
+              <SummaryStat label="My cases" value={cases.length} />
+            </div>
+          )
+        }
       />
 
-      {/* Real counts only */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <Panel>
-          <p className="label text-faint">Total accounts</p>
-          <p className="num mt-2 text-[2.4rem] font-bold leading-none text-fg-strong">
-            {all.length}
-          </p>
-        </Panel>
-        {clientCounts.map((c) => (
-          <Panel key={c.role}>
-            <p className="label text-faint">{c.label}</p>
-            <p className="num mt-2 text-[2.4rem] font-bold leading-none text-fg-strong">
-              {c.count}
-            </p>
-          </Panel>
-        ))}
-      </div>
-
-      <div className="mt-5 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
-        <Panel title="Recent registrations">
-          {recent.length === 0 ? (
+      <div className="grid items-start gap-5 lg:grid-cols-[1.5fr_1fr]">
+        <Panel
+          title={admin ? "Recent cases" : "My cases"}
+          action={
+            <Link href="/portal/admin/cases" className="label text-faint transition-colors hover:text-accent">
+              View all
+            </Link>
+          }
+        >
+          {cases.length === 0 ? (
             <EmptyState
-              icon="search"
-              title="No accounts yet"
-              body="Registrations appear here as clients create accounts through the portal."
+              icon="file"
+              title="No cases yet"
+              body={
+                admin
+                  ? "Cases appear here as they are opened for clients."
+                  : "Cases assigned to you appear here."
+              }
             />
           ) : (
-            <div className="overflow-x-auto rail">
-              <table className="w-full min-w-[520px] text-left">
-                <caption className="sr-only">Recently registered accounts</caption>
+            <div className="rail overflow-x-auto">
+              <table className="w-full min-w-[560px] text-left">
+                <caption className="sr-only">Cases</caption>
                 <thead>
                   <tr className="border-b border-line">
-                    {["Name", "Type", "Registered", "Verified"].map((h) => (
-                      <th
-                        key={h}
-                        scope="col"
-                        className="label pb-3 pr-4 font-semibold text-faint"
-                      >
+                    {["Client", "Case", "Status", "Updated"].map((h) => (
+                      <th key={h} scope="col" className="label pb-3 pr-4 text-faint">
                         {h}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {recent.map((u) => (
-                    <tr key={u.id} className="border-b border-line last:border-0">
+                  {cases.map((c) => (
+                    <tr key={c.id} className="border-b border-line last:border-0">
                       <td className="py-3 pr-4">
-                        <span className="block text-[0.9rem] text-fg">{u.name}</span>
-                        {/* Email shown to staff only — this route is role-gated. */}
-                        <span className="block text-[0.78rem] text-faint">{u.email}</span>
+                        <Link
+                          href={`/portal/admin/cases/${c.id}`}
+                          className="text-[0.9rem] text-fg hover:text-accent"
+                        >
+                          {c.clientName}
+                        </Link>
                       </td>
-                      <td className="py-3 pr-4 text-[0.85rem] text-muted">
-                        {ROLE_LABEL[u.role]}
+                      <td className="py-3 pr-4 text-[0.86rem] text-muted">{c.title}</td>
+                      <td className="py-3 pr-4">
+                        <StatusPill status={c.status} label={c.status.replace(/_/g, " ")} />
                       </td>
-                      <td className="py-3 pr-4 text-[0.85rem] text-muted">
-                        {new Date(u.createdAt).toLocaleDateString("en-GB", {
+                      <td className="py-3 text-[0.82rem] text-faint">
+                        {new Date(c.updatedAt).toLocaleDateString("en-GB", {
                           day: "numeric",
                           month: "short",
-                          year: "numeric",
                         })}
-                      </td>
-                      <td className="py-3 text-[0.85rem] text-muted">
-                        {u.emailVerified ? "Yes" : "No"}
                       </td>
                     </tr>
                   ))}
@@ -115,38 +148,108 @@ export default async function AdminPage() {
           )}
         </Panel>
 
-        <Panel title="Pending work">
-          <EmptyState
-            icon="check"
-            title="No queues yet"
-            body="Pending document reviews, open requests, upcoming appointments and unread messages will surface here once those tables exist."
-          />
+        <Panel
+          title={admin ? "Documents awaiting review" : "My clients"}
+          action={
+            admin ? (
+              <Link href="/portal/admin/documents" className="label text-faint transition-colors hover:text-accent">
+                Review
+              </Link>
+            ) : undefined
+          }
+        >
+          {admin ? (
+            pendingDocs.length === 0 ? (
+              <EmptyState
+                icon="check"
+                title="Nothing awaiting review"
+                body="Documents clients upload appear here for approval."
+              />
+            ) : (
+              pendingDocs.map((d) => (
+                <DataRow
+                  key={d.id}
+                  label={d.name}
+                  value={<StatusPill status={d.status} label={d.status.replace(/_/g, " ")} />}
+                  meta={<span className="label text-faint">{d.ownerName}</span>}
+                />
+              ))
+            )
+          ) : myClients.length === 0 ? (
+            <EmptyState
+              icon="search"
+              title="No clients assigned"
+              body="An administrator assigns clients to you. They will appear here."
+            />
+          ) : (
+            myClients.map((c) => (
+              <DataRow
+                key={c.id}
+                label={c.name}
+                value={ROLE_LABEL[c.role as Role]}
+              />
+            ))
+          )}
         </Panel>
       </div>
 
-      <div className="mt-8 space-y-5">
-        <BackendRequired
-          feature="Staff tooling"
-          needs={[
-            "Client search and filtering by type, status and assigned advisor",
-            "Case status management with an audit trail of who changed what",
-            "Document review queue with approve / request-update actions",
-            "Appointment scheduling against advisor availability",
-            "Granular staff permissions — advisors should see only assigned clients",
-          ]}
-        />
+      {admin && (
+        <div className="mt-5 grid items-start gap-5 lg:grid-cols-2">
+          <Panel
+            title="Recent registrations"
+            action={
+              <Link href="/portal/admin/users" className="label text-faint transition-colors hover:text-accent">
+                Manage users
+              </Link>
+            }
+          >
+            {recentUsers.length === 0 ? (
+              <EmptyState
+                icon="search"
+                title="No accounts yet"
+                body="Registrations appear here as clients create accounts."
+              />
+            ) : (
+              recentUsers.map((u) => (
+                <DataRow
+                  key={u.id}
+                  label={u.name}
+                  value={
+                    <StatusPill
+                      status={u.status === "active" ? "approved" : "needs_update"}
+                      label={u.status}
+                    />
+                  }
+                  meta={<span className="label text-faint">{ROLE_LABEL[u.role]}</span>}
+                />
+              ))
+            )}
+          </Panel>
 
-        <aside className="rounded-[var(--radius-md)] border border-line bg-raised p-5">
-          <p className="label text-accent">Role assignment</p>
-          <p className="mt-2 text-[0.86rem] leading-relaxed text-muted">
-            Registration only ever creates client roles. Advisor and
-            administrator roles must be granted deliberately — set the{" "}
-            <span className="font-mono text-[0.8rem]">role</span> field on the
-            account record. There is intentionally no self-service route to
-            staff privileges.
-          </p>
-        </aside>
-      </div>
+          <Panel title="Operations">
+            <div className="grid gap-2">
+              {[
+                { href: "/portal/admin/users", label: "Users & roles" },
+                { href: "/portal/admin/cases", label: "Cases" },
+                { href: "/portal/admin/documents", label: "Document review" },
+                { href: "/portal/admin/staff", label: "Advisor assignments" },
+                { href: "/portal/admin/audit", label: "Audit log" },
+              ].map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="group flex items-center justify-between rounded-[var(--radius-sm)] border border-line px-4 py-3 text-[0.88rem] text-fg transition-colors hover:border-moss-400/50"
+                >
+                  {l.label}
+                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 text-accent opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
+                    <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </Panel>
+        </div>
+      )}
     </>
   );
 }

@@ -1,80 +1,41 @@
-import type {
-  Role,
-  CaseRecord,
-  DocumentRecord,
-  TaskRecord,
-  ConversationRecord,
-  AppointmentRecord,
-  NotificationRecord,
-  OpportunityRecord,
-} from "@/lib/auth/types";
+import type { Role } from "@/lib/auth/types";
+import * as repo from "@/lib/db/repos/portal";
+import { isDatabaseConfigured } from "@/lib/db/client";
 
 /**
  * PORTAL DATA ACCESS
  * ---------------------------------------------------------------------------
- * ⚠ There is no database yet, so every read below returns an EMPTY collection.
+ * Thin facade over the SQL repositories. Kept so components import one stable
+ * module; all scoping and authorization lives in lib/db/repos/portal.ts, where
+ * it is expressed in the query itself.
  *
- * This is deliberate. The alternative — seeding plausible-looking applications,
- * documents and messages — would show a client their own fabricated case file,
- * which is far worse than an honest empty state. Every screen therefore renders
- * its "nothing here yet" state and tells the user what will populate it.
- *
- * The functions are the seam: implement them against Postgres/Prisma and the
- * whole portal fills in with no component changes.
- *
- * REQUIRED TABLES (see CONTENT-HANDOFF.md → Portal backend):
- *   users, profiles, cases, documents, tasks, conversations, messages,
- *   appointments, notifications, opportunities, audit_log
+ * Every function returns an empty collection when DATABASE_URL is unset, so an
+ * unconfigured deployment renders honest empty states instead of crashing.
  */
 
-export const PORTAL_BACKEND_READY = false;
+export const isPortalBackendReady = isDatabaseConfigured;
 
-export async function getCases(_userId: string): Promise<CaseRecord[]> {
-  void _userId;
-  return [];
-}
+export const getCases = repo.getCasesForClient;
+export const getCasesForAdvisor = repo.getCasesForAdvisor;
+export const getAllCases = repo.getAllCases;
+export const getDocuments = repo.getDocumentsForOwner;
+export const getDocumentsForReview = repo.getDocumentsForReview;
+export const getTasks = repo.getTasksForUser;
+export const getAppointments = repo.getAppointmentsForClient;
+export const getAppointmentsForAdvisor = repo.getAppointmentsForAdvisor;
+export const getConversations = repo.getConversationsForClient;
+export const getConversationsForStaff = repo.getConversationsForStaff;
+export const getNotifications = repo.getNotifications;
+export const getOpportunities = repo.getPublishedOpportunities;
+export const getAssignedClients = repo.getAssignedClients;
+export const getAdminMetrics = repo.getAdminMetrics;
 
-export async function getDocuments(_userId: string): Promise<DocumentRecord[]> {
-  void _userId;
-  return [];
-}
-
-export async function getTasks(_userId: string): Promise<TaskRecord[]> {
-  void _userId;
-  return [];
-}
-
-export async function getConversations(
-  _userId: string
-): Promise<ConversationRecord[]> {
-  void _userId;
-  return [];
-}
-
-export async function getAppointments(
-  _userId: string
-): Promise<AppointmentRecord[]> {
-  void _userId;
-  return [];
-}
-
-export async function getNotifications(
-  _userId: string
-): Promise<NotificationRecord[]> {
-  void _userId;
-  return [];
-}
-
-export async function getOpportunities(): Promise<OpportunityRecord[]> {
-  return [];
-}
-
-/* ------------------------------------------------------------- derived */
+/* --------------------------------------------------- service definitions */
 
 /**
- * Required document checklist per role. This is service definition, not client
- * data, so it is real and safe to render — it tells a new user exactly what
- * they will eventually be asked for.
+ * Required document checklist per pathway. This is SERVICE DEFINITION, not
+ * client data, so it is real and safe to render — it tells a new user exactly
+ * what they will eventually be asked for.
  */
 export const REQUIRED_DOCUMENTS: Record<string, { name: string; category: string }[]> = {
   student: [
@@ -102,9 +63,8 @@ export const REQUIRED_DOCUMENTS: Record<string, { name: string; category: string
 };
 
 /**
- * Profile field definitions, used for progressive completion. The percentage
- * shown to users is calculated from these against real stored values — it is
- * never a decorative number.
+ * Profile fields, used for progressive completion. Keys match the database
+ * columns in lib/db/repos/profiles.ts, which whitelists writes per role.
  */
 export const PROFILE_FIELDS: Record<
   string,
@@ -114,32 +74,32 @@ export const PROFILE_FIELDS: Record<
     { key: "phone", label: "Phone / WhatsApp", type: "text" },
     { key: "nationality", label: "Nationality", type: "text" },
     { key: "level", label: "Level of study", type: "select", options: ["Bachelor's", "Master's", "PhD / research", "Professional qualification"] },
-    { key: "field", label: "Field of study", type: "text" },
+    { key: "field_of_study", label: "Field of study", type: "text" },
     { key: "destination", label: "Preferred destination", type: "text" },
     { key: "intake", label: "Preferred intake", type: "select", options: ["Next 6 months", "6–12 months", "Over a year away", "Undecided"] },
     { key: "scholarship", label: "Scholarship interest", type: "select", options: ["Essential", "Helpful", "Self-funded"] },
     { key: "budget", label: "Annual budget range", type: "text" },
-    { key: "language", label: "Language level", type: "text" },
+    { key: "language_level", label: "Language level", type: "text" },
   ],
   professional: [
     { key: "phone", label: "Phone / WhatsApp", type: "text" },
     { key: "nationality", label: "Nationality", type: "text" },
     { key: "title", label: "Professional title", type: "text" },
-    { key: "experience", label: "Years of experience", type: "select", options: ["Under 2", "2–5", "5–10", "10+"] },
+    { key: "experience_years", label: "Years of experience", type: "select", options: ["Under 2", "2–5", "5–10", "10+"] },
     { key: "industry", label: "Industry", type: "text" },
     { key: "skills", label: "Key skills", type: "text" },
     { key: "destination", label: "Preferred countries", type: "text" },
     { key: "relocation", label: "Relocation readiness", type: "select", options: ["Immediately", "1–3 months", "3–6 months", "Exploring"] },
-    { key: "language", label: "Language level", type: "text" },
+    { key: "language_level", label: "Language level", type: "text" },
   ],
   business: [
     { key: "phone", label: "Phone / WhatsApp", type: "text" },
-    { key: "businessName", label: "Business name", type: "text" },
+    { key: "business_name", label: "Business name", type: "text" },
     { key: "industry", label: "Industry", type: "text" },
-    { key: "currentLocation", label: "Current location", type: "text" },
-    { key: "targetCountry", label: "Target country", type: "text" },
+    { key: "current_location", label: "Current location", type: "text" },
+    { key: "target_country", label: "Target country", type: "text" },
     { key: "objective", label: "Business objective", type: "select", options: ["Company formation", "Fintech licensing", "Market entry", "Relocation", "Hiring", "Not sure yet"] },
-    { key: "companyType", label: "Preferred company type", type: "text" },
+    { key: "company_type", label: "Preferred company type", type: "text" },
     { key: "stage", label: "Current stage", type: "select", options: ["Idea stage", "Trading outside the EU", "Have an EU entity", "Investor"] },
   ],
 };

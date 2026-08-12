@@ -43,29 +43,41 @@ message nobody received.
 
 ---
 
-## 2b. Client portal — backend requirements
+## 2b. Client portal — credentials, not code
 
-The portal is **functionally real**: registration, login, logout, password
-reset, protected routes, role-based access and progressive profile saving all
-work today. Verified by test — passwords are scrypt-hashed, tampered session
-cookies are rejected, arbitrary profile fields are ignored (no role
-escalation), and a client-role account is redirected away from
-`/portal/admin`.
+The portal now runs on **PostgreSQL**. The gap that used to sit here — JSON
+file storage, empty data functions, no document transport — is closed. What
+remains is provisioning, and it is covered step by step in
+[`DEPLOYMENT.md`](./DEPLOYMENT.md).
 
-**What is NOT production-ready:**
+**Built and verified:**
 
-| Area | Current state | Needed |
-|------|---------------|--------|
-| **User storage** | JSON file under `.data/` (gitignored) via `lib/auth/store.ts` | Replace the `UserStore` implementation with Postgres/Prisma. That interface is the only thing the app depends on. File writes are not transactional and will not survive a serverless filesystem. |
-| **Cases, documents, messages, appointments, tasks, notifications** | `lib/portal/data.ts` returns empty arrays; every screen renders an honest empty state | Implement each function against real tables. No component changes needed. |
-| **Document storage** | Upload disabled | Private object storage (S3/R2) with server-signed, short-lived URLs. Documents contain identity data and must never be publicly addressable. |
-| **Email verification** | `emailVerified` flag exists, always false | Send a verification link on registration and gate sensitive actions on it. |
-| **Messaging** | UI complete, no transport | Realtime (WebSocket/SSE) or polling, plus unread state. |
-| **Staff roles** | Assigned manually on the account record | Admin tooling. There is deliberately **no self-service route to staff privileges** — registration only ever creates client roles. |
+| Area | State |
+|------|-------|
+| **Schema** | 17 tables, 8 enums, `lib/db/migrations/001_init.sql`. Needs no Postgres extensions, so it installs on managed roles that cannot `CREATE EXTENSION`. Verified by `npm run db:verify` — 13 checks against an in-memory Postgres. |
+| **Roles** | Six: `student`, `professional`, `business`, `advisor`, `admin`, `super_admin`. |
+| **Cases, documents, tasks, appointments, messages, notifications** | Real tables, real queries, authorisation expressed in SQL. |
+| **Document storage** | Private object storage (S3-compatible or Vercel Blob). Downloads go through `/api/portal/documents/[id]`, which authorises then mints a ~2-minute signed URL. The storage key never reaches the browser. |
+| **Email verification** | Token issued on registration, delivered by the configured transport. |
+| **Staff tooling** | `/portal/admin` — users and roles, cases, document review, advisor assignment, audit log. |
+| **Audit log** | Every auth event, role change and document decision. Sensitive keys are stripped, with a regex denylist as a backstop. |
 
-Suggested schema: `users`, `profiles`, `cases`, `documents`, `tasks`,
-`conversations`, `messages`, `appointments`, `notifications`,
-`opportunities`, `audit_log`.
+**Three credentials are required to switch it on**, and only an account owner
+can obtain them:
+
+| Variable | Source |
+|----------|--------|
+| `DATABASE_URL` | Any PostgreSQL 13+ (Neon, Supabase, Vercel Postgres, RDS) — pooled connection string |
+| `AUTH_SECRET` | Generated locally, pasted into Vercel, never committed |
+| Storage + email | One of `S3_*` / `BLOB_READ_WRITE_TOKEN`, and one of `RESEND_API_KEY` / `MAIL_WEBHOOK_URL` |
+
+Until they are set the build still succeeds and the public site still serves —
+the auth screens say "Portal not yet enabled" and the auth APIs return 503.
+Enabling the portal cannot take the marketing site down.
+
+**No seeded accounts.** The first super admin is created by CLI
+(`npm run db:bootstrap`), the password is printed once and stored only as a
+scrypt hash, and registration can only ever create client roles.
 
 **Deliberately empty rather than seeded.** Showing a client a fabricated case
 file — invented applications, documents and messages — would be far worse than
@@ -280,11 +292,13 @@ candid regulatory disclosure — which is a genuine differentiator in this secto
       authenticate anyone
 - [ ] Set `NEXT_PUBLIC_SITE_URL` to the production origin
 
-**Portal infrastructure** (before any real client registers)
-- [ ] Replace the JSON user store (`lib/auth/store.ts`) with a real database
-- [ ] Implement `lib/portal/data.ts` against real tables
-- [ ] Connect private document storage before enabling uploads
-- [ ] Enable email verification on registration
+**Portal infrastructure** (before any real client registers) — see `DEPLOYMENT.md`
+- [ ] Provision PostgreSQL 13+ and set `DATABASE_URL` (pooled connection string)
+- [ ] Run `npm run db:migrate` against it
+- [ ] Create the first super admin with `npm run db:bootstrap`, then change the
+      generated password at first sign-in
+- [ ] Configure private document storage (`S3_*` preferred, or Vercel Blob)
+- [ ] Walk the live verification steps in `DEPLOYMENT.md § 8`
 - [ ] Move rate limiting to a shared store if running more than one instance
 
 **Content**

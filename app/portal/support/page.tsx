@@ -1,11 +1,9 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth/session";
+import { requireUser } from "@/lib/auth/guard";
 import { company } from "@/data/company";
 import { PortalHeading, Panel } from "@/components/portal/Pieces";
 
 export default async function SupportPage() {
-  const session = await getSession();
-  if (!session) redirect("/login");
+  const { session } = await requireUser();
 
   const contacts = [
     { label: "Email", value: company.contact.email, href: `mailto:${company.contact.email}` },

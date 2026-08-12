@@ -1,29 +1,22 @@
 import { NextResponse } from "next/server";
-import { users } from "@/lib/auth/store";
+import * as store from "@/lib/auth/store";
 import { hashPassword, validatePassword } from "@/lib/auth/password";
-import {
-  verifyToken,
-  createToken,
-  setSessionCookie,
-  authConfigured,
-} from "@/lib/auth/session";
+import { createToken, setSessionCookie, authConfigured } from "@/lib/auth/session";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
+import { audit } from "@/lib/db/repos/audit";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  if (!authConfigured()) {
+  if (!authConfigured() || !store.isStoreReady()) {
     return NextResponse.json(
-      { ok: false, error: "Authentication is not configured on this server." },
+      { ok: false, error: "The portal is not fully configured yet." },
       { status: 503 }
     );
   }
 
-  const limit = rateLimit(`reset:${clientIp(request)}`, {
-    limit: 8,
-    windowMs: 30 * 60_000,
-  });
-  if (!limit.ok) {
+  const ip = clientIp(request);
+  if (!rateLimit(`reset:${ip}`, { limit: 8, windowMs: 30 * 60_000 }).ok) {
     return NextResponse.json(
       { ok: false, error: "Too many attempts. Please try again shortly." },
       { status: 429 }
@@ -45,15 +38,15 @@ export async function POST(request: Request) {
   const pwError = validatePassword(password);
   if (pwError) return NextResponse.json({ ok: false, error: pwError }, { status: 400 });
 
-  const claims = verifyToken(token);
-  if (!claims) {
+  const userId = await store.consumeToken(token, "password_reset");
+  if (!userId) {
     return NextResponse.json(
       { ok: false, error: "That reset link has expired. Please request a new one." },
       { status: 400 }
     );
   }
 
-  const user = await users.findById(claims.userId);
+  const user = await store.findById(userId);
   if (!user) {
     return NextResponse.json(
       { ok: false, error: "That reset link is no longer valid." },
@@ -61,7 +54,13 @@ export async function POST(request: Request) {
     );
   }
 
-  await users.update(user.id, { passwordHash: await hashPassword(password) });
+  await store.setPasswordHash(user.id, await hashPassword(password));
+  await audit({
+    action: "auth.password_reset",
+    actorId: user.id,
+    actorEmail: user.email,
+    ip,
+  });
 
   await setSessionCookie(
     createToken({ userId: user.id, email: user.email, role: user.role, name: user.name })

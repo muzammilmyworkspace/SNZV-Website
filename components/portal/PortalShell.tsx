@@ -85,7 +85,14 @@ function navFor(role: Role): { group: string; items: NavItem[] }[] {
   if (role === "admin" || role === "advisor") {
     groups.unshift({
       group: "Staff",
-      items: [{ href: "/portal/admin", label: "Overview", icon: "admin" }],
+      items: [
+        { href: "/portal/admin", label: "Overview", icon: "admin" },
+        { href: "/portal/admin/users", label: "Users & roles", icon: "profile" },
+        { href: "/portal/admin/cases", label: "Cases", icon: "cases" },
+        { href: "/portal/admin/documents", label: "Document review", icon: "documents" },
+        { href: "/portal/admin/staff", label: "Advisors", icon: "opportunities" },
+        { href: "/portal/admin/audit", label: "Audit log", icon: "tasks" },
+      ],
     });
   }
 

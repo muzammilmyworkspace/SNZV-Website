@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/auth/session";
-import { users } from "@/lib/auth/store";
+import * as store from "@/lib/auth/store";
+import { apiRequireUser } from "@/lib/auth/guard";
 import { PROFILE_FIELDS } from "@/lib/portal/data";
 
 export const runtime = "nodejs";
@@ -8,14 +8,21 @@ export const runtime = "nodejs";
 /**
  * Progressive profile save.
  *
- * Only keys declared in PROFILE_FIELDS for the caller's own role are accepted,
- * so a client cannot write arbitrary fields or another role's schema. The user
- * id always comes from the verified session, never from the request body.
+ * The user id always comes from the verified session, never the body. Keys are
+ * filtered against PROFILE_FIELDS for the caller's OWN role, and the repository
+ * filters again against the real column whitelist — so a client cannot write
+ * another pathway's schema, another user's row, or their own role.
  */
 export async function POST(request: Request) {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "Not signed in." }, { status: 401 });
+  const guard = await apiRequireUser();
+  if (!guard.ok) return guard.response;
+  const { session } = guard;
+
+  if (!store.isStoreReady()) {
+    return NextResponse.json(
+      { ok: false, error: "The portal database is not configured yet." },
+      { status: 503 }
+    );
   }
 
   let body: unknown;
@@ -31,22 +38,20 @@ export async function POST(request: Request) {
   }
 
   const allowed = new Set((PROFILE_FIELDS[session.role] ?? []).map((f) => f.key));
-
-  const user = await users.findById(session.userId);
-  if (!user) {
-    return NextResponse.json({ ok: false, error: "Account not found." }, { status: 404 });
-  }
-
-  const profile = { ...user.profile };
+  const patch: Record<string, string> = {};
   for (const [key, value] of Object.entries(incoming)) {
     if (!allowed.has(key)) continue;
     if (typeof value !== "string") continue;
-    const trimmed = value.trim().slice(0, 400);
-    if (trimmed) profile[key] = trimmed;
-    else delete profile[key];
+    patch[key] = value;
   }
 
-  await users.update(user.id, { profile });
+  try {
+    await store.saveProfile(session.userId, session.role, patch);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("[profile] save failed:", error);
+    return NextResponse.json({ ok: false, error: "Could not save." }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

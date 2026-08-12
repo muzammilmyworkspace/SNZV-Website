@@ -33,16 +33,20 @@ app/
   (public)             home, pillars, services, destinations, insights, legal
   login|register|forgot-password|reset-password
   portal/              authenticated client workspace (noindex, role-gated)
-  api/auth/            register, login, logout, forgot-password, reset-password
-  api/portal/profile/  progressive profile save
+  portal/admin/        staff console: users, cases, documents, advisors, audit
+  api/auth/            register, login, logout, verify-email, forgot/reset-password
+  api/admin/users/     role and status administration (super-admin gated)
+  api/portal/          profile, documents (upload + authorised download)
   api/enquiry/         public enquiry intake → info@snzventures.com
 components/
   brand/ cards/ forms/ layout/ sections/ ui/ visuals/ portal/
 data/                  ALL content and company facts
 lib/
-  auth/                password, session, store, rate-limit, types, constants
-  portal/              portal data access (the DB seam)
+  auth/                password, session, guard (RBAC), rate-limit, constants
+  db/                  client, migrations/, repos/ (users, portal, audit)
+  storage.ts           S3 SigV4 / Vercel Blob + signed URLs
   mail.ts              provider-agnostic email
+scripts/               migrate, verify-schema, bootstrap-admin, audit
 middleware.ts          early redirect for /portal and the auth screens
 ```
 
@@ -92,28 +96,46 @@ into an atmospheric range. Accent is `moss-400` `#72C43C`.
 
 ## Client portal
 
-Registration, login, logout, password reset, protected routes, role-based
-access and progressive profile saving all work today.
+Backed by **PostgreSQL**. Registration, login, logout, email verification,
+password reset, cases, documents, tasks, appointments, messaging,
+notifications, audit logging and the full staff/admin console all run against
+real tables. Nothing is seeded and nothing is simulated: an empty database
+renders designed empty states.
 
-**Roles** — `student`, `professional`, `business` (client, chosen at
-registration) plus `advisor` and `admin` (assigned manually; there is no
-self-service route to staff privileges).
+To take it live, follow [`DEPLOYMENT.md`](./DEPLOYMENT.md).
+
+**Roles** — `student`, `professional`, `business` (clients, chosen at
+registration) plus `advisor`, `admin` and `super_admin` (assigned by a super
+admin; there is no self-service route to a staff role, and the first one is
+created by CLI).
 
 **Security**
 - scrypt password hashing (N=2^16, r=8, p=1) via `node:crypto`
 - HMAC-SHA256 signed session cookies, httpOnly + SameSite=Lax + Secure in prod
-- Server-side authorisation in `app/portal/layout.tsx`; middleware is only an
-  early UX redirect, never the security boundary
+- Authorisation is expressed **in SQL** — client reads carry `client_id = $viewer`,
+  advisor reads join `staff_assignments`, so unauthorised rows are never fetched
+- Role is read from the signed session and re-checked against the database each
+  request, so suspending an account takes effect immediately
+- Five layered defences against privilege escalation in `app/api/admin/users/route.ts`
+- Documents live in private object storage; downloads go through
+  `/api/portal/documents/[id]`, which authorises then mints a ~2-minute signed
+  URL. The storage key never reaches the browser.
+- Audit logs strip sensitive keys, with a regex denylist as a backstop
 - Rate limiting on login, registration and password reset
-- Profile writes accept only whitelisted keys for the caller's own role
+- Middleware is an Edge-runtime UX redirect only, never the security boundary
 
-**Not production-ready:** user storage is a JSON file adapter, and case /
-document / message data returns empty. Both are behind interfaces —
-`lib/auth/store.ts` and `lib/portal/data.ts`. See `CONTENT-HANDOFF.md § 2b`.
+**Deploy safety** — the build succeeds and the public site serves with *no*
+portal credentials at all. Enabling the portal can never take the marketing
+site down; unconfigured features return 503 with a human explanation rather
+than falling back to a predictable key.
 
 ## Scripts
 
 ```bash
+npm run db:verify       # apply migrations to in-memory Postgres + test queries
+npm run db:status       # show pending migrations without applying them
+npm run db:migrate      # apply migrations (transactional, checksummed)
+npm run db:bootstrap -- --email you@example.com --name "Your Name"
 npm run audit           # 19 routes x 5 viewports (site must be running)
 npm run typecheck
 npm run build:images    # re-fetch + re-verify image licences

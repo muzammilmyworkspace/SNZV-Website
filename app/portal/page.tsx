@@ -1,7 +1,6 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getSession } from "@/lib/auth/session";
-import { users } from "@/lib/auth/store";
+import { requireUser } from "@/lib/auth/guard";
+import * as store from "@/lib/auth/store";
 import { JOURNEYS, type Role } from "@/lib/auth/types";
 import {
   getCases,
@@ -44,10 +43,9 @@ const isClientRole = (r: Role): r is "student" | "professional" | "business" =>
   r === "student" || r === "professional" || r === "business";
 
 export default async function PortalDashboard() {
-  const session = await getSession();
-  if (!session) redirect("/login");
+  const { session } = await requireUser();
 
-  const user = await users.findById(session.userId);
+  const user = await store.findById(session.userId);
   const role = session.role;
   const greeting = GREETING[role] ?? GREETING.student;
 
@@ -64,7 +62,7 @@ export default async function PortalDashboard() {
   const journey = isClientRole(role) ? JOURNEYS[role] : null;
   const required = REQUIRED_DOCUMENTS[role] ?? [];
 
-  const openTask = tasks.find((t) => !t.done);
+  const openTask = tasks.find((t) => t.status !== "done");
 
   /**
    * "Your next step" is derived from real state, in priority order — it is the
@@ -81,7 +79,7 @@ export default async function PortalDashboard() {
       : openTask
         ? {
             title: openTask.title,
-            body: openTask.detail,
+            body: openTask.detail ?? "Open this task for the detail.",
             href: "/portal/tasks",
             cta: "View tasks",
           }
@@ -107,7 +105,7 @@ export default async function PortalDashboard() {
               value={cases.length}
             />
             <SummaryStat label="Documents" value={documents.length} hint={`${required.length} typically needed`} />
-            <SummaryStat label="Open tasks" value={tasks.filter((t) => !t.done).length} />
+            <SummaryStat label="Open tasks" value={tasks.filter((t) => t.status !== "done").length} />
             <SummaryStat label="Appointments" value={appointments.length} />
           </div>
         }

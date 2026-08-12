@@ -1,14 +1,24 @@
 import { NextResponse } from "next/server";
-import { users } from "@/lib/auth/store";
+import * as store from "@/lib/auth/store";
 import { hashPassword, validatePassword } from "@/lib/auth/password";
 import { createToken, setSessionCookie, authConfigured } from "@/lib/auth/session";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 import { PATHWAY_TO_ROLE, type Role } from "@/lib/auth/types";
+import { audit } from "@/lib/db/repos/audit";
+import { sendMail, mailConfigured } from "@/lib/mail";
+import { company } from "@/data/company";
 
 export const runtime = "nodejs";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+/**
+ * Public registration.
+ *
+ * Can ONLY create client roles. The role is derived server-side from the
+ * pathway question — the request body has no role field, so there is no
+ * privilege-escalation surface here at all.
+ */
 export async function POST(request: Request) {
   if (!authConfigured()) {
     return NextResponse.json(
@@ -16,11 +26,15 @@ export async function POST(request: Request) {
       { status: 503 }
     );
   }
+  if (!store.isStoreReady()) {
+    return NextResponse.json(
+      { ok: false, error: "The portal database is not configured yet." },
+      { status: 503 }
+    );
+  }
 
-  const limit = rateLimit(`register:${clientIp(request)}`, {
-    limit: 5,
-    windowMs: 15 * 60_000,
-  });
+  const ip = clientIp(request);
+  const limit = rateLimit(`register:${ip}`, { limit: 5, windowMs: 15 * 60_000 });
   if (!limit.ok) {
     return NextResponse.json(
       { ok: false, error: "Too many attempts. Please try again shortly." },
@@ -37,40 +51,90 @@ export async function POST(request: Request) {
 
   const { name, email, password, pathway } = (body ?? {}) as Record<string, unknown>;
 
-  if (typeof name !== "string" || name.trim().length < 2) {
+  if (typeof name !== "string" || name.trim().length < 2 || name.length > 120) {
     return NextResponse.json({ ok: false, error: "Please enter your name." }, { status: 400 });
   }
-  if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
-    return NextResponse.json({ ok: false, error: "That email address doesn't look right." }, { status: 400 });
+  if (typeof email !== "string" || !EMAIL_RE.test(email.trim()) || email.length > 200) {
+    return NextResponse.json(
+      { ok: false, error: "That email address doesn't look right." },
+      { status: 400 }
+    );
   }
   if (typeof password !== "string") {
     return NextResponse.json({ ok: false, error: "Please choose a password." }, { status: 400 });
   }
   const pwError = validatePassword(password);
-  if (pwError) {
-    return NextResponse.json({ ok: false, error: pwError }, { status: 400 });
-  }
-  if (typeof pathway !== "string" || !(pathway in PATHWAY_TO_ROLE)) {
-    return NextResponse.json({ ok: false, error: "Please choose what brings you here." }, { status: 400 });
-  }
+  if (pwError) return NextResponse.json({ ok: false, error: pwError }, { status: 400 });
 
+  if (typeof pathway !== "string" || !(pathway in PATHWAY_TO_ROLE)) {
+    return NextResponse.json(
+      { ok: false, error: "Please choose what brings you here." },
+      { status: 400 }
+    );
+  }
+  // Role is decided here, never taken from the client.
   const role: Role = PATHWAY_TO_ROLE[pathway as keyof typeof PATHWAY_TO_ROLE];
 
-  const existing = await users.findByEmail(email);
+  const existing = await store.findByEmail(email);
   if (existing) {
-    // Do not reveal which addresses are registered.
+    // Same shape as success-adjacent errors — no account-existence oracle.
     return NextResponse.json(
       { ok: false, error: "We couldn't create that account. Try signing in instead." },
       { status: 409 }
     );
   }
 
-  const user = await users.create({
-    email,
-    name,
-    role,
-    passwordHash: await hashPassword(password),
+  let user;
+  try {
+    user = await store.createUser({
+      email,
+      name,
+      role,
+      passwordHash: await hashPassword(password),
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("[register] failed:", error);
+    return NextResponse.json(
+      { ok: false, error: "We couldn't create that account right now." },
+      { status: 500 }
+    );
+  }
+
+  await audit({
+    action: "auth.register",
+    actorId: user.id,
+    actorEmail: user.email,
+    entity: "user",
+    entityId: user.id,
+    meta: { role },
+    ip,
   });
+
+  // Verification email — best effort, never blocks registration.
+  if (mailConfigured()) {
+    try {
+      const token = await store.issueToken(user.id, "email_verify", 60 * 24);
+      const base = process.env.NEXT_PUBLIC_SITE_URL ?? company.siteUrl;
+      await sendMail({
+        to: user.email,
+        subject: "Confirm your SnZ Ventures account",
+        text: [
+          `Hello ${user.name},`,
+          "",
+          "Confirm your email address to finish setting up your account:",
+          `${base}/verify-email?token=${encodeURIComponent(token)}`,
+          "",
+          "The link is valid for 24 hours.",
+          "",
+          "SnZ Ventures",
+        ].join("\n"),
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("[register] verification email failed:", error);
+    }
+  }
 
   await setSessionCookie(
     createToken({ userId: user.id, email: user.email, role: user.role, name: user.name })

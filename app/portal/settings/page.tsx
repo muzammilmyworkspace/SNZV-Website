@@ -1,11 +1,9 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth/session";
+import { requireUser } from "@/lib/auth/guard";
 import { ROLE_LABEL } from "@/lib/auth/types";
 import { PortalHeading, Panel, BackendRequired } from "@/components/portal/Pieces";
 
 export default async function SettingsPage() {
-  const session = await getSession();
-  if (!session) redirect("/login");
+  const { session } = await requireUser();
 
   return (
     <>

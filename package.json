@@ -12,15 +12,22 @@
     "build:map": "node scripts/build-map.mjs",
     "typecheck": "tsc --noEmit",
     "build:hero": "node scripts/fetch-hero-images.mjs",
-    "audit:portal": "node scripts/portal-shots.mjs"
+    "audit:portal": "node scripts/portal-shots.mjs",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:status": "node scripts/migrate.mjs --dry",
+    "db:bootstrap": "node scripts/bootstrap-admin.mjs",
+    "db:verify": "node scripts/verify-schema.mjs"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.0",
     "motion": "^13.1.0",
     "next": "16.3.0",
+    "postgres": "^3.4.9",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.4",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

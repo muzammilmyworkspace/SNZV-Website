@@ -1,5 +1,4 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth/session";
+import { requireUser } from "@/lib/auth/guard";
 import { JOURNEYS, type Role } from "@/lib/auth/types";
 import {
   PortalHeading,
@@ -12,8 +11,7 @@ const isClientRole = (r: Role): r is "student" | "professional" | "business" =>
   r === "student" || r === "professional" || r === "business";
 
 export default async function JourneyPage() {
-  const session = await getSession();
-  if (!session) redirect("/login");
+  const { session } = await requireUser();
 
   const journey = isClientRole(session.role) ? JOURNEYS[session.role] : null;
 
