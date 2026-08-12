@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import {
   PortalHeading,
+  Panel,
   EmptyState,
   BackendRequired,
 } from "@/components/portal/Pieces";
@@ -13,16 +14,19 @@ export default async function Page() {
   return (
     <>
       <PortalHeading
+        eyebrow="Contact"
         title="Notifications"
         lead="Document requests, status changes, replies and reminders."
       />
 
+      <Panel>
       <EmptyState
         icon="bell"
         title="You are up to date"
         body="Notifications appear here when something changes on your case. We keep them meaningful — no digests, no noise."
         
       />
+      </Panel>
 
       <div className="mt-8">
         <BackendRequired

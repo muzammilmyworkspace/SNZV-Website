@@ -49,3 +49,6 @@ next-env.d.ts
 
 # portal data store (dev file adapter)
 /.data
+
+# portal review screenshots
+/portal-shots

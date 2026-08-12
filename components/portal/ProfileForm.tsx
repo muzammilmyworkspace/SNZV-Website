@@ -64,20 +64,42 @@ export function ProfileForm({
         </p>
       </div>
 
-      {/* Account identity is read-only here — changing it goes through Settings. */}
+      {/*
+        Account identity is read-only here — changing it goes through Settings
+        with re-authentication. Styled distinctly so it is obvious at a glance
+        that these two are not editable, rather than looking like fields that
+        silently refuse input.
+      */}
       <div className="mb-8 grid gap-5 sm:grid-cols-2">
-        <div>
-          <label className="field-label" htmlFor="pf-name">
-            Name
-          </label>
-          <input id="pf-name" className="field" value={name} readOnly aria-readonly />
-        </div>
-        <div>
-          <label className="field-label" htmlFor="pf-email">
-            Email
-          </label>
-          <input id="pf-email" className="field" value={email} readOnly aria-readonly />
-        </div>
+        {[
+          { id: "pf-name", label: "Name", value: name },
+          { id: "pf-email", label: "Email", value: email },
+        ].map((f) => (
+          <div key={f.id}>
+            <label className="field-label flex items-center gap-2" htmlFor={f.id}>
+              {f.label}
+              <span className="inline-flex items-center gap-1 text-[0.6rem] normal-case tracking-normal text-faint">
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5">
+                  <path
+                    d="M3 5.5V4a3 3 0 016 0v1.5M2.5 5.5h7v5h-7z"
+                    stroke="currentColor"
+                    strokeWidth="1.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                Managed in Settings
+              </span>
+            </label>
+            <input
+              id={f.id}
+              className="field cursor-not-allowed border-dashed opacity-60"
+              value={f.value}
+              readOnly
+              aria-readonly
+            />
+          </div>
+        ))}
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">

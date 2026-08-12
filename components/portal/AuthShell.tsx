@@ -45,7 +45,7 @@ export function AuthShell({
             alt=""
             width={40}
             height={40}
-            className="h-10 w-10 rounded-full"
+            className="no-grade h-10 w-10 rounded-full ring-1 ring-white/15"
           />
           <span className="text-[1.15rem] font-bold tracking-[-0.02em] text-paper">
             SnZ Ventures

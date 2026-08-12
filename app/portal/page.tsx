@@ -15,31 +15,29 @@ import {
   PortalHeading,
   Panel,
   EmptyState,
-  ProgressBar,
+  ProgressRing,
+  JourneyTrack,
+  SummaryStat,
+  DataRow,
+  StatusPill,
   BackendRequired,
 } from "@/components/portal/Pieces";
 
-const GREETING: Record<string, { title: string; lead: string }> = {
+const GREETING: Record<string, { eyebrow: string; lead: string }> = {
   student: {
-    title: "Your study journey",
+    eyebrow: "Study journey",
     lead: "Everything we hold on your case, and the one thing worth doing next.",
   },
   professional: {
-    title: "Your career journey",
+    eyebrow: "Career journey",
     lead: "Your profile, your eligibility, and where you are in the process.",
   },
   business: {
-    title: "Your setup journey",
+    eyebrow: "Setup journey",
     lead: "Where your entity stands, what is outstanding, and what happens next.",
   },
-  advisor: {
-    title: "Advisor overview",
-    lead: "Your assigned clients and open actions.",
-  },
-  admin: {
-    title: "Administrator overview",
-    lead: "Portal activity across all client types.",
-  },
+  advisor: { eyebrow: "Advisor", lead: "Your assigned clients and open actions." },
+  admin: { eyebrow: "Administrator", lead: "Portal activity across all client types." },
 };
 
 const isClientRole = (r: Role): r is "student" | "professional" | "business" =>
@@ -69,9 +67,8 @@ export default async function PortalDashboard() {
   const openTask = tasks.find((t) => !t.done);
 
   /**
-   * "Your next step" is derived from real state, in priority order. It is the
-   * single most useful thing the portal can tell someone, so it never shows a
-   * placeholder.
+   * "Your next step" is derived from real state, in priority order — it is the
+   * single most useful thing this page can say, so it never shows a placeholder.
    */
   const nextStep =
     completion && completion.percent < 100
@@ -95,103 +92,111 @@ export default async function PortalDashboard() {
             cta: "Request an appointment",
           };
 
+  const firstName = session.name.split(" ")[0];
+
   return (
     <>
       <PortalHeading
-        title={`${greeting.title}, ${session.name.split(" ")[0]}.`}
+        eyebrow={greeting.eyebrow}
+        title={`Welcome back, ${firstName}.`}
         lead={greeting.lead}
+        meta={
+          <div className="flex flex-wrap gap-x-10 gap-y-5">
+            <SummaryStat
+              label={role === "business" ? "Open requests" : "Applications"}
+              value={cases.length}
+            />
+            <SummaryStat label="Documents" value={documents.length} hint={`${required.length} typically needed`} />
+            <SummaryStat label="Open tasks" value={tasks.filter((t) => !t.done).length} />
+            <SummaryStat label="Appointments" value={appointments.length} />
+          </div>
+        }
       />
 
-      <div className="grid gap-5 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <section className="relative overflow-hidden rounded-[var(--radius-lg)] border border-moss-400/30 bg-raised p-6">
+      {/* Next step + completion */}
+      <div className="grid items-start gap-5 lg:grid-cols-[1.55fr_1fr]">
+        <Panel accent padded={false} className="overflow-hidden">
+          <div className="relative p-6 sm:p-7">
             <span
               aria-hidden
-              className="bloom-moss pointer-events-none absolute -right-16 -top-16 h-56 w-56 opacity-40"
+              className="bloom-moss pointer-events-none absolute -right-20 -top-20 h-60 w-60 opacity-40"
             />
             <div className="relative">
-              <p className="label text-accent">Your next step</p>
-              <h2 className="d-3 mt-3 text-fg-strong">{nextStep.title}</h2>
-              <p className="mt-2 max-w-xl text-[0.92rem] leading-relaxed text-muted">
+              <p className="label flex items-center gap-3 text-accent">
+                <span aria-hidden className="inline-block h-px w-5 bg-current opacity-60" />
+                Your next step
+              </p>
+              <h2 className="mt-4 text-[1.4rem] font-bold leading-tight tracking-[-0.025em] text-fg-strong sm:text-[1.7rem]">
+                {nextStep.title}
+              </h2>
+              <p className="mt-3 max-w-xl text-[0.92rem] leading-relaxed text-muted">
                 {nextStep.body}
               </p>
               <Link
                 href={nextStep.href}
-                className="label mt-6 inline-flex items-center gap-2 rounded-[var(--radius-sm)] bg-moss-400 px-5 py-3 text-navy-950 transition-colors hover:bg-moss-300"
+                className="label group mt-7 inline-flex items-center gap-2.5 rounded-[var(--radius-sm)] bg-moss-400 px-5 py-3 text-navy-950 shadow-[0_8px_24px_-10px_rgba(114,196,60,0.6)] transition-all duration-400 hover:-translate-y-px hover:bg-moss-300"
               >
                 {nextStep.cta}
-                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3">
-                  <path
-                    d="M1 6h9M6.5 2.5L10 6l-3.5 3.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 transition-transform duration-400 group-hover:translate-x-1">
+                  <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </Link>
             </div>
-          </section>
-        </div>
+          </div>
+        </Panel>
 
         {completion && (
           <Panel title="Profile completion">
-            <ProgressBar value={completion.percent} />
-            <p className="mt-4 text-[0.85rem] leading-relaxed text-muted">
-              {completion.percent === 100
-                ? "Complete — thank you. This makes our assessment far more useful."
-                : `${completion.total - completion.filled} details still to add.`}
-            </p>
+            <ProgressRing
+              value={completion.percent}
+              label={
+                completion.percent === 100
+                  ? "Complete — thank you. This makes our assessment far more useful."
+                  : `${completion.total - completion.filled} details still to add.`
+              }
+            />
             {completion.missing.length > 0 && (
-              <ul className="mt-4 space-y-1.5 border-t border-line pt-4">
+              <ul className="mt-6 space-y-2 border-t border-line pt-5">
                 {completion.missing.slice(0, 4).map((m) => (
-                  <li
-                    key={m}
-                    className="flex items-center gap-2.5 text-[0.83rem] text-faint"
-                  >
-                    <span aria-hidden className="h-1 w-1 rounded-full bg-current" />
+                  <li key={m} className="flex items-center gap-2.5 text-[0.83rem] text-muted">
+                    <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-current opacity-50" />
                     {m}
                   </li>
                 ))}
+                {completion.missing.length > 4 && (
+                  <li className="text-[0.78rem] text-faint">
+                    +{completion.missing.length - 4} more
+                  </li>
+                )}
               </ul>
             )}
-            <Link
-              href="/portal/profile"
-              className="label mt-5 inline-flex items-center gap-2 text-accent"
-            >
-              <span className="draw">Update profile</span>
-            </Link>
           </Panel>
         )}
       </div>
 
+      {/* Journey */}
       {journey && (
-        <section className="mt-5">
+        <div className="mt-5">
           <Panel title="Where you are">
-            <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {journey.map((stage, i) => (
-                <li key={stage.key} className="border-t border-line pt-4">
-                  <span className="label num text-accent opacity-60">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p className="mt-2 text-[0.92rem] font-semibold text-fg">
-                    {stage.name}
-                  </p>
-                  <p className="mt-1 text-[0.8rem] leading-relaxed text-muted">
-                    {stage.description}
-                  </p>
-                </li>
-              ))}
-            </ol>
+            {/* current = -1 until an advisor sets a stage — the honest default */}
+            <JourneyTrack stages={journey} current={-1} />
             <p className="mt-6 border-t border-line pt-4 text-[0.8rem] text-faint">
               Your current stage is set by your advisor as the case progresses.
             </p>
           </Panel>
-        </section>
+        </div>
       )}
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
-        <Panel title={role === "business" ? "Requests" : "Applications"}>
+      {/* Collections */}
+      <div className="mt-5 grid items-start gap-5 lg:grid-cols-2">
+        <Panel
+          title={role === "business" ? "Requests" : "Applications"}
+          action={
+            <Link href="/portal/cases" className="label text-faint transition-colors hover:text-accent">
+              View all
+            </Link>
+          }
+        >
           {cases.length === 0 && (
             <EmptyState
               icon="file"
@@ -206,32 +211,33 @@ export default async function PortalDashboard() {
           )}
         </Panel>
 
-        <Panel title="Documents">
-          {documents.length === 0 && (
+        <Panel
+          title="Documents"
+          action={
+            <Link href="/portal/documents" className="label text-faint transition-colors hover:text-accent">
+              View all
+            </Link>
+          }
+        >
+          {documents.length === 0 ? (
             <div>
-              <p className="text-[0.88rem] leading-relaxed text-muted">
+              <p className="mb-4 text-[0.86rem] leading-relaxed text-muted">
                 Nothing uploaded yet. For your pathway we typically need:
               </p>
-              <ul className="mt-4 space-y-2">
-                {required.map((d) => (
-                  <li
-                    key={d.name}
-                    className="flex items-center justify-between gap-4 border-b border-line pb-2 text-[0.86rem]"
-                  >
-                    <span className="text-fg">{d.name}</span>
-                    <span className="label text-faint">{d.category}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/portal/documents" className="label mt-5 inline-flex text-accent">
-                <span className="draw">Go to documents</span>
-              </Link>
+              {required.map((d) => (
+                <DataRow
+                  key={d.name}
+                  label={d.name}
+                  value={<StatusPill status="required" label="Required" />}
+                  meta={<span className="label text-faint">{d.category}</span>}
+                />
+              ))}
             </div>
-          )}
+          ) : null}
         </Panel>
       </div>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      <div className="mt-5 grid items-start gap-5 lg:grid-cols-2">
         <Panel title="Appointments">
           {appointments.length === 0 && (
             <EmptyState
@@ -257,9 +263,9 @@ export default async function PortalDashboard() {
         <BackendRequired
           feature="Case, document and messaging data"
           needs={[
-            "Database tables: cases, documents, tasks, conversations, messages, appointments, notifications",
+            "Tables: cases, documents, tasks, conversations, messages, appointments, notifications",
             "Access-controlled file storage — documents must never be served from public URLs",
-            "Advisor assignment and case status management in the admin area",
+            "Advisor assignment and case stage management in the admin area",
           ]}
         />
       </div>

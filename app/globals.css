@@ -275,6 +275,13 @@ p { text-wrap: pretty; }
   filter: saturate(0.4) contrast(1.1) brightness(0.42);
 }
 
+/* The grade is for photography only. Brand marks and UI imagery placed inside
+   a plate (logo lockups, avatars) must opt out or they render washed out. */
+.plate img.no-grade,
+.plate-deep img.no-grade {
+  filter: none;
+}
+
 .plate::after {
   content: "";
   position: absolute;

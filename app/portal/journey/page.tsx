@@ -1,33 +1,55 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
+import { JOURNEYS, type Role } from "@/lib/auth/types";
 import {
   PortalHeading,
-  EmptyState,
+  Panel,
+  JourneyTrack,
   BackendRequired,
 } from "@/components/portal/Pieces";
 
-export default async function Page() {
+const isClientRole = (r: Role): r is "student" | "professional" | "business" =>
+  r === "student" || r === "professional" || r === "business";
+
+export default async function JourneyPage() {
   const session = await getSession();
   if (!session) redirect("/login");
+
+  const journey = isClientRole(session.role) ? JOURNEYS[session.role] : null;
 
   return (
     <>
       <PortalHeading
+        eyebrow="Your route"
         title="Your journey"
         lead="Each stage, what it involves, and where your case currently sits."
       />
 
-      <EmptyState
-        icon="check"
-        title="Your stage hasn't been set yet"
-        body="Once an advisor picks up your case they will mark your current stage here, so you always know what is happening and what comes next."
-        action={{ label: "Message an advisor", href: "/portal/messages" }}
-      />
+      {journey ? (
+        <Panel title="Stages">
+          {/* current = -1 until an advisor sets one. We do not guess. */}
+          <JourneyTrack stages={journey} current={-1} />
+          <p className="mt-7 border-t border-line pt-5 text-[0.84rem] leading-relaxed text-muted">
+            Your advisor marks the current stage as your case moves. Until then
+            nothing here is assumed — if you want to know where you stand, ask
+            and you will get a straight answer.
+          </p>
+        </Panel>
+      ) : (
+        <Panel title="Stages">
+          <p className="text-[0.88rem] text-muted">
+            Journey tracking applies to client accounts.
+          </p>
+        </Panel>
+      )}
 
       <div className="mt-8">
         <BackendRequired
           feature="Journey stage tracking"
-          needs={["cases table with a stage column per client","Advisor tooling to advance a stage and record the reason"]}
+          needs={[
+            "cases table with a stage column per client",
+            "Advisor tooling to advance a stage and record the reason",
+          ]}
         />
       </div>
     </>

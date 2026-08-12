@@ -11,7 +11,8 @@
     "build:brand": "node scripts/brand-assets.mjs",
     "build:map": "node scripts/build-map.mjs",
     "typecheck": "tsc --noEmit",
-    "build:hero": "node scripts/fetch-hero-images.mjs"
+    "build:hero": "node scripts/fetch-hero-images.mjs",
+    "audit:portal": "node scripts/portal-shots.mjs"
   },
   "dependencies": {
     "motion": "^13.1.0",
