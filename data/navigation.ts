@@ -115,10 +115,13 @@ export const footerNav = [
 ];
 
 /**
- * Legal links live in the footer's closing rail rather than as a fourth
- * column. They still have to be one click away — a privacy policy link is not
- * optional for EU visitors — but a column of them competed for attention with
- * the pathways, which is what people are actually there to find.
+ * Legal sits as a fourth column so the footer can end on nothing but the
+ * copyright line.
+ *
+ * These cannot simply be deleted: a privacy policy link has to be reachable
+ * for EU visitors, and the disclaimer is what keeps the outcome claims on the
+ * rest of the site honest. As a column they take no extra vertical space —
+ * they sit beside the existing three rather than below them.
  *
  * "Book a Consultation" was dropped from the Company column: it pointed at
  * /contact#journey while the line above it already pointed at /contact, so the
@@ -129,4 +132,5 @@ export const footerLegal = [
   { label: "Terms", href: "/legal/terms" },
   { label: "Cookies", href: "/legal/cookie-policy" },
   { label: "Disclaimer", href: "/legal/disclaimer" },
+  { label: "Image credits", href: "/legal/image-credits" },
 ];

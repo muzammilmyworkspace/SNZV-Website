@@ -184,12 +184,19 @@ shows no icon rather than a dead link.
 |---------|-------|
 | LinkedIn | ✅ live |
 | WhatsApp | ✅ live (derived from the published number, no profile URL needed) |
-| Instagram | ❌ `null` — supply the profile URL |
-| Facebook | ❌ `null` — supply the page URL |
-| TikTok | ❌ `null` — supply the profile URL |
-| X | ❌ `null` — supply the profile URL |
+| Instagram | ⬜ `null` — supply the profile URL |
+| Facebook | ⬜ `null` — supply the page URL |
+| TikTok | ⬜ `null` — supply the profile URL |
+| YouTube | ⬜ `null` — supply the channel URL |
+| X | ⬜ `null` — supply the profile URL |
 
-The icons are already built. Filling in a URL is the only step.
+All seven icons render. The five without a URL are drawn dimmed and are not
+links — they are marked "profile not published yet" to assistive technology.
+Adding a URL turns that icon into a working link with no code change.
+
+No handles were guessed. A social icon that 404s in front of a prospective
+client reads as an abandoned account, which is worse than an icon that is
+visibly not live yet.
 
 ---
 

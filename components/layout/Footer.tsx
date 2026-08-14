@@ -24,7 +24,7 @@ export function Footer() {
 
       <Shell className="relative">
         {/* Brand statement, set large */}
-        <div className="grid gap-12 py-16 lg:grid-cols-[1.15fr_2fr] lg:gap-20 lg:py-20">
+        <div className="grid gap-10 py-12 lg:grid-cols-[1.05fr_2fr] lg:gap-16 lg:py-14">
           <div>
             <Link href="/" aria-label="SnZ Ventures — home" className="group inline-flex items-center gap-3">
               <Image
@@ -43,21 +43,35 @@ export function Footer() {
               Geography should not be a barrier to ambition.
             </p>
 
+            {/* The phone number lives here now that the contact rail is down
+                to email and WhatsApp — otherwise it left the footer entirely. */}
             <address className="mt-7 not-italic">
               <span className="label block text-accent">Office</span>
               <p className="mt-3 text-[0.9rem] leading-relaxed text-muted">
                 {company.contact.streetAddress}
                 <br />
-                {company.contact.postalCode} {company.contact.city}
-                <br />
+                {company.contact.postalCode} {company.contact.city},{" "}
                 {company.contact.country}
+                <br />
+                <a
+                  href={`tel:${company.contact.phoneHref}`}
+                  className="transition-colors hover:text-fg"
+                >
+                  {company.contact.phone}
+                </a>
               </p>
             </address>
 
             <SocialLinks className="mt-7" />
+
+            {/* Contact sits directly under the social rail: the two ways to
+                reach a person, in the one place people look for them. */}
+            <ContactLinks location="footer" variant="compact" className="mt-6" />
           </div>
 
-          <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Two columns from the smallest screen up. Stacked one-per-row,
+              four link groups made the footer taller than the phone. */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-9">
             {footerNav.map((group) => (
               <nav key={group.heading} aria-label={group.heading}>
                 <h2 className="label text-accent">{group.heading}</h2>
@@ -75,48 +89,36 @@ export function Footer() {
                 </ul>
               </nav>
             ))}
-          </div>
-        </div>
 
-        {/*
-          One closing rail instead of three.
-
-          The footer previously ran a contact row, a legal row and a separate
-          disclaimer paragraph — three stacked bands of small print that pushed
-          the useful links off most screens. The full regulatory text and the
-          outcomes disclaimer live on /legal/disclaimer, which is linked here,
-          so nothing has been lost except the repetition.
-        */}
-        <div className="border-t border-line py-7">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <ContactLinks location="footer" />
-            <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              {[...footerLegal, { label: "Image credits", href: "/legal/image-credits" }].map(
-                (l) => (
+            <nav aria-label="Legal">
+              <h2 className="label text-accent">Legal</h2>
+              <ul className="mt-5 space-y-3">
+                {footerLegal.map((l) => (
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className="text-[0.76rem] text-faint transition-colors hover:text-fg"
+                      className="text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
                     >
                       {l.label}
                     </Link>
                   </li>
-                )
-              )}
-            </ul>
+                ))}
+              </ul>
+            </nav>
           </div>
-          <p className="mt-5 text-[0.74rem] leading-relaxed text-faint">
-            © {year} {company.name}. Registered in{" "}
-            {company.legal.incorporatedIn}. Admission, employment, banking,
-            licensing and immigration outcomes rest with institutions,
-            employers and national authorities — see the{" "}
-            <Link
-              href="/legal/disclaimer"
-              className="underline underline-offset-2 transition-colors hover:text-fg"
-            >
-              full disclaimer
-            </Link>
-            .
+        </div>
+
+        {/*
+          The footer ends on one line.
+
+          It previously carried a contact row, a legal row and a disclaimer
+          paragraph stacked underneath each other. Contact moved up beside the
+          social rail and legal became a column, so both are still one click
+          away while the foot of the page is just the copyright.
+        */}
+        <div className="border-t border-line py-6">
+          <p className="text-[0.76rem] text-faint">
+            © {year} {company.name}
           </p>
         </div>
       </Shell>

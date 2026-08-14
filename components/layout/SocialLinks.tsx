@@ -26,6 +26,16 @@ type Social = {
   stroke?: boolean;
 };
 
+/**
+ * Networks without a URL yet still render, dimmed and non-interactive.
+ *
+ * The brand wants the full set visible, and an icon that silently disappears
+ * looks like an oversight. But a link to a guessed handle is worse than no
+ * link: it 404s in front of a prospective client and reads as an abandoned
+ * account. So the icon is drawn, marked unavailable to assistive tech, and
+ * simply is not a link until `data/company.ts` has its URL.
+ */
+
 const NETWORKS: Social[] = [
   {
     key: "instagram",
@@ -53,6 +63,12 @@ const NETWORKS: Social[] = [
     path: "M16.6 2h-3.1v13.2a2.5 2.5 0 11-1.9-2.43V9.6a5.6 5.6 0 105 5.57V9.05a7 7 0 003.9 1.19V7.13a4 4 0 01-3.9-4V2z",
   },
   {
+    key: "youtube",
+    label: "YouTube",
+    href: company.social.youtube,
+    path: "M23.5 6.9a3 3 0 00-2.12-2.12C19.5 4.27 12 4.27 12 4.27s-7.5 0-9.38.51A3 3 0 00.5 6.9 31.4 31.4 0 000 12a31.4 31.4 0 00.5 5.1 3 3 0 002.12 2.12c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3 3 0 002.12-2.12A31.4 31.4 0 0024 12a31.4 31.4 0 00-.5-5.1zM9.6 15.6V8.4l6.24 3.6-6.24 3.6z",
+  },
+  {
     key: "x",
     label: "X",
     href: company.social.x,
@@ -67,36 +83,56 @@ const NETWORKS: Social[] = [
 ];
 
 export function SocialLinks({ className }: { className?: string }) {
-  const shown = NETWORKS.filter((n) => Boolean(n.href));
-  if (!shown.length) return null;
-
   return (
     <ul className={cn("flex flex-wrap items-center gap-2", className)}>
-      {shown.map((n) => (
-        <li key={n.key}>
-          <a
-            href={n.href!}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${company.name} on ${n.label}`}
-            onClick={() => analytics.outbound(n.href!)}
-            className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] border border-line text-muted transition-all duration-400 hover:-translate-y-0.5 hover:border-moss-400/60 hover:text-accent"
+      {NETWORKS.map((n) => {
+        const glyph = (
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden
+            className="h-[1.05rem] w-[1.05rem]"
+            fill={n.stroke ? "none" : "currentColor"}
+            stroke={n.stroke ? "currentColor" : undefined}
+            strokeWidth={n.stroke ? 1.6 : undefined}
+            strokeLinecap={n.stroke ? "round" : undefined}
+            strokeLinejoin={n.stroke ? "round" : undefined}
           >
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden
-              className="h-[1.05rem] w-[1.05rem]"
-              fill={n.stroke ? "none" : "currentColor"}
-              stroke={n.stroke ? "currentColor" : undefined}
-              strokeWidth={n.stroke ? 1.6 : undefined}
-              strokeLinecap={n.stroke ? "round" : undefined}
-              strokeLinejoin={n.stroke ? "round" : undefined}
-            >
-              <path d={n.path} />
-            </svg>
-          </a>
-        </li>
-      ))}
+            <path d={n.path} />
+          </svg>
+        );
+
+        const box =
+          "flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] border border-line";
+
+        return (
+          <li key={n.key}>
+            {n.href ? (
+              <a
+                href={n.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${company.name} on ${n.label}`}
+                onClick={() => analytics.outbound(n.href!)}
+                className={cn(
+                  box,
+                  "text-muted transition-all duration-400 hover:-translate-y-0.5 hover:border-moss-400/60 hover:text-accent"
+                )}
+              >
+                {glyph}
+              </a>
+            ) : (
+              <span
+                role="img"
+                aria-label={`${n.label} — profile not published yet`}
+                title={`${n.label} — coming soon`}
+                className={cn(box, "cursor-default text-faint opacity-40")}
+              >
+                {glyph}
+              </span>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }
