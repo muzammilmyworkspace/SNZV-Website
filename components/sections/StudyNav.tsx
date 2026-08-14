@@ -146,7 +146,7 @@ export function StudyNav() {
                   <span
                     aria-hidden
                     className={cn(
-                      "absolute inset-x-3 bottom-0 h-px origin-left bg-moss-400 transition-transform duration-500 ease-[var(--ease-out-expo)]",
+                      "grad-rule absolute inset-x-3 bottom-0 h-px origin-left transition-transform duration-500 ease-[var(--ease-out-expo)]",
                       isActive ? "scale-x-100" : "scale-x-0"
                     )}
                   />

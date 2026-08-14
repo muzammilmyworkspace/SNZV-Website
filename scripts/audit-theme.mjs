@@ -138,6 +138,53 @@ for (const theme of ["dark", "light"]) {
       ok(`${route}: all text meets WCAG AA`);
     }
 
+    /**
+     * Gradient-clipped emphasis (`.d-em`).
+     *
+     * Its computed `color` is transparent — the paint comes from a clipped
+     * background-image — so the sweep above skips it entirely and the most
+     * prominent word on the page would go unchecked. Pull the gradient's own
+     * colour stops and hold the WORST one to the large-text threshold, since
+     * that stop is a real part of what the reader sees.
+     */
+    const emStops = await page.evaluate(() => {
+      const painted = (el) => {
+        let n = el;
+        while (n && n !== document.documentElement) {
+          const bg = getComputedStyle(n).backgroundColor;
+          const a = bg.startsWith("rgba") ? parseFloat(bg.split(",").pop()) : 1;
+          if (bg && bg !== "transparent" && a >= 0.85) return bg;
+          n = n.parentElement;
+        }
+        return getComputedStyle(document.body).backgroundColor;
+      };
+      const out = [];
+      for (const el of document.querySelectorAll(".d-em")) {
+        const r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) continue;
+        if (el.closest(".plate, .plate-deep")) continue;
+        const stops = (getComputedStyle(el).backgroundImage.match(/rgba?\([^)]+\)/g) ?? []);
+        out.push({ stops, bg: painted(el), text: el.textContent.trim().slice(0, 30) });
+      }
+      return out;
+    });
+
+    const emFails = [];
+    for (const e of emStops) {
+      for (const stop of e.stops) {
+        const got = ratio(stop, e.bg);
+        if (got < 3) emFails.push({ ...e, stop, got });
+      }
+    }
+    if (emFails.length) {
+      bad(`${route}: ${emFails.length} gradient stop(s) on .d-em below 3:1`);
+      emFails.slice(0, 3).forEach((f) =>
+        console.log(`          ${f.got.toFixed(2)}:1 "${f.text}" ${f.stop} on ${f.bg}`)
+      );
+    } else if (emStops.length) {
+      ok(`${route}: gradient emphasis clears 3:1 at every stop (${emStops.length} found)`);
+    }
+
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth
     );

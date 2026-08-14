@@ -52,9 +52,9 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-[var(--ease-out-expo)]",
+          "site-header fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-[var(--ease-out-expo)]",
           scrolled
-            ? "border-b border-line bg-surface/80 backdrop-blur-xl"
+            ? "is-scrolled border-b border-line bg-surface/80 backdrop-blur-xl"
             : "border-b border-line bg-transparent"
         )}
       >
@@ -118,7 +118,7 @@ export function Header() {
                       {active && (
                         <motion.span
                           layoutId="nav-dot"
-                          className="absolute -bottom-0.5 left-3 h-px w-[calc(100%-1.5rem)] bg-moss-400"
+                          className="grad-rule absolute -bottom-0.5 left-3 h-px w-[calc(100%-1.5rem)]"
                           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                         />
                       )}

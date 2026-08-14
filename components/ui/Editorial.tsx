@@ -48,33 +48,21 @@ export function Chapter({
 }) {
   return (
     <div className={cn("flex items-center gap-4", className)}>
-      <span
-        className={cn(
-          "label num",
-          tone === "dark" ? "text-accent" : "text-accent"
-        )}
-      >
-        {index}
-      </span>
+      {/*
+        `tone` is retained for call-site compatibility but no longer selects a
+        colour: the accent, the rule and the label all read from the tone band
+        they sit in, so they follow the theme automatically.
+      */}
+      <span className="label num text-accent">{index}</span>
       <motion.span
         aria-hidden
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true, margin: "320px 0px -5% 0px" }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className={cn(
-          "h-px w-10 origin-left sm:w-16",
-          tone === "dark" ? "bg-raised" : "bg-ink/20"
-        )}
+        className="grad-rule h-px w-10 origin-left opacity-80 sm:w-16"
       />
-      <span
-        className={cn(
-          "label",
-          tone === "dark" ? "text-muted" : "text-mist-500"
-        )}
-      >
-        {label}
-      </span>
+      <span className="label text-muted">{label}</span>
     </div>
   );
 }
@@ -311,8 +299,14 @@ export function Action({
   }[size];
 
   const variants = {
+    /**
+     * Brand gradient fill. `bg-moss-400` stays as the base layer so the label
+     * never sits on a bare surface if the gradient fails to paint, and the
+     * shadow blends both hues so the glow reads as the mark rather than as a
+     * green light source.
+     */
     solid:
-      "bg-moss-400 text-void hover:bg-moss-300 shadow-[0_10px_34px_-14px_rgba(114,196,60,0.75)]",
+      "grad-brand bg-moss-400 text-void shadow-[0_10px_34px_-14px_rgba(61,113,201,0.55),0_10px_34px_-14px_rgba(114,196,60,0.55)] hover:shadow-[0_14px_40px_-12px_rgba(61,113,201,0.7),0_14px_40px_-12px_rgba(114,196,60,0.7)]",
     line: "border border-line text-fg hover:border-moss-400/70 hover:text-accent backdrop-blur-[2px]",
     ghost: "border border-ink/15 text-ink hover:border-moss-600/60 hover:text-accent",
     quiet: "text-muted hover:text-fg",

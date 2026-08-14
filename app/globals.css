@@ -89,6 +89,57 @@
   background-color: var(--surface);
 }
 
+/* ============================================================================
+   BRAND GRADIENT — the two logo hues
+   ----------------------------------------------------------------------------
+   Sampled from public/brand/snz-logo-original.png rather than picked by eye.
+   The mark is 42% navy-blue around hue 228° (#243057) and 34% green around
+   hue 96° (#7CBD43); everything else is white or an edge pixel.
+
+   Those two sit 130° apart, and a straight two-stop blend between them passes
+   through desaturated slate — the exact muddy midpoint that makes a
+   blue-to-green gradient look cheap. A teal midpoint holds chroma across the
+   whole sweep, so the ramp stays luminous end to end. That mid stop is the
+   difference between "premium" and "default CSS gradient".
+
+   Two ramps, because a gradient bright enough to glow on navy is unreadable
+   on near-white:
+
+     --grad-brand   for FILLS (buttons, rules, hairlines) — vivid
+     --grad-text    for TYPE  (background-clip: text)     — meets contrast
+
+   `--grad-text` is redefined per tone so emphasised words stay legible on
+   whichever surface they land on. Its darkest stop is the one that has to
+   clear AA, since that is the worst case a reader sees.
+   ========================================================================== */
+
+.tone-deep,
+.tone-soft,
+.tone-light,
+.tone-white {
+  --brand-blue: #3D71C9;
+  --brand-teal: #2FAE93;
+  --brand-green: #72C43C;
+  --grad-brand: linear-gradient(
+    100deg,
+    var(--brand-blue) 0%,
+    var(--brand-teal) 52%,
+    var(--brand-green) 100%
+  );
+}
+
+/* On dark ground the vivid ramp is already well clear of AA. */
+.tone-deep,
+.tone-soft {
+  --grad-text: linear-gradient(100deg, #6FA3F0 0%, #4FD1B0 52%, #93D667 100%);
+}
+
+/* On light ground every stop is darkened until the lightest clears 4.5:1. */
+.tone-light,
+.tone-white {
+  --grad-text: linear-gradient(100deg, #2757A8 0%, #10786B 52%, #3E7A22 100%);
+}
+
 .tone-deep {
   --surface: var(--color-navy-900);
   --surface-raised: #0E1E3C;
@@ -178,6 +229,18 @@
   color: var(--color-ink);
 }
 
+/* In light mode the two main bands become light, so type on them needs the
+   darkened ramp — the same swap tone-light/tone-white already make. */
+[data-theme="light"] .tone-deep,
+[data-theme="light"] .tone-soft {
+  --grad-text: linear-gradient(100deg, #2757A8 0%, #10786B 52%, #3E7A22 100%);
+}
+
+/* …except over a photograph, which stays dark whatever the theme. */
+[data-theme="light"] .plate-deep {
+  --grad-text: linear-gradient(100deg, #6FA3F0 0%, #4FD1B0 52%, #93D667 100%);
+}
+
 [data-theme="light"] .tone-deep {
   --surface: #FAFBFD;
   --surface-raised: #FFFFFF;
@@ -244,6 +307,30 @@
   --line-strong: rgba(255, 255, 255, 0.22);
   --accent: var(--color-moss-400);
   --accent-soft: var(--color-moss-300);
+}
+
+/**
+ * The header in light mode.
+ *
+ * At rest the header is a transparent overlay — it floats on the hero, which
+ * on every page is a DARKENED PHOTOGRAPH. In dark mode its type is white, so
+ * that works. In light mode the type is navy, and navy on a dark photograph is
+ * unreadable. The photo does not change with the theme, so the header cannot
+ * simply follow it.
+ *
+ * Rather than pin the header's type to white (which then fails the moment a
+ * page opens on a light section), light mode gives it a frosted ground at all
+ * times. The overlay character survives — you can still see the hero moving
+ * underneath — while the type always has something light to sit on.
+ */
+[data-theme="light"] .site-header {
+  background-color: color-mix(in srgb, #FAFBFD 78%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+
+[data-theme="light"] .site-header.is-scrolled {
+  background-color: color-mix(in srgb, #FAFBFD 92%, transparent);
 }
 
 /* Atmosphere is tuned for a dark ground; on a light one it reads as haze. */
@@ -399,9 +486,56 @@ body {
 }
 
 /* Accent word — colour and weight, no italic serif flourish */
+/**
+ * The emphasised word in a display line — the site's one recurring flourish.
+ *
+ * `color` is declared FIRST as a real colour and only then overridden by the
+ * clipped gradient. That ordering matters: if `background-clip: text` is
+ * unsupported, or the paint is dropped for any reason, the word falls back to
+ * a solid accent instead of rendering transparent and vanishing off the page.
+ */
 .d-em {
   color: var(--accent-soft);
   font-weight: 700;
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Keeps descenders and the italic-ish sweep from being clipped. */
+  padding-inline: 0.03em;
+}
+
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .d-em {
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/**
+ * The shine. A slow drift of the gradient across the word — the ramp is
+ * oversized so there is somewhere to travel to.
+ *
+ * 14s and a 25% swing on purpose: fast enough to notice on a second look,
+ * slow enough that it never competes with the reveal animations or pulls the
+ * eye while someone is reading the sentence around it.
+ */
+.d-em {
+  background-size: 190% 100%;
+  background-position: 0% 50%;
+  animation: em-shine 14s var(--ease-in-out-quart) infinite;
+}
+
+@keyframes em-shine {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .d-em {
+    animation: none;
+    background-position: 25% 50%;
+  }
 }
 
 .lede {
@@ -542,11 +676,45 @@ p { text-wrap: pretty; }
   inset-inline: 0;
   top: 0;
   height: 1px;
+  /* Blue → teal → green, faded at both ends so it reads as a lit seam
+     between bands rather than a drawn rule. */
   background: linear-gradient(
     90deg,
-    transparent,
-    color-mix(in srgb, var(--color-moss-400) 45%, transparent),
-    transparent
+    transparent 0%,
+    color-mix(in srgb, var(--brand-blue) 55%, transparent) 22%,
+    color-mix(in srgb, var(--brand-teal) 70%, transparent) 50%,
+    color-mix(in srgb, var(--brand-green) 55%, transparent) 78%,
+    transparent 100%
+  );
+}
+
+/* ----------------------------------------------------------------- accents */
+
+/** Brand-gradient fill for small surfaces: rules, bars, active markers. */
+.grad-brand {
+  background-image: var(--grad-brand);
+}
+
+/**
+ * Gradient hairline under an active item.
+ * Used by the header nav marker and the Study Abroad sub-nav.
+ */
+.grad-rule {
+  background-image: var(--grad-brand);
+}
+
+/**
+ * The meridian rail's progress line. Runs blue at the top through to green as
+ * you descend, then fades — so the page's own scroll traces the mark's two
+ * hues rather than a single flat green stripe.
+ */
+.meridian-line {
+  background-image: linear-gradient(
+    to bottom,
+    var(--brand-blue) 0%,
+    var(--brand-teal) 45%,
+    color-mix(in srgb, var(--brand-green) 75%, transparent) 80%,
+    transparent 100%
   );
 }
 

@@ -62,7 +62,7 @@ export function Meridian({
       {/* rail */}
       <div className="absolute left-6 top-[18vh] h-[64vh] w-px bg-raised">
         <motion.div
-          className="absolute left-0 top-0 w-px origin-top bg-gradient-to-b from-moss-400 via-moss-400/70 to-transparent"
+          className="meridian-line absolute left-0 top-0 w-px origin-top"
           style={{
             height: "100%",
             scaleY: reduced ? 1 : progress,
