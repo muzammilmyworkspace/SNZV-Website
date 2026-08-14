@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import type { Pathway } from "@/data/pathways";
 import type { Destination } from "@/data/destinations";
 import { availabilityLabel } from "@/data/destinations";
+import type { StudyDestination } from "@/data/study";
 import type { Article } from "@/data/insights";
 import type { Service } from "@/data/services";
 
@@ -163,6 +164,81 @@ export function DestinationCard({
       <p className="mt-3 border-t border-line pt-3 text-[0.76rem] leading-snug text-faint">
         {destination.marketNote}
       </p>
+    </motion.article>
+  );
+}
+
+/* -------------------------------------------------- Study destination -- */
+
+/**
+ * The study-pathway destination plate.
+ *
+ * Deliberately separate from `DestinationCard`: that one reports SnZ service
+ * availability across three pathways, this one answers a student's question —
+ * what does a year here cost, and why would I pick it. Same construction
+ * language so the two never look like they came from different sites.
+ *
+ * Used by both the Study Abroad page and the homepage section. In both the
+ * card sits directly under that section's h2, so the country name is always
+ * an h3 — parameterising the level would only invite a skipped heading.
+ */
+export function StudyDestinationCard({
+  destination,
+  index = 0,
+  href = "/study-abroad#destinations",
+}: {
+  destination: StudyDestination;
+  index?: number;
+  href?: string;
+}) {
+  return (
+    <motion.article
+      {...reveal}
+      transition={{ duration: 0.75, delay: (index % 5) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      className="group h-full"
+    >
+      <Link
+        href={href}
+        onClick={() => analytics.destinationView(destination.slug)}
+        className="flex h-full flex-col"
+      >
+        <div className="plate relative aspect-[4/5] overflow-hidden">
+          <Image
+            src={destination.image}
+            alt={destination.imageAlt}
+            fill
+            sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 22vw"
+            loading="lazy"
+            className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
+          />
+
+          {/* Tuition sits on the plate — it is the first thing students look for. */}
+          <span className="absolute left-3 top-3 z-[3] label border border-white/25 bg-black/35 px-2 py-1 text-white backdrop-blur-sm">
+            {destination.tuitionFrom}
+          </span>
+
+          <div className="absolute inset-x-4 bottom-4 z-[3]">
+            <h3 className="font-display text-[1.5rem] leading-none tracking-[-0.02em] text-white">
+              {destination.country}
+            </h3>
+            <span className="label mt-1.5 block text-white/70">
+              {destination.city}
+            </span>
+          </div>
+        </div>
+
+        <p className="mt-4 text-[0.85rem] leading-relaxed text-muted">
+          {destination.blurb}
+        </p>
+
+        <p className="mt-auto flex items-start gap-2.5 border-t border-line pt-3 text-[0.76rem] leading-snug text-faint">
+          <span
+            aria-hidden
+            className="mt-[0.42em] block h-1 w-1 shrink-0 rounded-full bg-moss-400/70"
+          />
+          {destination.draw}
+        </p>
+      </Link>
     </motion.article>
   );
 }

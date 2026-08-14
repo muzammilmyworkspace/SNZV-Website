@@ -5,6 +5,7 @@ import { Journeys } from "@/components/sections/Journeys";
 import { Pain } from "@/components/sections/Pain";
 import { Method } from "@/components/sections/Method";
 import { Atlas } from "@/components/sections/Atlas";
+import { StudyDestinations } from "@/components/sections/Study";
 import { Why, Insights, Final } from "@/components/sections/Closing";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Meridian } from "@/components/visuals/Meridian";
@@ -24,9 +25,10 @@ const CHAPTERS = [
   { id: "pain", index: "03", label: "The reality" },
   { id: "method", index: "04", label: "The method" },
   { id: "atlas", index: "05", label: "The atlas" },
-  { id: "why", index: "06", label: "Why SnZ" },
-  { id: "proof", index: "07", label: "Proof" },
-  { id: "insights", index: "08", label: "Insights" },
+  { id: "study-destinations", index: "06", label: "Study destinations" },
+  { id: "why", index: "07", label: "Why SnZ" },
+  { id: "proof", index: "08", label: "Proof" },
+  { id: "insights", index: "09", label: "Insights" },
 ];
 
 export default function HomePage() {
@@ -39,6 +41,13 @@ export default function HomePage() {
       <Pain />
       <Method />
       <Atlas />
+      {/*
+        Study destinations follow the atlas deliberately: the atlas answers
+        "where does SnZ operate", this answers "where could I actually study".
+        Same card, same data and same section language as /study-abroad, so the
+        two pages read as one product rather than two.
+      */}
+      <StudyDestinations variant="home" />
       <Why />
       <Testimonials />
       <Insights />

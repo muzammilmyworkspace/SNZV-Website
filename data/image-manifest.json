@@ -147,5 +147,50 @@
     "source": "Unsplash",
     "licence": "Unsplash Licence",
     "page": "https://unsplash.com/photos/1449824913935-59a10b8d2000"
+  },
+  {
+    "key": "dest-budapest",
+    "file": "/images/dest-budapest.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Jakub Hałun",
+    "page": "https://commons.wikimedia.org/wiki/File:20190503_Hungarian_Parliament_Building_1814_2263_DxO.jpg",
+    "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAACwAwCdASoUAA0APzmGuVOvKSWisAgB4CcJQBdiP/wHkDT4sdLtEAD+0yQ7lg9zrxStZwf4tHBmvW3DP+PjSaMsVydy1jNhHKdR/0wYAi9p/daMG0I+TNkHe95HHe7/XT4AAA=="
+  },
+  {
+    "key": "dest-riga",
+    "file": "/images/dest-riga.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC0",
+    "artist": "Aleksejs Bergmanis",
+    "page": "https://commons.wikimedia.org/wiki/File:Aerial_view,_sun_and_clouds_in_Riga.jpg",
+    "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwBACdASoUAAsAPzmGulOvKKWisAgB4CcJZACdMoMxpn/Ae7Nech8Udfdh+oAAAP5Yct6hHAX01ZDGz2tnbIfC4MY35P3Mh50sCMQ9Wt1t4OyCIrIalgU0Zh+Prv3xOdpqdz5yfdhjlZN1x98rdoAA"
+  },
+  {
+    "key": "dest-valletta",
+    "file": "/images/dest-valletta.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Matthew Axiak",
+    "page": "https://commons.wikimedia.org/wiki/File:City_Gate,_Valletta_002.jpg",
+    "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADQAwCdASoUAAwAPzmGuVOvKSWisAgB4CcJbACdL1yBKUWqHMlOhAAA/RwS2P5ijqoMxbvXQmikbATjhmlwmth0t/RHe4qPxkBWcMRJft6THhR7AefCQE+IgAA="
+  },
+  {
+    "key": "dest-paris",
+    "file": "/images/dest-paris.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY 2.0",
+    "artist": "Kainet",
+    "page": "https://commons.wikimedia.org/wiki/File:Arc_de_Triomphe_HDR_2007.jpg",
+    "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACQAwCdASoUAA0APzmEuVOvKKWisAgB4CcJbACdABKq0ssALCQAAPm1MxFYfrrVvjcMuZmVi0UxbEtHbGpZoR15dIu0SPHgFtUw4+b3tILhAQ+sGIbpNHYyiPUAAA=="
+  },
+  {
+    "key": "dest-tallinn",
+    "file": "/images/dest-tallinn.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 3.0",
+    "artist": "Diego Delso",
+    "page": "https://commons.wikimedia.org/wiki/File:Ayuntamiento,_vistas_panor%C3%A1micas_desde_Toompea,_Tallin,_Estonia,_2012-08-05,_DD_21.JPG",
+    "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJbACdAB4+M9j3RQlbVAAA/nFeGxMCMrQ8SlhgwSTml5qk52rtR3rnv5Qevuwfe5+bM8QnEJX5Q59GDlwAAA=="
   }
 ]

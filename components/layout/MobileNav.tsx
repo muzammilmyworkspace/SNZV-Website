@@ -156,11 +156,11 @@ export function MobileNav({
               size="lg"
               className="w-full"
               onClick={() => {
-                analytics.ctaClick("Start Your Journey", "mobile_nav");
+                analytics.ctaClick("Book a consultation", "mobile_nav");
                 onClose();
               }}
             >
-              Start your journey
+              Book a consultation
             </Action>
             <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
               <a

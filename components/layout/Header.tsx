@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav } from "@/data/navigation";
-import { Action } from "@/components/ui/Editorial";
 import { MobileNav } from "./MobileNav";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -14,6 +13,12 @@ import { cn } from "@/lib/utils";
 /**
  * Header: an overlay rule at rest, a compact surface once you move.
  * No pill buttons, no boxed logo — a hairline, a wordmark and one action.
+ *
+ * The nav renders `primaryNav` in full. It used to filter `/contact` out and
+ * carry a "Start your journey" CTA instead; both are gone. Contact is now an
+ * ordinary nav item, which removes the odd situation of the primary
+ * conversion path being the one link excluded from the primary navigation.
+ * Every page still ends on a full CTA section, so nothing was lost.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -88,9 +93,7 @@ export function Header() {
             className="ml-auto hidden items-center gap-1 xl:flex"
             onMouseLeave={() => setOpen(null)}
           >
-            {primaryNav
-              .filter((n) => n.href !== "/contact")
-              .map((item) => {
+            {primaryNav.map((item) => {
                 const active = isActive(item.href);
                 const hasKids = Boolean(item.children?.length);
                 return (
@@ -169,16 +172,6 @@ export function Header() {
               </svg>
               Login
             </Link>
-
-            <div className="hidden sm:block">
-              <Action
-                href="/contact#journey"
-                size="sm"
-                onClick={() => analytics.ctaClick("Start Your Journey", "header")}
-              >
-                Start your journey
-              </Action>
-            </div>
 
             <button
               type="button"

@@ -137,6 +137,7 @@ npm run db:status       # show pending migrations without applying them
 npm run db:migrate      # apply migrations (transactional, checksummed)
 npm run db:bootstrap -- --email you@example.com --name "Your Name"
 npm run audit           # 19 routes x 5 viewports (site must be running)
+npm run audit:study     # Study Abroad anchors, sticky offsets, scroll spy
 npm run typecheck
 npm run build:images    # re-fetch + re-verify image licences
 npm run build:hero      # cinematic plates
@@ -152,6 +153,11 @@ animations and SEO metadata, writing screenshots to `audit-shots/`.
 > `scroll-behavior: smooth` would otherwise make it measure mid-flight, and
 > IntersectionObserver only fires on painted frames — both produce false
 > "unrevealed" findings.
+
+`audit:study` covers what the general audit structurally cannot: in-page anchor
+landing positions, sticky-offset arithmetic and scroll-spy correctness. Those
+are invisible in a screenshot, and two real bugs shipped past the main audit
+before this existed — see the header comment in `scripts/audit-study.mjs`.
 
 ## Content integrity
 

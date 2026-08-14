@@ -64,14 +64,22 @@ export const primaryNav: NavItem[] = [
       },
     ],
   },
-  {
-    label: "Destinations",
-    href: "/destinations",
-    description: "Where we operate",
-  },
-  { label: "Insights", href: "/insights", description: "Know before you go" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "/contact", description: "Talk to an advisor" },
 ];
+
+/**
+ * Destinations and Insights were removed from the global header deliberately.
+ *
+ * Both remain live routes, stay in the sitemap and are still linked from the
+ * footer and from in-page content — the destination story now opens on the
+ * homepage and continues on /study-abroad, which is where visitors actually
+ * look for it. Removing the top-level entries shortened the header to six
+ * items and let `Contact` come out of hiding, so the primary conversion path
+ * is a nav item rather than a floating button competing with it.
+ *
+ * Do not re-add them here without also removing them from the homepage and
+ * Study Abroad sections, or the same destination is offered three ways.
+ */
 
 export const footerNav = [
   {

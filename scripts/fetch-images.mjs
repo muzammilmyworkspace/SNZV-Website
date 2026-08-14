@@ -21,6 +21,14 @@ const commons = {
   rome: "File:Trevi Fountain, Rome, Italy 2 - May 2007.jpg",
   prague: "File:Prague (6365119737).jpg",
   bucharest: "File:Bucharest University Square (cropped).jpg",
+  // Study-abroad destinations. Resolved by searching each city's Wikipedia
+  // article for free-licensed, landscape, >1800px originals.
+  budapest: "File:20190503 Hungarian Parliament Building 1814 2263 DxO.jpg",
+  riga: "File:Aerial view, sun and clouds in Riga.jpg",
+  valletta: "File:City Gate, Valletta 002.jpg",
+  paris: "File:Arc de Triomphe HDR 2007.jpg",
+  tallinn:
+    "File:Ayuntamiento, vistas panorámicas desde Toompea, Tallin, Estonia, 2012-08-05, DD 21.JPG",
 };
 
 async function commonsInfo(title) {
@@ -62,6 +70,15 @@ async function save(buf, name, w, h) {
 }
 
 const manifest = [];
+
+/**
+ * Previously-verified entries, kept so a network failure part-way through
+ * cannot silently drop licence attribution for an image that is still on disk
+ * and still being rendered. New results upsert over these by key.
+ */
+const previous = JSON.parse(
+  await fs.readFile("data/image-manifest.json", "utf8").catch(() => "[]")
+);
 
 await fs.mkdir(OUT, { recursive: true });
 
@@ -125,8 +142,14 @@ for (const [name, id] of Object.entries(unsplash)) {
   }
 }
 
-await fs.writeFile(
-  "data/image-manifest.json",
-  JSON.stringify(manifest, null, 2)
+const merged = [...previous];
+for (const entry of manifest) {
+  const at = merged.findIndex((e) => e.key === entry.key);
+  if (at === -1) merged.push(entry);
+  else merged[at] = entry;
+}
+
+await fs.writeFile("data/image-manifest.json", JSON.stringify(merged, null, 2));
+console.log(
+  `\nmanifest: ${merged.length} assets (${manifest.length} fetched this run)`
 );
-console.log(`\nmanifest: ${manifest.length} assets`);

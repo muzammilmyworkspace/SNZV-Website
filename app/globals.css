@@ -154,6 +154,25 @@ html {
   scroll-padding-top: 90px;
 }
 
+/**
+ * Anchor target on a page that also carries a sticky sub-navigation.
+ *
+ * The global 90px `scroll-padding-top` above already clears the fixed header.
+ * Where a second sticky bar sits under it (see components/sections/StudyNav),
+ * a jumped-to heading would land behind that bar, so its height is added here
+ * per section rather than by raising the global value — which would leave a
+ * dead band at the top of every other page.
+ *
+ * These two values ADD. The scrollport's padding edge is offset by
+ * `scroll-padding-top`, and the target is then aligned by its own
+ * `scroll-margin-top` from that edge. So this is the sub-nav's height alone
+ * (~52px), NOT header + sub-nav — setting the full 8.75rem here lands the
+ * heading 230px down the viewport with a band of dead space above it.
+ */
+.anchor-target {
+  scroll-margin-top: 3.25rem;
+}
+
 body {
   background: var(--color-navy-900);
   color: var(--color-paper);

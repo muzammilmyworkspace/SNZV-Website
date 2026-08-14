@@ -17,7 +17,8 @@
     "db:status": "node scripts/migrate.mjs --dry",
     "db:bootstrap": "node scripts/bootstrap-admin.mjs",
     "db:verify": "node scripts/verify-schema.mjs",
-    "db:doctor": "node scripts/db-doctor.mjs"
+    "db:doctor": "node scripts/db-doctor.mjs",
+    "audit:study": "node scripts/audit-study.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
