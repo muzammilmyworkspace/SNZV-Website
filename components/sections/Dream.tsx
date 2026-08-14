@@ -47,11 +47,11 @@ export function Dream() {
             as="h2"
             className="d-1 max-w-[15ch] text-fg"
             lines={[
-              "Some opportunities",
-              <Fragment key="crossing">
-                are worth <span className="d-em">crossing</span>
+              "Some Opportunities",
+              <Fragment key="Crossing">
+                Are Worth <span className="d-em">Crossing</span>
               </Fragment>,
-              "borders for.",
+              "Borders For.",
             ]}
           />
           <Reveal delay={0.2}>

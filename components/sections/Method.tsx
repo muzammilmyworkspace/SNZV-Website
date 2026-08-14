@@ -44,8 +44,8 @@ export function Method() {
           <MaskedLines
             as="h2"
             className="d-1 max-w-[14ch] text-fg"
-            lines={["One goal.", <Fragment key="clearer">
-              One <span className="d-em">clearer</span> path.
+            lines={["One Goal.", <Fragment key="Clearer">
+              One <span className="d-em">Clearer</span> Path.
             </Fragment>]}
           />
           <Reveal delay={0.15}>

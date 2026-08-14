@@ -42,9 +42,9 @@ export function Why() {
           as="h2"
           className="d-1 max-w-[18ch] text-fg"
           lines={[
-            "Because your next move",
-            <Fragment key="guesswork">
-              deserves more than <span className="d-em">guesswork</span>.
+            "Because Your Next Move",
+            <Fragment key="Guesswork">
+              Deserves More Than <span className="d-em">Guesswork</span>.
             </Fragment>,
           ]}
         />
@@ -134,7 +134,7 @@ export function Insights() {
           <MaskedLines
             as="h2"
             className="d-1 max-w-[14ch] text-fg"
-            lines={["Know before", "you go."]}
+            lines={["Know Before", "You Go."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -261,9 +261,9 @@ export function Final() {
             as="h2"
             className="d-hero text-fg"
             lines={[
-              "Your next chapter",
-              <Fragment key="waiting">
-                is <span className="d-em">waiting</span>.
+              "Your Next Chapter",
+              <Fragment key="Waiting">
+                Is <span className="d-em">Waiting</span>.
               </Fragment>,
             ]}
           />

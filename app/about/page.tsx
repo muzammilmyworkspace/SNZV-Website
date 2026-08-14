@@ -58,7 +58,7 @@ export default function AboutPage() {
 
       <PageHero
         eyebrow="About SnZ Ventures"
-        title="More than guidance. A gateway to possibility."
+        title="More than Guidance. A Gateway to Possibility."
         lead={company.missionQuote}
         image="/images/dest-vilnius.webp"
         imageAlt="Vilnius skyline at dusk"
@@ -75,7 +75,7 @@ export default function AboutPage() {
           <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
             <SectionHeading
               eyebrow="Who we are"
-              title="A Vilnius firm built around one corridor."
+              title="A Vilnius Firm Built Around One Corridor."
               lead="SnZ Ventures is a woman-owned advisory business operating between South Asia, the Middle East and the European Union. We work at both ends of that route — which is unusual, and is the reason we can be straight with people at either end."
             />
             <Reveal>
@@ -123,7 +123,7 @@ export default function AboutPage() {
           <SectionHeading
             tone="dark"
             eyebrow="What we believe"
-            title="Four positions we're willing to be held to."
+            title="Four Positions We'Re Willing to Be Held To."
           />
           <RevealGroup className="mt-9 grid gap-px overflow-hidden border border-line bg-raised md:grid-cols-2">
             {beliefs.map((b) => (
@@ -146,7 +146,7 @@ export default function AboutPage() {
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
             <SectionHeading
               eyebrow="Our global vision"
-              title="Both ends of the route, or neither."
+              title="Both Ends of the Route, or Neither."
               lead="Most agencies sit at one end of a corridor and guess about the other. We recruit in the source markets and place into the destination markets, so what we tell each side is grounded in the other."
             />
             <Reveal>
@@ -178,7 +178,7 @@ export default function AboutPage() {
       <ProcessTimeline
         steps={approach.slice(0, 5)}
         eyebrow="How we work"
-        title="The same six steps, whoever you are."
+        title="The Same Six Steps, Whoever You Are."
         lead="A student, a nurse and a payments founder get the same structure. Only the content changes."
       />
 
@@ -187,7 +187,7 @@ export default function AboutPage() {
         <Container>
           <SectionHeading
             eyebrow="Why clients choose us"
-            title="Checkable commitments, not adjectives."
+            title="Checkable Commitments, Not Adjectives."
             lead="We have deliberately avoided claims we cannot evidence. These are the four you can test in the first conversation."
           />
           <RevealGroup className="mt-9 grid gap-5 md:grid-cols-2">

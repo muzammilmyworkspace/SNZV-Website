@@ -32,7 +32,7 @@ export default function DestinationsPage() {
 
       <PageHero
         eyebrow="Destinations"
-        title="Eight markets, and an honest map of what we do in each."
+        title="Eight Markets, and an Honest Map of What We Do in Each."
         lead="Plenty of firms list every country in Europe. We list the eight we actually work in — and mark clearly where a service is a flagship, where it's available, and where you should simply ask."
         breadcrumbs={[
           { name: "Home", path: "/" },
@@ -48,7 +48,7 @@ export default function DestinationsPage() {
           <SectionHeading
             tone="dark"
             eyebrow="The corridor"
-            title="Talent in. Businesses out. Vilnius in the middle."
+            title="Talent In. Businesses Out. Vilnius in the Middle."
             lead="We recruit from eight source markets across South Asia and the Middle East, and place into eight European destinations. Lithuania is where the entities, licences and coordination sit."
           />
           <div className="mt-9">
@@ -62,7 +62,7 @@ export default function DestinationsPage() {
         <Container>
           <SectionHeading
             eyebrow="European destinations"
-            title="Where we place, form and relocate"
+            title="Where We Place, Form and Relocate"
             lead="“Ask us” means exactly that — the service isn't confirmed for that market, and we'd rather say so than imply otherwise."
           />
           <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -84,7 +84,7 @@ export default function DestinationsPage() {
           <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
             <SectionHeading
               eyebrow="Talent corridors"
-              title="Where our candidates come from"
+              title="Where Our Candidates Come From"
               lead="We work on both sides of the corridor. That is what lets us tell a candidate the truth about their chances, and an employer the truth about the market."
             />
             <Reveal>

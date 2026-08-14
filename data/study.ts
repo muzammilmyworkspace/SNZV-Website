@@ -209,12 +209,12 @@ export type JourneyStep = {
 export const studyJourney: JourneyStep[] = [
   {
     step: "01",
-    name: "Discovery call",
+    name: "Discovery Call",
     body: "A free consultation that maps your profile, your budget and the destinations you are actually weighing — before any course is discussed.",
   },
   {
     step: "02",
-    name: "University shortlist",
+    name: "University Shortlist",
     body: "A small, defensible list of programmes matched to your goals and your finances, with the trade-off on each one stated plainly.",
   },
   {
@@ -224,12 +224,12 @@ export const studyJourney: JourneyStep[] = [
   },
   {
     step: "04",
-    name: "Offer & scholarships",
+    name: "Offer & Scholarships",
     body: "We work through the offers as they land and identify every funding scheme your nationality, subject and level qualify you for.",
   },
   {
     step: "05",
-    name: "Visa & departure",
+    name: "Visa & Departure",
     body: "Documentation, interview preparation, and the practical end — housing, flights and the first week on the ground.",
   },
 ];
@@ -238,19 +238,19 @@ export const studyJourney: JourneyStep[] = [
 
 export const scholarshipNotes = [
   {
-    title: "Funding is specific, never general",
+    title: "Funding Is Specific, Never General",
     body: "Almost every scheme is tied to a nationality, a subject, a level or a single institution. A scholarship you are not eligible for is not an opportunity, and we will say so early.",
   },
   {
-    title: "Deadlines close before the intake",
+    title: "Deadlines Close Before the Intake",
     body: "Funding calendars typically run months ahead of the admission calendar. Applying to the course first and looking for money afterwards is the most common way students lose a year.",
   },
   {
-    title: "Government schemes are worth the paperwork",
+    title: "Government Schemes Are Worth the Paperwork",
     body: "National programmes — Hungary's Stipendium Hungaricum among them — are competitive and document-heavy, but they are real, published and open to international applicants.",
   },
   {
-    title: "Low tuition can beat a scholarship",
+    title: "Low Tuition Can Beat a Scholarship",
     body: "A funded place at an expensive school and an unfunded place at a €900-a-year public university can leave you in the same position. We compare the total cost, not the discount.",
   },
 ];
@@ -259,27 +259,27 @@ export const scholarshipNotes = [
 
 export const supportServices = [
   {
-    title: "One named advisor",
+    title: "One Named Advisor",
     body: "The same person from your first call to your first week on campus. You are not handed between departments as your file moves.",
   },
   {
-    title: "Application & document preparation",
+    title: "Application & Document Preparation",
     body: "Transcripts, translations, credential evaluation and the statement of purpose — prepared to the standard the receiving institution expects.",
   },
   {
-    title: "Visa documentation & interview practice",
+    title: "Visa Documentation & Interview Practice",
     body: "The evidence pack assembled properly, and rehearsal for the interview before you sit it.",
   },
   {
-    title: "Arrival and settling in",
+    title: "Arrival and Settling In",
     body: "Housing, residence registration, and the ordinary first-month problems that nobody warns you about.",
   },
   {
-    title: "Tracked in the student portal",
+    title: "Tracked in the Student Portal",
     body: "Applications, documents, tasks and messages in one place, so you always know what is outstanding and who has it.",
   },
   {
-    title: "The bridge into work",
+    title: "The Bridge into Work",
     body: "We recruit into European employers as well, so the conversation does not stop at graduation — the rarest thing on this list.",
   },
 ];

@@ -90,13 +90,13 @@ export default function StudyAbroadPage() {
         <FaqSection
           faqs={studyFaqs}
           page="study-abroad"
-          title="Questions students actually ask"
+          title="Questions Students Actually Ask"
           caveat={studyCaveat}
         />
       </div>
 
       <CTASection
-        title="Start your study abroad journey."
+        title="Start Your Study Abroad Journey."
         lead="Tell us what you want to be doing in five years. We will tell you which European route gets you there — and whether it is realistic."
         primary={{ label: "Book a consultation", href: "/contact#journey" }}
         secondary={{

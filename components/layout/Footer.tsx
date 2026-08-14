@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Shell } from "@/components/ui/Editorial";
 import { footerNav, footerLegal } from "@/data/navigation";
 import { company } from "@/data/company";
-import { ContactLinks } from "./ContactLinks";
 import { SocialLinks } from "./SocialLinks";
 
 export function Footer() {
@@ -42,36 +41,11 @@ export function Footer() {
             <p className="mt-7 max-w-sm font-display text-[1.45rem] leading-[1.2] tracking-[-0.018em] text-fg">
               Geography should not be a barrier to ambition.
             </p>
-
-            {/* The phone number lives here now that the contact rail is down
-                to email and WhatsApp — otherwise it left the footer entirely. */}
-            <address className="mt-7 not-italic">
-              <span className="label block text-accent">Office</span>
-              <p className="mt-3 text-[0.9rem] leading-relaxed text-muted">
-                {company.contact.streetAddress}
-                <br />
-                {company.contact.postalCode} {company.contact.city},{" "}
-                {company.contact.country}
-                <br />
-                <a
-                  href={`tel:${company.contact.phoneHref}`}
-                  className="transition-colors hover:text-fg"
-                >
-                  {company.contact.phone}
-                </a>
-              </p>
-            </address>
-
-            <SocialLinks className="mt-7" />
-
-            {/* Contact sits directly under the social rail: the two ways to
-                reach a person, in the one place people look for them. */}
-            <ContactLinks location="footer" variant="compact" className="mt-6" />
           </div>
 
           {/* Two columns from the smallest screen up. Stacked one-per-row,
-              four link groups made the footer taller than the phone. */}
-          <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-9">
+              the link groups made the footer taller than the phone. */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-3 lg:gap-9">
             {footerNav.map((group) => (
               <nav key={group.heading} aria-label={group.heading}>
                 <h2 className="label text-accent">{group.heading}</h2>
@@ -90,36 +64,75 @@ export function Footer() {
               </nav>
             ))}
 
-            <nav aria-label="Legal">
-              <h2 className="label text-accent">Legal</h2>
+            {/*
+              Contact replaces the old Company and Legal columns: the three
+              things people scan a footer for — how to email, how to call,
+              where the office is — plus the social rail, all in one place
+              rather than split between a brand block and a bottom rail.
+            */}
+            <div className="sm:col-span-2 lg:col-span-1">
+              <h2 className="label text-accent">Contact</h2>
+
               <ul className="mt-5 space-y-3">
-                {footerLegal.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className="text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
+                <li>
+                  <a
+                    href={`mailto:${company.contact.email}`}
+                    className="break-all text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
+                  >
+                    {company.contact.email}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={`tel:${company.contact.phoneHref}`}
+                    className="text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
+                  >
+                    {company.contact.phone}
+                  </a>
+                </li>
               </ul>
-            </nav>
+
+              <address className="mt-4 not-italic text-[0.87rem] leading-relaxed text-muted">
+                {company.contact.streetAddress}
+                <br />
+                {company.contact.postalCode} {company.contact.city},{" "}
+                {company.contact.country}
+              </address>
+
+              <SocialLinks className="mt-6" />
+            </div>
           </div>
         </div>
 
         {/*
-          The footer ends on one line.
+          The footer ends on the copyright plus a quiet legal row.
 
-          It previously carried a contact row, a legal row and a disclaimer
-          paragraph stacked underneath each other. Contact moved up beside the
-          social rail and legal became a column, so both are still one click
-          away while the foot of the page is just the copyright.
+          It previously carried a contact rail, a legal rail and a disclaimer
+          paragraph stacked underneath each other. Contact is now its own
+          column, so the foot of the page carries almost nothing.
         */}
-        <div className="border-t border-line py-6">
+        <div className="flex flex-col gap-3 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[0.76rem] text-faint">
             © {year} {company.name}
           </p>
+          {/*
+            Legal is down to a quiet inline row rather than a column. These
+            cannot be dropped outright — a privacy policy link has to stay
+            reachable for EU visitors, and the disclaimer is what keeps the
+            outcome language on the rest of the site honest.
+          */}
+          <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            {footerLegal.map((l) => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  className="text-[0.74rem] text-faint transition-colors hover:text-fg"
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </Shell>
     </footer>

@@ -45,9 +45,9 @@ export const company = {
     incorporatedIn: "Lithuania",
   },
 
-  /** [CONTENT REQUIRED] — no social profiles published except LinkedIn. */
+  /** Client-supplied profiles. Only X/Twitter is outstanding. */
   social: {
-    linkedin: "https://lt.linkedin.com/company/snz-ventures",
+    linkedin: "https://www.linkedin.com/company/snz-ventures/",
     /**
      * Client-supplied Google Business share link. Used for "read all reviews"
      * and "leave a review", and as the fallback destination when the Places
@@ -57,18 +57,16 @@ export const company = {
     googleReviews: "https://share.google/MNo5ThKseoiGnDEnF",
 
     /**
-     * Social profiles. The footer renders an icon for each entry that has a
-     * URL and silently skips the rest, so filling one of these in is the only
-     * step needed to make its icon appear.
-     *
-     * These stay `null` until the real profile URLs are supplied. A guessed
-     * handle that 404s is worse than no icon at all — it reads as abandoned.
+     * Social profiles, supplied by the client. The footer renders an icon for
+     * each entry that has a URL; anything left `null` renders dimmed and
+     * non-clickable rather than as a dead link.
      */
-    facebook: null as string | null,
-    instagram: null as string | null,
-    tiktok: null as string | null,
+    instagram: "https://www.instagram.com/snz.ventures/?hl=en",
+    facebook: "https://www.facebook.com/snz.ventures/",
+    tiktok: "https://www.tiktok.com/@snz.ventures",
+    youtube: "https://www.youtube.com/channel/UC5lkD3z9vbxCPgI5f3R1tzA",
+    /** No X/Twitter profile supplied. */
     x: null as string | null,
-    youtube: null as string | null,
   },
 
   /** Verified — stated on the live site. */
@@ -131,19 +129,19 @@ export const stats = [
  */
 export const trustPoints = [
   {
-    title: "One coordinator, not six vendors",
+    title: "One Coordinator, Not Six Vendors",
     body: "Formation, accounting, licensing and hiring run through a single point of contact instead of four disconnected firms.",
   },
   {
-    title: "Licensed partners, named upfront",
+    title: "Licensed Partners, Named Upfront",
     body: "You know which regulated firm handles your audit, your legal filings and your compliance function before you commit.",
   },
   {
-    title: "We tell you when the answer is no",
+    title: "We Tell You When the Answer Is No",
     body: "If a market, a licence or a route doesn't fit your case, you hear it in the first conversation — not after the invoice.",
   },
   {
-    title: "Built on both sides of the corridor",
+    title: "Built on Both Sides of the Corridor",
     body: "We work where the talent and founders come from, and where they're going. That's the whole point of the firm.",
   },
 ] as const;

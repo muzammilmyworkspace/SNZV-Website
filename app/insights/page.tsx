@@ -26,7 +26,7 @@ export default function InsightsPage() {
 
       <PageHero
         eyebrow="Insights"
-        title="Know before you go."
+        title="Know Before You Go."
         lead="Orientation on the parts of international moves that people get wrong — written plainly, with no sales pitch attached. Several of these will save you money whether you work with us or not."
         breadcrumbs={[
           { name: "Home", path: "/" },
@@ -52,7 +52,7 @@ export default function InsightsPage() {
               <SectionHeading
                 className="mt-14"
                 eyebrow="More guides"
-                title="The rest of the library"
+                title="The Rest of the Library"
               />
               <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                 {rest.slice(2).map((a, i) => (

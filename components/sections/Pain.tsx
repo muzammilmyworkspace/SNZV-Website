@@ -56,9 +56,9 @@ export function Pain() {
           as="h2"
           className="d-1 max-w-[16ch] text-fg"
           lines={[
-            "Going global is exciting.",
-            <Fragment key="isnt">
-              The process <span className="d-em">isn&rsquo;t</span> always.
+            "Going Global Is Exciting.",
+            <Fragment key="Isnt">
+              The Process <span className="d-em">Isn&rsquo;t</span> Always.
             </Fragment>,
           ]}
         />

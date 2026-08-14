@@ -78,7 +78,7 @@ export function Testimonials() {
               <MaskedLines
                 as="h2"
                 className="d-2 max-w-[16ch] text-fg-strong"
-                lines={["Every journey starts with trust."]}
+                lines={["Every Journey Starts with Trust."]}
               />
               <Reveal delay={0.12}>
                 <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-muted">
@@ -182,7 +182,7 @@ export function Testimonials() {
         <MaskedLines
           as="h2"
           className="d-2 max-w-[16ch] text-fg-strong"
-          lines={["Every journey starts with trust."]}
+          lines={["Every Journey Starts with Trust."]}
         />
 
         <div

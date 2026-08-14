@@ -89,6 +89,13 @@ export const footerNav = [
       { label: "Global Careers", href: "/global-careers" },
       { label: "Business Setup", href: "/business-setup" },
       { label: "Destinations", href: "/destinations" },
+      /**
+       * Insights sits here because the Company column was removed and it is
+       * not in the header either — this is now the only navigation path to
+       * /insights. Dropping it would orphan the whole articles section from
+       * internal linking.
+       */
+      { label: "Insights", href: "/insights" },
     ],
   },
   {
@@ -101,15 +108,6 @@ export const footerNav = [
         label: "International Recruitment",
         href: "/services/international-recruitment",
       },
-    ],
-  },
-  {
-    heading: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Insights", href: "/insights" },
-      { label: "Contact", href: "/contact" },
-      { label: "Client Login", href: "/login" },
     ],
   },
 ];

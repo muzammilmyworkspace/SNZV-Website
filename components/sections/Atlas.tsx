@@ -43,9 +43,9 @@ export function Atlas() {
             as="h2"
             className="d-1 max-w-[16ch] text-fg"
             lines={[
-              "Talent in. Businesses out.",
-              <Fragment key="middle">
-                Vilnius in the <span className="d-em">middle</span>.
+              "Talent In. Businesses Out.",
+              <Fragment key="Middle">
+                Vilnius in the <span className="d-em">Middle</span>.
               </Fragment>,
             ]}
           />

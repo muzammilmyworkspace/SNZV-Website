@@ -50,7 +50,7 @@ export async function Reviews() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
-            lines={["What our students actually say."]}
+            lines={["What Our Students Actually Say."]}
           />
 
           <Reveal delay={0.12}>

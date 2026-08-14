@@ -174,29 +174,28 @@ missed item never reaches a visitor.
 
 ---
 
-## 5b. Social profiles — four URLs needed
+## 5b. Social profiles — all live
 
-`data/company.ts → social` drives the footer icon rail. Each entry with a URL
-renders its icon; each `null` renders nothing, so a network the firm is not on
-shows no icon rather than a dead link.
+`data/company.ts → social` drives the footer icon rail. An entry with a URL
+renders as a link; an entry left `null` renders dimmed and non-interactive, so
+a network the firm is not on never shows as a dead link.
 
 | Network | State |
 |---------|-------|
+| Instagram | ✅ live |
+| Facebook | ✅ live |
 | LinkedIn | ✅ live |
-| WhatsApp | ✅ live (derived from the published number, no profile URL needed) |
-| Instagram | ⬜ `null` — supply the profile URL |
-| Facebook | ⬜ `null` — supply the page URL |
-| TikTok | ⬜ `null` — supply the profile URL |
-| YouTube | ⬜ `null` — supply the channel URL |
-| X | ⬜ `null` — supply the profile URL |
+| TikTok | ✅ live |
+| YouTube | ✅ live |
+| WhatsApp | ✅ live — derived from the published number, no profile URL needed |
 
-All seven icons render. The five without a URL are drawn dimmed and are not
-links — they are marked "profile not published yet" to assistive technology.
-Adding a URL turns that icon into a working link with no code change.
+All six were confirmed to resolve to a genuine SnZ Ventures profile **in a real
+browser**, not with `curl`: Facebook answers plain HTTP clients with a 400 as
+bot defence, which looks like a broken link and is not one. `npm run
+audit:links` re-runs that check against every internal, external and
+`mailto:`/`tel:` link on the site.
 
-No handles were guessed. A social icon that 404s in front of a prospective
-client reads as an abandoned account, which is worse than an icon that is
-visibly not live yet.
+X/Twitter is not included — no profile was supplied, and none was assumed.
 
 ---
 

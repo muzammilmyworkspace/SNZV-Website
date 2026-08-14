@@ -19,7 +19,8 @@
     "db:verify": "node scripts/verify-schema.mjs",
     "db:doctor": "node scripts/db-doctor.mjs",
     "audit:study": "node scripts/audit-study.mjs",
-    "audit:theme": "node scripts/audit-theme.mjs"
+    "audit:theme": "node scripts/audit-theme.mjs",
+    "audit:links": "node scripts/audit-links.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

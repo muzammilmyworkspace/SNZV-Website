@@ -89,7 +89,7 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
 
       <ProcessTimeline
         steps={pillar.process}
-        title="How the conversation goes"
+        title="How the Conversation Goes"
         lead="No obligation at any step, and we tell you early if we're not the right firm for you."
         tone="mist"
       />
@@ -99,7 +99,7 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
           <Container>
             <SectionHeading
               eyebrow="Related reading"
-              title="Worth knowing before you commit"
+              title="Worth Knowing Before You Commit"
             />
             <div className="mt-8 grid gap-5 md:grid-cols-3">
               {related.map((a, i) => (

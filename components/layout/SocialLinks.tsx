@@ -5,16 +5,18 @@ import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 /**
- * Social rail.
+ * Social rail — the six networks SnZ actually runs, in a fixed 3x2 grid.
  *
- * Every network the brand uses has an entry; only entries with a URL render.
- * That means adding a profile is a one-line data change in data/company.ts and
- * the icon appears — and, just as important, a network the firm is not on
- * shows nothing rather than a dead link, which reads as an abandoned account.
+ * The grid is deliberate rather than a wrapping flex row: inside the narrow
+ * Contact column a flex rail broke 5+1, which reads as an accident. 3+3 reads
+ * as a decision, and it holds at every width.
  *
- * WhatsApp is always present because it is derived from the published phone
- * number rather than a profile URL, and it is the channel the site pushes
- * hardest everywhere else.
+ * WhatsApp needs no profile URL — it is derived from the published phone
+ * number, and it is the channel the rest of the site pushes hardest.
+ *
+ * An entry whose URL is still null renders dimmed and non-interactive rather
+ * than as a link: a guessed handle that 404s in front of a prospective client
+ * is worse than an icon that is visibly not live yet.
  */
 
 type Social = {
@@ -69,12 +71,6 @@ const NETWORKS: Social[] = [
     path: "M23.5 6.9a3 3 0 00-2.12-2.12C19.5 4.27 12 4.27 12 4.27s-7.5 0-9.38.51A3 3 0 00.5 6.9 31.4 31.4 0 000 12a31.4 31.4 0 00.5 5.1 3 3 0 002.12 2.12c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3 3 0 002.12-2.12A31.4 31.4 0 0024 12a31.4 31.4 0 00-.5-5.1zM9.6 15.6V8.4l6.24 3.6-6.24 3.6z",
   },
   {
-    key: "x",
-    label: "X",
-    href: company.social.x,
-    path: "M17.53 3h3.2l-7 8 8.23 10h-6.44l-5.05-6.15L4.7 21H1.5l7.5-8.57L1.1 3h6.6l4.56 5.62L17.53 3zm-1.12 16.1h1.77L7.7 4.8H5.8l10.6 14.3z",
-  },
-  {
     key: "whatsapp",
     label: "WhatsApp",
     href: `https://wa.me/${company.contact.whatsapp}`,
@@ -84,7 +80,7 @@ const NETWORKS: Social[] = [
 
 export function SocialLinks({ className }: { className?: string }) {
   return (
-    <ul className={cn("flex flex-wrap items-center gap-2", className)}>
+    <ul className={cn("grid w-fit grid-cols-3 gap-2", className)}>
       {NETWORKS.map((n) => {
         const glyph = (
           <svg

@@ -26,7 +26,7 @@ const HEADLINES: Record<
     lines: [
       "Your future shouldn’t be",
       <Fragment key="geography">
-        limited by <span className="d-em">geography</span>.
+        Limited by <span className="d-em">Geography</span>.
       </Fragment>,
     ],
     plate: "/images/atmos-library.webp",
@@ -37,7 +37,7 @@ const HEADLINES: Record<
     lines: [
       "Your next career could be",
       <Fragment key="havent">
-        somewhere you <span className="d-em">haven&rsquo;t</span> looked.
+        Somewhere You <span className="d-em">Haven&rsquo;t</span> Looked.
       </Fragment>,
     ],
     plate: "/images/plate-europe-dawn.webp",
@@ -48,7 +48,7 @@ const HEADLINES: Record<
     lines: [
       "Your business can think",
       <Fragment key="one-market">
-        bigger than <span className="d-em">one</span> market.
+        Bigger Than <span className="d-em">One</span> Market.
       </Fragment>,
     ],
     plate: "/images/path-business.webp",

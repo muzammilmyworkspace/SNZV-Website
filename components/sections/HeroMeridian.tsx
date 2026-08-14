@@ -134,9 +134,9 @@ export function HeroMeridian() {
             delay={0.28}
             className="d-hero max-w-[16ch] text-fg"
             lines={[
-              "Your ambition",
-              <Fragment key="no-borders">
-                has <span className="d-em">no</span> borders.
+              "Your Ambition",
+              <Fragment key="No-Borders">
+                Has <span className="d-em">No</span> Borders.
               </Fragment>,
             ]}
           />

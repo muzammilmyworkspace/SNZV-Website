@@ -139,6 +139,7 @@ npm run db:bootstrap -- --email you@example.com --name "Your Name"
 npm run audit           # 19 routes x 5 viewports (site must be running)
 npm run audit:study     # Study Abroad anchors, sticky offsets, scroll spy
 npm run audit:theme     # WCAG AA contrast in BOTH themes, toggle, persistence
+npm run audit:links     # every internal, external and mailto:/tel: link resolves
 npm run typecheck
 npm run build:images    # re-fetch + re-verify image licences
 npm run build:hero      # cinematic plates

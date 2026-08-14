@@ -37,11 +37,11 @@ export const services: Service[] = [
     imageAlt: "Glass office towers rising against the sky",
     hero: {
       eyebrow: "Business Setup",
-      title: "An EU company is the key. Not the door.",
+      title: "An EU Company Is the Key. Not the Door.",
       lead: "Incorporation in Lithuania is fast. Staying compliant, banked and operational for the next three years is the part that decides whether the company was worth registering.",
     },
     problem: {
-      title: "Most formation packages stop the day the certificate arrives",
+      title: "Most Formation Packages Stop the Day the Certificate Arrives",
       body: "Founders are sold a registration, then discover the entity cannot transact. The bank declines the account. VAT is not filed. Payroll has no operator. The company legally exists and practically does nothing.",
       points: [
         "A registered entity with no banking relationship",
@@ -51,28 +51,28 @@ export const services: Service[] = [
       ],
     },
     solution: {
-      title: "Formation, banking and bookkeeping treated as one job",
+      title: "Formation, Banking and Bookkeeping Treated as One Job",
       body: "We incorporate the entity, register it for what it actually needs, and keep the accounting running afterwards. One coordinator holds the sequence, so nothing sits waiting on someone else's inbox.",
     },
     deliverables: [
       {
-        title: "UAB or MB incorporation",
+        title: "UAB or MB Incorporation",
         body: "Entity type chosen against your capital, ownership and liability position — not by default.",
       },
       {
-        title: "Legal address",
+        title: "Legal Address",
         body: "A registered office in Lithuania that satisfies the statutory requirement.",
       },
       {
-        title: "VAT & EORI registration",
+        title: "VAT & EORI Registration",
         body: "So the company can invoice inside the single market and move goods across its border.",
       },
       {
-        title: "Payroll & accounting",
+        title: "Payroll & Accounting",
         body: "Monthly bookkeeping, payroll operation and statutory reporting on an ongoing basis.",
       },
       {
-        title: "Corporate secretarial",
+        title: "Corporate Secretarial",
         body: "Resolutions, register maintenance and annual filings kept current.",
       },
     ],
@@ -124,11 +124,11 @@ export const services: Service[] = [
     imageAlt: "Earth at night from orbit, city lights forming a connected network",
     hero: {
       eyebrow: "Business Setup",
-      title: "Lithuania licenses more fintechs than anywhere else in the EU.",
+      title: "Lithuania Licenses More Fintechs than Anywhere Else in the EU.",
       lead: "That is the opportunity and the reason the bar is high. Regulators here have seen every version of an underprepared application, and they decline them quickly.",
     },
     problem: {
-      title: "Licensing applications fail on evidence, not ambition",
+      title: "Licensing Applications Fail on Evidence, Not Ambition",
       body: "The business model is rarely the reason an application stalls. It stalls because the governance structure is thin, the AML framework is generic, the capital is not demonstrably in place, or the named officers cannot be verified.",
       points: [
         "Policy documents copied from a template and visibly so",
@@ -138,28 +138,28 @@ export const services: Service[] = [
       ],
     },
     solution: {
-      title: "Built to be assessed, not just submitted",
+      title: "Built to Be Assessed, Not Just Submitted",
       body: "We coordinate the entity, the capital position, the governance structure and the compliance framework, working with licensed partner firms and qualified officers. The application is assembled the way a supervisor reads it.",
     },
     deliverables: [
       {
-        title: "Licence scoping",
+        title: "Licence Scoping",
         body: "EMI, PI, specialised bank or crypto — matched to what you actually intend to do.",
       },
       {
-        title: "Entity & capital structure",
+        title: "Entity & Capital Structure",
         body: "The operating company, ownership chain and initial capital arranged to meet the threshold.",
       },
       {
-        title: "Compliance framework",
+        title: "Compliance Framework",
         body: "AML/CFT policies, risk assessment and internal controls built for your model.",
       },
       {
-        title: "Officer appointments",
+        title: "Officer Appointments",
         body: "Introduction to qualified MLRO and compliance candidates who will withstand assessment.",
       },
       {
-        title: "SEPA gateway access",
+        title: "SEPA Gateway Access",
         body: "Payment rail connectivity arranged for authorised institutions.",
       },
     ],
@@ -211,11 +211,11 @@ export const services: Service[] = [
     imageAlt: "Vilnius skyline at dusk with the river and illuminated towers",
     hero: {
       eyebrow: "Business Setup",
-      title: "Moving the company is one project. Moving your family is another.",
+      title: "Moving the Company Is One Project. Moving Your Family Is Another.",
       lead: "Founders routinely underestimate the second one. Permits, schooling, housing, tax residency and healthcare registration run on their own timelines — and they do not wait for the business.",
     },
     problem: {
-      title: "The permit is not the hard part. The sequencing is.",
+      title: "The Permit Is Not the Hard Part. The Sequencing Is.",
       body: "Residence applications depend on the company being properly established, which depends on documents that take weeks to legalise abroad. Start them in the wrong order and the whole move slips a quarter.",
       points: [
         "Documents needing apostille or legalisation in the origin country",
@@ -225,28 +225,28 @@ export const services: Service[] = [
       ],
     },
     solution: {
-      title: "One timeline covering the company, the permit and the household",
+      title: "One Timeline Covering the Company, the Permit and the Household",
       body: "We map the dependencies once, in order, and run them in parallel where the law allows — so the residence track and the business track arrive at roughly the same time.",
     },
     deliverables: [
       {
-        title: "Residence permit support",
+        title: "Residence Permit Support",
         body: "Route assessment, document preparation and submission coordination.",
       },
       {
-        title: "Family migration",
+        title: "Family Migration",
         body: "Dependants handled on their own tracks alongside the principal applicant.",
       },
       {
-        title: "Real estate",
+        title: "Real Estate",
         body: "Introductions for purchase or long-term rental in Vilnius and other Lithuanian cities.",
       },
       {
-        title: "Tax planning",
+        title: "Tax Planning",
         body: "Residency position reviewed with qualified advisors before the move, not after.",
       },
       {
-        title: "Settlement services",
+        title: "Settlement Services",
         body: "Registration, healthcare, banking and schooling in the first months after arrival.",
       },
     ],
@@ -294,11 +294,11 @@ export const services: Service[] = [
     imageAlt: "A calm modern office workspace beside a large window",
     hero: {
       eyebrow: "Global Careers",
-      title: "Real roles, named employers, honest eligibility.",
+      title: "Real Roles, Named Employers, Honest Eligibility.",
       lead: "We work as the outsourced hiring function for European SMEs and regulated firms — and we recruit from South Asia and the Middle East. Both sides of that corridor are our client.",
     },
     problem: {
-      title: "This industry has an honesty problem, and everyone knows it",
+      title: "This Industry Has an Honesty Problem, and Everyone Knows It",
       body: "Candidates are charged upfront for roles that were never confirmed. Employers receive profiles that were never screened. Both sides end up assuming the other is the problem.",
       points: [
         "Fees taken against vacancies that do not exist",
@@ -308,28 +308,28 @@ export const services: Service[] = [
       ],
     },
     solution: {
-      title: "Screened on both sides, before anyone commits",
+      title: "Screened on Both Sides, Before Anyone Commits",
       body: "Employers get candidates who have been checked against the role's actual legal and language requirements. Candidates get a named employer, a real vacancy and a straight assessment of their chances.",
     },
     deliverables: [
       {
-        title: "End-to-end hiring",
+        title: "End-To-End Hiring",
         body: "Sourcing, screening, interviewing and offer management run as one process for the employer.",
       },
       {
-        title: "White & blue-collar placement",
+        title: "White & Blue-Collar Placement",
         body: "From operational and skilled trades through to compliance-critical professional roles.",
       },
       {
-        title: "Eligibility screening",
+        title: "Eligibility Screening",
         body: "Qualification recognition, language level and permit category checked before submission.",
       },
       {
-        title: "Profile preparation",
+        title: "Profile Preparation",
         body: "CVs and documentation rebuilt to the standard European employers actually read.",
       },
       {
-        title: "Relocation coordination",
+        title: "Relocation Coordination",
         body: "Permit and arrival logistics handled alongside the placement itself.",
       },
     ],

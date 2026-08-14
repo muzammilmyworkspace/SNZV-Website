@@ -105,8 +105,8 @@ export function StudyHero() {
           className="d-hero max-w-[15ch] text-fg"
           lines={[
             "Study in Europe.",
-            <Fragment key="plan">
-              Graduate with a <span className="d-em">plan</span>.
+            <Fragment key="Plan">
+              Graduate With a <span className="d-em">Plan</span>.
             </Fragment>,
           ]}
         />
@@ -190,7 +190,7 @@ export function StudyOverview() {
             <MaskedLines
               as="h2"
               className="d-2 max-w-[14ch] text-fg-strong"
-              lines={["Not a brochure", "decision."]}
+              lines={["Not a Brochure", "Decision."]}
             />
             <Reveal delay={0.12}>
               <p className="lede mt-6 max-w-md">
@@ -349,7 +349,7 @@ export function StudyUniversities() {
             <MaskedLines
               as="h2"
               className="d-2 max-w-[15ch] text-fg-strong"
-              lines={["Three to five you", "can defend."]}
+              lines={["Three to Five You", "Can Defend."]}
             />
             <Reveal delay={0.12}>
               <p className="lede mt-6 max-w-md">
@@ -414,7 +414,7 @@ export function StudyProgrammes() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
-            lines={["What you study", "decides the rest."]}
+            lines={["What You Study", "Decides the Rest."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -473,7 +473,7 @@ export function StudyScholarships() {
             <MaskedLines
               as="h2"
               className="d-2 max-w-[13ch] text-fg-strong"
-              lines={["Funding is", "a calendar."]}
+              lines={["Funding Is", "A Calendar."]}
             />
             <Reveal delay={0.12}>
               <p className="lede mt-6 max-w-md">
@@ -516,7 +516,7 @@ export function StudyJourney() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[17ch] text-fg-strong"
-            lines={["Five stages, first", "call to first week."]}
+            lines={["Five Stages, First", "Call to First Week."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -566,7 +566,7 @@ export function StudySupport() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
-            lines={["The part that", "starts after yes."]}
+            lines={["The Part That", "Starts After Yes."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
