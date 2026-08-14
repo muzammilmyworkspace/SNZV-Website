@@ -60,6 +60,7 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         lead={pillar.hero.lead}
         image={pillar.hero.image}
         imageAlt={pillar.hero.imageAlt}
+        images={pillar.hero.images}
         breadcrumbs={crumbs}
         primaryCta={{ label: pillar.hero.primaryCta, href: "/contact#journey" }}
         secondaryCta={{ label: pillar.hero.secondaryCta, href: "/insights" }}

@@ -39,6 +39,20 @@ const commonsPlates = {
   // Study Abroad hero. A university, in a destination country, that reads as a
   // campus at a glance — the previous hero was a generic library interior.
   "study-campus": "File:Kazimierz Palace.JPG",
+
+  /**
+   * Hero slideshow plates. Each pathway hero cycles four images, so these fill
+   * the gaps the existing library could not.
+   *
+   * Everything here is deliberately European. The best-scoring candidates in
+   * the search were Apple Park, Lower Manhattan and Canary Wharf — all wrong
+   * for a firm whose entire proposition is the EU single market.
+   */
+  "study-vienna": "File:Arkadenhof der Universität Wien-2 1200.jpg",
+  "study-graduation": "File:Square academic cap (graduation hats).JPG",
+  "careers-airport": "File:Check-in, Terminal 3, Frankfurt (20260517-P1075387 cropped).jpg",
+  "business-vilnius": "File:Foggy Winter Sunrise in Vilnius.jpg",
+  "business-boardroom": "File:Finlandia Hall conference room.jpg",
 };
 
 async function commonsInfo(title) {

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, Fragment } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import {
+  AnimatePresence,
   motion,
   useScroll,
   useTransform,
@@ -27,7 +28,20 @@ import { company } from "@/data/company";
  * The whole composition also leans a few pixels toward the cursor, which is
  * what makes it feel like a surface rather than a picture.
  */
+/**
+ * Home hero frames. Four, in the order the brand tells its own story: the
+ * home city, the continent at dawn, the departure, the arrival from above.
+ */
+const HERO_FRAMES = [
+  { src: "/images/dest-vilnius.webp", alt: "Vilnius skyline at dusk, Lithuania" },
+  { src: "/images/plate-europe-dawn.webp", alt: "European rooftops at first light" },
+  { src: "/images/plate-departure.webp", alt: "An aircraft wing above the clouds" },
+  { src: "/images/hero-aerial.webp", alt: "Aerial view over a European city at night" },
+];
+const HERO_HOLD_MS = 7_000;
+
 export function HeroMeridian() {
+  const [frame, setFrame] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
@@ -35,6 +49,15 @@ export function HeroMeridian() {
     target: ref,
     offset: ["start start", "end start"],
   });
+
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setFrame((f) => (f + 1) % HERO_FRAMES.length),
+      HERO_HOLD_MS
+    );
+    return () => window.clearInterval(id);
+  }, [reduced]);
 
   const plateY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
   const plateScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.16]);
@@ -73,14 +96,32 @@ export function HeroMeridian() {
           className="absolute inset-[-4%]"
           style={reduced ? undefined : { x: lx, y: ly }}
         >
-          <Image
-            src="/images/dest-vilnius.webp"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+          {/*
+            Cycled here rather than via <HeroSlideshow>: this hero already owns
+            a scroll parallax AND a cursor lean, and nesting the component's
+            own parallax inside those would compound the transforms. Only the
+            crossfade is needed — the movement is already provided.
+          */}
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={HERO_FRAMES[frame].src}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduced ? 0 : 1.4, ease: "easeInOut" }}
+            >
+              <Image
+                src={HERO_FRAMES[frame].src}
+                alt={HERO_FRAMES[frame].alt}
+                fill
+                priority={frame === 0}
+                loading={frame === 0 ? undefined : "lazy"}
+                sizes="100vw"
+                className="object-cover"
+              />
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
       </motion.div>
 

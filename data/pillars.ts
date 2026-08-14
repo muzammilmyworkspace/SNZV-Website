@@ -17,6 +17,15 @@ export type Pillar = {
     lead: string;
     image: string;
     imageAlt: string;
+    /**
+     * Hero slideshow frames, in order. Up to four — the component caps it,
+     * because every frame past the first is a full-size download for a hero
+     * most visitors scroll past in seconds.
+     *
+     * `image` above stays as the single-frame fallback and as the source for
+     * OG/social previews, which cannot animate.
+     */
+    images?: { src: string; alt: string }[];
     primaryCta: string;
     secondaryCta: string;
   };
@@ -39,9 +48,27 @@ export const pillars: Record<PathwayKey, Pillar> = {
     slug: "study-abroad",
     hero: {
       eyebrow: "For students",
-      title: "Your Postcode Shouldn'T Decide Your Ceiling.",
+      title: "Your Postcode Shouldn't Decide Your Ceiling.",
       lead: "Studying abroad is not really an education decision. It is a career decision that happens to start with a course. We help you make it in that order.",
       image: "/images/atmos-library.webp",
+      images: [
+        {
+          src: "/images/study-campus.webp",
+          alt: "Kazimierz Palace, the historic main building of the University of Warsaw",
+        },
+        {
+          src: "/images/study-vienna.webp",
+          alt: "The arcaded courtyard of the University of Vienna",
+        },
+        {
+          src: "/images/atmos-library.webp",
+          alt: "Reading room lined with books at a European university library",
+        },
+        {
+          src: "/images/study-graduation.webp",
+          alt: "Graduation caps held up at a degree ceremony",
+        },
+      ],
       imageAlt: "Rows of books lining library shelves",
       primaryCta: "Explore your study path",
       secondaryCta: "Read the guide",
@@ -51,7 +78,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       lead: "The information is free and endless. What is scarce is knowing which of it applies to you.",
       items: [
         {
-          title: "Rankings Answer a Question You Didn'T Ask",
+          title: "Rankings Answer a Question You Didn't Ask",
           body: "League tables largely measure research output. They do not tell you whether graduates of a specific programme get hired in the city you want to work in.",
         },
         {
@@ -148,15 +175,33 @@ export const pillars: Record<PathwayKey, Pillar> = {
     slug: "global-careers",
     hero: {
       eyebrow: "For professionals",
-      title: "Your Career Shouldn'T Be Limited by a Border.",
+      title: "Your Career Shouldn't Be Limited by a Border.",
       lead: "We are the outsourced hiring function for European SMEs and regulated firms — and we recruit across South Asia and the Middle East. Both ends of that corridor are our client, which is why we tell you the truth about your chances.",
       image: "/images/path-careers.webp",
+      images: [
+        {
+          src: "/images/path-careers.webp",
+          alt: "Professionals at work in a European office",
+        },
+        {
+          src: "/images/dest-berlin.webp",
+          alt: "Museum Island on the Spree, Berlin — Europe's largest labour market",
+        },
+        {
+          src: "/images/plate-europe-dawn.webp",
+          alt: "European rooftops at first light",
+        },
+        {
+          src: "/images/careers-airport.webp",
+          alt: "Check-in hall at Frankfurt Airport Terminal 3",
+        },
+      ],
       imageAlt: "A modern workspace beside a window overlooking the city",
       primaryCta: "Explore global careers",
       secondaryCta: "How to spot a fake offer",
     },
     challenge: {
-      title: "The Hardest Part Isn'T the Job. It'S Telling Real from Fake.",
+      title: "The Hardest Part Isn't the Job. It's Telling Real from Fake.",
       lead: "Almost everyone who comes to us has already been burned, or knows someone who has.",
       items: [
         {
@@ -168,7 +213,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
           body: "Qualification recognition, language level and permit category rule most applicants in or out early — usually without anyone explaining that.",
         },
         {
-          title: "A CV that Doesn'T Travel",
+          title: "A CV that Doesn't Travel",
           body: "European employers read structure, evidence and gaps differently. Strong candidates get filtered out for entirely fixable reasons.",
         },
         {
@@ -264,6 +309,24 @@ export const pillars: Record<PathwayKey, Pillar> = {
       title: "Take Your Business Beyond Borders.",
       lead: "A Lithuanian company reaches 27 member states from day one. We handle the entity, the licensing and the residence permits that let you actually move — coordinated through one point of contact.",
       image: "/images/path-business.webp",
+      images: [
+        {
+          src: "/images/path-business.webp",
+          alt: "Glass office towers seen from below",
+        },
+        {
+          src: "/images/business-vilnius.webp",
+          alt: "Winter sunrise over Vilnius, Lithuania",
+        },
+        {
+          src: "/images/atmos-fintech.webp",
+          alt: "Financial data displayed across trading screens",
+        },
+        {
+          src: "/images/business-boardroom.webp",
+          alt: "Conference room at Finlandia Hall, Helsinki",
+        },
+      ],
       imageAlt: "Glass office towers viewed from street level",
       primaryCta: "Plan your expansion",
       secondaryCta: "Why Lithuania",

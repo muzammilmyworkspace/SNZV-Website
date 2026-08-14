@@ -60,7 +60,16 @@ marginalia, full-bleed duotone plates, and a scroll-tracked meridian rail on
 the homepage.
 
 **Type** — a single family, **Plus Jakarta Sans**. Weight, tracking and scale
-carry the hierarchy; there is no decorative display face.
+carry the hierarchy; there is no decorative display face. Headings are Title
+Case; body copy and FAQ questions stay sentence case.
+
+**Heroes cycle.** `components/sections/HeroSlideshow.tsx` crossfades up to four
+frames with a Ken Burns drift and scroll parallax. The cap is enforced in the
+component, only the first frame is `priority`, and `prefers-reduced-motion`
+stops the cycle entirely and shows one static image. Frames live in
+`data/pillars.ts → hero.images`; the homepage keeps its own copy because that
+hero already owns a cursor lean and nesting a second parallax would compound
+the transforms.
 
 **Surfaces are semantic.** A section sets one of four tone classes and every
 descendant reads `--fg` / `--fg-muted` / `--line` / `--surface` from it, so the

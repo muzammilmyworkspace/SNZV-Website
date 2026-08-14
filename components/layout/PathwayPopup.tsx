@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { pathways } from "@/data/pathways";
+import { Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
 
 /**
@@ -12,9 +13,8 @@ import { analytics } from "@/lib/analytics";
  * ---------------------------------------------------------------------------
  * Deliberately restrained. It is an orientation aid, not an interstitial:
  *
- *  • Never fires on first paint. Requires genuine engagement — 35% scroll
- *    depth OR 25s dwell, whichever comes first (exit-intent on desktop as a
- *    third trigger).
+ *  • Never fires on first paint. Requires 35% scroll depth OR 6s dwell,
+ *    whichever comes first, with exit-intent as a third trigger on desktop.
  *  • Shows once. Dismissal is remembered for 30 days in localStorage, and
  *    choosing a pathway suppresses it permanently.
  *  • Suppressed entirely on the pathway pages themselves, on /contact and
@@ -25,7 +25,18 @@ import { analytics } from "@/lib/analytics";
 
 const KEY = "snz_pathway_popup";
 const DISMISS_DAYS = 30;
-const DWELL_MS = 25_000;
+/**
+ * Time on page before the popup offers itself.
+ *
+ * This was 25s, which in practice meant most visitors never saw it — they had
+ * either converted, scrolled past the trigger or left. 6s is long enough that
+ * the hero has been read and the modal does not feel like it interrupted the
+ * page load, and short enough that a browsing visitor actually receives it.
+ *
+ * Not shorter: an interstitial that lands immediately on arrival is what
+ * Google penalises on mobile, and it reads as an ad rather than an offer.
+ */
+const DWELL_MS = 6_000;
 const SCROLL_TRIGGER = 0.35;
 
 const SUPPRESSED = [
@@ -255,14 +266,39 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
               ))}
             </div>
 
-            <div className="relative border-t border-line px-6 py-4 text-center sm:px-10">
-              <button
-                type="button"
-                onClick={() => close("not-sure")}
-                className="text-[0.84rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
-              >
-                I&rsquo;m just looking around
-              </button>
+            {/*
+              A direct route out for the visitor who is curious but does not
+              want to self-classify. Without it the modal's only forward
+              actions were three pathway pages — someone ready to talk had to
+              dismiss the popup and go find the contact form themselves.
+            */}
+            <div className="relative flex flex-col items-center gap-4 border-t border-line px-6 py-5 text-center sm:flex-row sm:justify-between sm:px-10 sm:text-left">
+              <p className="text-[0.86rem] leading-snug text-muted">
+                Not sure which one fits?{" "}
+                <span className="text-fg">Tell us where you want to end up.</span>
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+                <Action
+                  href="/contact#journey"
+                  size="sm"
+                  onClick={() => {
+                    analytics.ctaClick("Book a consultation", "pathway_popup");
+                    remember(365);
+                    setOpen(false);
+                  }}
+                >
+                  Book a consultation
+                </Action>
+
+                <button
+                  type="button"
+                  onClick={() => close("not-sure")}
+                  className="text-[0.84rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
+                >
+                  I&rsquo;m just looking around
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>

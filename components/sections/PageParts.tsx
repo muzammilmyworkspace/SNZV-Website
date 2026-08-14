@@ -13,6 +13,7 @@ import {
   Caveat,
 } from "@/components/ui/Primitives";
 import { FaqAccordion } from "@/components/ui/Accordion";
+import { HeroSlideshow, type HeroImage } from "./HeroSlideshow";
 import { company } from "@/data/company";
 import type { FAQ } from "@/data/services";
 import { cn } from "@/lib/utils";
@@ -69,6 +70,7 @@ export function PageHero({
   lead,
   image,
   imageAlt,
+  images,
   breadcrumbs,
   primaryCta,
   secondaryCta,
@@ -79,25 +81,38 @@ export function PageHero({
   lead: string;
   image?: string;
   imageAlt?: string;
+  /** Two to four frames, cycled. Falls back to `image` when absent. */
+  images?: HeroImage[];
   breadcrumbs: { name: string; path: string }[];
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
   index?: string;
 }) {
+  const frames: HeroImage[] =
+    images && images.length > 0
+      ? images
+      : image
+        ? [{ src: image, alt: imageAlt ?? "" }]
+        : [];
+
   return (
     <section className="plate plate-deep grain relative flex min-h-[62svh] items-end overflow-hidden tone-deep pb-14 pt-32 md:pb-16 md:pt-40">
-      {image && (
-        <div className="absolute inset-0 -z-10">
-          <Image
-            src={image}
-            alt={imageAlt ?? ""}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-      )}
+      {frames.length > 0 && <HeroSlideshow images={frames} />}
+
+      {/*
+        Reading scrim. Hero photographs vary from near-black to pale stone,
+        and once the plate cycles through four of them a single grade cannot
+        serve all four. This pins the contrast under the copy regardless of
+        which frame is showing.
+      */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(6,13,28,0.85)_0%,rgba(6,13,28,0.6)_42%,rgba(6,13,28,0.3)_72%,rgba(6,13,28,0.45)_100%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-[linear-gradient(to_top,rgba(6,13,28,0.88)_0%,transparent_100%)]"
+      />
       <div
         aria-hidden
         className="graticule mask-radial pointer-events-none absolute inset-0 -z-10 opacity-60"

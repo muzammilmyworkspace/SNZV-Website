@@ -133,7 +133,19 @@ export function Header() {
                           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                           className="absolute left-0 top-full w-[22rem] pt-3"
                         >
-                          <div className="border border-line bg-surface/95 p-1.5 backdrop-blur-2xl">
+                          {/*
+                            Opaque, not translucent.
+
+                            `bg-surface/95` inherited --surface from <body>,
+                            which is the same navy as the hero behind it. At
+                            rest the header is a transparent overlay, so the
+                            panel dropped onto a near-identical colour and read
+                            as part of the page rather than above it. A solid
+                            raised surface, a stronger hairline and a real
+                            shadow give it an edge to be seen against on every
+                            background, in both themes.
+                          */}
+                          <div className="rounded-[var(--radius-sm)] border border-line-strong bg-raised p-1.5 shadow-[0_24px_60px_-20px_rgba(2,6,16,0.75)]">
                             {item.children!.map((c) => (
                               <Link
                                 key={c.href}

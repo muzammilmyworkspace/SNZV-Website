@@ -13,7 +13,7 @@ import {
   TextLink,
 } from "@/components/ui/Primitives";
 import { StudyDestinationCard } from "@/components/cards/Cards";
-import { StudyHeroMedia } from "./StudyHeroMedia";
+import { HeroSlideshow } from "./HeroSlideshow";
 import {
   studyDestinations,
   studyFields,
@@ -23,6 +23,7 @@ import {
   studyFacts,
   studyCaveat,
 } from "@/data/study";
+import { pillars } from "@/data/pillars";
 import { company } from "@/data/company";
 import { Fragment } from "react";
 
@@ -43,7 +44,7 @@ import { Fragment } from "react";
 export function StudyHero() {
   return (
     <section className="plate plate-deep grain relative flex min-h-[86svh] items-end overflow-hidden tone-deep pb-16 pt-32 md:pb-20 md:pt-40">
-      <StudyHeroMedia />
+      <HeroSlideshow images={pillars.study.hero.images ?? []} />
       {/*
         Reading scrim, fixed while the plate parallaxes behind it.
 

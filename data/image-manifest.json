@@ -201,5 +201,50 @@
     "artist": "Bartosz MORĄG",
     "page": "https://commons.wikimedia.org/wiki/File:Kazimierz_Palace.JPG",
     "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwAwCdASoUAAsAPzmGuVOvKSWisAgB4CcJQBOgAzOX7cnWfyaHaAD+jwo2AyEB4RK09IiCTBMsNmrUDWvHCV2+39jWgXP6JXi7OE/cslYGO6AprAlJwuHDUgAAAA=="
+  },
+  {
+    "key": "study-vienna",
+    "file": "/images/study-vienna.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Hubertl",
+    "page": "https://commons.wikimedia.org/wiki/File:Arkadenhof_der_Universit%C3%A4t_Wien-2_1200.jpg",
+    "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAwCdASoUAAkAPzmEuVOvKKWisAgB4CcJYgCdACLWt6ZWfrGpSdQA/SgDS4pJpsF5tFzq5vDq9ttJY9oIpMJzgegOlF3pUi1lKBL7hAAAAA=="
+  },
+  {
+    "key": "study-graduation",
+    "file": "/images/study-graduation.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "AKS.9955",
+    "page": "https://commons.wikimedia.org/wiki/File:Square_academic_cap_(graduation_hats).JPG",
+    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACwAwCdASoUAAoAPzmGuVOvKSWisAgB4CcJaQAAJ2AE4jmXYIjhgADwWonvG93KFXZSYCo2ioC2ReH5i4y60yUs0EiF2PHAAAA="
+  },
+  {
+    "key": "careers-airport",
+    "file": "/images/careers-airport.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "Matti Blume",
+    "page": "https://commons.wikimedia.org/wiki/File:Check-in,_Terminal_3,_Frankfurt_(20260517-P1075387_cropped).jpg",
+    "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAACQAwCdASoUAAsAPzmEuVOvKKWisAgB4CcJZgCw7B49YFYYR+sIAP7PWrjyXZIKACV8rqlgPzbt1ZlQQt/E7Bl7Hb8p/C3ErVpRkRRHKIVFxugy+PwH2aXAAAA="
+  },
+  {
+    "key": "business-vilnius",
+    "file": "/images/business-vilnius.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY 2.0",
+    "artist": "domantasm.",
+    "page": "https://commons.wikimedia.org/wiki/File:Foggy_Winter_Sunrise_in_Vilnius.jpg",
+    "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADQAwCdASoUAA0APzmIulQvKSWjMAgB4CcJQBOkCYhinpB+jpfmsAAA/lt6R1gey5N3mImJnsOxWwgm+FcKKOT+4nRrF8HiOl1xLpQJhtCKXAAA"
+  },
+  {
+    "key": "business-boardroom",
+    "file": "/images/business-boardroom.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 4.0",
+    "artist": "WanderingTrad",
+    "page": "https://commons.wikimedia.org/wiki/File:Finlandia_Hall_conference_room.jpg",
+    "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJZwAAJp76FJ6nAAD7ye+bEzLXP7keG/qAdPShxeGm6fKBvA4nN7lmtbnx6RZ3lQ3i7crQAAA="
   }
 ]

@@ -107,8 +107,11 @@ export async function POST(request: Request) {
       {
         ok: false,
         error: "unconfigured",
-        message:
-          "Our enquiry system isn't accepting messages right now. Please email us directly and we'll pick it up.",
+        // Name the address. "Email us directly" without it makes the visitor
+        // go hunting at exactly the moment they were ready to convert.
+        message: `Our enquiry system isn't accepting messages right now. Please email ${
+          process.env.MAIL_TO ?? DEFAULT_TO
+        } and we'll pick it up.`,
       },
       { status: 503 }
     );

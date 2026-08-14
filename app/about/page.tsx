@@ -123,7 +123,7 @@ export default function AboutPage() {
           <SectionHeading
             tone="dark"
             eyebrow="What we believe"
-            title="Four Positions We'Re Willing to Be Held To."
+            title="Four Positions We're Willing to Be Held To."
           />
           <RevealGroup className="mt-9 grid gap-px overflow-hidden border border-line bg-raised md:grid-cols-2">
             {beliefs.map((b) => (
