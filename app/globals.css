@@ -87,6 +87,74 @@
 .tone-white {
   color: var(--fg);
   background-color: var(--surface);
+  background-image: var(--surface-wash);
+  background-repeat: no-repeat;
+}
+
+/* ============================================================================
+   SURFACE WASH — the page ground, lit rather than flat
+   ----------------------------------------------------------------------------
+   Each band used to be one flat fill: navy in dark, near-white in light. Legible,
+   but inert — a wall rather than a space.
+
+   Every band now carries a wash: two or three very wide radial pools in the
+   brand hues, laid over the flat fill. They are positioned OFF the band's
+   corners so what you see is the falloff rather than the centre of a circle,
+   which is what keeps this reading as light in a room instead of as a shape
+   printed on the page.
+
+   Three rules hold the whole thing together:
+
+     1. ALTERNATION. Consecutive bands push their pools to opposite corners and
+        lead with different hues — blue-led on `deep`, green-led on `soft`. Give
+        every band the same wash and a long page turns into visible stripes.
+
+     2. CEILING ON ALPHA. Dark runs up to ~0.46 because the pools sit mostly
+        OUTSIDE the band and only their falloff lands on it; light is held near
+        0.20, where the surface is already close to white and has less room
+        to move before the type starts sitting on a tint. The real limit is contrast, not taste — `npm run audit:theme`
+        measures every heading and paragraph against the ground it actually
+        lands on, so any increase here has to survive that.
+
+     3. NOTHING ANIMATES. These are large blurred areas; animating them means
+        repainting most of the viewport every frame. The movement on this page
+        comes from the reveals, not from the wallpaper.
+
+   `--surface-wash` is a token, so `.plate-deep` can null it out: those sections
+   are photographs, and a wash under a photo is invisible work.
+   ========================================================================== */
+
+.tone-deep {
+  --surface-wash:
+    radial-gradient(115% 85% at 6% -12%, color-mix(in srgb, var(--brand-blue) 46%, transparent) 0%, transparent 58%),
+    radial-gradient(95% 75% at 98% 4%, color-mix(in srgb, var(--brand-teal) 30%, transparent) 0%, transparent 54%),
+    radial-gradient(115% 70% at 52% 110%, color-mix(in srgb, var(--brand-green) 24%, transparent) 0%, transparent 56%),
+    linear-gradient(168deg, #0B1B3C 0%, transparent 42%);
+}
+
+.tone-soft {
+  --surface-wash:
+    radial-gradient(105% 80% at 95% -10%, color-mix(in srgb, var(--brand-green) 32%, transparent) 0%, transparent 56%),
+    radial-gradient(105% 85% at 2% 28%, color-mix(in srgb, var(--brand-blue) 40%, transparent) 0%, transparent 58%),
+    radial-gradient(125% 70% at 62% 108%, color-mix(in srgb, var(--brand-teal) 26%, transparent) 0%, transparent 54%),
+    linear-gradient(196deg, #122A55 0%, transparent 46%);
+}
+
+.tone-light {
+  --surface-wash:
+    radial-gradient(110% 80% at 6% -6%, color-mix(in srgb, var(--brand-blue) 18%, transparent) 0%, transparent 56%),
+    radial-gradient(110% 80% at 98% 12%, color-mix(in srgb, var(--brand-green) 16%, transparent) 0%, transparent 54%);
+}
+
+.tone-white {
+  --surface-wash:
+    radial-gradient(120% 85% at 95% -8%, color-mix(in srgb, var(--brand-teal) 16%, transparent) 0%, transparent 56%),
+    radial-gradient(110% 75% at 2% 104%, color-mix(in srgb, var(--brand-blue) 15%, transparent) 0%, transparent 56%);
+}
+
+/* A photograph is already the surface. */
+.plate-deep {
+  --surface-wash: none;
 }
 
 /* ============================================================================
@@ -225,8 +293,31 @@
    ========================================================================== */
 
 [data-theme="light"] body {
-  background: #FAFBFD;
+  background-color: #FAFBFD;
   color: var(--color-ink);
+}
+
+/**
+ * Light-mode washes for the two main bands.
+ *
+ * In light mode `tone-deep` and `tone-soft` become near-white surfaces, but
+ * they keep their dark-mode wash unless it is restated — and a 20% blue pool
+ * that reads as depth on navy reads as a stain on near-white. These are the
+ * same compositions at roughly half the alpha, so the bands stay lit without
+ * the ground looking tinted.
+ */
+[data-theme="light"] .tone-deep {
+  --surface-wash:
+    radial-gradient(120% 90% at 6% -10%, color-mix(in srgb, var(--brand-blue) 22%, transparent) 0%, transparent 58%),
+    radial-gradient(100% 80% at 97% 6%, color-mix(in srgb, var(--brand-teal) 18%, transparent) 0%, transparent 54%),
+    radial-gradient(120% 70% at 55% 108%, color-mix(in srgb, var(--brand-green) 16%, transparent) 0%, transparent 56%);
+}
+
+[data-theme="light"] .tone-soft {
+  --surface-wash:
+    radial-gradient(110% 85% at 94% -8%, color-mix(in srgb, var(--brand-green) 20%, transparent) 0%, transparent 56%),
+    radial-gradient(110% 85% at 3% 30%, color-mix(in srgb, var(--brand-blue) 20%, transparent) 0%, transparent 58%),
+    radial-gradient(130% 75% at 60% 106%, color-mix(in srgb, var(--brand-teal) 16%, transparent) 0%, transparent 54%);
 }
 
 /* In light mode the two main bands become light, so type on them needs the
@@ -411,7 +502,10 @@ html {
 }
 
 body {
-  background: var(--color-navy-900);
+  /* background-COLOR, not the shorthand: the shorthand resets
+     background-image and would wipe the surface wash inherited from the
+     tone class on <body>. */
+  background-color: var(--color-navy-900);
   color: var(--color-paper);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
