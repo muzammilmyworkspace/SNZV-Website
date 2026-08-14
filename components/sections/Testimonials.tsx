@@ -11,7 +11,7 @@ import {
   Reveal,
   Action,
 } from "@/components/ui/Primitives";
-import { testimonials, type Testimonial } from "@/data/company";
+import { company, testimonials, type Testimonial } from "@/data/company";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -80,22 +80,23 @@ export function Testimonials() {
               <Reveal delay={0.12}>
                 <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-muted">
                   We don&rsquo;t publish testimonials we can&rsquo;t verify, and
-                  we won&rsquo;t write them ourselves. When clients are ready to
-                  put their names to their outcomes, their words will appear
-                  here — and you&rsquo;ll be able to check every one.
+                  we won&rsquo;t write them ourselves. Our clients&rsquo; own
+                  words are on our Google listing, where we cannot edit or
+                  remove them — read them there.
                 </p>
               </Reveal>
               <Reveal delay={0.18}>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Action
-                    href="/contact#journey"
+                    href={company.social.googleReviews}
+                    external
                     magnetic
-                    onClick={() => analytics.ctaClick("Start a conversation", "testimonials")}
+                    onClick={() => analytics.outbound(company.social.googleReviews)}
                   >
-                    Start a conversation
+                    Read our Google reviews
                   </Action>
-                  <Action href="/insights/questions-to-ask-any-advisor" variant="line">
-                    Questions to ask us first
+                  <Action href="/contact#journey" variant="line">
+                    Start a conversation
                   </Action>
                 </div>
               </Reveal>

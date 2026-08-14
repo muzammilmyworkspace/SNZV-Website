@@ -17,6 +17,15 @@
 
 @theme {
   /* --- Navy: deep → royal (lifted off black) ----------------------------- */
+  /**
+   * Ink for type sitting ON the accent green (filled buttons, badges).
+   * `text-void` was in use across the codebase with no token behind it, so the
+   * class emitted nothing and button labels silently inherited their parent's
+   * colour — white on #72C43C, about 1.9:1. Defining it fixes that everywhere
+   * at once, and keeps working when the surrounding theme flips.
+   */
+  --color-void: #060D1C;
+
   --color-navy-950: #060D1C;
   --color-navy-900: #0A1730; /* deep — page ground */
   --color-navy-850: #0D1D3C;
@@ -112,7 +121,7 @@
   --fg: var(--color-ink);
   --fg-strong: #050B16;
   --fg-muted: var(--color-mist-600);
-  --fg-faint: var(--color-mist-500);
+  --fg-faint: #5A6780; /* AA on mist-100/white; still lighter than --fg-muted */
   --line: rgba(12, 21, 38, 0.12);
   --line-strong: rgba(12, 21, 38, 0.22);
   --accent: var(--color-moss-700);
@@ -125,11 +134,135 @@
   --fg: var(--color-ink);
   --fg-strong: #050B16;
   --fg-muted: var(--color-mist-600);
-  --fg-faint: var(--color-mist-500);
+  --fg-faint: #5A6780; /* AA on mist-100/white; still lighter than --fg-muted */
   --line: rgba(12, 21, 38, 0.1);
   --line-strong: rgba(12, 21, 38, 0.2);
   --accent: var(--color-moss-700);
   --accent-soft: var(--color-moss-600);
+}
+
+/* ============================================================================
+   LIGHT THEME
+   ----------------------------------------------------------------------------
+   The site is dark-first: the four tone classes above ARE the dark theme, and
+   nothing below runs unless the reader opts in via the header switch, which
+   stamps `data-theme="light"` on <html>.
+
+   Palette taken from SnZ's own student site (student.snzventures.com), read
+   straight out of its stylesheet rather than eyeballed. It is expressed there
+   in oklch; the sRGB equivalents are noted per token so the intent survives a
+   future edit by someone without a colour tool:
+
+     surface   oklch(98.5% .003 260)  → #FAFBFD   near-white, faintly blue
+     raised    #FFFFFF
+     band      oklch(97%   .005 260)  → #F4F6FA
+     sunken    oklch(96%   .01  260)  → #EEF1F7
+     line      oklch(90%   .015 260)  → #DDE3ED
+     ink       oklch(29%   .09  268)  → #1E2B5E   the brand navy, also #1e2b5e
+                                                  in the reference markup
+     accent    oklch(76%   .18  138)  → #6DC13F   the same green as dark mode
+
+   The mapping is deliberately NOT a straight inversion. `tone-deep` and
+   `tone-soft` are the two bands that carry most of the page, so they take the
+   two lightest surfaces; `tone-light` and `tone-white` — already light in the
+   dark theme — step DOWN to keep the alternating rhythm the layout depends on.
+   Invert them naively and every second band disappears into its neighbour.
+
+   Accent is darkened to moss-700 for body text and hairlines: #6DC13F on
+   near-white is about 1.9:1, nowhere near readable. The vivid green survives
+   where it belongs — filled buttons, which set their own dark ink on top.
+   ========================================================================== */
+
+[data-theme="light"] body {
+  background: #FAFBFD;
+  color: var(--color-ink);
+}
+
+[data-theme="light"] .tone-deep {
+  --surface: #FAFBFD;
+  --surface-raised: #FFFFFF;
+  --fg: #1E2B5E;
+  --fg-strong: #101B40;
+  --fg-muted: #4A566D;
+  --fg-faint: #5A6780;
+  --line: rgba(30, 43, 94, 0.14);
+  --line-strong: rgba(30, 43, 94, 0.26);
+  --accent: var(--color-moss-700);
+  --accent-soft: var(--color-moss-600);
+}
+
+[data-theme="light"] .tone-soft {
+  --surface: #F4F6FA;
+  --surface-raised: #FFFFFF;
+  --fg: #1E2B5E;
+  --fg-strong: #101B40;
+  --fg-muted: #4A566D;
+  --fg-faint: #5A6780;
+  --line: rgba(30, 43, 94, 0.15);
+  --line-strong: rgba(30, 43, 94, 0.28);
+  --accent: var(--color-moss-700);
+  --accent-soft: var(--color-moss-600);
+}
+
+[data-theme="light"] .tone-light {
+  --surface: #EEF1F7;
+  --surface-raised: #FFFFFF;
+  --fg: var(--color-ink);
+  --fg-strong: #050B16;
+  --fg-muted: var(--color-mist-600);
+  --fg-faint: #5A6780; /* AA on mist-100/white; still lighter than --fg-muted */
+  --line: rgba(12, 21, 38, 0.13);
+  --line-strong: rgba(12, 21, 38, 0.24);
+  --accent: var(--color-moss-700);
+  --accent-soft: var(--color-moss-600);
+}
+
+[data-theme="light"] .tone-white {
+  --surface: #FFFFFF;
+  --surface-raised: #F4F6FA;
+}
+
+/**
+ * Type set OVER a photograph.
+ *
+ * `.plate-deep` marks exactly the sections whose background is a darkened
+ * image — the heroes and the closing CTAs. Those sections also carry
+ * `tone-deep`, so without this they would flip to navy-on-near-white in light
+ * mode and the text would sit unreadable on top of a dark photograph. The
+ * photograph does not change with the theme, so neither does the type on it.
+ *
+ * This must come AFTER the tone overrides above to win on source order.
+ */
+[data-theme="light"] .plate-deep {
+  --surface: var(--color-navy-900);
+  --surface-raised: #0E1E3C;
+  --fg: var(--color-paper);
+  --fg-strong: #ffffff;
+  --fg-muted: var(--color-navy-200);
+  --fg-faint: var(--color-navy-300);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.22);
+  --accent: var(--color-moss-400);
+  --accent-soft: var(--color-moss-300);
+}
+
+/* Atmosphere is tuned for a dark ground; on a light one it reads as haze. */
+[data-theme="light"] .bloom-moss,
+[data-theme="light"] .bloom-royal {
+  opacity: 0.28;
+}
+[data-theme="light"] .plate-deep .bloom-moss,
+[data-theme="light"] .plate-deep .bloom-royal {
+  opacity: 1;
+}
+[data-theme="light"] .grain::after {
+  mix-blend-mode: multiply;
+  opacity: 0.14;
+}
+[data-theme="light"] .plate-deep .grain::after,
+[data-theme="light"] .plate-deep.grain::after {
+  mix-blend-mode: overlay;
+  opacity: 0.3;
 }
 
 /* Semantic utilities — components never hard-code a tone-specific colour */
@@ -138,6 +271,23 @@
 .text-muted { color: var(--fg-muted); }
 .text-faint { color: var(--fg-faint); }
 .text-accent { color: var(--accent); }
+
+/**
+ * Faded accent, written by hand rather than generated.
+ *
+ * Tailwind's `text-accent/60` would require `--color-accent` registered in
+ * `@theme`, but theme values are resolved at BUILD time and the accent only
+ * has a value at RUNTIME — it changes with whichever tone band the element
+ * happens to sit in. A build-time token cannot express that, so the alpha
+ * variants are declared explicitly instead.
+ *
+ * These are the four alphas the codebase actually uses. Adding a new one means
+ * adding it here too.
+ */
+.text-accent\/80 { color: color-mix(in srgb, var(--accent) 80%, transparent); }
+.text-accent\/70 { color: color-mix(in srgb, var(--accent) 70%, transparent); }
+.text-accent\/60 { color: color-mix(in srgb, var(--accent) 60%, transparent); }
+.text-accent\/50 { color: color-mix(in srgb, var(--accent) 50%, transparent); }
 .border-line { border-color: var(--line); }
 .border-line-strong { border-color: var(--line-strong); }
 .bg-surface { background-color: var(--surface); }

@@ -51,7 +51,7 @@ export function Chapter({
       <span
         className={cn(
           "label num",
-          tone === "dark" ? "text-moss-400" : "text-moss-700"
+          tone === "dark" ? "text-accent" : "text-accent"
         )}
       >
         {index}
@@ -314,7 +314,7 @@ export function Action({
     solid:
       "bg-moss-400 text-void hover:bg-moss-300 shadow-[0_10px_34px_-14px_rgba(114,196,60,0.75)]",
     line: "border border-line text-fg hover:border-moss-400/70 hover:text-accent backdrop-blur-[2px]",
-    ghost: "border border-ink/15 text-ink hover:border-moss-600/60 hover:text-moss-700",
+    ghost: "border border-ink/15 text-ink hover:border-moss-600/60 hover:text-accent",
     quiet: "text-muted hover:text-fg",
   }[variant];
 
@@ -411,7 +411,7 @@ export function TextLink({
 }) {
   const cls = cn(
     "group inline-flex items-center gap-2 label transition-colors",
-    tone === "dark" ? "text-accent hover:text-accent" : "text-moss-700 hover:text-moss-600",
+    tone === "dark" ? "text-accent hover:text-accent" : "text-accent hover:text-moss-600",
     className
   );
   const body = (

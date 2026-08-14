@@ -18,7 +18,7 @@ import { InsightCard } from "@/components/cards/Cards";
 import { articles } from "@/data/insights";
 import { videoFeatures } from "@/data/media";
 import { VideoFeature } from "./VideoFeature";
-import { Testimonials } from "./Testimonials";
+import { Reviews } from "./Reviews";
 import type { Pillar } from "@/data/pillars";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 
@@ -111,7 +111,7 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         </Section>
       )}
 
-      <Testimonials />
+      <Reviews />
 
       <FaqSection
         faqs={pillar.faqs}

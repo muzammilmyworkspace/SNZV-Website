@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, Fragment } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { Shell, Chapter, MaskedLines, Reveal } from "@/components/ui/Editorial";
 import { pathways } from "@/data/pathways";
@@ -47,11 +47,11 @@ export function Dream() {
             as="h2"
             className="d-1 max-w-[15ch] text-fg"
             lines={[
-              <>Some opportunities</>,
-              <>
+              "Some opportunities",
+              <Fragment key="crossing">
                 are worth <span className="d-em">crossing</span>
-              </>,
-              <>borders for.</>,
+              </Fragment>,
+              "borders for.",
             ]}
           />
           <Reveal delay={0.2}>
@@ -75,7 +75,7 @@ export function Dream() {
                   onClick={() => analytics.pathwaySelect(p.key, "dream_index")}
                   className="group flex items-start gap-6 py-7 md:items-center md:py-9"
                 >
-                  <span className="label num mt-2 shrink-0 text-moss-400/70 md:mt-0">
+                  <span className="label num mt-2 shrink-0 text-accent/70 md:mt-0">
                     0{i + 1}
                   </span>
 
@@ -126,7 +126,7 @@ export function Dream() {
                     className={cn(
                       "h-4 w-4 shrink-0 transition-all duration-500 ease-[var(--ease-out-expo)]",
                       active === i
-                        ? "translate-x-0 text-moss-400 opacity-100"
+                        ? "translate-x-0 text-accent opacity-100"
                         : "-translate-x-2 text-faint opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
                     )}
                   >

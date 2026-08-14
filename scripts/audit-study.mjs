@@ -65,20 +65,27 @@ for (const vp of [
   //    `scroll-behavior: smooth` means the click returns long before the scroll
   //    finishes, so poll until scrollY stops moving instead of guessing a delay.
   const settle = () =>
-    page.waitForFunction(
+    page.evaluate(
       () =>
         new Promise((resolve) => {
+          // Tolerate sub-pixel drift: reveal animations near the foot of the
+          // page nudge scrollY by fractions of a pixel for a while, so an
+          // exact-equality test can wait forever. Also hard-stop after 6s so a
+          // page that genuinely never settles fails a real assertion below
+          // rather than blowing up the run with a timeout.
+          const started = performance.now();
           let last = window.scrollY;
           let still = 0;
           const tick = () => {
-            if (window.scrollY === last) still++;
-            else { still = 0; last = window.scrollY; }
-            still >= 8 ? resolve(true) : requestAnimationFrame(tick);
+            const now = window.scrollY;
+            if (Math.abs(now - last) < 1) still++;
+            else still = 0;
+            last = now;
+            if (still >= 6 || performance.now() - started > 6000) resolve(true);
+            else requestAnimationFrame(tick);
           };
           requestAnimationFrame(tick);
-        }),
-      null,
-      { timeout: 15000 }
+        })
     );
 
   for (const id of ["destinations", "scholarships", "faqs"]) {

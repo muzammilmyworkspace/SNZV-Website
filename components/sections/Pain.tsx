@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { Shell, Chapter, MaskedLines, Reveal, Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
@@ -56,10 +56,10 @@ export function Pain() {
           as="h2"
           className="d-1 max-w-[16ch] text-fg"
           lines={[
-            <>Going global is exciting.</>,
-            <>
+            "Going global is exciting.",
+            <Fragment key="isnt">
               The process <span className="d-em">isn&rsquo;t</span> always.
-            </>,
+            </Fragment>,
           ]}
         />
 
@@ -82,7 +82,7 @@ export function Pain() {
               className="group flex items-baseline gap-4 py-1.5"
               style={{ paddingLeft: `min(${v.x}, 42vw)` }}
             >
-              <span className="label shrink-0 text-faint transition-colors group-hover:text-moss-400/80">
+              <span className="label shrink-0 text-faint transition-colors group-hover:text-accent/80">
                 {v.who}
               </span>
               <span className="font-display text-[1.35rem] leading-snug tracking-[-0.015em] text-muted transition-colors duration-500 group-hover:text-fg sm:text-[1.75rem]">

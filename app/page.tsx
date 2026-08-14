@@ -7,7 +7,7 @@ import { Method } from "@/components/sections/Method";
 import { Atlas } from "@/components/sections/Atlas";
 import { StudyDestinations } from "@/components/sections/Study";
 import { Why, Insights, Final } from "@/components/sections/Closing";
-import { Testimonials } from "@/components/sections/Testimonials";
+import { Reviews } from "@/components/sections/Reviews";
 import { Meridian } from "@/components/visuals/Meridian";
 import { buildMetadata } from "@/lib/seo";
 
@@ -49,7 +49,7 @@ export default function HomePage() {
       */}
       <StudyDestinations variant="home" />
       <Why />
-      <Testimonials />
+      <Reviews />
       <Insights />
       <Final />
     </>

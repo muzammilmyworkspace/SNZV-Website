@@ -138,6 +138,7 @@ npm run db:migrate      # apply migrations (transactional, checksummed)
 npm run db:bootstrap -- --email you@example.com --name "Your Name"
 npm run audit           # 19 routes x 5 viewports (site must be running)
 npm run audit:study     # Study Abroad anchors, sticky offsets, scroll spy
+npm run audit:theme     # WCAG AA contrast in BOTH themes, toggle, persistence
 npm run typecheck
 npm run build:images    # re-fetch + re-verify image licences
 npm run build:hero      # cinematic plates
@@ -158,6 +159,37 @@ animations and SEO metadata, writing screenshots to `audit-shots/`.
 landing positions, sticky-offset arithmetic and scroll-spy correctness. Those
 are invisible in a screenshot, and two real bugs shipped past the main audit
 before this existed — see the header comment in `scripts/audit-study.mjs`.
+
+`audit:theme` measures computed foreground against the first genuinely opaque
+ancestor background, for every heading, paragraph, list item, link and button,
+in both themes. It ignores type set over photography, where the image rather
+than the CSS background is the real ground.
+
+## Theming
+
+Dark is the designed default. Light is opt-in via the header switch, stored in
+`localStorage` and applied by a blocking inline script in `app/layout.tsx` —
+setting it from an effect would paint dark first and repaint on hydration.
+
+The four tone classes in `app/globals.css` *are* the dark theme; the light
+theme redefines their tokens under `[data-theme="light"]`. Two rules matter
+when adding sections:
+
+- **Never hard-code an accent colour.** Use `text-accent` (and the `/50`–`/80`
+  variants). `text-moss-400` is correct on navy and 2.1:1 on near-white; 41
+  call sites had to be converted once this theme existed.
+- **Type over a photograph belongs on `.plate-deep`.** That class pins the dark
+  tone in light mode. The photograph does not get lighter when the theme does,
+  so the type on it must not either.
+
+## Google reviews
+
+`components/sections/Reviews.tsx` renders the real Google reviews when
+`GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID` are set, and the honest
+placeholder otherwise. It never synthesises a review. The key is server-side
+only — `lib/reviews.ts` imports `server-only`, so an accidental client import
+is a build error rather than a leaked billable credential. The upstream call is
+cached for 24 hours.
 
 ## Content integrity
 

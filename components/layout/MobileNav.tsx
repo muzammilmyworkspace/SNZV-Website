@@ -7,6 +7,7 @@ import { primaryNav } from "@/data/navigation";
 import { company } from "@/data/company";
 import { Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
+import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 /**
@@ -91,7 +92,9 @@ export function MobileNav({
 
           <div className="relative flex items-center justify-between px-5 py-5 sm:px-8">
             <span className="label text-faint">Menu</span>
-            <button
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <button
               type="button"
               onClick={onClose}
               aria-label="Close menu"
@@ -100,7 +103,8 @@ export function MobileNav({
               <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5">
                 <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
               </svg>
-            </button>
+              </button>
+            </div>
           </div>
 
           <nav
@@ -126,7 +130,7 @@ export function MobileNav({
                     aria-current={isActive(item.href) ? "page" : undefined}
                     className="group flex items-baseline gap-4 py-4"
                   >
-                    <span className="label num w-6 shrink-0 text-moss-400/70">
+                    <span className="label num w-6 shrink-0 text-accent/70">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span

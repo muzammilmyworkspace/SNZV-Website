@@ -23,6 +23,7 @@ import {
   studyCaveat,
 } from "@/data/study";
 import { company } from "@/data/company";
+import { Fragment } from "react";
 
 /**
  * STUDY ABROAD SECTIONS
@@ -94,10 +95,10 @@ export function StudyHero() {
           delay={0.12}
           className="d-hero max-w-[15ch] text-fg"
           lines={[
-            <>Study in Europe.</>,
-            <>
+            "Study in Europe.",
+            <Fragment key="plan">
               Graduate with a <span className="d-em">plan</span>.
-            </>,
+            </Fragment>,
           ]}
         />
 
@@ -180,7 +181,7 @@ export function StudyOverview() {
             <MaskedLines
               as="h2"
               className="d-2 max-w-[14ch] text-fg-strong"
-              lines={[<>Not a brochure</>, <>decision.</>]}
+              lines={["Not a brochure", "decision."]}
             />
             <Reveal delay={0.12}>
               <p className="lede mt-6 max-w-md">
@@ -202,7 +203,7 @@ export function StudyOverview() {
                 key={item.title}
                 className="group border-b border-line py-7"
               >
-                <span className="label num text-moss-400/60">
+                <span className="label num text-accent/60">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 font-display text-[1.4rem] leading-tight tracking-[-0.018em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[1.65rem]">
@@ -260,8 +261,8 @@ export function StudyDestinations({
             className="d-2 max-w-[17ch] text-fg-strong"
             lines={
               home
-                ? [<>Ten European</>, <>starting points.</>]
-                : [<>Ten countries.</>, <>One European degree.</>]
+                ? ["Ten European", "starting points."]
+                : ["Ten countries.", "One European degree."]
             }
           />
           <Reveal delay={0.12}>
@@ -339,7 +340,7 @@ export function StudyUniversities() {
             <MaskedLines
               as="h2"
               className="d-2 max-w-[15ch] text-fg-strong"
-              lines={[<>Three to five you</>, <>can defend.</>]}
+              lines={["Three to five you", "can defend."]}
             />
             <Reveal delay={0.12}>
               <p className="lede mt-6 max-w-md">
@@ -368,7 +369,7 @@ export function StudyUniversities() {
                 className="border-b border-line py-6"
               >
                 <div className="flex items-baseline gap-5">
-                  <span className="label num shrink-0 text-moss-700/70">
+                  <span className="label num shrink-0 text-accent/70">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -404,7 +405,7 @@ export function StudyProgrammes() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
-            lines={[<>What you study</>, <>decides the rest.</>]}
+            lines={["What you study", "decides the rest."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -421,7 +422,7 @@ export function StudyProgrammes() {
               key={f.name}
               className="group border-t border-line pt-6"
             >
-              <span className="label num text-moss-400/60">
+              <span className="label num text-accent/60">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-3 font-display text-[1.45rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
@@ -463,7 +464,7 @@ export function StudyScholarships() {
             <MaskedLines
               as="h2"
               className="d-2 max-w-[13ch] text-fg-strong"
-              lines={[<>Funding is</>, <>a calendar.</>]}
+              lines={["Funding is", "a calendar."]}
             />
             <Reveal delay={0.12}>
               <p className="lede mt-6 max-w-md">
@@ -477,7 +478,7 @@ export function StudyScholarships() {
           <RevealGroup className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {scholarshipNotes.map((n, i) => (
               <RevealItem key={n.title} className="border-t border-line pt-5">
-                <span className="label num text-moss-400/60">
+                <span className="label num text-accent/60">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 font-display text-[1.25rem] leading-tight tracking-[-0.018em] text-fg">
@@ -506,7 +507,7 @@ export function StudyJourney() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[17ch] text-fg-strong"
-            lines={[<>Five stages, first</>, <>call to first week.</>]}
+            lines={["Five stages, first", "call to first week."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -519,7 +520,7 @@ export function StudyJourney() {
         <RevealGroup as="ol" className="mt-14 grid gap-8 md:grid-cols-3 lg:grid-cols-5 md:gap-6">
           {studyJourney.map((s) => (
             <RevealItem as="li" key={s.step} className="border-t border-line pt-5">
-              <span className="label num text-moss-700/70">{s.step}</span>
+              <span className="label num text-accent/70">{s.step}</span>
               <h3 className="mt-3 font-display text-[1.25rem] leading-none tracking-[-0.018em] text-fg">
                 {s.name}
               </h3>
@@ -556,7 +557,7 @@ export function StudySupport() {
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
-            lines={[<>The part that</>, <>starts after yes.</>]}
+            lines={["The part that", "starts after yes."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -569,7 +570,7 @@ export function StudySupport() {
         <RevealGroup className="mt-14 grid gap-x-12 gap-y-9 md:grid-cols-2 xl:grid-cols-3">
           {supportServices.map((s, i) => (
             <RevealItem key={s.title} className="group border-t border-line pt-6">
-              <span className="label num text-moss-400/60">
+              <span className="label num text-accent/60">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-3 font-display text-[1.35rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">

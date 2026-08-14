@@ -10,7 +10,7 @@ import {
   StudyJourney,
   StudySupport,
 } from "@/components/sections/Study";
-import { Testimonials } from "@/components/sections/Testimonials";
+import { Reviews } from "@/components/sections/Reviews";
 import { VideoFeature } from "@/components/sections/VideoFeature";
 import { FaqSection, CTASection } from "@/components/sections/PageParts";
 import { Container, ContentRequired, JsonLd } from "@/components/ui/Primitives";
@@ -85,7 +85,7 @@ export default function StudyAbroadPage() {
       <StudySupport />
 
       {/* Renders an honest placeholder until consented quotes exist. */}
-      <Testimonials />
+      <Reviews />
 
       <div id="faqs" className="anchor-target">
         <FaqSection

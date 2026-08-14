@@ -43,7 +43,7 @@ export function FaqAccordion({
                 }}
                 className="group flex w-full items-start gap-5 py-6 text-left sm:gap-8"
               >
-                <span className="label num shrink-0 pt-2 text-moss-400/60">
+                <span className="label num shrink-0 pt-2 text-accent/60">
                   {String(i + 1).padStart(2, "0")}
                 </span>
 

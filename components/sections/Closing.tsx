@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import {
   Shell,
@@ -43,10 +43,10 @@ export function Why() {
           as="h2"
           className="d-1 max-w-[18ch] text-fg"
           lines={[
-            <>Because your next move</>,
-            <>
+            "Because your next move",
+            <Fragment key="guesswork">
               deserves more than <span className="d-em">guesswork</span>.
-            </>,
+            </Fragment>,
           ]}
         />
 
@@ -58,7 +58,7 @@ export function Why() {
               key={t.title}
               className="group grid gap-3 border-b border-line py-8 md:grid-cols-[4rem_1fr_1fr] md:items-baseline md:gap-10"
             >
-              <span className="label num text-moss-400/60">
+              <span className="label num text-accent/60">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="font-display text-[1.6rem] leading-[1.05] tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[2rem]">
@@ -79,7 +79,7 @@ export function Why() {
                 <div key={s.label} className="max-w-[16rem]">
                   <dt className="sr-only">{s.label}</dt>
                   <dd>
-                    <span className="block font-display text-[3.4rem] leading-none tracking-[-0.03em] text-moss-400">
+                    <span className="block font-display text-[3.4rem] leading-none tracking-[-0.03em] text-accent">
                       {s.value}
                       {s.suffix}
                     </span>
@@ -138,7 +138,7 @@ export function Proof() {
             <MaskedLines
               as="h2"
               className="d-1 max-w-[16ch] text-fg"
-              lines={[<>Every journey starts</>, <>with a decision.</>]}
+              lines={["Every journey starts", "with a decision."]}
             />
             <RevealGroup className="mt-14 grid gap-px border border-line bg-raised md:grid-cols-3">
               {testimonials.map((t) => (
@@ -147,7 +147,7 @@ export function Proof() {
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <figcaption className="mt-6 border-t border-line pt-4">
-                    <span className="label block text-moss-400">{t.name}</span>
+                    <span className="label block text-accent">{t.name}</span>
                     <span className="mt-1 block text-[0.82rem] text-faint">
                       {t.role}
                     </span>
@@ -163,10 +163,10 @@ export function Proof() {
               as="h2"
               className="d-1 text-fg"
               lines={[
-                <>Your story</>,
-                <>
+                "Your story",
+                <Fragment key="next">
                   could be <span className="d-em">next</span>.
-                </>,
+                </Fragment>,
               ]}
             />
             <Reveal delay={0.15}>
@@ -214,7 +214,7 @@ export function Insights() {
           <MaskedLines
             as="h2"
             className="d-1 max-w-[14ch] text-fg"
-            lines={[<>Know before</>, <>you go.</>]}
+            lines={["Know before", "you go."]}
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -270,7 +270,7 @@ export function Insights() {
                 onClick={() => analytics.articleView(a.slug, a.category)}
                 className="group block border-b border-line py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
               >
-                <span className="label text-moss-400/80">{a.category}</span>
+                <span className="label text-accent/80">{a.category}</span>
                 <h3 className="mt-3 font-display text-[1.25rem] leading-snug tracking-[-0.015em] text-fg transition-colors duration-500 group-hover:text-accent">
                   {a.title}
                 </h3>
@@ -341,10 +341,10 @@ export function Final() {
             as="h2"
             className="d-hero text-fg"
             lines={[
-              <>Your next chapter</>,
-              <>
+              "Your next chapter",
+              <Fragment key="waiting">
                 is <span className="d-em">waiting</span>.
-              </>,
+              </Fragment>,
             ]}
           />
 

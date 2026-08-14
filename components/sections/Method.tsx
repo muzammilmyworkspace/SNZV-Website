@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { motion, useScroll, useSpring, useTransform, useReducedMotion } from "motion/react";
 import { Shell, Chapter, MaskedLines, Reveal } from "@/components/ui/Editorial";
 import { approach } from "@/data/pathways";
@@ -44,9 +44,9 @@ export function Method() {
           <MaskedLines
             as="h2"
             className="d-1 max-w-[14ch] text-fg"
-            lines={[<>One goal.</>, <>
+            lines={["One goal.", <Fragment key="clearer">
               One <span className="d-em">clearer</span> path.
-            </>]}
+            </Fragment>]}
           />
           <Reveal delay={0.15}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
@@ -97,7 +97,7 @@ export function Method() {
                   <span className="absolute h-[23px] w-[23px] rounded-full border border-moss-400/30" />
                 </span>
 
-                <span className="label num block text-moss-400/70">{s.step}</span>
+                <span className="label num block text-accent/70">{s.step}</span>
                 <h3 className="mt-2 font-display text-[1.35rem] leading-none tracking-[-0.018em] text-fg">
                   {s.name}
                 </h3>

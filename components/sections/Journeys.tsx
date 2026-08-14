@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { Shell, Chapter, MaskedLines, Action, Reveal } from "@/components/ui/Editorial";
 import { pathways, type Pathway } from "@/data/pathways";
@@ -24,10 +24,10 @@ const HEADLINES: Record<
   study: {
     kicker: "For students",
     lines: [
-      <>Your future shouldn&rsquo;t be</>,
-      <>
+      "Your future shouldn’t be",
+      <Fragment key="geography">
         limited by <span className="d-em">geography</span>.
-      </>,
+      </Fragment>,
     ],
     plate: "/images/atmos-library.webp",
     alt: "Library stacks receding into shadow",
@@ -35,10 +35,10 @@ const HEADLINES: Record<
   careers: {
     kicker: "For professionals",
     lines: [
-      <>Your next career could be</>,
-      <>
+      "Your next career could be",
+      <Fragment key="havent">
         somewhere you <span className="d-em">haven&rsquo;t</span> looked.
-      </>,
+      </Fragment>,
     ],
     plate: "/images/plate-europe-dawn.webp",
     alt: "European rooftops at first light",
@@ -46,10 +46,10 @@ const HEADLINES: Record<
   business: {
     kicker: "For founders",
     lines: [
-      <>Your business can think</>,
-      <>
+      "Your business can think",
+      <Fragment key="one-market">
         bigger than <span className="d-em">one</span> market.
-      </>,
+      </Fragment>,
     ],
     plate: "/images/path-business.webp",
     alt: "Glass towers seen from below",
@@ -106,7 +106,7 @@ function Journey({ pathway, index }: { pathway: Pathway; index: number }) {
                 flipped ? "right-0 lg:-right-6" : "left-0 lg:-left-6"
               )}
             >
-              <span className="label num text-moss-400">0{index + 1}</span>
+              <span className="label num text-accent">0{index + 1}</span>
               <span className="label text-muted">{art.kicker}</span>
             </div>
           </div>
@@ -132,7 +132,7 @@ function Journey({ pathway, index }: { pathway: Pathway; index: number }) {
                     key={b}
                     className="flex items-baseline gap-4 border-t border-line py-3.5 last:border-b"
                   >
-                    <span className="label num shrink-0 text-moss-400/60">
+                    <span className="label num shrink-0 text-accent/60">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="text-[0.9rem] leading-snug text-fg">

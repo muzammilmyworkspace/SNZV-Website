@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav } from "@/data/navigation";
 import { MobileNav } from "./MobileNav";
+import { ThemeToggle } from "./ThemeToggle";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -143,7 +144,7 @@ export function Header() {
                                   <span className="font-display text-[1.02rem] tracking-[-0.01em] text-fg">
                                     {c.label}
                                   </span>
-                                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 shrink-0 text-moss-400 opacity-0 transition-all duration-400 group-hover/i:translate-x-1 group-hover/i:opacity-100">
+                                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 shrink-0 text-accent opacity-0 transition-all duration-400 group-hover/i:translate-x-1 group-hover/i:opacity-100">
                                     <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                   </svg>
                                 </span>
@@ -172,6 +173,8 @@ export function Header() {
               </svg>
               Login
             </Link>
+
+            <ThemeToggle />
 
             <button
               type="button"

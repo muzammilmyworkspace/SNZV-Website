@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import {
   motion,
   useScroll,
@@ -116,7 +116,7 @@ export function HeroMeridian() {
             transition={{ duration: 0.9, delay: 0.15 }}
             className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-2"
           >
-            <span className="label flex items-center gap-2.5 text-moss-400">
+            <span className="label flex items-center gap-2.5 text-accent">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="breathe absolute inline-flex h-full w-full rounded-full bg-moss-400" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-moss-400" />
@@ -134,10 +134,10 @@ export function HeroMeridian() {
             delay={0.28}
             className="d-hero max-w-[16ch] text-fg"
             lines={[
-              <>Your ambition</>,
-              <>
+              "Your ambition",
+              <Fragment key="no-borders">
                 has <span className="d-em">no</span> borders.
-              </>,
+              </Fragment>,
             ]}
           />
 

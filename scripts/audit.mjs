@@ -80,11 +80,19 @@ for (const vp of VIEWPORTS) {
       }
     });
 
+    /**
+     * Wait for `load`, not `networkidle`.
+     *
+     * `networkidle` needs 500ms with no in-flight requests, and Next.js
+     * prefetches every <Link> that enters the viewport. On a wide viewport the
+     * whole header and footer are visible at once, so prefetches trickle in
+     * long enough that idle may never arrive — the run then fails on a page
+     * that is perfectly healthy. None of the checks below depend on idle
+     * anyway: the scroll-and-dwell pass that follows gives lazy content far
+     * more time to arrive than idle ever would.
+     */
     try {
-      await page.goto(`${BASE}${route}`, {
-        waitUntil: "networkidle",
-        timeout: 45000,
-      });
+      await page.goto(`${BASE}${route}`, { waitUntil: "load", timeout: 45000 });
     } catch (e) {
       record(route, vp.name, "navigation", String(e).slice(0, 160));
       await page.close();
@@ -254,10 +262,24 @@ for (const vp of VIEWPORTS) {
     }
 
     const slug = route === "/" ? "home" : route.replace(/\//g, "_").slice(1);
-    await page.screenshot({
-      path: `${SHOTS}/${vp.name}__${slug}.png`,
-      fullPage: vp.name === "laptop-1280",
-    });
+    // Full-page capture of a long route (/study-abroad runs to several
+    // viewports) can exceed Playwright's 30s default and abort the whole run.
+    // A slow screenshot is not a site defect, so it must not fail the audit —
+    // record it and carry on.
+    try {
+      await page.screenshot({
+        path: `${SHOTS}/${vp.name}__${slug}.png`,
+        fullPage: vp.name === "laptop-1280",
+        timeout: 90_000,
+      });
+    } catch (error) {
+      record(
+        route,
+        vp.name,
+        "screenshot",
+        error instanceof Error ? error.message.split("\n")[0] : String(error)
+      );
+    }
 
     await page.close();
   }

@@ -305,7 +305,7 @@ export function JourneyForm({
         role="status"
       >
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-moss-400/15">
-          <svg viewBox="0 0 20 20" className="h-5 w-5 text-moss-400" fill="none">
+          <svg viewBox="0 0 20 20" className="h-5 w-5 text-accent" fill="none">
             <path
               d="M4 10.5l4 4 8-9"
               stroke="currentColor"
@@ -415,7 +415,7 @@ export function JourneyForm({
                       {opt.blurb}
                     </span>
                   </span>
-                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 shrink-0 text-moss-400 opacity-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100">
+                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 shrink-0 text-accent opacity-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100">
                     <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>

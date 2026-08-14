@@ -72,7 +72,7 @@ export function Meridian({
 
       {/* chapter index, rotated into the gutter */}
       <div className="absolute left-6 top-[18vh] -translate-x-1/2 -translate-y-8">
-        <span className="label num block text-moss-400">{current?.index}</span>
+        <span className="label num block text-accent">{current?.index}</span>
       </div>
 
       <div className="absolute bottom-[18vh] left-6 -translate-x-1/2">

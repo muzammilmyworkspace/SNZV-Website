@@ -60,7 +60,7 @@ export function Footer() {
           <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-4">
             {footerNav.map((group) => (
               <nav key={group.heading} aria-label={group.heading}>
-                <h2 className="label text-moss-400">{group.heading}</h2>
+                <h2 className="label text-accent">{group.heading}</h2>
                 <ul className="mt-5 space-y-3">
                   {group.links.map((l) => (
                     <li key={l.href}>

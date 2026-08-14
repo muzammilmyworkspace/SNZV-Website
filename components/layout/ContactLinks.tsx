@@ -18,7 +18,7 @@ export function ContactLinks({
     "label transition-colors duration-300",
     tone === "dark"
       ? "text-muted hover:text-accent"
-      : "text-mist-600 hover:text-moss-700"
+      : "text-mist-600 hover:text-accent"
   );
 
   return (

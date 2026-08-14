@@ -63,8 +63,26 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={jakarta.variable}>
+    <html lang="en" className={jakarta.variable} suppressHydrationWarning>
       <head>
+        {/*
+          Theme, applied BEFORE first paint.
+
+          This has to be a blocking inline script in <head>. Setting the theme
+          from a React effect would paint the dark default first and repaint to
+          light on hydration — the flash-of-wrong-theme, which is far uglier on
+          a site this dark than a moment of unstyled text.
+
+          Dark stays the default: it is the designed art direction, so an
+          unknown visitor gets it and only a stored choice moves them off it.
+          `suppressHydrationWarning` on <html> is required because this mutates
+          the element before React sees it.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
+          }}
+        />
         {/*
           Reveal animations render as inline opacity:0 in the SSR HTML and are
           cleared on hydration. If scripting is unavailable, restore them so no

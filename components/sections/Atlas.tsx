@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Shell, Chapter, MaskedLines, Reveal, TextLink, Caveat } from "@/components/ui/Editorial";
 import { CorridorMap } from "@/components/visuals/CorridorMap";
@@ -43,10 +43,10 @@ export function Atlas() {
             as="h2"
             className="d-1 max-w-[16ch] text-fg"
             lines={[
-              <>Talent in. Businesses out.</>,
-              <>
+              "Talent in. Businesses out.",
+              <Fragment key="middle">
                 Vilnius in the <span className="d-em">middle</span>.
-              </>,
+              </Fragment>,
             ]}
           />
           <Reveal delay={0.15}>
@@ -89,7 +89,7 @@ export function Atlas() {
                     className="group flex w-full items-baseline justify-between gap-6 py-4 text-left"
                   >
                     <span className="flex items-baseline gap-4">
-                      <span className="label num shrink-0 text-moss-400/50">
+                      <span className="label num shrink-0 text-accent/50">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <span
@@ -105,7 +105,7 @@ export function Atlas() {
                       className={cn(
                         "label shrink-0 transition-colors duration-400",
                         d.business === "core"
-                          ? "text-moss-400"
+                          ? "text-accent"
                           : "text-faint group-hover:text-muted"
                       )}
                     >
@@ -164,7 +164,7 @@ export function Atlas() {
                       className={cn(
                         "label",
                         r.value === "core"
-                          ? "text-moss-400"
+                          ? "text-accent"
                           : r.value === "available"
                             ? "text-fg"
                             : "text-faint"

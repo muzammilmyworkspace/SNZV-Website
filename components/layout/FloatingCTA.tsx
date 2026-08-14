@@ -103,7 +103,7 @@ export function FloatingCTA() {
                 <span className="label relative text-fg">
                   Start your journey
                 </span>
-                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="relative h-3 w-3 text-moss-400 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="relative h-3 w-3 text-accent transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
                   <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
@@ -181,7 +181,7 @@ export function FloatingCTA() {
             >
               <div className="flex items-start justify-between gap-6 border-b border-line px-6 py-6 sm:px-8">
                 <div>
-                  <span className="label text-moss-400">Consultation</span>
+                  <span className="label text-accent">Consultation</span>
                   <h2 id="drawer-title" className="d-3 mt-3 text-fg">
                     Let&rsquo;s find your route.
                   </h2>

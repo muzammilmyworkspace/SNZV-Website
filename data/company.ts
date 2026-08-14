@@ -48,6 +48,13 @@ export const company = {
   /** [CONTENT REQUIRED] — no social profiles published except LinkedIn. */
   social: {
     linkedin: "https://lt.linkedin.com/company/snz-ventures",
+    /**
+     * Client-supplied Google Business share link. Used for "read all reviews"
+     * and "leave a review", and as the fallback destination when the Places
+     * API is not configured — so the link works with no credentials at all.
+     * Review CONTENT is fetched separately; see lib/reviews.ts.
+     */
+    googleReviews: "https://share.google/MNo5ThKseoiGnDEnF",
     facebook: null as string | null,
     instagram: null as string | null,
     x: null as string | null,

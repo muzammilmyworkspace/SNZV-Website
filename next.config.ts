@@ -9,6 +9,18 @@ const nextConfig: NextConfig = {
     deviceSizes: [360, 390, 414, 768, 1024, 1280, 1440, 1920],
     imageSizes: [64, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+
+    /**
+     * Google review author avatars are the only remote images on the site.
+     * Scoped to Google's own photo hosts so this cannot become a general
+     * open proxy for arbitrary third-party URLs.
+     */
+    remotePatterns: [
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "lh4.googleusercontent.com" },
+      { protocol: "https", hostname: "lh5.googleusercontent.com" },
+      { protocol: "https", hostname: "lh6.googleusercontent.com" },
+    ],
   },
 
   async headers() {
