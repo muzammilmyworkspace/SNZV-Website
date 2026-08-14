@@ -22,12 +22,40 @@ export function FloatingCTA() {
 
   const suppressed = pathname.startsWith("/contact");
 
+  /**
+   * Visible once the visitor has committed to the page, and retired again
+   * once the footer arrives.
+   *
+   * Without the second condition the pill stays pinned bottom-right over the
+   * footer and covers the legal links — and by then it is redundant anyway,
+   * since the footer carries phone, email and WhatsApp in full.
+   */
   useEffect(() => {
     if (suppressed) return setVisible(false);
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.85);
+
+    let footerOnScreen = false;
+    const onScroll = () =>
+      setVisible(!footerOnScreen && window.scrollY > window.innerHeight * 0.85);
+
+    const footer = document.getElementById("site-footer");
+    const io = footer
+      ? new IntersectionObserver(
+          ([entry]) => {
+            footerOnScreen = entry.isIntersecting;
+            onScroll();
+          },
+          // Fire a little before the footer's top edge reaches the pill.
+          { rootMargin: "0px 0px -80px 0px" }
+        )
+      : null;
+    io?.observe(footer!);
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      io?.disconnect();
+    };
   }, [suppressed]);
 
   useEffect(() => setOpen(false), [pathname]);

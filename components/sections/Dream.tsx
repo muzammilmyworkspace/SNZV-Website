@@ -64,7 +64,16 @@ export function Dream() {
         </div>
 
         {/* Interactive index */}
-        <div className="mt-16 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
+        {/*
+          `items-stretch`, not `items-center`.
+
+          The plate used to be a fixed 4:3 box centred against a list whose
+          height changes as entries expand, so the image floated with unequal
+          gaps above and below it. Stretching ties the plate's height to the
+          list beside it — the images now start and finish level with the
+          content they belong to.
+        */}
+        <div className="mt-16 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-16">
           <ul className="rule border-t">
             {pathways.map((p, i) => (
               <li key={p.key} className="border-b border-line">
@@ -140,7 +149,7 @@ export function Dream() {
           {/* desktop plate stack */}
           <motion.div
             style={reduced ? undefined : { y: plateY }}
-            className="relative hidden aspect-[4/3] lg:block"
+            className="relative hidden min-h-[24rem] lg:block"
           >
             {pathways.map((p, i) => (
               <motion.div

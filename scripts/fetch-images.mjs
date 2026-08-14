@@ -31,6 +31,16 @@ const commons = {
     "File:Ayuntamiento, vistas panorámicas desde Toompea, Tallin, Estonia, 2012-08-05, DD 21.JPG",
 };
 
+/**
+ * Wide editorial plates that are not a city. Saved without the `dest-` prefix
+ * because they are not destination cards.
+ */
+const commonsPlates = {
+  // Study Abroad hero. A university, in a destination country, that reads as a
+  // campus at a glance — the previous hero was a generic library interior.
+  "study-campus": "File:Kazimierz Palace.JPG",
+};
+
 async function commonsInfo(title) {
   // commons.wikimedia.org resets connections from this host; en.wikipedia.org
   // exposes the identical imageinfo for Commons-hosted files.
@@ -103,6 +113,33 @@ for (const [key, title] of Object.entries(commons)) {
       blur,
     });
     console.log(`OK    dest-${key}  [${info.licence}]  ${info.artist ?? ""}`);
+  } catch (e) {
+    console.log(`FAIL  ${key}: ${e.message}`);
+  }
+}
+
+/* Wide plates. Cropped 2400x1350 (16:9) because they are used full-bleed. */
+for (const [key, title] of Object.entries(commonsPlates)) {
+  try {
+    const info = await commonsInfo(title);
+    if (!info) {
+      console.log(`MISS  ${key} (${title})`);
+      continue;
+    }
+    const buf = Buffer.from(
+      await (await fetch(info.url, { headers: { "User-Agent": UA } })).arrayBuffer()
+    );
+    const blur = await save(buf, key, 2400, 1350);
+    manifest.push({
+      key,
+      file: `/images/${key}.webp`,
+      source: "Wikimedia Commons",
+      licence: info.licence,
+      artist: info.artist,
+      page: info.descUrl,
+      blur,
+    });
+    console.log(`OK    ${key}  [${info.licence}]  ${info.artist ?? ""}`);
   } catch (e) {
     console.log(`FAIL  ${key}: ${e.message}`);
   }

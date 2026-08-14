@@ -13,6 +13,7 @@ import {
   TextLink,
 } from "@/components/ui/Primitives";
 import { StudyDestinationCard } from "@/components/cards/Cards";
+import { StudyHeroMedia } from "./StudyHeroMedia";
 import {
   studyDestinations,
   studyFields,
@@ -42,16 +43,24 @@ import { Fragment } from "react";
 export function StudyHero() {
   return (
     <section className="plate plate-deep grain relative flex min-h-[86svh] items-end overflow-hidden tone-deep pb-16 pt-32 md:pb-20 md:pt-40">
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/images/atmos-library.webp"
-          alt="Reading room lined with books at a European university library"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+      <StudyHeroMedia />
+      {/*
+        Reading scrim, fixed while the plate parallaxes behind it.
+
+        The building is a pale limestone facade, so the standard `.plate-deep`
+        grade alone left white type sitting at roughly 2.6:1 over the brightest
+        areas — fine for the display line, not for the stats row beneath it.
+        This darkens the left and the foot of the frame, which is exactly where
+        the copy sits, and leaves the rest of the photograph alone.
+      */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(6,13,28,0.88)_0%,rgba(6,13,28,0.66)_38%,rgba(6,13,28,0.28)_68%,rgba(6,13,28,0.42)_100%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-[linear-gradient(to_top,rgba(6,13,28,0.9)_0%,transparent_100%)]"
+      />
       <div
         aria-hidden
         className="graticule mask-radial pointer-events-none absolute inset-0 -z-10 opacity-60"

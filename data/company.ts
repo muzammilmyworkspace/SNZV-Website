@@ -55,8 +55,18 @@ export const company = {
      * Review CONTENT is fetched separately; see lib/reviews.ts.
      */
     googleReviews: "https://share.google/MNo5ThKseoiGnDEnF",
+
+    /**
+     * Social profiles. The footer renders an icon for each entry that has a
+     * URL and silently skips the rest, so filling one of these in is the only
+     * step needed to make its icon appear.
+     *
+     * These stay `null` until the real profile URLs are supplied. A guessed
+     * handle that 404s is worse than no icon at all — it reads as abandoned.
+     */
     facebook: null as string | null,
     instagram: null as string | null,
+    tiktok: null as string | null,
     x: null as string | null,
     youtube: null as string | null,
   },

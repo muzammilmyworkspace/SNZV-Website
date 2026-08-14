@@ -192,5 +192,14 @@
     "artist": "Diego Delso",
     "page": "https://commons.wikimedia.org/wiki/File:Ayuntamiento,_vistas_panor%C3%A1micas_desde_Toompea,_Tallin,_Estonia,_2012-08-05,_DD_21.JPG",
     "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJbACdAB4+M9j3RQlbVAAA/nFeGxMCMrQ8SlhgwSTml5qk52rtR3rnv5Qevuwfe5+bM8QnEJX5Q59GDlwAAA=="
+  },
+  {
+    "key": "study-campus",
+    "file": "/images/study-campus.webp",
+    "source": "Wikimedia Commons",
+    "licence": "CC BY-SA 3.0",
+    "artist": "Bartosz MORĄG",
+    "page": "https://commons.wikimedia.org/wiki/File:Kazimierz_Palace.JPG",
+    "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwAwCdASoUAAsAPzmGuVOvKSWisAgB4CcJQBOgAzOX7cnWfyaHaAD+jwo2AyEB4RK09IiCTBMsNmrUDWvHCV2+39jWgXP6JXi7OE/cslYGO6AprAlJwuHDUgAAAA=="
   }
 ]

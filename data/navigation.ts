@@ -109,17 +109,24 @@ export const footerNav = [
       { label: "About", href: "/about" },
       { label: "Insights", href: "/insights" },
       { label: "Contact", href: "/contact" },
-      { label: "Book a Consultation", href: "/contact#journey" },
       { label: "Client Login", href: "/login" },
     ],
   },
-  {
-    heading: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "/legal/privacy-policy" },
-      { label: "Terms & Conditions", href: "/legal/terms" },
-      { label: "Cookie Policy", href: "/legal/cookie-policy" },
-      { label: "Disclaimer", href: "/legal/disclaimer" },
-    ],
-  },
+];
+
+/**
+ * Legal links live in the footer's closing rail rather than as a fourth
+ * column. They still have to be one click away — a privacy policy link is not
+ * optional for EU visitors — but a column of them competed for attention with
+ * the pathways, which is what people are actually there to find.
+ *
+ * "Book a Consultation" was dropped from the Company column: it pointed at
+ * /contact#journey while the line above it already pointed at /contact, so the
+ * same destination was offered twice.
+ */
+export const footerLegal = [
+  { label: "Privacy", href: "/legal/privacy-policy" },
+  { label: "Terms", href: "/legal/terms" },
+  { label: "Cookies", href: "/legal/cookie-policy" },
+  { label: "Disclaimer", href: "/legal/disclaimer" },
 ];

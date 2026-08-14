@@ -174,17 +174,72 @@ missed item never reaches a visitor.
 
 ---
 
+## 5b. Social profiles — four URLs needed
+
+`data/company.ts → social` drives the footer icon rail. Each entry with a URL
+renders its icon; each `null` renders nothing, so a network the firm is not on
+shows no icon rather than a dead link.
+
+| Network | State |
+|---------|-------|
+| LinkedIn | ✅ live |
+| WhatsApp | ✅ live (derived from the published number, no profile URL needed) |
+| Instagram | ❌ `null` — supply the profile URL |
+| Facebook | ❌ `null` — supply the page URL |
+| TikTok | ❌ `null` — supply the profile URL |
+| X | ❌ `null` — supply the profile URL |
+
+The icons are already built. Filling in a URL is the only step.
+
+---
+
 ## 6. Testimonials
 
 `data/company.ts` → `testimonials` is an **empty array**, deliberately. No
 testimonials are published anywhere, and fabricating them was not an option.
 
-The Stories section renders an honest alternative ("Your story could be next")
-that explains we don't publish unverified testimonials. **Populate the array and
-the section switches to a testimonial grid automatically** — no code change.
-
 Each entry needs: quote, name, role, pathway (`study` | `careers` | `business`),
-and **written consent to publish**.
+and **written consent to publish**. Populate the array and the section switches
+to a testimonial slider automatically — no code change.
+
+### What the section shows today
+
+The Trust section (`#proof` on the homepage, and on every pathway page) has
+three states, and picks the first one available:
+
+1. **Google reviews** — real ones, pulled from the Places API, shown verbatim
+   with author, star rating and date. Requires `GOOGLE_PLACES_API_KEY`; see
+   section 6b.
+2. **Written testimonials** — the array above, once populated.
+3. **The Google panel** — a finished card pointing at the public listing.
+
+State 3 is what renders now. It is a designed panel, not a placeholder: it
+carries the Google mark, explains that reviews are published by the reviewer
+and cannot be edited by SnZ, and links straight to the listing.
+
+---
+
+## 6b. Google reviews — one credential away
+
+The reviews section is built and wired. It needs **one** value:
+
+```
+GOOGLE_PLACES_API_KEY=...    # Places API (New), restricted to that API
+```
+
+`GOOGLE_PLACE_ID` is optional — without it the listing is resolved by business
+name and office address using the same key.
+
+**Why the share link alone is not enough.** `share.google/MNo5ThKseoiGnDEnF`
+cannot be read programmatically: a server-side fetch returns a JavaScript
+shell, and a real headless browser is served Google's `/sorry/` CAPTCHA. The
+link is a human-facing redirect, not an API. It resolves to the Knowledge Graph
+entry `/g/11yqs4kxm4` for **SnZ Ventures**, which confirms the listing but
+does not expose the reviews.
+
+So the link is used for what it is good for — sending visitors to the listing,
+which works today with no credentials — and the review *content* comes from the
+official API, which is also the only version that keeps itself up to date.
 
 ---
 

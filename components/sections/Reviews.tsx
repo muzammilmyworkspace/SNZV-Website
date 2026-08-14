@@ -38,7 +38,7 @@ export async function Reviews() {
   }
 
   return (
-    <Section tone="deep" edge className="overflow-hidden">
+    <Section id="proof" tone="deep" edge className="overflow-hidden">
       <div
         aria-hidden
         className="bloom-moss pointer-events-none absolute -left-32 top-1/3 h-[26rem] w-[26rem] opacity-25"

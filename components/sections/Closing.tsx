@@ -19,7 +19,6 @@ import { articles } from "@/data/insights";
 import {
   trustPoints,
   stats,
-  testimonials,
   ecosystem,
   ecosystemDisclaimer,
   company,
@@ -118,85 +117,6 @@ export function Why() {
   );
 }
 
-/* ══════════════════════════════════════════ CHAPTER 07 — PROOF ═══ */
-
-export function Proof() {
-  const has = testimonials.length > 0;
-
-  return (
-    <section id="proof" className="grain relative overflow-hidden tone-deep py-16 md:py-20">
-      <div
-        aria-hidden
-        className="bloom-moss pointer-events-none absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 opacity-30"
-      />
-
-      <Shell className="relative">
-        <Chapter index="08" label="Proof" className="mb-10" />
-
-        {has ? (
-          <>
-            <MaskedLines
-              as="h2"
-              className="d-1 max-w-[16ch] text-fg"
-              lines={["Every journey starts", "with a decision."]}
-            />
-            <RevealGroup className="mt-14 grid gap-px border border-line bg-raised md:grid-cols-3">
-              {testimonials.map((t) => (
-                <RevealItem key={t.name} className="bg-surface p-7">
-                  <blockquote className="font-display text-[1.2rem] leading-snug text-fg">
-                    &ldquo;{t.quote}&rdquo;
-                  </blockquote>
-                  <figcaption className="mt-6 border-t border-line pt-4">
-                    <span className="label block text-accent">{t.name}</span>
-                    <span className="mt-1 block text-[0.82rem] text-faint">
-                      {t.role}
-                    </span>
-                  </figcaption>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-          </>
-        ) : (
-          /* Honest empty state — no fabricated social proof, ever. */
-          <div className="mx-auto max-w-3xl text-center">
-            <MaskedLines
-              as="h2"
-              className="d-1 text-fg"
-              lines={[
-                "Your story",
-                <Fragment key="next">
-                  could be <span className="d-em">next</span>.
-                </Fragment>,
-              ]}
-            />
-            <Reveal delay={0.15}>
-              <p className="mx-auto mt-7 max-w-xl text-[0.97rem] leading-[1.7] text-muted">
-                We don&rsquo;t publish testimonials we can&rsquo;t verify, and
-                we won&rsquo;t invent them. When our clients are ready to put
-                their names to their outcomes, they&rsquo;ll appear here — and
-                you&rsquo;ll be able to check every one.
-              </p>
-            </Reveal>
-            <Reveal delay={0.22}>
-              <div className="mt-10 flex flex-wrap justify-center gap-3">
-                <Action
-                  href="/contact#journey"
-                  magnetic
-                  onClick={() => analytics.ctaClick("Start a conversation", "proof")}
-                >
-                  Start a conversation
-                </Action>
-                <Action href="/insights/questions-to-ask-any-advisor" variant="line">
-                  Questions to ask us first
-                </Action>
-              </div>
-            </Reveal>
-          </div>
-        )}
-      </Shell>
-    </section>
-  );
-}
 
 /* ═══════════════════════════════════════ CHAPTER 08 — INSIGHTS ═══ */
 

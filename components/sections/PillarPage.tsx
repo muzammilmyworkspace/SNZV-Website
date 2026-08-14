@@ -11,7 +11,6 @@ import {
   Container,
   Section,
   SectionHeading,
-  ContentRequired,
   JsonLd,
 } from "@/components/ui/Primitives";
 import { InsightCard } from "@/components/cards/Cards";
@@ -118,13 +117,6 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         page={pillar.slug}
         caveat={pillar.caveat}
       />
-
-      <Container>
-        <ContentRequired
-          label={`${pillar.hero.eyebrow} pathway`}
-          items={pillar.contentRequired}
-        />
-      </Container>
 
       <TalkToUs />
     </>

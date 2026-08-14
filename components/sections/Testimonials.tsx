@@ -23,7 +23,8 @@ import { cn } from "@/lib/utils";
  * component has two honest states:
  *
  *   • populated → an editorial slider (keyboard, swipe, autoplay-free)
- *   • empty     → a clearly-marked placeholder that explains the absence
+ *   • empty     → a finished panel that points at the Google listing, where
+ *                 the real reviews live and where SnZ cannot edit them
  *
  * Adding entries to the array switches states with no code change.
  */
@@ -63,15 +64,17 @@ export function Testimonials() {
 
   if (!items.length) {
     return (
-      <Section tone="deep" edge className="overflow-hidden">
+      <Section id="proof" tone="deep" edge className="overflow-hidden">
         <div
           aria-hidden
           className="bloom-moss pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 opacity-25"
         />
         <Container className="relative">
           <Chapter index="—" label="Trust" className="mb-6" />
-          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-16">
-            <div>
+          {/* Stretch so the panel's top and bottom edges line up with the
+              copy beside it rather than floating centred against it. */}
+          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-stretch lg:gap-16">
+            <div className="flex flex-col justify-center">
               <MaskedLines
                 as="h2"
                 className="d-2 max-w-[16ch] text-fg-strong"
@@ -102,28 +105,60 @@ export function Testimonials() {
               </Reveal>
             </div>
 
-            {/* Placeholder frame — final layout, no invented content. */}
-            <Reveal delay={0.1}>
-              <figure className="relative rounded-[var(--radius-lg)] border border-dashed border-line p-8">
-                <span aria-hidden className="block text-[4rem] leading-none text-accent opacity-30">
-                  &ldquo;
+            {/*
+              A finished panel, not a placeholder.
+
+              This used to be a dashed frame with grey bars and the words
+              "[Real testimonial required]" — engineering scaffolding sitting
+              on a live marketing page. The honest position has not changed:
+              nothing is invented here. But the way to say "our reviews are
+              somewhere you can verify them" is to point at that place
+              confidently, not to draw an empty quote card.
+            */}
+            <Reveal delay={0.1} className="h-full">
+              <figure className="flex h-full flex-col rounded-[var(--radius-lg)] border border-line bg-raised p-8">
+                <span className="flex items-center gap-2.5">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
+                    <path fill="#4285F4" d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 01-2.4 3.63v3h3.87c2.26-2.09 3.56-5.17 3.56-8.87z" />
+                    <path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.28v3.09A12 12 0 0012 24z" />
+                    <path fill="#FBBC05" d="M5.27 14.28a7.2 7.2 0 010-4.56V6.63H1.28a12 12 0 000 10.74z" />
+                    <path fill="#EA4335" d="M12 4.76c1.77 0 3.35.61 4.6 1.8l3.43-3.43C17.95 1.19 15.24 0 12 0A12 12 0 001.28 6.63l3.99 3.09C6.22 6.87 8.87 4.76 12 4.76z" />
+                  </svg>
+                  <span className="label text-muted">Reviewed on Google</span>
                 </span>
-                <div className="mt-2 space-y-2.5" aria-hidden>
-                  <span className="block h-3 w-full rounded bg-raised" />
-                  <span className="block h-3 w-[92%] rounded bg-raised" />
-                  <span className="block h-3 w-[76%] rounded bg-raised" />
-                </div>
-                <figcaption className="mt-7 flex items-center gap-3 border-t border-line pt-5">
-                  <span aria-hidden className="h-10 w-10 shrink-0 rounded-full bg-raised" />
-                  <span>
-                    <span className="label block text-accent">
-                      [Real testimonial required]
-                    </span>
-                    <span className="mt-1 block text-[0.8rem] text-faint">
-                      Name, role and written consent to publish.
-                    </span>
-                  </span>
-                </figcaption>
+
+                <blockquote className="mt-6 font-display text-[1.35rem] leading-[1.3] tracking-[-0.015em] text-fg">
+                  Read what our students and clients actually wrote — on a
+                  platform where we can&rsquo;t edit a word of it.
+                </blockquote>
+
+                <ul className="mt-7 space-y-3 border-t border-line pt-6">
+                  {[
+                    "Published by the reviewer, not by us",
+                    "Every review shown in full, unedited",
+                    "Open to anyone we have worked with",
+                  ].map((line) => (
+                    <li key={line} className="flex items-start gap-3 text-[0.86rem] leading-snug text-muted">
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden className="mt-[0.15em] h-3.5 w-3.5 shrink-0 text-accent">
+                        <path d="M2.5 8.4l3.2 3.2 7.8-7.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={company.social.googleReviews}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => analytics.outbound(company.social.googleReviews)}
+                  className="label group mt-auto inline-flex items-center gap-2 pt-7 text-accent"
+                >
+                  <span className="draw">Open our Google listing</span>
+                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
+                    <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
               </figure>
             </Reveal>
           </div>
@@ -137,7 +172,7 @@ export function Testimonials() {
   const current = items[index];
 
   return (
-    <Section tone="deep" edge className="overflow-hidden">
+    <Section id="proof" tone="deep" edge className="overflow-hidden">
       <div
         aria-hidden
         className="bloom-moss pointer-events-none absolute -left-32 top-1/3 h-[26rem] w-[26rem] opacity-25"

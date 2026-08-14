@@ -3,7 +3,6 @@ import {
   Container,
   Section,
   SectionHeading,
-  ContentRequired,
   Caveat,
   JsonLd,
   Eyebrow,
@@ -114,16 +113,6 @@ export default function AboutPage() {
             </Reveal>
           </div>
 
-          <ContentRequired
-            label="About page"
-            items={[
-              "Founder / Managing Partner name and short biography",
-              "Year the company was founded",
-              "Team size and key roles, if these should be public",
-              "Registered legal entity name, company code and VAT number",
-              "Full registered street address",
-            ]}
-          />
         </Container>
       </Section>
 

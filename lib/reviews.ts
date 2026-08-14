@@ -69,10 +69,56 @@ type PlacesResponse = {
   }[];
 };
 
+/**
+ * Resolves the listing by name when no Place ID is configured.
+ *
+ * The share link the client supplied cannot be turned into a Place ID from
+ * here — Google answers both a plain fetch and a headless browser with a
+ * CAPTCHA. Text Search can do it with the same key that fetches the reviews,
+ * which reduces setup to one credential instead of two.
+ *
+ * Scoped to the office coordinates so a same-named business elsewhere cannot
+ * be picked up by mistake.
+ */
+async function resolvePlaceId(key: string): Promise<string | null> {
+  try {
+    const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": key,
+        "X-Goog-FieldMask": "places.id,places.displayName",
+      },
+      body: JSON.stringify({
+        textQuery: `${company.name} ${company.contact.streetAddress} ${company.contact.city}`,
+        maxResultCount: 1,
+        locationBias: {
+          circle: {
+            center: { latitude: 54.6872, longitude: 25.2797 },
+            radius: 25000,
+          },
+        },
+      }),
+      next: { revalidate: 604_800 },
+    });
+    if (!res.ok) {
+      console.error(`[reviews] place lookup responded ${res.status}`);
+      return null;
+    }
+    const data = (await res.json()) as { places?: { id?: string }[] };
+    return data.places?.[0]?.id ?? null;
+  } catch (error) {
+    console.error("[reviews] place lookup failed:", error);
+    return null;
+  }
+}
+
 export async function getGoogleReviews(): Promise<GoogleReviewsResult> {
   const key = process.env.GOOGLE_PLACES_API_KEY;
-  const placeId = process.env.GOOGLE_PLACE_ID;
-  if (!key || !placeId) return EMPTY;
+  if (!key) return EMPTY;
+
+  const placeId = process.env.GOOGLE_PLACE_ID || (await resolvePlaceId(key));
+  if (!placeId) return EMPTY;
 
   try {
     const res = await fetch(

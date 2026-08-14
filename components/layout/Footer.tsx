@@ -1,15 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Shell } from "@/components/ui/Editorial";
-import { footerNav } from "@/data/navigation";
+import { footerNav, footerLegal } from "@/data/navigation";
 import { company } from "@/data/company";
 import { ContactLinks } from "./ContactLinks";
+import { SocialLinks } from "./SocialLinks";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="grain relative overflow-hidden border-t border-line bg-surface">
+    // `id` is the hook FloatingCTA observes so it can retire once the footer
+    // is on screen — otherwise it sits on top of the legal links.
+    <footer
+      id="site-footer"
+      className="grain relative overflow-hidden border-t border-line bg-surface"
+    >
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
       <div
         aria-hidden
@@ -48,16 +54,10 @@ export function Footer() {
               </p>
             </address>
 
-            <ul className="mt-7 flex flex-wrap gap-2">
-              {company.attributes.map((a) => (
-                <li key={a} className="label border border-line px-2.5 py-1.5 text-faint">
-                  {a}
-                </li>
-              ))}
-            </ul>
+            <SocialLinks className="mt-7" />
           </div>
 
-          <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-3">
             {footerNav.map((group) => (
               <nav key={group.heading} aria-label={group.heading}>
                 <h2 className="label text-accent">{group.heading}</h2>
@@ -78,43 +78,43 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Contact rail */}
-        <div className="flex flex-col gap-6 border-t border-line py-8 md:flex-row md:items-center md:justify-between">
-          <ContactLinks location="footer" />
-          {company.social.linkedin && (
-            <a
-              href={company.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SnZ Ventures on LinkedIn"
-              className="flex h-10 w-10 items-center justify-center border border-line text-muted transition-colors hover:border-moss-400/60 hover:text-accent"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4" fill="currentColor">
-                <path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12.02H3V8.98zM9.5 8.98h3.83v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21H18v-5.54c0-1.32-.03-3.03-1.85-3.03-1.85 0-2.13 1.44-2.13 2.93V21H9.5V8.98z" />
-              </svg>
-            </a>
-          )}
-        </div>
+        {/*
+          One closing rail instead of three.
 
-        {/* Legal */}
-        <div className="flex flex-col gap-4 border-t border-line py-7 text-[0.76rem] leading-relaxed text-faint md:flex-row md:justify-between">
-          <p>
-            © {year} {company.name}. Registered in {company.legal.incorporatedIn}.
-          </p>
-          <p className="max-w-2xl md:text-right">{company.regulatoryNotice}</p>
-        </div>
-
-        <div className="border-t border-line py-6 text-[0.72rem] leading-relaxed text-faint">
-          <p>
-            SnZ Ventures does not guarantee admission, employment, banking,
-            licensing or immigration outcomes. These decisions rest with
-            institutions, employers, financial institutions and national
-            authorities.{" "}
+          The footer previously ran a contact row, a legal row and a separate
+          disclaimer paragraph — three stacked bands of small print that pushed
+          the useful links off most screens. The full regulatory text and the
+          outcomes disclaimer live on /legal/disclaimer, which is linked here,
+          so nothing has been lost except the repetition.
+        */}
+        <div className="border-t border-line py-7">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <ContactLinks location="footer" />
+            <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              {[...footerLegal, { label: "Image credits", href: "/legal/image-credits" }].map(
+                (l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="text-[0.76rem] text-faint transition-colors hover:text-fg"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+          <p className="mt-5 text-[0.74rem] leading-relaxed text-faint">
+            © {year} {company.name}. Registered in{" "}
+            {company.legal.incorporatedIn}. Admission, employment, banking,
+            licensing and immigration outcomes rest with institutions,
+            employers and national authorities — see the{" "}
             <Link
-              href="/legal/image-credits"
-              className="underline underline-offset-2 transition-colors hover:text-faint"
+              href="/legal/disclaimer"
+              className="underline underline-offset-2 transition-colors hover:text-fg"
             >
-              Image credits
+              full disclaimer
             </Link>
             .
           </p>

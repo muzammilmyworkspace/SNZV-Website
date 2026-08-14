@@ -13,9 +13,8 @@ import {
 import { Reviews } from "@/components/sections/Reviews";
 import { VideoFeature } from "@/components/sections/VideoFeature";
 import { FaqSection, CTASection } from "@/components/sections/PageParts";
-import { Container, ContentRequired, JsonLd } from "@/components/ui/Primitives";
+import { JsonLd } from "@/components/ui/Primitives";
 import { studyFaqs, studyCaveat, studyDestinations } from "@/data/study";
-import { pillars } from "@/data/pillars";
 import { videoFeatures } from "@/data/media";
 import { company } from "@/data/company";
 import { breadcrumbSchema, buildMetadata, faqSchema, SITE_URL } from "@/lib/seo";
@@ -95,13 +94,6 @@ export default function StudyAbroadPage() {
           caveat={studyCaveat}
         />
       </div>
-
-      <Container>
-        <ContentRequired
-          label="Study Abroad pathway"
-          items={pillars.study.contentRequired}
-        />
-      </Container>
 
       <CTASection
         title="Start your study abroad journey."
