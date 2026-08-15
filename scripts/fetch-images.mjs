@@ -64,7 +64,7 @@ async function commonsInfo(title) {
     titles: title,
     prop: "imageinfo",
     iiprop: "url|extmetadata",
-    iiurlwidth: "2000",
+    iiurlwidth: "4000",
     format: "json",
   });
   const r = await fetch(u, { headers: { "User-Agent": UA } });
@@ -86,7 +86,7 @@ async function commonsInfo(title) {
 async function save(buf, name, w, h) {
   await sharp(buf)
     .resize(w, h, { fit: "cover", position: "attention" })
-    .webp({ quality: 76, effort: 5 })
+    .webp({ quality: 84, effort: 6 })
     .toFile(path.join(OUT, `${name}.webp`));
   // Tiny blur placeholder for LQIP
   const lqip = await sharp(buf).resize(20).webp({ quality: 20 }).toBuffer();
@@ -116,7 +116,7 @@ for (const [key, title] of Object.entries(commons)) {
     const buf = Buffer.from(
       await (await fetch(info.url, { headers: { "User-Agent": UA } })).arrayBuffer()
     );
-    const blur = await save(buf, `dest-${key}`, 1200, 900);
+    const blur = await save(buf, `dest-${key}`, 1800, 1350);
     manifest.push({
       key: `dest-${key}`,
       file: `/images/dest-${key}.webp`,
@@ -132,7 +132,8 @@ for (const [key, title] of Object.entries(commons)) {
   }
 }
 
-/* Wide plates. Cropped 2400x1350 (16:9) because they are used full-bleed. */
+/* Wide plates. 3400x1912 (16:9) — these run full-bleed behind heroes, so they
+   have to hold up on a 2560px display at device pixel ratio 2. */
 for (const [key, title] of Object.entries(commonsPlates)) {
   try {
     const info = await commonsInfo(title);
@@ -143,7 +144,7 @@ for (const [key, title] of Object.entries(commonsPlates)) {
     const buf = Buffer.from(
       await (await fetch(info.url, { headers: { "User-Agent": UA } })).arrayBuffer()
     );
-    const blur = await save(buf, key, 2400, 1350);
+    const blur = await save(buf, key, 3400, 1912);
     manifest.push({
       key,
       file: `/images/${key}.webp`,
@@ -171,14 +172,14 @@ const unsplash = {
 
 for (const [name, id] of Object.entries(unsplash)) {
   try {
-    const url = `https://images.unsplash.com/${id}?w=1600&q=80&fm=jpg`;
+    const url = `https://images.unsplash.com/${id}?w=3000&q=90&fm=jpg`;
     const res = await fetch(url, { headers: { "User-Agent": UA } });
     if (!res.ok) {
       console.log(`MISS  ${name} (${id}) ${res.status}`);
       continue;
     }
     const buf = Buffer.from(await res.arrayBuffer());
-    const blur = await save(buf, name, 1400, 1000);
+    const blur = await save(buf, name, 2400, 1600);
     manifest.push({
       key: name,
       file: `/images/${name}.webp`,

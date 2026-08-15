@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/Primitives";
 import { PageHero, ProcessTimeline, TalkToUs } from "@/components/sections/PageParts";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { CorridorMap } from "@/components/visuals/CorridorMap";
 import { approach } from "@/data/pathways";
 import {
   company,
@@ -26,6 +25,28 @@ export const metadata: Metadata = buildMetadata({
     "SnZ Ventures is a woman-owned advisory firm in Vilnius, Lithuania, working across company formation, fintech licensing, international recruitment and investor relocation.",
   path: "/about",
 });
+
+/**
+ * The corridor as three numbers, read left to right. Every figure is derived
+ * from data already on this site — no new claim is introduced here.
+ */
+const CORRIDOR_FLOW = [
+  {
+    value: sourceMarkets.length.toString(),
+    label: "Source markets",
+    detail: "Across South Asia and the Middle East.",
+  },
+  {
+    value: "1",
+    label: "Coordination hub",
+    detail: "Vilnius — entities, licences and filings.",
+  },
+  {
+    value: "27",
+    label: "EU member states",
+    detail: "Where a Lithuanian entity can operate.",
+  },
+];
 
 const beliefs = [
   {
@@ -149,9 +170,56 @@ export default function AboutPage() {
               title="Both Ends of the Route, or Neither."
               lead="Most agencies sit at one end of a corridor and guess about the other. We recruit in the source markets and place into the destination markets, so what we tell each side is grounded in the other."
             />
-            {/* Capped so the map does not outgrow the copy it illustrates. */}
-            <Reveal className="mx-auto w-full max-w-[30rem] lg:max-w-[27rem]">
-              <CorridorMap tone="light" variant="pins" showLabels={false} />
+            {/*
+              An infographic, not a map.
+
+              This section is about the SHAPE of the business — talent in one
+              direction, companies the other, Lithuania in the middle. A second
+              map said none of that; it repeated the homepage atlas and left a
+              scatter of green dots with no legend to explain them. Numbers and
+              a direction of travel carry the idea in a glance.
+            */}
+            <Reveal>
+              <div className="rounded-[var(--radius-lg)] border border-line bg-raised p-6 sm:p-8">
+                <div className="grid gap-6 sm:grid-cols-3 sm:gap-4">
+                  {CORRIDOR_FLOW.map((step, i) => (
+                    <div key={step.label} className="relative">
+                      <span className="num block text-[2.3rem] leading-none tracking-[-0.03em] text-fg">
+                        {step.value}
+                      </span>
+                      <span className="label mt-2 block text-accent">
+                        {step.label}
+                      </span>
+                      <span className="mt-1.5 block text-[0.8rem] leading-snug text-muted">
+                        {step.detail}
+                      </span>
+
+                      {/* Direction of travel, drawn between the columns. */}
+                      {i < CORRIDOR_FLOW.length - 1 && (
+                        <svg
+                          viewBox="0 0 24 12"
+                          aria-hidden
+                          className="absolute -right-3 top-3 hidden h-3 w-6 text-accent sm:block"
+                        >
+                          <path
+                            d="M1 6h20M17 2l4 4-4 4"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            opacity="0.65"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <p className="mt-7 border-t border-line pt-5 text-[0.84rem] leading-relaxed text-muted">
+                  Both ends of the same route. We recruit where the talent is
+                  and place where the demand is, so neither side is guesswork.
+                </p>
+              </div>
             </Reveal>
           </div>
 

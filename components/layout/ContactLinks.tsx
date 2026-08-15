@@ -23,7 +23,8 @@ export function ContactLinks({
   variant?: "full" | "compact";
 }) {
   // Tone-aware by token, so the  prop no longer selects a colour.
-  const link = "label text-muted transition-colors duration-300 hover:text-accent";
+  const link =
+    "label inline-flex min-h-8 items-center text-muted transition-colors duration-300 hover:text-accent";
 
   if (variant === "compact") {
     return (

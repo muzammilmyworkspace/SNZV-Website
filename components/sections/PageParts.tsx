@@ -41,7 +41,7 @@ export function Breadcrumbs({
                 <>
                   <Link
                     href={item.path}
-                    className="label text-faint transition-colors hover:text-accent"
+                    className="label inline-flex min-h-8 items-center text-faint transition-colors hover:text-accent"
                   >
                     {item.name}
                   </Link>

@@ -57,6 +57,7 @@ export function CorridorMap({
   animate = true,
   variant = "corridors",
   activeSlug,
+  land = "dots",
 }: {
   className?: string;
   tone?: "dark" | "light";
@@ -74,6 +75,16 @@ export function CorridorMap({
   variant?: "corridors" | "pins";
   /** In `pins`, the market to emphasise — lets a selection drive the map. */
   activeSlug?: string;
+  /**
+   * "dots" is the stylised dot field. "solid" is the real coastline, drawn
+   * from the same public-domain source and the same calibration, so pins land
+   * identically on either.
+   *
+   * The solid map ships as a single alpha MASK rather than two coloured
+   * images: CSS paints it with a theme token, so the landmass follows the
+   * palette and there is no second asset to keep in step.
+   */
+  land?: "dots" | "solid";
 }) {
   const reduced = useReducedMotion();
   const play = animate && !reduced;
@@ -118,21 +129,51 @@ export function CorridorMap({
 
   return (
     <div className={cn("relative w-full", className)} aria-hidden>
-      {/* Static land — an <img> so ~9k dots never enter the DOM */}
-      <img
-        src={
-          isDark
-            ? "/brand/corridor-map-dark.svg"
-            : "/brand/corridor-map-light.svg"
-        }
-        alt=""
-        width={W}
-        height={H}
-        loading="lazy"
-        decoding="async"
-        className="w-full select-none"
-        draggable={false}
-      />
+      {land === "solid" ? (
+        /*
+          The real coastline. A masked block rather than an <img>, so the
+          landmass takes its colour from the current tone — one asset, both
+          themes, and it keeps following the palette if the tone changes.
+
+          The spacer <img> below it establishes the box's height from the same
+          aspect ratio; the mask itself is painted on the absolutely-positioned
+          layer above.
+        */
+        <div className="relative w-full">
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full" aria-hidden />
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              backgroundColor: isDark
+                ? "rgba(255,255,255,0.13)"
+                : "rgba(30,45,86,0.17)",
+              WebkitMaskImage: "url(/brand/world-mask.png)",
+              maskImage: "url(/brand/world-mask.png)",
+              WebkitMaskSize: "100% 100%",
+              maskSize: "100% 100%",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+            }}
+          />
+        </div>
+      ) : (
+        /* Static dot field — an <img> so ~9k dots never enter the DOM */
+        <img
+          src={
+            isDark
+              ? "/brand/corridor-map-dark.svg"
+              : "/brand/corridor-map-light.svg"
+          }
+          alt=""
+          width={W}
+          height={H}
+          loading="lazy"
+          decoding="async"
+          className="w-full select-none"
+          draggable={false}
+        />
+      )}
 
       <svg
         viewBox={`0 0 ${W} ${H}`}

@@ -67,7 +67,7 @@ export function Atlas() {
               the arc animation belongs to the home hero and repeating it here
               made two adjacent sections look like the same slide twice.
             */}
-            <CorridorMap tone="dark" variant="pins" activeSlug={current.slug} />
+            <CorridorMap tone="dark" variant="pins" land="solid" activeSlug={current.slug} />
             <span aria-hidden className="absolute -left-px -top-px h-6 w-6 border-l border-t border-moss-400/50" />
             <span aria-hidden className="absolute -bottom-px -right-px h-6 w-6 border-b border-r border-moss-400/50" />
           </div>
@@ -188,7 +188,7 @@ export function Atlas() {
 
               <Link
                 href="/destinations"
-                className="label mt-5 inline-flex items-center gap-2 text-accent transition-colors hover:text-accent"
+                className="label mt-5 inline-flex min-h-8 items-center gap-2 text-accent transition-colors hover:text-accent"
               >
                 <span className="draw">Explore {current.country}</span>
               </Link>

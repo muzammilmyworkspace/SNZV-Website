@@ -11,7 +11,7 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } fr
  *
  * Three movements, all slow enough to read as atmosphere rather than effect:
  *
- *   • a crossfade between frames every 7s;
+ *   • a crossfade between frames every 4.5s;
  *   • a Ken Burns drift on whichever frame is showing, so it is never still;
  *   • a scroll-linked parallax, so the plate falls away slower than the type.
  *
@@ -33,7 +33,7 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } fr
 export type HeroImage = { src: string; alt: string };
 
 const MAX_FRAMES = 4;
-const HOLD_MS = 7_000;
+const HOLD_MS = 4_500;
 
 export function HeroSlideshow({
   images,
@@ -75,11 +75,12 @@ export function HeroSlideshow({
         <AnimatePresence initial={false}>
           <motion.div
             key={current.src}
+            data-stack
             className="absolute inset-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0 : 1.4, ease: "easeInOut" }}
+            transition={{ duration: reduced ? 0 : 1.1, ease: "easeInOut" }}
           >
             <motion.div
               className="absolute inset-0"
@@ -90,7 +91,7 @@ export function HeroSlideshow({
                   : { scale: 1.14, x: "1%", y: "0.6%" }
               }
               transition={
-                reduced ? undefined : { duration: 12, ease: "easeInOut" }
+                reduced ? undefined : { duration: 9, ease: "easeInOut" }
               }
             >
               <Image

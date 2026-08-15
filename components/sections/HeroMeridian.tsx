@@ -38,7 +38,7 @@ const HERO_FRAMES = [
   { src: "/images/plate-departure.webp", alt: "An aircraft wing above the clouds" },
   { src: "/images/hero-aerial.webp", alt: "Aerial view over a European city at night" },
 ];
-const HERO_HOLD_MS = 7_000;
+const HERO_HOLD_MS = 4_500;
 
 export function HeroMeridian() {
   const [frame, setFrame] = useState(0);
@@ -105,11 +105,12 @@ export function HeroMeridian() {
           <AnimatePresence initial={false}>
             <motion.div
               key={HERO_FRAMES[frame].src}
+              data-stack
               className="absolute inset-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: reduced ? 0 : 1.4, ease: "easeInOut" }}
+              transition={{ duration: reduced ? 0 : 1.1, ease: "easeInOut" }}
             >
               <Image
                 src={HERO_FRAMES[frame].src}

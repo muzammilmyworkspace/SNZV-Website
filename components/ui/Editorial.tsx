@@ -404,7 +404,9 @@ export function TextLink({
   external?: boolean;
 }) {
   const cls = cn(
-    "group inline-flex items-center gap-2 label transition-colors",
+    // min-h-8 + padding: these are real CTAs ("Talk to an advisor"), and at
+    // text height they were 17px tall — under any sane touch minimum.
+    "group inline-flex min-h-8 items-center gap-2 py-1.5 label transition-colors",
     tone === "dark" ? "text-accent hover:text-accent" : "text-accent hover:text-moss-600",
     className
   );

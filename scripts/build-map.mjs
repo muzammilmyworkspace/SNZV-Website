@@ -163,3 +163,42 @@ await sharp(Buffer.from(svgFor("#0A1226", 0.6)))
   .toFile("map-preview.png");
 
 console.log(`viewBox 0 0 ${W} ${H} — ${dots.length} dots`);
+
+/* ------------------------------------------- solid landmass (real coastline)
+
+   The dot field is a stylisation. Sections that want the actual map get this
+   instead: the same source, same calibration, sampled at full resolution into
+   an ALPHA MASK — land opaque, ocean transparent.
+
+   A mask rather than two coloured images, because then one asset serves both
+   themes: CSS paints it with a theme token, so the landmass follows the
+   palette automatically and there is no second file to keep in step.
+   -------------------------------------------------------------------------- */
+
+const MW = 2000;
+const MH = Math.round(MW * (H / W));
+const mask = Buffer.alloc(MW * MH * 4, 0);
+
+// Slight blur of the source threshold would soften coastlines; sampling at 2x
+// the delivered width and letting the encoder downscale keeps them crisp.
+for (let my = 0; my < MH; my++) {
+  const lat = BOUNDS.latMax - (my / MH) * (BOUNDS.latMax - BOUNDS.latMin);
+  const sy = latToPx(lat);
+  for (let mx = 0; mx < MW; mx++) {
+    const lon = BOUNDS.lonMin + (mx / MW) * (BOUNDS.lonMax - BOUNDS.lonMin);
+    if (lum(lonToPx(lon), sy) < LAND_MAX_LUM) {
+      const i = (my * MW + mx) * 4;
+      mask[i] = mask[i + 1] = mask[i + 2] = 255;
+      mask[i + 3] = 255;
+    }
+  }
+}
+
+await sharp(mask, { raw: { width: MW, height: MH, channels: 4 } })
+  .png({ compressionLevel: 9, palette: true })
+  .toFile("public/brand/world-mask.png");
+
+const landPx = mask.reduce((n, v, i) => (i % 4 === 3 && v ? n + 1 : n), 0);
+console.log(
+  `world mask ${MW}x${MH} — ${((landPx / (MW * MH)) * 100).toFixed(1)}% land`
+);

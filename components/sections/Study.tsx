@@ -80,7 +80,7 @@ export function StudyHero() {
             <li>
               <Link
                 href="/"
-                className="label text-faint transition-colors hover:text-accent"
+                className="label inline-flex min-h-8 items-center text-faint transition-colors hover:text-accent"
               >
                 Home
               </Link>
