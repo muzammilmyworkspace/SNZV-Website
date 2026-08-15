@@ -910,3 +910,62 @@ p { text-wrap: pretty; }
   }
   .route-dash, .beacon, .breathe, .drift, .sheen-pan { animation: none !important; }
 }
+
+/**
+ * Review marquee.
+ *
+ * The track renders the review list twice and travels exactly -50%, so the
+ * restart lands the second copy precisely where the first began — the loop has
+ * no visible seam rather than a fast one. `will-change` keeps a long, slow
+ * translation on the compositor instead of repainting every frame.
+ */
+@keyframes review-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.marquee-track {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes review-marquee {
+    from { transform: none; }
+    to { transform: none; }
+  }
+}
+
+/**
+ * The Atlas landmass.
+ *
+ * Painted through a mask of the real coastline (public/brand/world-mask.png),
+ * with the brand ramp running west to east — blue, teal, green — which happens
+ * to trace the corridor the section is about.
+ *
+ * Two ramps rather than one with opacity: a tint bright enough to read on navy
+ * washes out on near-white, and one dark enough for near-white disappears into
+ * navy. Each theme gets values chosen against its own ground.
+ */
+.world-land {
+  background-image: linear-gradient(
+    105deg,
+    rgba(61, 113, 201, 0.62) 0%,
+    rgba(47, 174, 147, 0.52) 48%,
+    rgba(114, 196, 60, 0.46) 100%
+  );
+  -webkit-mask-image: url("/brand/world-mask.png");
+  mask-image: url("/brand/world-mask.png");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+[data-theme="light"] .world-land {
+  background-image: linear-gradient(
+    105deg,
+    rgba(39, 87, 168, 0.5) 0%,
+    rgba(16, 120, 107, 0.44) 48%,
+    rgba(62, 122, 34, 0.42) 100%
+  );
+}

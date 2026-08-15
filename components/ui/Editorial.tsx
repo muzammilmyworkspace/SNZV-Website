@@ -104,8 +104,19 @@ export function MaskedLines({
 
   return (
     <As className={className} ref={hostRef as never}>
+      {/*
+        Each line's clip box extends below the baseline, and the extra height
+        is pulled straight back off.
+
+        Display type here runs at line-height 1.02–1.06, so the line box ends
+        almost exactly on the baseline. `overflow-hidden` — which is what makes
+        the mask reveal work — was therefore slicing the descenders off every
+        g, p, y and j. Padding the clip box and cancelling it with an equal
+        negative margin gives the descenders room without moving the line or
+        changing the spacing between lines.
+      */}
       {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden">
+        <span key={i} className="block overflow-hidden pb-[0.16em] -mb-[0.16em]">
           <motion.span
             className="block"
             initial={{ y: reduced ? 0 : "104%" }}

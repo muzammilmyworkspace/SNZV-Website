@@ -121,11 +121,16 @@ export function CorridorMap({
     [hub]
   );
 
+  /**
+   * Every colour resolves through the tone system, so the map follows the
+   * theme wherever it is placed. `tone` is retained only so existing call
+   * sites keep compiling.
+   */
   const isDark = tone === "dark";
-  const routeIn = isDark ? "rgba(255,255,255,0.30)" : "rgba(30,45,86,0.28)";
-  const routeOut = isDark ? "#7ABF40" : "#5FA32D";
-  const nodeEu = isDark ? "#FFFFFF" : "#1E2D56";
-  const label = isDark ? "rgba(255,255,255,0.62)" : "rgba(30,45,86,0.62)";
+  const routeIn = "color-mix(in srgb, var(--fg) 32%, transparent)";
+  const routeOut = "var(--accent)";
+  const nodeEu = "var(--fg)";
+  const label = "color-mix(in srgb, var(--fg) 78%, transparent)";
 
   return (
     <div className={cn("relative w-full", className)} aria-hidden>
@@ -141,21 +146,7 @@ export function CorridorMap({
         */
         <div className="relative w-full">
           <svg viewBox={`0 0 ${W} ${H}`} className="w-full" aria-hidden />
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              backgroundColor: isDark
-                ? "rgba(255,255,255,0.13)"
-                : "rgba(30,45,86,0.17)",
-              WebkitMaskImage: "url(/brand/world-mask.png)",
-              maskImage: "url(/brand/world-mask.png)",
-              WebkitMaskSize: "100% 100%",
-              maskSize: "100% 100%",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-            }}
-          />
+          <div aria-hidden className="world-land absolute inset-0" />
         </div>
       ) : (
         /* Static dot field — an <img> so ~9k dots never enter the DOM */
@@ -302,13 +293,13 @@ export function CorridorMap({
             cx={hub.x}
             cy={hub.y}
             r={5.5}
-            stroke={isDark ? "#0A1226" : "#FFFFFF"}
+            stroke="var(--surface)"
             strokeWidth={1.4}
           />
           <text
             x={hub.x}
             y={hub.y - 14}
-            fill={isDark ? "#FFFFFF" : "#1E2D56"}
+            fill="var(--fg)"
             fontSize={12.5}
             fontWeight={600}
             textAnchor="middle"

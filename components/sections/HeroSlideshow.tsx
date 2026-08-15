@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 /**
  * HERO SLIDESHOW
@@ -63,8 +63,7 @@ export function HeroSlideshow({
     return () => window.clearInterval(id);
   }, [reduced, frames.length]);
 
-  const current = frames[index] ?? frames[0];
-  if (!current) return null;
+  if (!frames.length) return null;
 
   return (
     <div ref={ref} className={className ?? "absolute inset-0 -z-10 overflow-hidden"}>
@@ -72,41 +71,48 @@ export function HeroSlideshow({
         className="absolute inset-0"
         style={reduced ? undefined : { y, opacity: fade }}
       >
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={current.src}
-            data-stack
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0 : 1.1, ease: "easeInOut" }}
-          >
+        {frames.map((f, i) => {
+          const shown = i === index;
+          return (
             <motion.div
+              key={f.src}
+              data-stack
               className="absolute inset-0"
-              initial={reduced ? undefined : { scale: 1.06, x: "-1%", y: "-0.6%" }}
-              animate={
-                reduced
-                  ? undefined
-                  : { scale: 1.14, x: "1%", y: "0.6%" }
-              }
-              transition={
-                reduced ? undefined : { duration: 9, ease: "easeInOut" }
-              }
+              initial={false}
+              animate={{ opacity: shown ? 1 : 0 }}
+              transition={{ duration: reduced ? 0 : 1.1, ease: "easeInOut" }}
             >
-              <Image
-                src={current.src}
-                alt={current.alt}
-                fill
-                // Only the first frame is the LCP candidate.
-                priority={index === 0}
-                loading={index === 0 ? undefined : "lazy"}
-                sizes="100vw"
-                className="object-cover"
-              />
+              <motion.div
+                className="absolute inset-0"
+                initial={false}
+                animate={
+                  reduced
+                    ? undefined
+                    : shown
+                      ? { scale: 1.14, x: "1%", y: "0.6%" }
+                      : { scale: 1.06, x: "-1%", y: "-0.6%" }
+                }
+                transition={
+                  reduced
+                    ? undefined
+                    : { duration: shown ? 9 : 0, ease: "easeInOut" }
+                }
+              >
+                <Image
+                  src={f.src}
+                  alt={shown ? f.alt : ""}
+                  fill
+                  // Only the first frame is the LCP candidate; the rest load
+                  // lazily but stay mounted once they have.
+                  priority={i === 0}
+                  loading={i === 0 ? undefined : "lazy"}
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </AnimatePresence>
+          );
+        })}
       </motion.div>
 
       {/*

@@ -5,12 +5,11 @@ import {
   Chapter,
   MaskedLines,
   Reveal,
-  RevealGroup,
-  RevealItem,
   Action,
   TextLink,
 } from "@/components/ui/Primitives";
 import { Testimonials } from "./Testimonials";
+import { ReviewMarquee } from "./ReviewMarquee";
 import { getGoogleReviews, type GoogleReview } from "@/lib/reviews";
 import { company } from "@/data/company";
 
@@ -75,13 +74,12 @@ export async function Reviews() {
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-12 grid gap-x-6 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-          {data.reviews.map((r, i) => (
-            <RevealItem key={`${r.author}-${i}`}>
-              <ReviewCard review={r} />
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        {/*
+          A continuous loop rather than a grid: reviews are proof, and proof
+          should be readable passively while someone is deciding — not behind
+          a button they have to choose to press.
+        */}
+        <ReviewMarquee reviews={data.reviews} />
 
         <Reveal delay={0.15}>
           <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -106,47 +104,6 @@ export async function Reviews() {
 
 /* ----------------------------------------------------------------- pieces */
 
-function ReviewCard({ review }: { review: GoogleReview }) {
-  return (
-    <figure className="flex h-full flex-col border-t border-line pt-6">
-      <Stars value={review.rating} />
-
-      <blockquote className="mt-4 text-[0.95rem] leading-relaxed text-fg">
-        {review.text}
-      </blockquote>
-
-      <figcaption className="mt-auto flex items-center gap-3 pt-6">
-        {review.photoUrl ? (
-          <Image
-            src={review.photoUrl}
-            alt=""
-            width={36}
-            height={36}
-            unoptimized
-            className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/15"
-          />
-        ) : (
-          <span
-            aria-hidden
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-raised text-[0.8rem] font-semibold text-muted"
-          >
-            {review.author.charAt(0).toUpperCase()}
-          </span>
-        )}
-        <span className="min-w-0">
-          <span className="block truncate text-[0.88rem] font-semibold text-fg">
-            {review.author}
-          </span>
-          <span className="mt-0.5 block text-[0.76rem] text-faint">
-            {review.relativeTime}
-          </span>
-        </span>
-      </figcaption>
-    </figure>
-  );
-}
-
-/** Rounds to the nearest half star, which is how Google presents them. */
 function Stars({ value, className }: { value: number; className?: string }) {
   const rounded = Math.round(value * 2) / 2;
   return (

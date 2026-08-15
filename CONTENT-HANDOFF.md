@@ -213,9 +213,11 @@ to a testimonial slider automatically — no code change.
 The Trust section (`#proof` on the homepage, and on every pathway page) has
 three states, and picks the first one available:
 
-1. **Google reviews** — real ones, pulled from the Places API, shown verbatim
-   with author, star rating and date. Requires `GOOGLE_PLACES_API_KEY`; see
-   section 6b.
+1. **Google reviews** — real ones, pulled from the Places API and shown in a
+   continuously looping marquee (no button, no arrows) with author, star
+   rating and date. Pauses on hover and on keyboard focus; under
+   `prefers-reduced-motion` it becomes a plain scrollable row.
+   Requires `GOOGLE_PLACES_API_KEY`; see section 6b.
 2. **Written testimonials** — the array above, once populated.
 3. **The Google panel** — a finished card pointing at the public listing.
 

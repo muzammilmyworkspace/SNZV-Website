@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, Fragment } from "react";
 import {
-  AnimatePresence,
   motion,
   useScroll,
   useTransform,
@@ -102,27 +101,26 @@ export function HeroMeridian() {
             own parallax inside those would compound the transforms. Only the
             crossfade is needed — the movement is already provided.
           */}
-          <AnimatePresence initial={false}>
+          {HERO_FRAMES.map((f, i) => (
             <motion.div
-              key={HERO_FRAMES[frame].src}
+              key={f.src}
               data-stack
               className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={false}
+              animate={{ opacity: i === frame ? 1 : 0 }}
               transition={{ duration: reduced ? 0 : 1.1, ease: "easeInOut" }}
             >
               <Image
-                src={HERO_FRAMES[frame].src}
-                alt={HERO_FRAMES[frame].alt}
+                src={f.src}
+                alt={i === frame ? f.alt : ""}
                 fill
-                priority={frame === 0}
-                loading={frame === 0 ? undefined : "lazy"}
+                priority={i === 0}
+                loading={i === 0 ? undefined : "lazy"}
                 sizes="100vw"
                 className="object-cover"
               />
             </motion.div>
-          </AnimatePresence>
+          ))}
         </motion.div>
       </motion.div>
 

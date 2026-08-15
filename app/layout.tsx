@@ -92,7 +92,20 @@ export default function RootLayout({
           <style>{`[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
       </head>
-      <body className="tone-deep min-h-screen antialiased">
+      {/*
+        `suppressHydrationWarning` because extensions mutate <body> before
+        React hydrates. Grammarly is the usual culprit — it stamps
+        `data-new-gr-c-s-check-loaded` and `data-gr-ext-installed` on the body
+        element, React compares that against its own server HTML and reports a
+        mismatch the app did not cause and cannot prevent.
+        This suppresses attribute diffing on this element ONLY; children are
+        still hydrated and checked normally, so a real mismatch inside the page
+        still surfaces.
+      */}
+      <body
+        className="tone-deep min-h-screen antialiased"
+        suppressHydrationWarning
+      >
         <a href="#main" className="skip-link">
           Skip to content
         </a>
