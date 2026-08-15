@@ -21,7 +21,6 @@ import {
   scholarshipNotes,
   supportServices,
   studyFacts,
-  studyCaveat,
 } from "@/data/study";
 import { pillars } from "@/data/pillars";
 import { company } from "@/data/company";
@@ -86,7 +85,7 @@ export function StudyHero() {
                 Home
               </Link>
             </li>
-            <li aria-hidden className="text-white/20">
+            <li aria-hidden className="text-faint">
               /
             </li>
             <li>
@@ -213,7 +212,7 @@ export function StudyOverview() {
                 key={item.title}
                 className="group border-b border-line py-7"
               >
-                <span className="label num text-accent/60">
+                <span className="label num text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 font-display text-[1.4rem] leading-tight tracking-[-0.018em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[1.65rem]">
@@ -379,7 +378,7 @@ export function StudyUniversities() {
                 className="border-b border-line py-6"
               >
                 <div className="flex items-baseline gap-5">
-                  <span className="label num shrink-0 text-accent/70">
+                  <span className="label num shrink-0 text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -402,6 +401,23 @@ export function StudyUniversities() {
 
 /* ═════════════════════════════════════════════════════ Programmes ═══ */
 
+/**
+ * Programme-family glyphs.
+ *
+ * Line icons at a single stroke weight, drawn on the same 24-unit grid as the
+ * rest of the site's iconography. They carry the category at a glance, which
+ * is what let each card's explanatory paragraph shrink to one line.
+ */
+const FIELD_ICONS: Record<string, string> = {
+  business: "M3 8.5h18v11a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-11zM8 8.5V6a2 2 0 012-2h4a2 2 0 012 2v2.5M3 13h18",
+  code: "M9 8l-4.5 4L9 16M15 8l4.5 4L15 16M13.5 5l-3 14",
+  engineering: "M12 8.6a3.4 3.4 0 100 6.8 3.4 3.4 0 000-6.8zM12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7",
+  health: "M12 4.5v15M4.5 12h15",
+  design: "M12 3.5l2.6 5.6 6 .8-4.4 4.2 1.1 6.1L12 17.3l-5.3 2.9 1.1-6.1L3.4 9.9l6-.8z",
+  law: "M12 3.5v17M5 20.5h14M7 7.5l-3 6a3.2 3.2 0 006 0l-3-6zM17 7.5l-3 6a3.2 3.2 0 006 0l-3-6zM4.5 7.5h15",
+  hospitality: "M4 20.5h16M6 20.5v-6.2a6 6 0 0112 0v6.2M9 8.2V4.5M12 8.2V3.5M15 8.2V4.5",
+};
+
 export function StudyProgrammes() {
   return (
     <Section id="programmes" tone="soft" className="anchor-target overflow-hidden">
@@ -419,27 +435,43 @@ export function StudyProgrammes() {
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
-              Seven programme families, each with a different relationship to
-              the labour market on the other side. The difference is worth
-              understanding before you choose.
+              Seven families, each with a different relationship to the labour
+              market on the other side.
             </p>
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-14 grid gap-x-12 gap-y-9 md:grid-cols-2 xl:grid-cols-3">
+        <RevealGroup className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {studyFields.map((f, i) => (
             <RevealItem
               key={f.name}
-              className="group border-t border-line pt-6"
+              className="group flex h-full flex-col rounded-[var(--radius-md)] border border-line bg-raised p-6 transition-all duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:border-moss-400/50"
             >
-              <span className="label num text-accent/60">
-                {String(i + 1).padStart(2, "0")}
+              <span className="flex items-center justify-between">
+                <span
+                  aria-hidden
+                  className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-sm)] border border-line text-accent transition-colors duration-500 group-hover:border-moss-400/60"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+                    <path
+                      d={FIELD_ICONS[f.icon]}
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span className="label num text-accent">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </span>
-              <h3 className="mt-3 font-display text-[1.45rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
+
+              <h3 className="mt-5 font-display text-[1.3rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
                 {f.name}
               </h3>
               <p className="label mt-2 text-faint">{f.examples}</p>
-              <p className="mt-3 text-[0.87rem] leading-relaxed text-muted">
+              <p className="mt-auto pt-4 text-[0.85rem] leading-snug text-muted">
                 {f.body}
               </p>
             </RevealItem>
@@ -488,7 +520,7 @@ export function StudyScholarships() {
           <RevealGroup className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {scholarshipNotes.map((n, i) => (
               <RevealItem key={n.title} className="border-t border-line pt-5">
-                <span className="label num text-accent/60">
+                <span className="label num text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 font-display text-[1.25rem] leading-tight tracking-[-0.018em] text-fg">
@@ -530,7 +562,7 @@ export function StudyJourney() {
         <RevealGroup as="ol" className="mt-14 grid gap-8 md:grid-cols-3 lg:grid-cols-5 md:gap-6">
           {studyJourney.map((s) => (
             <RevealItem as="li" key={s.step} className="border-t border-line pt-5">
-              <span className="label num text-accent/70">{s.step}</span>
+              <span className="label num text-accent">{s.step}</span>
               <h3 className="mt-3 font-display text-[1.25rem] leading-none tracking-[-0.018em] text-fg">
                 {s.name}
               </h3>
@@ -580,7 +612,7 @@ export function StudySupport() {
         <RevealGroup className="mt-14 grid gap-x-12 gap-y-9 md:grid-cols-2 xl:grid-cols-3">
           {supportServices.map((s, i) => (
             <RevealItem key={s.title} className="group border-t border-line pt-6">
-              <span className="label num text-accent/60">
+              <span className="label num text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-3 font-display text-[1.35rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
@@ -607,7 +639,6 @@ export function StudySupport() {
           </div>
         </Reveal>
 
-        <Caveat>{studyCaveat}</Caveat>
       </Container>
     </Section>
   );

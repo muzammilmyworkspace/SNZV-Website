@@ -443,7 +443,7 @@ export function Caveat({
     <p
       className={cn(
         "mt-8 max-w-2xl border-l pl-5 text-[0.78rem] leading-relaxed",
-        tone === "dark" ? "border-line text-faint" : "border-ink/15 text-mist-500",
+        "border-line text-faint",
         className
       )}
     >

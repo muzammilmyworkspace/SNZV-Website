@@ -52,7 +52,7 @@ export default function DestinationsPage() {
             lead="We recruit from eight source markets across South Asia and the Middle East, and place into eight European destinations. Lithuania is where the entities, licences and coordination sit."
           />
           <div className="mt-9">
-            <CorridorMap tone="dark" />
+            <CorridorMap tone="dark" variant="pins" />
           </div>
         </Container>
       </Section>

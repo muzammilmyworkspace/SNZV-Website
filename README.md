@@ -86,6 +86,18 @@ Use `text-fg`, `text-muted`, `text-faint`, `text-accent`, `border-line`,
 `bg-surface`, `bg-raised`. **Never hard-code `text-white` or `border-white/12`**
 — it will break the moment the section changes tone.
 
+**Avoid alpha on text colours.** `text-accent/60` on a numeral measured 1.2:1
+on navy; the same class in light mode measured 2.3:1. If a label needs to
+recede, use `text-faint`, which is a designed step in every tone rather than a
+transparency that lands wherever the background happens to be.
+
+**Geography visuals are not interchangeable.** The arced connection animation
+(`RouteField`) belongs to the home hero and nowhere else — repeated in every
+map section it stopped reading as a signature. Other sections use
+`<CorridorMap variant="pins" />`, which keeps the same accurate projection but
+drops the arcs for located, pulsing markers. `activeSlug` lets a selection
+drive the map, which is what gives the homepage atlas its own identity.
+
 Palette is derived from the logo (navy `#1E2D56`, green `#7ABF40`), deepened
 into an atmospheric range. Accent is `moss-400` `#72C43C`.
 

@@ -82,7 +82,7 @@ export function Pain() {
               className="group flex items-baseline gap-4 py-1.5"
               style={{ paddingLeft: `min(${v.x}, 42vw)` }}
             >
-              <span className="label shrink-0 text-faint transition-colors group-hover:text-accent/80">
+              <span className="label shrink-0 text-faint transition-colors group-hover:text-accent">
                 {v.who}
               </span>
               <span className="font-display text-[1.35rem] leading-snug tracking-[-0.015em] text-muted transition-colors duration-500 group-hover:text-fg sm:text-[1.75rem]">

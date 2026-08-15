@@ -84,7 +84,7 @@ export function Dream() {
                   onClick={() => analytics.pathwaySelect(p.key, "dream_index")}
                   className="group flex items-start gap-6 py-7 md:items-center md:py-9"
                 >
-                  <span className="label num mt-2 shrink-0 text-accent/70 md:mt-0">
+                  <span className="label num mt-2 shrink-0 text-accent md:mt-0">
                     0{i + 1}
                   </span>
 

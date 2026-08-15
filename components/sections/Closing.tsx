@@ -57,7 +57,7 @@ export function Why() {
               key={t.title}
               className="group grid gap-3 border-b border-line py-8 md:grid-cols-[4rem_1fr_1fr] md:items-baseline md:gap-10"
             >
-              <span className="label num text-accent/60">
+              <span className="label num text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="font-display text-[1.6rem] leading-[1.05] tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[2rem]">
@@ -190,7 +190,7 @@ export function Insights() {
                 onClick={() => analytics.articleView(a.slug, a.category)}
                 className="group block border-b border-line py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
               >
-                <span className="label text-accent/80">{a.category}</span>
+                <span className="label text-accent">{a.category}</span>
                 <h3 className="mt-3 font-display text-[1.25rem] leading-snug tracking-[-0.015em] text-fg transition-colors duration-500 group-hover:text-accent">
                   {a.title}
                 </h3>

@@ -149,8 +149,9 @@ export default function AboutPage() {
               title="Both Ends of the Route, or Neither."
               lead="Most agencies sit at one end of a corridor and guess about the other. We recruit in the source markets and place into the destination markets, so what we tell each side is grounded in the other."
             />
-            <Reveal>
-              <CorridorMap tone="light" />
+            {/* Capped so the map does not outgrow the copy it illustrates. */}
+            <Reveal className="mx-auto w-full max-w-[30rem] lg:max-w-[27rem]">
+              <CorridorMap tone="light" variant="pins" showLabels={false} />
             </Reveal>
           </div>
 

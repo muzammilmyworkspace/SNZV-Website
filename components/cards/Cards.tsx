@@ -322,7 +322,7 @@ export function ServiceCard({
       className="group border-t border-line pt-6"
     >
       <Link href={`/services/${service.slug}`} onClick={() => analytics.serviceView(service.slug)}>
-        <span className="label num text-accent/60">
+        <span className="label num text-accent">
           {String(index + 1).padStart(2, "0")}
         </span>
         <h3 className="mt-3 font-display text-[1.5rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">

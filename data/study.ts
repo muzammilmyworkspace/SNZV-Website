@@ -47,7 +47,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €1,500 / year",
     blurb:
       "An EU degree with living costs that leave room to breathe, in the city SnZ Ventures calls home.",
-    draw: "Our home market — advisors on the ground, not on a call rota.",
+    draw: "Our home market — advisors on the ground.",
   },
   {
     slug: "poland",
@@ -58,7 +58,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €2,000 / year",
     blurb:
       "One of the EU's fastest-growing economies, with a deep bench of English-taught degrees.",
-    draw: "Graduate into a labour market that is still expanding.",
+    draw: "A labour market still expanding.",
   },
   {
     slug: "hungary",
@@ -69,7 +69,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €3,000 / year",
     blurb:
       "Historic universities, strong medical and engineering faculties, and riverside student life.",
-    draw: "Home of the Stipendium Hungaricum government scholarship scheme.",
+    draw: "Home of the Stipendium Hungaricum scheme.",
   },
   {
     slug: "latvia",
@@ -80,7 +80,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €2,000 / year",
     blurb:
       "Small, safe and digital-first — an underrated route to an EU qualification.",
-    draw: "Low cost of living against a full EU degree.",
+    draw: "Low living costs, full EU degree.",
   },
   {
     slug: "germany",
@@ -91,7 +91,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €0 – €1,500 / semester",
     blurb:
       "World-class engineering, minimal tuition at public universities, and Europe's largest economy on graduation day.",
-    draw: "The strongest engineering and industrial labour market in the EU.",
+    draw: "The EU's strongest engineering market.",
   },
   {
     slug: "malta",
@@ -102,7 +102,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €4,000 / year",
     blurb:
       "An English-speaking EU island — study, work and build a network in the Mediterranean.",
-    draw: "English is an official language, so no translation barrier.",
+    draw: "English is an official language.",
   },
   {
     slug: "spain",
@@ -113,7 +113,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €2,500 / year",
     blurb:
       "Historic universities and a service economy that keeps drawing international graduates.",
-    draw: "A primary gateway between the EU and Latin American markets.",
+    draw: "Gateway between the EU and Latin America.",
   },
   {
     slug: "italy",
@@ -124,7 +124,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €900 / year",
     blurb:
       "Elite design and engineering schools at the lowest published tuition on this list.",
-    draw: "Income-assessed fees can put a public degree within reach.",
+    draw: "Income-assessed fees cut the cost.",
   },
   {
     slug: "france",
@@ -135,7 +135,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €2,770 / year",
     blurb:
       "Grandes écoles, globally ranked business schools and serious research funding.",
-    draw: "Brand-name institutions with international recruiter recognition.",
+    draw: "Brand-name institutions recruiters know.",
   },
   {
     slug: "estonia",
@@ -146,7 +146,7 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €1,500 / year",
     blurb:
       "Europe's most digital state, with startup culture running through the curriculum.",
-    draw: "e-Residency, a dense startup scene and English-taught tech degrees.",
+    draw: "Dense startup scene, English-taught tech.",
   },
 ];
 
@@ -156,44 +156,58 @@ export type StudyField = {
   name: string;
   examples: string;
   body: string;
+  /**
+   * Icon key, resolved to a path in components/sections/Study.tsx.
+   *
+   * A key rather than an SVG string so this file stays content, not markup —
+   * and so a family can be re-illustrated without touching the data.
+   */
+  icon: "business" | "code" | "engineering" | "health" | "design" | "law" | "hospitality";
 };
 
 /** Programme families SnZ advises on, per the live student site. */
 export const studyFields: StudyField[] = [
   {
     name: "Business & MBA",
+    icon: "business",
     examples: "Management, Finance, Marketing, MBA",
-    body: "The broadest intake and the widest spread of outcomes — which is exactly why the choice of school and specialisation matters more here than anywhere else.",
+    body: "Widest intake, widest spread of outcomes — so the school matters most here.",
   },
   {
     name: "IT & Data",
+    icon: "code",
     examples: "Computer Science, Data, AI, Cybersecurity",
-    body: "Consistently the shortest route from graduation to employment across our destination markets, and the most forgiving of a non-local language position.",
+    body: "Shortest route from graduation to hire, and the most forgiving on language.",
   },
   {
     name: "Engineering",
+    icon: "engineering",
     examples: "Mechanical, Electrical, Civil",
-    body: "Where recognition of your qualification and accreditation of the programme decide whether you can practise. We check that before you apply, not after.",
+    body: "Accreditation decides whether you can practise. We check it before you apply.",
   },
   {
     name: "Medical & Health",
+    icon: "health",
     examples: "MBBS, Dentistry, Pharmacy",
-    body: "Long, expensive and heavily regulated. Licensing rules in the country you intend to practise in should drive this decision, not the admission offer.",
+    body: "Let the licensing rules where you intend to practise drive this, not the offer.",
   },
   {
     name: "Arts & Design",
+    icon: "design",
     examples: "Design, Film, Music",
-    body: "Portfolio-led admission, where the strength of your submitted work outweighs your transcript. We prepare that submission properly.",
+    body: "Portfolio-led: your work outweighs your transcript. We prepare the submission.",
   },
   {
     name: "Law & International Relations",
+    icon: "law",
     examples: "European Law, IR, Public Policy",
-    body: "Jurisdiction-bound by nature. A European law degree opens European practice — we are explicit about what it does not transfer to.",
+    body: "Jurisdiction-bound. We are explicit about what a European degree does not transfer to.",
   },
   {
     name: "Hospitality & Tourism",
+    icon: "hospitality",
     examples: "Hotel Management, Tourism, Culinary",
-    body: "Placement-heavy programmes where the industry partnerships attached to the course matter more than the institution's ranking.",
+    body: "The course's industry placements matter more than the institution's ranking.",
   },
 ];
 
@@ -260,27 +274,27 @@ export const scholarshipNotes = [
 export const supportServices = [
   {
     title: "One Named Advisor",
-    body: "The same person from your first call to your first week on campus. You are not handed between departments as your file moves.",
+    body: "The same person from first call to first week. No handing between departments.",
   },
   {
     title: "Application & Document Preparation",
-    body: "Transcripts, translations, credential evaluation and the statement of purpose — prepared to the standard the receiving institution expects.",
+    body: "Transcripts, translations, credential evaluation and your statement of purpose.",
   },
   {
     title: "Visa Documentation & Interview Practice",
-    body: "The evidence pack assembled properly, and rehearsal for the interview before you sit it.",
+    body: "The evidence pack assembled properly, and rehearsal before you sit it.",
   },
   {
     title: "Arrival and Settling In",
-    body: "Housing, residence registration, and the ordinary first-month problems that nobody warns you about.",
+    body: "Housing, residence registration, and the first-month problems nobody warns you about.",
   },
   {
     title: "Tracked in the Student Portal",
-    body: "Applications, documents, tasks and messages in one place, so you always know what is outstanding and who has it.",
+    body: "Applications, documents and messages in one place — you always know what is outstanding.",
   },
   {
     title: "The Bridge into Work",
-    body: "We recruit into European employers as well, so the conversation does not stop at graduation — the rarest thing on this list.",
+    body: "We recruit into European employers too, so it does not stop at graduation.",
   },
 ];
 
@@ -290,7 +304,7 @@ export const supportServices = [
 export const studyFaqs: FAQ[] = [
   {
     q: "How much does studying in Europe actually cost?",
-    a: "Tuition varies far more than students expect — the indicative range across our destinations runs from around €900 a year in Italy to roughly €4,000 in Malta, and public universities in Germany charge little or no tuition at all. Living costs then vary by city more than by country. We build a full-year budget with you covering tuition, living, insurance and one-off government charges, so you are comparing total cost rather than headline fees.",
+    a: "Indicative tuition runs from about €900 a year in Italy to roughly €4,000 in Malta, and German public universities charge little or nothing. Living costs vary more by city than by country. We build a full-year budget — tuition, living, insurance and government charges — so you compare total cost, not headline fees.",
   },
   {
     q: "Do I need IELTS?",

@@ -61,7 +61,13 @@ export function Atlas() {
         {/* Map */}
         <Reveal delay={0.1} className="mt-14">
           <div className="relative">
-            <CorridorMap tone="dark" />
+            {/*
+              Pins, driven by the ledger selection below — hovering a market
+              lights its pin. That interaction is this section's own identity;
+              the arc animation belongs to the home hero and repeating it here
+              made two adjacent sections look like the same slide twice.
+            */}
+            <CorridorMap tone="dark" variant="pins" activeSlug={current.slug} />
             <span aria-hidden className="absolute -left-px -top-px h-6 w-6 border-l border-t border-moss-400/50" />
             <span aria-hidden className="absolute -bottom-px -right-px h-6 w-6 border-b border-r border-moss-400/50" />
           </div>
@@ -89,7 +95,7 @@ export function Atlas() {
                     className="group flex w-full items-baseline justify-between gap-6 py-4 text-left"
                   >
                     <span className="flex items-baseline gap-4">
-                      <span className="label num shrink-0 text-accent/50">
+                      <span className="label num shrink-0 text-accent">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <span

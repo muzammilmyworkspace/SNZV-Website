@@ -83,7 +83,16 @@ function Journey({ pathway, index }: { pathway: Pathway; index: number }) {
         >
           {/* Plate */}
           <div className="relative">
-            <div className="plate relative aspect-[5/6] overflow-hidden sm:aspect-[4/3] lg:aspect-[5/6]">
+            {/*
+              4:5 on desktop, not 5:6.
+
+              At 5:6 the plate rendered ~710px against ~483px of copy beside
+              it — half again as tall as the thing it illustrates, which left
+              the text floating in the middle of a column of photograph. The
+              cap keeps it from outgrowing the copy on very wide viewports;
+              the aspect ratio is preserved, so nothing is distorted.
+            */}
+            <div className="plate relative aspect-[5/6] overflow-hidden sm:aspect-[4/3] lg:aspect-[4/5] lg:max-h-[34rem]">
               <motion.div
                 className="absolute inset-[-8%]"
                 style={reduced ? undefined : { y: imgY, scale: imgScale }}
@@ -132,7 +141,7 @@ function Journey({ pathway, index }: { pathway: Pathway; index: number }) {
                     key={b}
                     className="flex items-baseline gap-4 border-t border-line py-3.5 last:border-b"
                   >
-                    <span className="label num shrink-0 text-accent/60">
+                    <span className="label num shrink-0 text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="text-[0.9rem] leading-snug text-fg">

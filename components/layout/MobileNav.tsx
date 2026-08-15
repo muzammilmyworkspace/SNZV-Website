@@ -130,7 +130,7 @@ export function MobileNav({
                     aria-current={isActive(item.href) ? "page" : undefined}
                     className="group flex items-baseline gap-4 py-4"
                   >
-                    <span className="label num w-6 shrink-0 text-accent/70">
+                    <span className="label num w-6 shrink-0 text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span

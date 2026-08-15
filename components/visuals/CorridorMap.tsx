@@ -55,11 +55,25 @@ export function CorridorMap({
   tone = "dark",
   showLabels = true,
   animate = true,
+  variant = "corridors",
+  activeSlug,
 }: {
   className?: string;
   tone?: "dark" | "light";
   showLabels?: boolean;
   animate?: boolean;
+  /**
+   * "corridors" draws the arced flight paths between markets. "pins" drops
+   * them and shows located, pulsing markers instead.
+   *
+   * The arc animation is the site's signature move, and a signature repeated
+   * in every geography section stops being one. It now belongs to the home
+   * hero; everywhere else takes `pins`, which reads as located rather than as
+   * another copy of the same drawing.
+   */
+  variant?: "corridors" | "pins";
+  /** In `pins`, the market to emphasise — lets a selection drive the map. */
+  activeSlug?: string;
 }) {
   const reduced = useReducedMotion();
   const play = animate && !reduced;
@@ -136,20 +150,22 @@ export function CorridorMap({
         <g>
           {inbound.map((r, i) => (
             <g key={r.name}>
-              <motion.path
-                d={r.d}
-                stroke={routeIn}
-                strokeWidth={1}
-                strokeDasharray="3 5"
-                initial={play ? { pathLength: 0, opacity: 0 } : false}
-                whileInView={play ? { pathLength: 1, opacity: 1 } : undefined}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 1.5,
-                  delay: 0.25 + i * 0.09,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              />
+              {variant === "corridors" && (
+                <motion.path
+                  d={r.d}
+                  stroke={routeIn}
+                  strokeWidth={1}
+                  strokeDasharray="3 5"
+                  initial={play ? { pathLength: 0, opacity: 0 } : false}
+                  whileInView={play ? { pathLength: 1, opacity: 1 } : undefined}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 1.5,
+                    delay: 0.25 + i * 0.09,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                />
+              )}
               <circle cx={r.x} cy={r.y} r={2.6} fill={routeIn} />
               {showLabels && (
                 <text
@@ -172,21 +188,43 @@ export function CorridorMap({
         <g>
           {outbound.map((r, i) => (
             <g key={r.slug}>
-              <motion.path
-                d={r.d}
-                stroke={routeOut}
-                strokeOpacity={0.55}
-                strokeWidth={1.3}
-                initial={play ? { pathLength: 0, opacity: 0 } : false}
-                whileInView={play ? { pathLength: 1, opacity: 1 } : undefined}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 1.2,
-                  delay: 0.9 + i * 0.1,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
+              {variant === "corridors" && (
+                <motion.path
+                  d={r.d}
+                  stroke={routeOut}
+                  strokeOpacity={0.55}
+                  strokeWidth={1.3}
+                  initial={play ? { pathLength: 0, opacity: 0 } : false}
+                  whileInView={play ? { pathLength: 1, opacity: 1 } : undefined}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 1.2,
+                    delay: 0.9 + i * 0.1,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                />
+              )}
+              {variant === "pins" && play && (
+                <circle
+                  cx={r.x}
+                  cy={r.y}
+                  r={activeSlug === r.slug ? 9 : 6}
+                  fill={routeOut}
+                  fillOpacity={activeSlug === r.slug ? 0.42 : 0.2}
+                  className="node-pulse"
+                  style={{
+                    transformBox: "fill-box",
+                    transformOrigin: "center",
+                    animationDelay: `${(i % 5) * 0.45}s`,
+                  }}
+                />
+              )}
+              <circle
+                cx={r.x}
+                cy={r.y}
+                r={variant === "pins" && activeSlug === r.slug ? 5 : 3.2}
+                fill={variant === "pins" && activeSlug === r.slug ? routeOut : nodeEu}
               />
-              <circle cx={r.x} cy={r.y} r={3.2} fill={nodeEu} />
               {showLabels && (
                 <text
                   x={r.x}

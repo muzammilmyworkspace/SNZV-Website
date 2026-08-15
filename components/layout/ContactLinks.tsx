@@ -22,12 +22,8 @@ export function ContactLinks({
    */
   variant?: "full" | "compact";
 }) {
-  const link = cn(
-    "label transition-colors duration-300",
-    tone === "dark"
-      ? "text-muted hover:text-accent"
-      : "text-mist-600 hover:text-accent"
-  );
+  // Tone-aware by token, so the  prop no longer selects a colour.
+  const link = "label text-muted transition-colors duration-300 hover:text-accent";
 
   if (variant === "compact") {
     return (
@@ -77,12 +73,7 @@ export function ContactLinks({
       >
         WhatsApp
       </a>
-      <span
-        className={cn(
-          "label",
-          tone === "dark" ? "text-faint" : "text-mist-400"
-        )}
-      >
+      <span className="label text-faint">
         {company.contact.city}, {company.contact.country}
       </span>
     </div>

@@ -45,7 +45,7 @@ export function Breadcrumbs({
                   >
                     {item.name}
                   </Link>
-                  <span aria-hidden className="text-white/20">
+                  <span aria-hidden className="text-faint">
                     /
                   </span>
                 </>
@@ -189,7 +189,7 @@ export function ChallengeGrid({
               key={item.title}
               className="group grid gap-3 border-b border-line py-7 md:grid-cols-[3.5rem_1fr_1fr] md:items-baseline md:gap-10"
             >
-              <span className="label num text-accent/60">
+              <span className="label num text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <h3 className="font-display text-[1.4rem] leading-tight tracking-[-0.018em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[1.7rem]">
@@ -233,7 +233,7 @@ export function ChecklistBlock({
                 key={item}
                 className="flex items-baseline gap-5 border-b border-line py-4"
               >
-                <span className="label num shrink-0 text-accent/60">
+                <span className="label num shrink-0 text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-[0.95rem] leading-relaxed text-fg">
@@ -270,7 +270,7 @@ export function HelpGrid({
           {items.map((item, i) => {
             const inner = (
               <>
-                <span className="label num text-accent/60">
+                <span className="label num text-accent">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-3 font-display text-[1.5rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
@@ -326,7 +326,7 @@ export function ProcessTimeline({
         >
           {steps.map((s) => (
             <RevealItem as="li" key={s.step} className="border-t border-line pt-5">
-              <span className="label num text-accent/70">{s.step}</span>
+              <span className="label num text-accent">{s.step}</span>
               <h3 className="mt-3 font-display text-[1.25rem] leading-none tracking-[-0.018em] text-fg">
                 {s.name}
               </h3>

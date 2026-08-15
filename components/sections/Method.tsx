@@ -97,7 +97,7 @@ export function Method() {
                   <span className="absolute h-[23px] w-[23px] rounded-full border border-moss-400/30" />
                 </span>
 
-                <span className="label num block text-accent/70">{s.step}</span>
+                <span className="label num block text-accent">{s.step}</span>
                 <h3 className="mt-2 font-display text-[1.35rem] leading-none tracking-[-0.018em] text-fg">
                   {s.name}
                 </h3>
