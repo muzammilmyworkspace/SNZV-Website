@@ -227,9 +227,25 @@ and cannot be edited by SnZ, and links straight to the listing.
 
 ---
 
-## 6b. Google reviews — one credential away
+## 6b. Google reviews — two ways to switch them on
 
-The reviews section is built and wired. It needs **one** value:
+### The fast way: paste them (no key, works today)
+
+Open `data/google-reviews.ts` and paste your reviews into
+`manualGoogleReviews`. They appear immediately, looping in the Trust section.
+
+Copy each one **verbatim** from your Google Business Profile — same words,
+same name, same rating, same date phrase. The section links straight to the
+listing, so anyone can compare in a click. Set `manualGoogleSummary` to the
+rating and count the listing actually shows, or leave them `null` to omit.
+
+### The better way: the API (stays current on its own)
+
+Set `GOOGLE_PLACES_API_KEY` and the live API takes over automatically — the
+manual list is then ignored, with no code change and nothing to remove. This
+is preferable because it cannot drift from what is on Google.
+
+It needs **one** value:
 
 ```
 GOOGLE_PLACES_API_KEY=...    # Places API (New), restricted to that API
@@ -239,11 +255,19 @@ GOOGLE_PLACES_API_KEY=...    # Places API (New), restricted to that API
 name and office address using the same key.
 
 **Why the share link alone is not enough.** `share.google/MNo5ThKseoiGnDEnF`
-cannot be read programmatically: a server-side fetch returns a JavaScript
-shell, and a real headless browser is served Google's `/sorry/` CAPTCHA. The
-link is a human-facing redirect, not an API. It resolves to the Knowledge Graph
-entry `/g/11yqs4kxm4` for **SnZ Ventures**, which confirms the listing but
-does not expose the reviews.
+cannot be read programmatically. Five attempts, all documented:
+
+| Attempt | Result |
+|---------|--------|
+| Server-side `fetch` of the share link | JavaScript shell, no data |
+| Headless Chromium on the share link | Google's `/sorry/` CAPTCHA |
+| Knowledge-panel search by `kgmid` | blocked |
+| Maps search URL | app shell only |
+| Maps place URL by `kgmid` | 200, but `APP_INITIALIZATION_STATE` holds the Maps **app shell** — the place data loads client-side by XHR |
+
+The link is a human-facing redirect, not an API. It does resolve to Knowledge
+Graph entry `/g/11yqs4kxm4` for **SnZ Ventures**, which confirms the listing
+but exposes no review text. Hence the manual slot above.
 
 So the link is used for what it is good for — sending visitors to the listing,
 which works today with no credentials — and the review *content* comes from the

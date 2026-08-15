@@ -1,15 +1,20 @@
 import "server-only";
 import { company } from "@/data/company";
+import { manualGoogleReviews, manualGoogleSummary } from "@/data/google-reviews";
 
 /**
  * GOOGLE REVIEWS
  * ---------------------------------------------------------------------------
- * Real reviews, fetched server-side from the Google Places API, or nothing.
+ * Real reviews, from one of two sources, or nothing.
+ *
+ *   1. The Places API, when GOOGLE_PLACES_API_KEY is set. Preferred: it stays
+ *      current on its own and cannot drift from the listing.
+ *   2. data/google-reviews.ts — reviews copied verbatim from the listing by
+ *      the business owner, for when no API key is available.
  *
  * There is no third state. This module will not synthesise, paraphrase or
  * "illustrate" a review, and the section that consumes it renders an honest
- * placeholder when the data is absent — the same rule the written testimonials
- * follow in data/company.ts.
+ * placeholder when both sources are empty.
  *
  * WHY SERVER-SIDE
  * A Places key is billable and unrestricted keys get scraped out of client
@@ -19,7 +24,7 @@ import { company } from "@/data/company";
  *
  * CONFIGURATION
  *   GOOGLE_PLACES_API_KEY   Places API (New) key, restricted to that API
- *   GOOGLE_PLACE_ID         the listing's Place ID
+ *   GOOGLE_PLACE_ID         optional — resolved by name when omitted
  *
  * The Place ID is not the share link. To find it, open the listing in Google
  * Maps and read the `!1s0x…:0x…` segment from the URL, or use the Place ID
@@ -113,12 +118,30 @@ async function resolvePlaceId(key: string): Promise<string | null> {
   }
 }
 
+/**
+ * Reviews copied by hand from the listing, used when the API is not
+ * configured. Same shape, same rendering — only the delivery differs.
+ */
+function fromManual(): GoogleReviewsResult {
+  const reviews = manualGoogleReviews.filter((r) => r.author && r.text);
+  if (!reviews.length) return EMPTY;
+  return {
+    configured: true,
+    rating: manualGoogleSummary.rating,
+    total: manualGoogleSummary.total,
+    url: company.social.googleReviews,
+    reviews,
+  };
+}
+
 export async function getGoogleReviews(): Promise<GoogleReviewsResult> {
   const key = process.env.GOOGLE_PLACES_API_KEY;
-  if (!key) return EMPTY;
+  // The live API wins whenever it is available — it cannot drift from what is
+  // actually on Google. The manual list is the fallback, not the default.
+  if (!key) return fromManual();
 
   const placeId = process.env.GOOGLE_PLACE_ID || (await resolvePlaceId(key));
-  if (!placeId) return EMPTY;
+  if (!placeId) return fromManual();
 
   try {
     const res = await fetch(
@@ -139,7 +162,7 @@ export async function getGoogleReviews(): Promise<GoogleReviewsResult> {
 
     if (!res.ok) {
       console.error(`[reviews] Places API responded ${res.status}`);
-      return EMPTY;
+      return fromManual();
     }
 
     const data = (await res.json()) as PlacesResponse;
@@ -156,6 +179,8 @@ export async function getGoogleReviews(): Promise<GoogleReviewsResult> {
       // A rating with no words is not a testimonial — it has nothing to show.
       .filter((r) => r.author && r.text);
 
+    if (!reviews.length) return fromManual();
+
     return {
       configured: true,
       rating: typeof data.rating === "number" ? data.rating : null,
@@ -166,6 +191,6 @@ export async function getGoogleReviews(): Promise<GoogleReviewsResult> {
   } catch (error) {
     // Never let a third party take the page down.
     console.error("[reviews] fetch failed:", error);
-    return EMPTY;
+    return fromManual();
   }
 }

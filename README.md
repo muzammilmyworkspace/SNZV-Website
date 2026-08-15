@@ -63,6 +63,14 @@ the homepage.
 carry the hierarchy; there is no decorative display face. Headings are Title
 Case; body copy and FAQ questions stay sentence case.
 
+**Images are WebP only — AVIF is off on purpose.** Every source in
+`public/images` is already an optimised WebP. Re-encoding to AVIF on demand
+costs far more CPU than it saves, and once the hero plates went to 3400×1912
+it stopped being a trade-off: the same request served WebP in 0.16s and had
+still not produced AVIF after 300 seconds. Chrome asks for AVIF first, so that
+was the path real visitors got — the hero never finished loading. Do not add
+`image/avif` back to `next.config.ts` without re-measuring that number.
+
 **Heroes cycle.** `components/sections/HeroSlideshow.tsx` crossfades up to four
 frames with a Ken Burns drift and scroll parallax. The cap is enforced in the
 component, only the first frame is `priority`, and `prefers-reduced-motion`

@@ -4,8 +4,20 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 
   images: {
-    // All photography is local WebP; AVIF is offered first where supported.
-    formats: ["image/avif", "image/webp"],
+    /**
+     * WebP only. AVIF is deliberately NOT offered.
+     *
+     * Every source here is already an optimised WebP. Re-encoding those to
+     * AVIF on demand costs enormously more CPU than it saves in bytes, and
+     * once the plates went to 3400x1912 it stopped being a trade-off and
+     * became a hang: the same request served WebP in 0.16s and had still not
+     * produced AVIF after 300 seconds.
+     *
+     * Chrome sends `Accept: image/avif,...` first, so that path is what real
+     * visitors get — the hero simply never finished loading. Measured, not
+     * assumed; see the note in README under Design system.
+     */
+    formats: ["image/webp"],
     deviceSizes: [360, 390, 414, 768, 1024, 1280, 1440, 1920],
     imageSizes: [64, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
