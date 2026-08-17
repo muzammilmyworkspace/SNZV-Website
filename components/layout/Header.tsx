@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { portalUrls } from "@/lib/portal-url";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -176,7 +177,7 @@ export function Header() {
 
           <div className="ml-auto flex items-center gap-3 xl:ml-4">
             <Link
-              href="/login"
+              href={portalUrls.login}
               onClick={() => analytics.loginClick("header")}
               className="label hidden items-center gap-2 rounded-[var(--radius-sm)] border border-line px-4 py-2.5 text-fg transition-all duration-400 hover:border-moss-400/70 hover:text-accent sm:inline-flex"
             >

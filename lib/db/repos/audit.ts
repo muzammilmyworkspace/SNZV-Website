@@ -41,6 +41,14 @@ export type AuditAction =
   | "document.downloaded"
   | "staff.assigned"
   | "staff.unassigned"
+  // Operational layer (003)
+  | "message.sent"
+  | "intake.submitted"
+  | "intake.status_changed"
+  | "note.added"
+  | "note.deleted"
+  | "task.status_changed"
+  | "appointment.requested"
   | "admin.action";
 
 export async function audit(entry: {

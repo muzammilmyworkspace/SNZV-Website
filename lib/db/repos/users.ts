@@ -83,6 +83,60 @@ export async function createUser(input: {
   return mapUser(rows[0]);
 }
 
+/* -------------------------------------------------- federated identities */
+
+/** Look up an account by its provider identity. Never by email. */
+export async function findByOauthSubject(
+  provider: "google",
+  subject: string
+): Promise<DbUser | null> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT id, email, name, role, status, email_verified, last_login_at, created_at
+      FROM users
+      WHERE auth_provider = ${provider}::auth_provider AND oauth_subject = ${subject}
+      LIMIT 1
+    `;
+    return rows[0] ? mapUser(rows[0]) : null;
+  }, null);
+}
+
+/**
+ * Create an account from a verified provider identity.
+ *
+ * NO PASSWORD IS GENERATED. Migration 003 made `password_hash` nullable for
+ * exactly this: an account created through Google genuinely has no password,
+ * and minting a random hash nobody holds would produce a row that looks
+ * password-capable and silently fails password recovery.
+ *
+ * `email_verified` is TRUE because the provider confirmed it — the caller is
+ * responsible for having checked that, and app/api/auth/google/callback
+ * refuses to reach this function otherwise.
+ *
+ * The role is hardcoded to `student`, the lowest-privilege client role. It is
+ * never taken from the provider response.
+ */
+export async function createOauthUser(input: {
+  email: string;
+  name: string;
+  provider: "google";
+  subject: string;
+  avatarUrl?: string | null;
+}): Promise<DbUser | null> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      INSERT INTO users (email, name, role, auth_provider, oauth_subject, avatar_url, email_verified)
+      VALUES (${norm(input.email)}, ${input.name.trim()}, 'student',
+              ${input.provider}::auth_provider, ${input.subject},
+              ${input.avatarUrl ?? null}, TRUE)
+      RETURNING id, email, name, role, status, email_verified, last_login_at, created_at
+    `;
+    if (!rows[0]) return null;
+    await db()`INSERT INTO profiles (user_id) VALUES (${rows[0].id}) ON CONFLICT DO NOTHING`;
+    return mapUser(rows[0]);
+  }, null);
+}
+
 export async function setPasswordHash(userId: string, passwordHash: string) {
   await db()`
     UPDATE users SET password_hash = ${passwordHash}, updated_at = now()

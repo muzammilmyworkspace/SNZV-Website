@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AuthShell } from "@/components/portal/AuthShell";
 import { LoginForm, AuthUnavailable } from "@/components/portal/AuthForms";
 import { authConfigured } from "@/lib/auth/session";
+import { googleConfigured } from "@/lib/auth/oauth";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -29,7 +30,9 @@ export default function LoginPage() {
     >
       {authConfigured() ? (
         <Suspense fallback={<div className="h-64" aria-hidden />}>
-          <LoginForm />
+          {/* Server decides whether the Google button exists at all — the
+              client is never asked to guess whether OAuth is configured. */}
+          <LoginForm googleEnabled={googleConfigured()} />
         </Suspense>
       ) : (
         <AuthUnavailable />

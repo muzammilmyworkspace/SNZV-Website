@@ -12,6 +12,8 @@
  *
  * Read-only. It never writes, and it prints no credential.
  */
+// Loads .env.local so `npm run db:*` works as the error messages promise.
+import "./lib/env.mjs";
 import postgres from "postgres";
 
 const url = process.env.DATABASE_URL;

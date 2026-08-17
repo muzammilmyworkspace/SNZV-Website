@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { analytics } from "@/lib/analytics";
-import { ROLE_LABEL, type Role } from "@/lib/auth/types";
+import { ROLE_LABEL, STAFF_ROLES, type Role } from "@/lib/auth/types";
 import { cn } from "@/lib/utils";
 
 /**
@@ -45,11 +45,21 @@ function navFor(role: Role): { group: string; items: NavItem[] }[] {
 
   const casesLabel = role === "business" ? "Requests" : "Applications";
 
+  // The intake form is named for what it IS to each audience. "Application"
+  // means nothing to a business user filling in a company profile.
+  const applicationLabel =
+    role === "student"
+      ? "My application"
+      : role === "professional"
+        ? "Career profile"
+        : "Business profile";
+
   const groups: { group: string; items: NavItem[] }[] = [
     {
       group: "Journey",
       items: [
         { href: "/portal", label: "Overview", icon: "dashboard" },
+        { href: "/portal/application", label: applicationLabel, icon: "cases" },
         { href: "/portal/journey", label: journeyLabel, icon: "journey" },
         { href: "/portal/cases", label: casesLabel, icon: "cases" },
         ...(role === "professional"
@@ -82,11 +92,20 @@ function navFor(role: Role): { group: string; items: NavItem[] }[] {
     },
   ];
 
-  if (role === "admin" || role === "advisor") {
+  /*
+    STAFF_ROLES, not a hand-written list.
+
+    This previously read `role === "admin" || role === "advisor"`, which left
+    `super_admin` — the single account the system ships with — unable to see the
+    staff navigation at all. Deriving it from the same constant the server-side
+    guards use means the menu and the authorization can no longer disagree.
+  */
+  if (STAFF_ROLES.includes(role)) {
     groups.unshift({
       group: "Staff",
       items: [
         { href: "/portal/admin", label: "Overview", icon: "admin" },
+        { href: "/portal/admin/requests", label: "Requests", icon: "cases" },
         { href: "/portal/admin/users", label: "Users & roles", icon: "profile" },
         { href: "/portal/admin/cases", label: "Cases", icon: "cases" },
         { href: "/portal/admin/documents", label: "Document review", icon: "documents" },

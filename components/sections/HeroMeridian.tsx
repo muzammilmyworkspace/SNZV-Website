@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { portalUrls } from "@/lib/portal-url";
 import { useEffect, useRef, useState, Fragment } from "react";
 import {
   motion,
@@ -226,7 +227,7 @@ export function HeroMeridian() {
                 friction this removes.
               */}
               <Action
-                href="/login"
+                href={portalUrls.login}
                 variant="quiet"
                 size="lg"
                 onClick={() => analytics.loginClick("hero")}

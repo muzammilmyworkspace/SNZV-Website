@@ -21,7 +21,8 @@
     "audit:study": "node scripts/audit-study.mjs",
     "audit:theme": "node scripts/audit-theme.mjs",
     "audit:links": "node scripts/audit-links.mjs",
-    "audit:mobile": "node scripts/audit-mobile.mjs"
+    "audit:mobile": "node scripts/audit-mobile.mjs",
+    "audit:security": "node scripts/audit-portal-security.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

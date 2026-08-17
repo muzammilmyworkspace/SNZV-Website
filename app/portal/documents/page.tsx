@@ -1,23 +1,71 @@
+import type { Metadata } from "next";
 import { requireUser } from "@/lib/auth/guard";
 import { isDatabaseConfigured } from "@/lib/db/client";
+import { isStorageConfigured } from "@/lib/storage";
 import { NotConfigured } from "@/components/portal/NotConfigured";
 import { getDocuments, REQUIRED_DOCUMENTS } from "@/lib/portal/data";
+import { DocumentUploader } from "@/components/portal/DocumentUploader";
 import {
   PortalHeading,
   Panel,
   DataRow,
   StatusPill,
-  BackendRequired,
+  EmptyState,
 } from "@/components/portal/Pieces";
 
+export const metadata: Metadata = {
+  title: "Documents",
+  robots: { index: false, follow: false },
+};
+
+/**
+ * THE DOCUMENT CENTRE (§9)
+ *
+ * Answers the four questions a client actually has: what do you need from me,
+ * what have I sent, where has it got to, and what needs redoing.
+ *
+ * The checklist and the uploads are merged into ONE list rather than shown as
+ * two. Two lists means comparing them by eye to work out what is outstanding,
+ * which is the job this page is supposed to do for them.
+ *
+ * `review_note` is shown ONLY for statuses that ask the client to act. An
+ * approval note is an internal remark and stays internal.
+ */
+
+const STATUS_LABEL: Record<string, string> = {
+  required: "Required",
+  uploaded: "Uploaded",
+  pending_review: "Under review",
+  approved: "Approved",
+  rejected: "Rejected",
+  needs_update: "Needs revision",
+};
+
+/** Statuses where the note explains something the client must do. */
+const ACTIONABLE = new Set(["rejected", "needs_update"]);
+
 export default async function DocumentsPage() {
-  const { session } = await requireUser();
+  const { session } = await requireUser("/portal/documents");
+
+  if (!isDatabaseConfigured()) {
+    return (
+      <>
+        <PortalHeading eyebrow="Your file" title="Documents" lead="Everything you send us, in one place." />
+        <NotConfigured />
+      </>
+    );
+  }
 
   const documents = await getDocuments(session.userId);
-  const configured = isDatabaseConfigured();
   const required = REQUIRED_DOCUMENTS[session.role] ?? [];
+  const storage = isStorageConfigured();
 
-  const categories = [...new Set(required.map((r) => r.category))];
+  // Merge checklist with reality. A required item the client has already sent
+  // shows its real status; one they have not shows as outstanding.
+  const uploadedNames = new Set(documents.map((d) => d.name.toLowerCase()));
+  const outstanding = required.filter((r) => !uploadedNames.has(r.name.toLowerCase()));
+
+  const needsAction = documents.filter((d) => ACTIONABLE.has(d.status));
 
   return (
     <>
@@ -25,50 +73,82 @@ export default async function DocumentsPage() {
         eyebrow="Your file"
         title="Documents"
         lead="Everything you send us, in one place — with its review status."
+        meta={
+          <div className="flex flex-wrap gap-x-8 gap-y-3 text-[0.83rem]">
+            <span className="text-muted">
+              <strong className="font-semibold text-fg">{documents.length}</strong> uploaded
+            </span>
+            <span className="text-muted">
+              <strong className="font-semibold text-fg">{outstanding.length}</strong> still needed
+            </span>
+            {needsAction.length > 0 && (
+              <span className="text-accent">
+                <strong className="font-semibold">{needsAction.length}</strong> need your attention
+              </span>
+            )}
+          </div>
+        }
       />
 
-      {documents.length === 0 && required.length > 0 && (
-        <div className="grid gap-5 lg:grid-cols-2">
-          {categories.map((cat) => (
-            <Panel key={cat} title={cat}>
-              {required
-                .filter((r) => r.category === cat)
-                .map((r) => (
-                  <DataRow
-                    key={r.name}
-                    label={r.name}
-                    value={<StatusPill status="required" label="Required" />}
-                  />
-                ))}
-            </Panel>
-          ))}
+      {/* Anything the client must redo comes first — it is the only thing on
+          this page that is blocked on them. */}
+      {needsAction.length > 0 && (
+        <div className="mb-5">
+          <Panel accent title="Needs your attention">
+            <ul className="space-y-4">
+              {needsAction.map((d) => (
+                <li key={d.id}>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <span className="text-[0.95rem] font-medium text-fg">{d.name}</span>
+                    <StatusPill status={d.status} label={STATUS_LABEL[d.status] ?? d.status} />
+                  </div>
+                  {d.reviewNote && (
+                    <p className="mt-1.5 text-[0.85rem] leading-relaxed text-muted">
+                      {d.reviewNote}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </Panel>
         </div>
       )}
 
-      <div className="mt-5">
-        <Panel title="Uploading">
-          <p className="text-[0.88rem] leading-relaxed text-muted">
-            Upload is disabled until secure storage is connected. These files
-            contain identity data, so they will be stored privately and served
-            only through short-lived, access-controlled links — never from a
-            public URL.
-          </p>
-          <p className="mt-4 text-[0.86rem] leading-relaxed text-muted">
-            In the meantime, send documents by reply to your advisor and we will
-            file them against your case.
-          </p>
+      <div className="grid items-start gap-5 lg:grid-cols-[1fr_22rem]">
+        <Panel title="Your documents" padded={false}>
+          {documents.length === 0 && outstanding.length === 0 ? (
+            <div className="p-5">
+              <EmptyState
+                icon="file"
+                title="No documents uploaded yet"
+                body="Anything you send us appears here with its review status."
+              />
+            </div>
+          ) : (
+            <div className="p-5">
+              {documents.map((d) => (
+                <DataRow
+                  key={d.id}
+                  label={d.name}
+                  value={<StatusPill status={d.status} label={STATUS_LABEL[d.status] ?? d.status} />}
+                  meta={<span className="label text-faint">{d.category}</span>}
+                />
+              ))}
+              {outstanding.map((r) => (
+                <DataRow
+                  key={r.name}
+                  label={r.name}
+                  value={<StatusPill status="required" label="Required" />}
+                  meta={<span className="label text-faint">{r.category}</span>}
+                />
+              ))}
+            </div>
+          )}
         </Panel>
-      </div>
 
-      <div className="mt-8">
-        <BackendRequired
-          feature="Secure document storage"
-          needs={[
-            "Private object storage (S3/R2) with server-signed, short-lived download URLs",
-            "documents table: owner, category, status, storage key, reviewer",
-            "Virus scanning on upload and an audit trail of every access",
-          ]}
-        />
+        <Panel title="Upload a document">
+          <DocumentUploader slots={required} configured={storage} />
+        </Panel>
       </div>
     </>
   );

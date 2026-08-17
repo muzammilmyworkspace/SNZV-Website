@@ -1,3 +1,4 @@
+import { portalUrls } from "@/lib/portal-url";
 import {
   Container,
   Section,
@@ -121,8 +122,8 @@ export function PortalPreview({
             </Reveal>
             <Reveal delay={0.2}>
               <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
-                <Action href="/login">{a.cta}</Action>
-                <TextLink href="/register">Create an account</TextLink>
+                <Action href={portalUrls.login}>{a.cta}</Action>
+                <TextLink href={portalUrls.register}>Create an account</TextLink>
               </div>
             </Reveal>
           </div>

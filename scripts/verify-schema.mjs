@@ -5,6 +5,8 @@
  *
  *   npm run db:verify
  */
+// Loads .env.local so `npm run db:*` works as the error messages promise.
+import "./lib/env.mjs";
 import { PGlite } from "@electric-sql/pglite";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -37,6 +39,8 @@ const EXPECTED = [
   "business_profiles", "staff_assignments", "cases", "opportunities",
   "applications", "documents", "tasks", "appointments", "conversations",
   "messages", "notifications", "audit_logs",
+  // 003
+  "status_history", "admin_notes", "intake_forms",
 ];
 
 await check("all tables present", async () => {
@@ -207,6 +211,150 @@ await check("document review update", async () => {
     `UPDATE documents SET status=$2::document_status, reviewed_at=now(), updated_at=now() WHERE id=$1`,
     [d.rows[0].id, "approved"]
   );
+});
+
+console.log("\nOperational layer (003)\n");
+
+await check("case reference is auto-assigned and unique", async () => {
+  const u = await db.query(
+    `INSERT INTO users (email,name,role,password_hash) VALUES ('ref@t.io','R','student','x') RETURNING id`
+  );
+  const a = await db.query(
+    `INSERT INTO cases (client_id,pathway,title) VALUES ($1,'study','A') RETURNING reference`,
+    [u.rows[0].id]
+  );
+  const b = await db.query(
+    `INSERT INTO cases (client_id,pathway,title) VALUES ($1,'study','B') RETURNING reference`,
+    [u.rows[0].id]
+  );
+  const ra = a.rows[0].reference, rb = b.rows[0].reference;
+  if (!/^SNZ-\d{4}-\d{4}$/.test(ra)) throw new Error(`bad reference format: ${ra}`);
+  if (ra === rb) throw new Error("two cases received the same reference");
+});
+
+await check("an OAuth account needs no password", async () => {
+  await db.query(
+    `INSERT INTO users (email,name,role,auth_provider,oauth_subject)
+     VALUES ('g@t.io','G','student','google','sub-123')`
+  );
+});
+
+await check("an account with neither credential is rejected", async () => {
+  let ok = false;
+  try {
+    await db.query(`INSERT INTO users (email,name,role) VALUES ('n@t.io','N','student')`);
+  } catch {
+    ok = true;
+  }
+  if (!ok) throw new Error("users_has_credential did not fire");
+});
+
+await check("the same Google identity cannot map to two accounts", async () => {
+  let ok = false;
+  try {
+    await db.query(
+      `INSERT INTO users (email,name,role,auth_provider,oauth_subject)
+       VALUES ('g2@t.io','G2','student','google','sub-123')`
+    );
+  } catch {
+    ok = true;
+  }
+  if (!ok) throw new Error("oauth subject uniqueness did not hold");
+});
+
+await check("one live intake per pathway per user", async () => {
+  const u = await db.query(
+    `INSERT INTO users (email,name,role,password_hash) VALUES ('i@t.io','I','student','x') RETURNING id`
+  );
+  await db.query(
+    `INSERT INTO intake_forms (user_id,pathway,data) VALUES ($1,'study','{"a":1}'::jsonb)`,
+    [u.rows[0].id]
+  );
+  let ok = false;
+  try {
+    await db.query(
+      `INSERT INTO intake_forms (user_id,pathway) VALUES ($1,'study')`,
+      [u.rows[0].id]
+    );
+  } catch {
+    ok = true;
+  }
+  if (!ok) throw new Error("a second draft was allowed to fork the answers");
+});
+
+await check("client-visible history excludes internal entries", async () => {
+  const u = await db.query(
+    `INSERT INTO users (email,name,role,password_hash) VALUES ('h@t.io','H','student','x') RETURNING id`
+  );
+  const id = u.rows[0].id;
+  await db.query(
+    `INSERT INTO status_history (entity,entity_id,subject_id,to_status,internal)
+     VALUES ('case',$1,$1,'under_review',false), ('case',$1,$1,'flagged',true)`,
+    [id]
+  );
+  const r = await db.query(
+    `SELECT count(*)::int AS n FROM status_history WHERE subject_id=$1 AND internal=false`,
+    [id]
+  );
+  if (r.rows[0].n !== 1) throw new Error(`client query returned ${r.rows[0].n} rows, expected 1`);
+});
+
+await check("a later intake step merges rather than overwrites", async () => {
+  const u = await db.query(
+    `INSERT INTO users (email,name,role,password_hash) VALUES ('m@t.io','M','student','x') RETURNING id`
+  );
+  const id = u.rows[0].id;
+  await db.query(
+    `INSERT INTO intake_forms (user_id,pathway,step,data) VALUES ($1,'study',1,'{"firstName":"Ada"}'::jsonb)`,
+    [id]
+  );
+  await db.query(
+    `INSERT INTO intake_forms (user_id,pathway,step,data) VALUES ($1,'study',2,'{"degree":"BSc"}'::jsonb)
+     ON CONFLICT (user_id,pathway) DO UPDATE
+       SET data=intake_forms.data || EXCLUDED.data,
+           step=GREATEST(intake_forms.step, EXCLUDED.step)
+       WHERE intake_forms.status='draft'`,
+    [id]
+  );
+  const r = await db.query(`SELECT data, step FROM intake_forms WHERE user_id=$1`, [id]);
+  const d = r.rows[0].data;
+  if (d.firstName !== "Ada") throw new Error("step 1 answers were wiped by step 2");
+  if (d.degree !== "BSc") throw new Error("step 2 answers were not stored");
+  if (r.rows[0].step !== 2) throw new Error(`resume point is ${r.rows[0].step}, expected 2`);
+
+  // Going back to edit step 1 must not drag the resume point backwards.
+  await db.query(
+    `INSERT INTO intake_forms (user_id,pathway,step,data) VALUES ($1,'study',1,'{"firstName":"Grace"}'::jsonb)
+     ON CONFLICT (user_id,pathway) DO UPDATE
+       SET data=intake_forms.data || EXCLUDED.data,
+           step=GREATEST(intake_forms.step, EXCLUDED.step)
+       WHERE intake_forms.status='draft'`,
+    [id]
+  );
+  const r2 = await db.query(`SELECT data, step FROM intake_forms WHERE user_id=$1`, [id]);
+  if (r2.rows[0].step !== 2) throw new Error("editing an earlier step reset the resume point");
+  if (r2.rows[0].data.firstName !== "Grace") throw new Error("the edit did not take");
+});
+
+await check("a submitted intake stops accepting draft writes", async () => {
+  const u = await db.query(
+    `INSERT INTO users (email,name,role,password_hash) VALUES ('s@t.io','S','student','x') RETURNING id`
+  );
+  const id = u.rows[0].id;
+  await db.query(
+    `INSERT INTO intake_forms (user_id,pathway,step,data,status,submitted_at)
+     VALUES ($1,'study',9,'{"final":true}'::jsonb,'submitted',now())`,
+    [id]
+  );
+  await db.query(
+    `INSERT INTO intake_forms (user_id,pathway,step,data) VALUES ($1,'study',1,'{"tampered":true}'::jsonb)
+     ON CONFLICT (user_id,pathway) DO UPDATE
+       SET data=intake_forms.data || EXCLUDED.data
+       WHERE intake_forms.status='draft'`,
+    [id]
+  );
+  const r = await db.query(`SELECT data FROM intake_forms WHERE user_id=$1`, [id]);
+  if (r.rows[0].data.tampered) throw new Error("a submitted form was still writable");
 });
 
 await db.close();

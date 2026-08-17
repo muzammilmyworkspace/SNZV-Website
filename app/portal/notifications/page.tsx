@@ -1,65 +1,121 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/guard";
 import { isDatabaseConfigured } from "@/lib/db/client";
-import {
-  PortalHeading,
-  Panel,
-  EmptyState,
-  StatusPill,
-  DataRow,
-} from "@/components/portal/Pieces";
 import { NotConfigured } from "@/components/portal/NotConfigured";
-import { getNotifications } from "@/lib/portal/data";
+import { PortalHeading, Panel, EmptyState } from "@/components/portal/Pieces";
+import { MarkAllRead } from "@/components/portal/MarkAllRead";
+import { getNotifications } from "@/lib/db/repos/portal";
 
-export default async function Page() {
-  const { session } = await requireUser();
+export const metadata: Metadata = {
+  title: "Notifications",
+  robots: { index: false, follow: false },
+};
+
+function when(iso: string) {
+  const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours} hr ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "Yesterday";
+  if (days < 7) return `${days} days ago`;
+  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+}
+
+export default async function NotificationsPage() {
+  const { session } = await requireUser("/portal/notifications");
 
   if (!isDatabaseConfigured()) {
     return (
       <>
-        <PortalHeading eyebrow="Contact" title="Notifications" />
-        <NotConfigured what="Notifications" />
+        <PortalHeading eyebrow="Activity" title="Notifications" />
+        <NotConfigured />
       </>
     );
   }
 
-  const notifications = await getNotifications(session.userId);
+  const items = await getNotifications(session.userId, 50);
+  const unread = items.filter((n) => !n.read).length;
 
   return (
     <>
       <PortalHeading
-        eyebrow="Contact"
+        eyebrow="Activity"
         title="Notifications"
-        lead="Document requests, status changes, replies and reminders."
+        lead="Document decisions, status changes and replies from your advisor."
+        action={unread > 0 ? <MarkAllRead /> : undefined}
       />
-      <Panel padded={notifications.length === 0}>
-        {notifications.length === 0 ? (
+
+      <Panel padded={items.length === 0}>
+        {items.length === 0 ? (
           <EmptyState
             icon="bell"
-            title="You are up to date"
-            body="Notifications appear here when something changes on your case. We keep them meaningful — no digests, no noise."
+            title="Nothing yet"
+            body="When a document is reviewed, a status changes or an advisor replies, it appears here."
           />
         ) : (
-          <div className="p-5">
-            {notifications.map((n) => (
-              <div key={n.id} className="border-b border-line py-4 last:border-0">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <p className="text-[0.92rem] font-semibold text-fg">{n.title}</p>
-                    {n.body && <p className="mt-1 text-[0.85rem] leading-relaxed text-muted">{n.body}</p>}
-                  </div>
-                  <span className="label shrink-0 text-faint">
-                    {new Date(n.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+          <ul className="divide-y divide-line">
+            {items.map((n) => {
+              const inner = (
+                <>
+                  <span className="flex items-start gap-3">
+                    {/* Unread marker doubles as the only colour on the row, so
+                        the eye lands on what is new without a legend. */}
+                    <span
+                      aria-hidden
+                      className={
+                        n.read
+                          ? "mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-transparent"
+                          : "mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-moss-400"
+                      }
+                    />
+                    <span className="min-w-0">
+                      <span
+                        className={
+                          n.read
+                            ? "block text-[0.92rem] text-muted"
+                            : "block text-[0.92rem] font-medium text-fg"
+                        }
+                      >
+                        {n.title}
+                        {!n.read && <span className="sr-only"> (unread)</span>}
+                      </span>
+                      {n.body && (
+                        <span className="mt-0.5 block text-[0.84rem] leading-relaxed text-muted">
+                          {n.body}
+                        </span>
+                      )}
+                    </span>
                   </span>
-                </div>
-                {n.href && (
-                  <Link href={n.href} className="label mt-3 inline-flex text-accent">
-                    <span className="draw">Open</span>
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
+                  <time
+                    dateTime={n.createdAt}
+                    className="shrink-0 whitespace-nowrap text-[0.75rem] text-faint"
+                  >
+                    {when(n.createdAt)}
+                  </time>
+                </>
+              );
+
+              return (
+                <li key={n.id}>
+                  {n.href ? (
+                    <Link
+                      href={n.href}
+                      className="flex min-h-16 items-start justify-between gap-4 px-5 py-4 transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)]"
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div className="flex min-h-16 items-start justify-between gap-4 px-5 py-4">
+                      {inner}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         )}
       </Panel>
     </>

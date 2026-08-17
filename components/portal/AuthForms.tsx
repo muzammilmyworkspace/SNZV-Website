@@ -87,9 +87,60 @@ async function post(url: string, body: unknown) {
   return { res, data };
 }
 
+/* ------------------------------------------------------------ Google SSO */
+
+/**
+ * The OAuth failures worth explaining.
+ *
+ * `email_in_use` is the one that matters: the callback deliberately refuses to
+ * link a Google identity to an existing password account, because doing so
+ * silently would be account takeover by email collision. Telling the visitor
+ * to sign in with their password is the correct and only safe next step.
+ */
+const OAUTH_MESSAGE: Record<string, string> = {
+  unavailable: "Google sign-in isn't switched on for this site yet. Please use your email and password.",
+  cancelled: "Google sign-in was cancelled.",
+  unverified: "That Google account hasn't confirmed its email address, so we can't use it to sign in.",
+  email_in_use: "An account already exists with that email. Sign in with your password instead.",
+  state: "That sign-in link expired. Please try again.",
+  rate_limited: "Too many sign-in attempts. Please wait a few minutes.",
+  suspended: "This account has been suspended. Please contact us.",
+};
+
+/**
+ * Rendered only when the server reports Google OAuth is configured. A button
+ * that always appears and always fails is worse than no button — it looks like
+ * the site is broken rather than like the feature is not enabled.
+ */
+function GoogleButton({ enabled, next }: { enabled: boolean; next?: string | null }) {
+  if (!enabled) return null;
+  const href = next ? `/api/auth/google?next=${encodeURIComponent(next)}` : "/api/auth/google";
+  return (
+    <>
+      <div className="my-6 flex items-center gap-4" aria-hidden>
+        <span className="h-px flex-1 bg-[color-mix(in_srgb,var(--fg)_14%,transparent)]" />
+        <span className="label text-faint">or</span>
+        <span className="h-px flex-1 bg-[color-mix(in_srgb,var(--fg)_14%,transparent)]" />
+      </div>
+      <a
+        href={href}
+        className="flex min-h-12 w-full items-center justify-center gap-3 rounded-[var(--radius-sm)] border border-line bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] px-5 text-[0.92rem] font-medium text-fg transition-colors hover:border-moss-400/60 hover:bg-[color-mix(in_srgb,var(--fg)_7%,transparent)]"
+      >
+        <svg viewBox="0 0 18 18" aria-hidden className="h-4 w-4">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z" />
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.02-3.7H.96v2.34A9 9 0 009 18z" />
+          <path fill="#FBBC05" d="M3.98 10.72a5.4 5.4 0 010-3.44V4.94H.96a9 9 0 000 8.12l3.02-2.34z" />
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.46 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 00.96 4.94l3.02 2.34C4.68 5.16 6.66 3.58 9 3.58z" />
+        </svg>
+        Continue with Google
+      </a>
+    </>
+  );
+}
+
 /* -------------------------------------------------------------- LoginForm */
 
-export function LoginForm() {
+export function LoginForm({ googleEnabled = false }: { googleEnabled?: boolean }) {
   const router = useRouter();
   const params = useSearchParams();
   const next = params.get("next");
@@ -98,6 +149,9 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // Set by /api/auth/google/callback when a sign-in could not complete.
+  const oauthError = params.get("oauth");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -140,6 +194,11 @@ export function LoginForm() {
       />
 
       {error && <ErrorNote>{error}</ErrorNote>}
+      {!error && oauthError && (
+        <ErrorNote>
+          {OAUTH_MESSAGE[oauthError] ?? "We couldn't complete that sign-in. Please try again."}
+        </ErrorNote>
+      )}
 
       <div className="flex items-center justify-between gap-4 pt-1">
         <Link
@@ -155,6 +214,8 @@ export function LoginForm() {
       <Action type="submit" size="lg" className="w-full">
         {busy ? "Signing in…" : "Sign in"}
       </Action>
+
+      <GoogleButton enabled={googleEnabled} next={next} />
     </form>
   );
 }

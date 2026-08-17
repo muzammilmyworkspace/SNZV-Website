@@ -9,6 +9,8 @@
  * run exactly once. No ORM, no codegen — the schema is readable SQL that any
  * DBA can audit.
  */
+// Loads .env.local so `npm run db:*` works as the error messages promise.
+import "./lib/env.mjs";
 import postgres from "postgres";
 import fs from "node:fs/promises";
 import path from "node:path";

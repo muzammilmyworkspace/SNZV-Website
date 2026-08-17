@@ -19,9 +19,15 @@ export const STAFF_ROLES: Role[] = ["advisor", "admin", "super_admin"];
 /** Full operational control. */
 export const ADMIN_ROLES: Role[] = ["admin", "super_admin"];
 
+/**
+ * DISPLAY names. The STORED value for a job seeker stays `professional` — it is
+ * a Postgres enum that 17 tables and the RLS-guarded schema depend on, so
+ * renaming it would be a destructive migration to change a word on screen.
+ * The label belongs in the presentation layer, which is here.
+ */
 export const ROLE_LABEL: Record<Role, string> = {
   student: "Student",
-  professional: "Professional",
+  professional: "Job Seeker",
   business: "Business",
   advisor: "Advisor",
   admin: "Administrator",

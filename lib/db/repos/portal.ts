@@ -38,6 +38,12 @@ export type DocumentRow = {
   storageKey: string | null;
   mimeType: string | null;
   sizeBytes: number | null;
+  /**
+   * The reviewer's note. Surfaced to the client ONLY for statuses that ask
+   * them to act (rejected / needs_update) — see app/portal/documents/page.tsx.
+   * An approval note is an internal remark and stays internal.
+   */
+  reviewNote: string | null;
   updatedAt: string;
 };
 
@@ -241,6 +247,7 @@ function mapDocument(r: Record<string, unknown>): DocumentRow {
     storageKey: r.storage_key ? String(r.storage_key) : null,
     mimeType: r.mime_type ? String(r.mime_type) : null,
     sizeBytes: r.size_bytes ? Number(r.size_bytes) : null,
+    reviewNote: r.review_note ? String(r.review_note) : null,
     updatedAt: iso(r.updated_at)!,
   };
 }
@@ -468,12 +475,14 @@ export async function getMessages(conversationId: string): Promise<MessageRow[]>
 export async function createConversation(input: {
   clientId: string;
   subject: string;
-}) {
-  const rows = await db()`
-    INSERT INTO conversations (client_id, subject)
-    VALUES (${input.clientId}, ${input.subject}) RETURNING id
-  `;
-  return String(rows[0].id);
+}): Promise<string | null> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      INSERT INTO conversations (client_id, subject)
+      VALUES (${input.clientId}, ${input.subject}) RETURNING id
+    `;
+    return String(rows[0].id);
+  }, null);
 }
 
 export async function postMessage(input: {
@@ -486,10 +495,24 @@ export async function postMessage(input: {
       INSERT INTO messages (conversation_id, author_id, body)
       VALUES (${input.conversationId}, ${input.authorId}, ${input.body})
     `;
+    // `last_sender_id` (003) is what lets the staff queue separate "waiting on
+    // us" from "waiting on them" without opening every thread.
     await tx`
-      UPDATE conversations SET updated_at = now() WHERE id = ${input.conversationId}
+      UPDATE conversations
+         SET updated_at = now(), last_sender_id = ${input.authorId}
+       WHERE id = ${input.conversationId}
     `;
   });
+}
+
+/** Who a conversation belongs to. Used to address a reply notification. */
+export async function conversationOwner(conversationId: string): Promise<string | null> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT client_id FROM conversations WHERE id = ${conversationId}
+    `;
+    return rows.length ? String(rows[0].client_id) : null;
+  }, null);
 }
 
 export async function markConversationRead(conversationId: string, viewerId: string) {
@@ -524,14 +547,52 @@ export async function notify(input: {
   title: string;
   body?: string;
   href?: string;
+  /** Groups the bell and gives notification preferences something to match. */
+  kind?: "message" | "document" | "status" | "task" | "appointment" | "general";
 }) {
   await safeQuery(async () => {
     await db()`
-      INSERT INTO notifications (user_id, title, body, href)
-      VALUES (${input.userId}, ${input.title}, ${input.body ?? null}, ${input.href ?? null})
+      INSERT INTO notifications (user_id, title, body, href, kind)
+      VALUES (${input.userId}, ${input.title}, ${input.body ?? null},
+              ${input.href ?? null}, ${input.kind ?? "general"})
     `;
     return true;
   }, false);
+}
+
+/** Unread count for the sidebar badge. */
+export async function countUnreadNotifications(userId: string): Promise<number> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT count(*)::int AS n FROM notifications
+      WHERE user_id = ${userId} AND read_at IS NULL
+    `;
+    return Number(rows[0]?.n ?? 0);
+  }, 0);
+}
+
+/** Unread messages addressed to this viewer, across all their conversations. */
+export async function countUnreadMessages(userId: string, role: Role): Promise<number> {
+  return safeQuery(async () => {
+    if (role === "admin" || role === "super_admin") {
+      const rows = await db()`
+        SELECT count(*)::int AS n FROM messages m
+        WHERE m.read_at IS NULL AND m.author_id <> ${userId}
+      `;
+      return Number(rows[0]?.n ?? 0);
+    }
+    const rows = await db()`
+      SELECT count(*)::int AS n
+      FROM messages m
+      JOIN conversations c ON c.id = m.conversation_id
+      WHERE m.read_at IS NULL
+        AND m.author_id <> ${userId}
+        AND (c.client_id = ${userId}
+             OR EXISTS (SELECT 1 FROM staff_assignments sa
+                        WHERE sa.advisor_id = ${userId} AND sa.client_id = c.client_id))
+    `;
+    return Number(rows[0]?.n ?? 0);
+  }, 0);
 }
 
 export async function markNotificationsRead(userId: string) {

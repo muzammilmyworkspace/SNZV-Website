@@ -11,6 +11,8 @@
  * If the account already exists it is promoted rather than duplicated, so this
  * is safe to re-run.
  */
+// Loads .env.local so `npm run db:*` works as the error messages promise.
+import "./lib/env.mjs";
 import postgres from "postgres";
 import { randomBytes, scrypt as _scrypt } from "node:crypto";
 import { promisify } from "node:util";
