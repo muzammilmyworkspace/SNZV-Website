@@ -269,6 +269,113 @@ export const scholarshipNotes = [
   },
 ];
 
+/* ------------------------------------------------------------ Scholarships */
+
+export type Scholarship = {
+  /** Awarding country, or the scope where the scheme is not national. */
+  country: string;
+  name: string;
+  /** What the award covers, as published. */
+  value: string;
+  /** Study levels the scheme is open to. */
+  level: string;
+};
+
+/**
+ * Funding schemes SnZ advises on, transcribed from the firm's own student site.
+ *
+ * PROVENANCE AND ITS LIMITS. These are real, named, government or EU-level
+ * programmes — Stipendium Hungaricum, DAAD, NAWA, MAEC-AECID, MAECI, Eiffel,
+ * Dora Plus and Erasmus Mundus all exist and are checkable. What is NOT
+ * independently verified here is the CURRENT award value and eligible level of
+ * each: those are set annually by the awarding body and move.
+ *
+ * So the section renders them as an orientation list with an explicit caveat
+ * and a prompt to confirm against the official source, rather than as a
+ * guarantee of what a given applicant would receive. Do not restate any of
+ * these figures elsewhere on the site as a promise.
+ *
+ * The last entry is SnZ's own — the only one the firm controls, and the only
+ * one it can state without qualification.
+ */
+export const scholarships: Scholarship[] = [
+  {
+    country: "Hungary",
+    name: "Stipendium Hungaricum",
+    value: "Full tuition + stipend",
+    level: "Bachelor / Master / PhD",
+  },
+  {
+    country: "Germany",
+    name: "DAAD Scholarships",
+    value: "Full funding",
+    level: "Master / PhD",
+  },
+  {
+    country: "Poland",
+    name: "NAWA Scholarships",
+    value: "Tuition waiver + stipend",
+    level: "Master / PhD",
+  },
+  {
+    country: "Lithuania",
+    name: "Vilnius University Merit Award",
+    value: "Up to 100% tuition",
+    level: "Bachelor / Master",
+  },
+  {
+    country: "Malta",
+    name: "Malta Government Scholarships",
+    value: "Partial to full",
+    level: "Master",
+  },
+  {
+    country: "Spain",
+    name: "MAEC-AECID Scholarships",
+    value: "Full funding + stipend",
+    level: "Master / PhD",
+  },
+  {
+    country: "Italy",
+    name: "Italian Government MAECI",
+    value: "Full tuition + stipend",
+    level: "Master / PhD",
+  },
+  {
+    country: "France",
+    name: "Eiffel Excellence Scholarship",
+    value: "Monthly stipend + travel",
+    level: "Master / PhD",
+  },
+  {
+    country: "Estonia",
+    name: "Estonian Government Scholarship",
+    value: "Full tuition + €350/month",
+    level: "Master / PhD",
+  },
+  {
+    country: "Estonia",
+    name: "Dora Plus",
+    value: "Short-term study grants",
+    level: "Master / PhD",
+  },
+  {
+    country: "EU wide",
+    name: "Erasmus Mundus Joint Masters",
+    value: "Full tuition + €1,400/month",
+    level: "Master",
+  },
+  {
+    country: "All partners",
+    name: "SnZ Merit Grant",
+    value: "Up to €1,000 off service fee",
+    level: "All",
+  },
+];
+
+export const scholarshipCaveat =
+  "Award values, eligibility and deadlines are set by each awarding body and change from year to year. Treat this as a starting point for your shortlist, not a quotation — we confirm the current terms of any scheme against its official source before you build a plan around it.";
+
 /* ----------------------------------------------------------------- Support */
 
 export const supportServices = [

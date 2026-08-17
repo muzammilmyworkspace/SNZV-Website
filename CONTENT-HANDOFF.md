@@ -199,6 +199,35 @@ X/Twitter is not included — no profile was supplied, and none was assumed.
 
 ---
 
+## 5c. Scholarships — names verified, terms not
+
+`data/study.ts → scholarships` lists twelve funding schemes on /study-abroad,
+transcribed from SnZ's own student site.
+
+**The schemes themselves are real and checkable.** Stipendium Hungaricum,
+DAAD, NAWA, MAEC-AECID, MAECI, Eiffel Excellence, the Estonian Government
+Scholarship, Dora Plus and Erasmus Mundus Joint Masters are all established
+government or EU-level programmes.
+
+**What is not independently verified is the award value and eligible level of
+each.** Those are set annually by the awarding body and move — an amount that
+was right last intake may not be right this one.
+
+The section therefore renders them as an orientation list with a visible
+caveat (`scholarshipCaveat`) stating that values and deadlines change and are
+confirmed against the official source before any plan is built on them.
+
+- [ ] Confirm each scheme is still open to your applicants' nationalities
+- [ ] Confirm the value and level shown for each, or amend
+- [ ] Confirm the **SnZ Merit Grant** terms — "Up to €1,000 off service fee"
+      is your own award and the only one here you control outright
+
+**Do not restate any of these figures elsewhere as a promise.** A student who
+applies expecting a full stipend and receives a partial one has been
+misinformed by the website.
+
+---
+
 ## 6. Testimonials
 
 `data/company.ts` → `testimonials` is an **empty array**, deliberately. No

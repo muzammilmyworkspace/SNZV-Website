@@ -13,12 +13,15 @@ import {
   TextLink,
 } from "@/components/ui/Primitives";
 import { StudyDestinationCard } from "@/components/cards/Cards";
+import { ScholarshipCard } from "@/components/cards/ScholarshipCard";
 import { HeroSlideshow } from "./HeroSlideshow";
 import {
   studyDestinations,
   studyFields,
   studyJourney,
   scholarshipNotes,
+  scholarships,
+  scholarshipCaveat,
   supportServices,
   studyFacts,
 } from "@/data/study";
@@ -532,6 +535,35 @@ export function StudyScholarships() {
               </RevealItem>
             ))}
           </RevealGroup>
+        </div>
+
+        {/*
+          The named schemes.
+
+          The four principles above explain HOW funding works; this is the
+          shortlist a student actually scans. Both belong in the section — the
+          principles without the list are abstract, the list without them
+          invites the assumption that applying is the whole job.
+        */}
+        <div className="mt-16 border-t border-line pt-12">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <h3 className="d-3 max-w-[20ch] text-fg-strong">
+              Schemes We Help Students Apply To
+            </h3>
+            <Action href="/contact#journey" variant="line">
+              Check your scholarship options
+            </Action>
+          </div>
+
+          <RevealGroup className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {scholarships.map((sch) => (
+              <RevealItem key={`${sch.country}-${sch.name}`}>
+                <ScholarshipCard scholarship={sch} />
+              </RevealItem>
+            ))}
+          </RevealGroup>
+
+          <Caveat>{scholarshipCaveat}</Caveat>
         </div>
       </Container>
     </Section>
