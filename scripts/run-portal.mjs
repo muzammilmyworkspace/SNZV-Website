@@ -1,8 +1,13 @@
 /**
  * Runs THIS codebase as the client portal only, on its own port.
  *
- *   npm run dev:portal      → http://localhost:3001  (hot reload, for review)
+ *   npm run dev:portal      → http://localhost:3001  (real sign-in)
  *   npm run start:portal    → http://localhost:3001  (production build)
+ *   npm run dev:demo        → http://localhost:3002  (role preview, no login)
+ *
+ * `dev:demo` additionally sets DEMO_MODE, which switches on /demo — the four
+ * role previews. It runs on its own port so the login-required portal and the
+ * no-login preview can be open side by side and compared.
  *
  * The public marketing site keeps running on 3000 from the same repository,
  * untouched. Two servers, one codebase — so the portal can be reviewed and
@@ -19,18 +24,26 @@
 import { spawn } from "node:child_process";
 
 const mode = process.argv[2] === "start" ? "start" : "dev";
-const passthrough = process.argv.slice(3);
+const demo = process.argv.includes("--demo");
+const passthrough = process.argv.slice(3).filter((a) => a !== "--demo");
 
 // An explicit --port wins; otherwise 3001, so it never collides with the
 // public site on 3000.
-const port = passthrough.includes("--port") ? [] : ["--port", "3001"];
+const port = passthrough.includes("--port")
+  ? []
+  : ["--port", demo ? "3002" : "3001"];
 
 const child = spawn(
   process.platform === "win32" ? "npx.cmd" : "npx",
   ["next", mode, ...port, ...passthrough],
   {
     stdio: "inherit",
-    env: { ...process.env, PORTAL_ONLY: "1" },
+    env: {
+      ...process.env,
+      PORTAL_ONLY: "1",
+      // Only ever set by an explicit --demo. Never inferred, never defaulted.
+      ...(demo ? { DEMO_MODE: "1" } : {}),
+    },
     shell: process.platform === "win32",
   }
 );

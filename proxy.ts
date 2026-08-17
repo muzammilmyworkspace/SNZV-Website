@@ -46,6 +46,9 @@ const PORTAL_PATHS = [
   // Terms and Privacy are linked from the sign-in footer. Serving a portal
   // whose own legal links 404 would be worse than serving one page too many.
   "/legal",
+  // The role preview. It gates itself on DEMO_MODE and 404s when that is off,
+  // so listing it here costs nothing on a deployment that is not running it.
+  "/demo",
 ];
 
 const AUTH_SCREENS = ["/login", "/register", "/forgot-password"];

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:portal": "node scripts/run-portal.mjs dev",
+    "dev:demo": "node scripts/run-portal.mjs dev --demo",
     "start:portal": "node scripts/run-portal.mjs start",
     "build": "next build",
     "start": "next start",
