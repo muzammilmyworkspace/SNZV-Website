@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, Fragment } from "react";
 import { motion, useScroll, useSpring, useTransform, useReducedMotion } from "motion/react";
 import { Shell, Chapter, MaskedLines, Reveal } from "@/components/ui/Editorial";
@@ -108,6 +109,30 @@ export function Method() {
             ))}
           </ol>
         </div>
+
+        {/*
+          CTA form #2 — the closing rule.
+          The section is a route drawn through six waypoints, so its call to
+          action is the last stretch of that line rather than a button parked
+          under it: a full-width band, question on the left, the step you take
+          next on the right.
+        */}
+        <Reveal delay={0.15}>
+          <div className="mt-14 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[0.95rem] text-muted">
+              Six steps, one coordinator. Step one is a conversation.
+            </p>
+            <Link
+              href="/contact#journey"
+              className="group inline-flex min-h-11 shrink-0 items-center gap-2 text-[0.95rem] font-medium text-accent"
+            >
+              <span className="link-draw">Start at step one</span>
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
+          </div>
+        </Reveal>
       </Shell>
     </section>
   );

@@ -60,6 +60,21 @@ export function Dream() {
               question underneath is the same one: is the life you want
               available where you are?
             </p>
+            {/*
+              CTA form #1 — a drawn underline, not a button.
+              This section asks an emotional question. A filled button here
+              would answer it with a transaction, so the invitation is the
+              quietest one on the page: a sentence you can click.
+            */}
+            <Link
+              href="/contact#journey"
+              className="group mt-3 inline-flex min-h-11 items-center gap-2 text-[0.95rem] font-medium text-accent"
+            >
+              <span className="link-draw">Talk it through with someone</span>
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
           </Reveal>
         </div>
 

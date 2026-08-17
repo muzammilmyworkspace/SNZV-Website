@@ -75,7 +75,12 @@ export default function StudyAbroadPage() {
       <StudyHero />
       <StudyNav />
 
-      <StatsBand stats={studyStats} tone="paper" eyebrow="By the numbers" />
+      <StatsBand
+        stats={studyStats}
+        tone="paper"
+        eyebrow="By the numbers"
+        cta={{ href: "#destinations", label: "See the destinations" }}
+      />
       <StudyOverview />
       <StudyDestinations />
       <StudyUniversities />

@@ -44,7 +44,12 @@ export default function HomePage() {
       <Journeys />
       <Pain />
       <Method />
-      <StatsBand stats={homeStats} tone="soft" eyebrow="By the numbers" />
+      <StatsBand
+        stats={homeStats}
+        tone="soft"
+        eyebrow="By the numbers"
+        cta={{ href: "/about", label: "How we work" }}
+      />
       <Atlas />
       {/*
         Study destinations follow the atlas deliberately: the atlas answers

@@ -17,8 +17,28 @@
 import { chromium } from "playwright";
 
 const BASE = process.env.BASE ?? "http://localhost:3000";
-const ROUTES = ["/", "/about", "/study-abroad", "/global-careers", "/business-setup", "/destinations", "/contact"];
+const ROUTES = [
+  "/",
+  "/about",
+  "/study-abroad",
+  "/global-careers",
+  "/business-setup",
+  "/destinations",
+  "/insights",
+  "/services/company-formation",
+  "/contact",
+  "/login",
+  "/register",
+  "/legal/privacy-policy",
+];
 const VIEWPORTS = [
+  /**
+   * 320px is the narrowest viewport still in real use (iPhone SE 1st gen,
+   * small Androids, and any phone with display zoom turned up). If a layout
+   * survives 320 it survives everything above it, so it is the one width worth
+   * testing that most sites skip.
+   */
+  { name: "small-320", width: 320, height: 640 },
   { name: "iphone-se", width: 375, height: 667 },
   { name: "iphone-14", width: 390, height: 844 },
   { name: "pixel", width: 412, height: 915 },
@@ -153,6 +173,86 @@ for (const vp of VIEWPORTS) {
 
     if (issues.length) issues.forEach((i) => bad(`${route}: ${i}`));
     else ok(route);
+  }
+
+  /**
+   * The mobile menu, actually opened.
+   *
+   * Everything above measures the page at rest. But on a phone the drawer IS
+   * the navigation — if it opens off-screen, scrolls under the fold, or has
+   * links too small to hit, the site is unusable no matter how well the
+   * sections stack. Only the phone widths run this; the tablet shows the
+   * desktop nav.
+   */
+  if (vp.width < 700) {
+    await page.goto(BASE + "/", { waitUntil: "load", timeout: 60000 });
+    const toggle = page.locator('[aria-controls="mobile-nav"]');
+    const menuIssues = [];
+
+    const tb = await toggle.boundingBox();
+    if (!tb) menuIssues.push("menu button not visible");
+    else if (tb.height < 40 || tb.width < 40)
+      menuIssues.push(`menu button only ${Math.round(tb.width)}x${Math.round(tb.height)}`);
+
+    if (tb) {
+      await toggle.click();
+      await page.waitForTimeout(600);
+
+      if ((await toggle.getAttribute("aria-expanded")) !== "true")
+        menuIssues.push("aria-expanded did not flip to true");
+
+      const drawer = await page.evaluate((vw) => {
+        const el = document.getElementById("mobile-nav");
+        if (!el) return { missing: true };
+        const r = el.getBoundingClientRect();
+        const links = [...el.querySelectorAll("a[href], button")]
+          .map((a) => {
+            const b = a.getBoundingClientRect();
+            return { h: Math.round(b.height), w: Math.round(b.width), t: (a.textContent || "").trim().slice(0, 20) };
+          })
+          .filter((l) => l.h > 0 && l.w > 0);
+        return {
+          off: r.left < -2 || r.right > vw + 2,
+          hidden: getComputedStyle(el).display === "none",
+          /**
+           * Is real content stranded below the fold with no way to reach it?
+           *
+           * NOT `scrollHeight > clientHeight`. The drawer carries an
+           * atmospheric bloom pinned at `-bottom-40`, which is 160px taller
+           * than the panel by design and inflates scrollHeight on every
+           * viewport. Reading that as breakage reported an unreachable menu on
+           * a menu that scrolls perfectly. So this asks the question that
+           * actually matters — does anything a reader could *use* sit past the
+           * bottom edge — and decorative layers are excluded by the two marks
+           * they already carry.
+           */
+          cut: [...el.querySelectorAll("a[href], button, li, p")].some((n) => {
+            if (n.closest("[aria-hidden=true]")) return false;
+            if (getComputedStyle(n).pointerEvents === "none") return false;
+            const r = n.getBoundingClientRect();
+            return r.height > 0 && r.bottom > el.getBoundingClientRect().bottom + 2;
+          }),
+          count: links.length,
+          small: links.filter((l) => l.h < 40),
+        };
+      }, vp.width);
+
+      if (drawer.missing) menuIssues.push("#mobile-nav absent after opening");
+      else {
+        if (drawer.hidden) menuIssues.push("drawer still display:none after opening");
+        if (drawer.off) menuIssues.push("drawer extends outside the viewport");
+        if (drawer.cut) menuIssues.push("drawer content is taller than the drawer and cannot be scrolled");
+        if (!drawer.count) menuIssues.push("drawer contains no links");
+        if (drawer.small?.length)
+          menuIssues.push(
+            `${drawer.small.length} drawer link(s) under 40px tall: ` +
+              drawer.small.slice(0, 3).map((l) => `"${l.t}" ${l.h}px`).join("; ")
+          );
+      }
+    }
+
+    if (menuIssues.length) menuIssues.forEach((m) => bad(`mobile menu: ${m}`));
+    else ok("mobile menu opens, fits, and every link is tappable");
   }
 
   await ctx.close();

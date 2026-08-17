@@ -188,7 +188,13 @@ export function Atlas() {
 
               <Link
                 href="/destinations"
-                className="label mt-5 inline-flex min-h-8 items-center gap-2 text-accent transition-colors hover:text-accent"
+                /*
+                  CTA form #3 — the one that changes as you explore. It names
+                  whichever country is selected, so the invitation is always
+                  about the place the reader is currently looking at rather
+                  than a generic "learn more". min-h-11 keeps it thumb-sized.
+                */
+                className="label mt-5 inline-flex min-h-11 items-center gap-2 text-accent transition-colors hover:text-accent"
               >
                 <span className="draw">Explore {current.country}</span>
               </Link>

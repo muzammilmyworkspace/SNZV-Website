@@ -166,18 +166,25 @@ export function MobileNav({
             >
               Book a consultation
             </Action>
-            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+            {/*
+              Phone / email / WhatsApp are the drawer's fastest exits, and at
+              `.label` size they were 17px tall — under a fingertip on the one
+              layout that is only ever used by a finger. `min-h-11` lifts each
+              to the 44px touch minimum; the row's top margin drops to absorb
+              the height they gain, so the panel keeps its proportions.
+            */}
+            <div className="mt-2 flex flex-wrap items-center gap-x-6">
               <a
                 href={`tel:${company.contact.phoneHref}`}
                 onClick={() => analytics.phone("mobile_nav")}
-                className="label text-faint transition-colors hover:text-fg"
+                className="label inline-flex min-h-11 items-center text-faint transition-colors hover:text-fg"
               >
                 {company.contact.phone}
               </a>
               <a
                 href={`mailto:${company.contact.email}`}
                 onClick={() => analytics.email("mobile_nav")}
-                className="label text-faint transition-colors hover:text-fg"
+                className="label inline-flex min-h-11 items-center text-faint transition-colors hover:text-fg"
               >
                 Email
               </a>
@@ -186,7 +193,7 @@ export function MobileNav({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => analytics.whatsapp("mobile_nav")}
-                className="label text-faint transition-colors hover:text-fg"
+                className="label inline-flex min-h-11 items-center text-faint transition-colors hover:text-fg"
               >
                 WhatsApp
               </a>

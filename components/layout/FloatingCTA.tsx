@@ -118,20 +118,20 @@ export function FloatingCTA() {
                   analytics.ctaClick("Start Your Journey", "floating_desktop");
                   setOpen(true);
                 }}
-                className="group relative flex items-center gap-3 overflow-hidden border border-moss-400/40 bg-surface/90 py-4 pl-6 pr-5 backdrop-blur-xl transition-all duration-500 ease-[var(--ease-out-expo)] hover:border-moss-400 hover:bg-surface"
+                className="grad-brand group relative flex items-center gap-3 overflow-hidden rounded-full py-4 pl-6 pr-5 text-void shadow-[0_16px_44px_-12px_rgba(61,113,201,0.6),0_16px_44px_-12px_rgba(114,196,60,0.6)] transition-all duration-400 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:shadow-[0_22px_58px_-10px_rgba(61,113,201,0.78),0_22px_58px_-10px_rgba(114,196,60,0.78)] motion-reduce:transform-none motion-reduce:transition-none"
               >
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-moss-400/20 to-transparent transition-transform duration-[1100ms] ease-[var(--ease-out-expo)] group-hover:translate-x-full"
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[1100ms] ease-[var(--ease-out-expo)] group-hover:translate-x-full"
                 />
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="breathe absolute inline-flex h-full w-full rounded-full bg-moss-400" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-moss-400" />
+                  <span className="breathe absolute inline-flex h-full w-full rounded-full bg-void/60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-void" />
                 </span>
-                <span className="label relative text-fg">
+                <span className="label relative text-void">
                   Start your journey
                 </span>
-                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="relative h-3 w-3 text-accent transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="relative h-3 w-3 text-void transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
                   <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>

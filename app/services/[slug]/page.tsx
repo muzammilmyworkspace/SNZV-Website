@@ -169,7 +169,13 @@ export default async function ServicePage({
             <Reveal className="mt-7">
               <Link
                 href="/business-setup"
-                className="group inline-flex items-center gap-1.5 text-[0.88rem] font-medium text-accent"
+                /*
+                  `py-3 -my-3` grows the touch box to ~45px without moving the
+                  link: the padding is added and the same amount taken back off
+                  the margin, so the text sits exactly where it did while the
+                  tappable area meets the touch minimum on a phone.
+                */
+                className="group inline-flex items-center gap-1.5 py-3 -my-3 text-[0.88rem] font-medium text-accent"
               >
                 <span className="link-draw">See all business services</span>
                 <Arrow />

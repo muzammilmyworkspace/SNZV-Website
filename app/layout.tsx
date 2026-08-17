@@ -53,10 +53,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A1730",
+  // Matches the light theme's page ground, since that is now the default.
+  themeColor: "#FAFBFD",
   width: "device-width",
   initialScale: 1,
-  colorScheme: "dark",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({
@@ -69,18 +70,21 @@ export default function RootLayout({
           Theme, applied BEFORE first paint.
 
           This has to be a blocking inline script in <head>. Setting the theme
-          from a React effect would paint the dark default first and repaint to
-          light on hydration — the flash-of-wrong-theme, which is far uglier on
-          a site this dark than a moment of unstyled text.
+          from a React effect would paint the server's markup first and repaint
+          on hydration — the flash-of-wrong-theme. With two palettes this far
+          apart, that flash is a full inversion of the page, which is far worse
+          than a moment of unstyled text.
 
-          Dark stays the default: it is the designed art direction, so an
-          unknown visitor gets it and only a stored choice moves them off it.
+          LIGHT is the default. The dark art direction still exists in full
+          and is one click away, but an unknown visitor now lands on the light
+          theme — which is the brand's own student-site palette and the safer
+          first impression for a consultancy.
           `suppressHydrationWarning` on <html> is required because this mutates
           the element before React sees it.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`,
           }}
         />
         {/*

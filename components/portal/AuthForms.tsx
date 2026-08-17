@@ -144,7 +144,9 @@ export function LoginForm() {
       <div className="flex items-center justify-between gap-4 pt-1">
         <Link
           href="/forgot-password"
-          className="text-[0.83rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
+          // Padding-in / margin-out, so the recovery link is a real touch
+          // target on a phone without shifting where it sits in the form.
+          className="inline-flex items-center py-3 -my-3 text-[0.83rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
         >
           Forgot your password?
         </Link>

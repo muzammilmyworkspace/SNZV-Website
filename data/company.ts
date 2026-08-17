@@ -27,6 +27,17 @@ export const company = {
     phone: "+370 603 05146",
     phoneHref: "+37060305146",
     email: "info@snzventures.com",
+    /**
+     * Where consultation enquiries are delivered.
+     *
+     * ⚠ DIFFERENT DOMAIN, ON PURPOSE — client-specified. General contact
+     * remains info@snzventures.com (above); the consultation form goes here.
+     * `MAIL_TO` overrides this at runtime without a code change, so if this
+     * address is ever wrong it can be corrected from the environment.
+     *
+     * See CONTENT-HANDOFF § 2 — this one needs confirming before launch.
+     */
+    consultationEmail: "info@maincharacter.nl",
     /** Live site links a WhatsApp channel on the same published number. */
     whatsapp: "37060305146",
     city: "Vilnius",

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendMail, mailConfigured, DEFAULT_TO } from "@/lib/mail";
+import { company } from "@/data/company";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 
 /**
@@ -110,7 +111,7 @@ export async function POST(request: Request) {
         // Name the address. "Email us directly" without it makes the visitor
         // go hunting at exactly the moment they were ready to convert.
         message: `Our enquiry system isn't accepting messages right now. Please email ${
-          process.env.MAIL_TO ?? DEFAULT_TO
+          process.env.MAIL_TO ?? company.contact.consultationEmail ?? DEFAULT_TO
         } and we'll pick it up.`,
       },
       { status: 503 }
@@ -119,7 +120,9 @@ export async function POST(request: Request) {
 
   try {
     await sendMail({
-      to: process.env.MAIL_TO ?? DEFAULT_TO,
+      // Consultation enquiries go to the client-specified consultation
+      // address; MAIL_TO still overrides it from the environment.
+      to: process.env.MAIL_TO ?? company.contact.consultationEmail ?? DEFAULT_TO,
       subject: `SnZ enquiry — ${LABELS[payload.pathway] ?? payload.pathway} — ${payload.answers.name}`,
       text: format(payload),
       replyTo: payload.answers.email,

@@ -317,16 +317,21 @@ export function Action({
      * green light source.
      */
     solid:
-      "grad-brand bg-moss-400 text-void shadow-[0_10px_34px_-14px_rgba(61,113,201,0.55),0_10px_34px_-14px_rgba(114,196,60,0.55)] hover:shadow-[0_14px_40px_-12px_rgba(61,113,201,0.7),0_14px_40px_-12px_rgba(114,196,60,0.7)]",
-    line: "border border-line text-fg hover:border-moss-400/70 hover:text-accent backdrop-blur-[2px]",
-    ghost: "border border-ink/15 text-ink hover:border-moss-600/60 hover:text-accent",
+      "grad-brand bg-moss-400 text-void shadow-[0_10px_34px_-14px_rgba(61,113,201,0.55),0_10px_34px_-14px_rgba(114,196,60,0.55)] hover:-translate-y-0.5 hover:shadow-[0_18px_46px_-12px_rgba(61,113,201,0.75),0_18px_46px_-12px_rgba(114,196,60,0.75)]",
+    /**
+     * Outline variants lift and pick up a tinted ground on hover, not just a
+     * border colour. A border-only change is easy to miss on a busy plate; the
+     * lift is what reads as "this is a control" at a glance.
+     */
+    line: "border border-line text-fg backdrop-blur-[2px] hover:-translate-y-0.5 hover:border-moss-400/70 hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-accent",
+    ghost: "border border-line text-fg hover:-translate-y-0.5 hover:border-moss-400/70 hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-accent",
     quiet: "text-muted hover:text-fg",
   }[variant];
 
   const inner = (
     <span
       className={cn(
-        "group/act relative inline-flex items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-[var(--radius-sm)] font-semibold uppercase tracking-[0.12em] transition-all duration-500 ease-[var(--ease-out-expo)]",
+        "group/act relative inline-flex items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-[var(--radius-sm)] font-semibold uppercase tracking-[0.12em] transition-all duration-400 ease-[var(--ease-out-expo)] active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none",
         sizes,
         variants,
         className

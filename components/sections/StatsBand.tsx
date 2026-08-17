@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 import type { Stat } from "@/data/stats";
@@ -89,11 +90,14 @@ export function StatsBand({
   stats,
   tone = "soft",
   eyebrow,
+  cta,
   className,
 }: {
   stats: Stat[];
   tone?: "deep" | "soft" | "paper" | "white";
   eyebrow?: string;
+  /** Optional chip beside the eyebrow. Each page points it somewhere useful. */
+  cta?: { href: string; label: string };
   className?: string;
 }) {
   const ref = useRef<HTMLDListElement>(null);
@@ -104,11 +108,33 @@ export function StatsBand({
   return (
     <Section tone={tone} size="tight" className={cn("overflow-hidden", className)}>
       <Container>
-        {eyebrow && (
-          <p className="label mb-8 flex items-center gap-3 text-accent">
-            <span aria-hidden className="inline-block h-px w-8 bg-current opacity-50" />
-            {eyebrow}
-          </p>
+        {(eyebrow || cta) && (
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+            {eyebrow && (
+              <p className="label flex items-center gap-3 text-accent">
+                <span aria-hidden className="inline-block h-px w-8 bg-current opacity-50" />
+                {eyebrow}
+              </p>
+            )}
+            {/*
+              CTA form #4 — a bordered chip on the eyebrow line.
+              Numbers invite a "compared to what?", so this sits beside the
+              band's own label rather than below the figures, where it would
+              read as a conclusion drawn from them. Deliberately not a filled
+              button: nothing here should look like the section is selling.
+            */}
+            {cta && (
+              <Link
+                href={cta.href}
+                className="group inline-flex min-h-11 items-center gap-2 border border-line px-4 text-[0.85rem] font-medium text-fg transition-colors hover:border-moss-400/70 hover:text-accent"
+              >
+                {cta.label}
+                <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            )}
+          </div>
         )}
         <dl
           ref={ref}

@@ -17,6 +17,7 @@ plausible-sounding text. This document is the list of gaps.
 | 3 | **Registered legal entity details unknown** | Footer, legal pages, schema | Office address is now supplied and live. Still missing: registered legal name, company code and VAT number — required for GDPR and Lithuanian business disclosure. |
 | 4 | **Cookie consent not implemented** | `components/layout/AnalyticsScripts.tsx` | No analytics tag loads today, so the site is currently compliant. **The moment a GA4/Clarity/Meta ID is set, a consent solution is legally required for EU visitors.** |
 | 5 | **Four headline statistics unverified** | `data/company.ts` → `stats` | See section 3. |
+| 6 | **Consultation address is on a different domain** | `data/company.ts` → `contact.consultationEmail` | Consultation enquiries are delivered to **info@maincharacter.nl**, as specified. That is *not* an snzventures.com address, so it cannot be verified from anything the client has published — confirm it is intended and that the mailbox is monitored. General contact stays `info@snzventures.com`. Setting `MAIL_TO` overrides the destination without a code change. |
 
 ---
 
@@ -31,7 +32,14 @@ and password resets. Choose a transport in `.env.local`:
 | `MAIL_WEBHOOK_URL` | Any endpoint — Zapier, Make, n8n, a CRM intake, an SMTP relay |
 
 Also set `MAIL_FROM` (a domain you control and have verified with the provider)
-and optionally `MAIL_TO` (defaults to `info@snzventures.com`).
+and optionally `MAIL_TO`.
+
+**Where enquiries land.** With no `MAIL_TO`, the enquiry route sends to
+`company.contact.consultationEmail` — currently **info@maincharacter.nl**,
+the address the client specified for consultations. It is a different domain
+from the rest of the site, so it is listed as blocker 6 above. `MAIL_TO`
+takes precedence over it, so the destination can be corrected from the
+environment without touching code.
 
 **Until one is set**, `POST /api/enquiry` returns 503 and the form shows the
 direct email and WhatsApp details. It never shows a success screen for a

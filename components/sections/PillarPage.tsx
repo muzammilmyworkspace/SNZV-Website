@@ -73,6 +73,11 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         stats={pillar.key === "careers" ? careerStats : businessStats}
         tone="soft"
         eyebrow="By the numbers"
+        cta={
+          pillar.key === "careers"
+            ? { href: "/destinations", label: "Where the roles are" }
+            : { href: "/services/company-formation", label: "See how formation works" }
+        }
       />
 
       <ChallengeGrid

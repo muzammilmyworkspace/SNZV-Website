@@ -70,6 +70,22 @@ export function Why() {
           ))}
         </RevealGroup>
 
+        {/*
+          CTA form #5 — inside the prose, not beside it.
+          The last principle above is "we tell you when the answer is no". The
+          only honest way to act on that claim is to invite the question that
+          might get a no, so the invitation is written as a sentence and the
+          link is a clause within it rather than a button underneath.
+        */}
+        <Reveal className="mt-10">
+          <p className="max-w-xl text-[1.05rem] leading-relaxed text-fg">
+            If you want to test that — bring the case you think we&rsquo;ll turn
+            down, and{" "}
+            <TextLink href="/contact#journey">ask us the hard question</TextLink>
+            .
+          </p>
+        </Reveal>
+
         {/* Only figures the client can substantiate ever render */}
         {shown.length > 0 && (
           <Reveal className="mt-14">
