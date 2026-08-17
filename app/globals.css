@@ -874,8 +874,14 @@ p { text-wrap: pretty; }
   background: color-mix(in srgb, var(--fg) 4%, transparent);
   color: var(--fg);
   border-radius: var(--radius-sm);
-  padding: 0.7rem 0.9rem;
-  font-size: 0.93rem;
+  /*
+    0.85rem vertical keeps the control at ~48px tall. Below that it is under
+    the touch minimum on a phone, and these forms are filled in on phones.
+    16px type is deliberate too: iOS Safari zooms the whole page in on focus
+    for anything smaller, which throws the layout sideways mid-form.
+  */
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
   outline: none;
   transition: border-color 0.25s, background-color 0.25s;
 }
@@ -888,8 +894,10 @@ p { text-wrap: pretty; }
 
 .field-label {
   display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.72rem;
+  margin-bottom: 0.5rem;
+  /* 0.72rem is 11.5px — small-caps with heavy tracking at that size is hard
+     to read as a form label, which is the one thing that must be scannable. */
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;

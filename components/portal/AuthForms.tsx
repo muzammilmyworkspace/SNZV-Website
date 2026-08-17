@@ -10,11 +10,18 @@ import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------- shared bits */
 
+/**
+ * `text-red-200` was chosen when the site was dark by default. Light is now the
+ * default, and pale red on a pink tint measured barely above the background —
+ * the one message a visitor most needs to read was the least legible thing on
+ * the page. The colour is now picked per theme, dark enough on light grounds
+ * and light enough on dark ones.
+ */
 function ErrorNote({ children }: { children: React.ReactNode }) {
   return (
     <p
       role="alert"
-      className="mt-4 rounded-[var(--radius-sm)] border border-red-400/40 bg-red-500/10 px-4 py-3 text-[0.85rem] leading-relaxed text-red-200"
+      className="mt-4 rounded-[var(--radius-sm)] border border-red-500/45 bg-red-500/10 px-4 py-3 text-[0.9rem] font-medium leading-relaxed text-[#B42318] dark:text-red-200 [html[data-theme=dark]_&]:text-red-200"
     >
       {children}
     </p>

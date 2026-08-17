@@ -9,7 +9,19 @@
  *   • the password is generated here and printed ONCE, never stored in plain
  *
  * If the account already exists it is promoted rather than duplicated, so this
- * is safe to re-run.
+ * is safe to re-run. Promotion alone does NOT touch the password.
+ *
+ *   npm run db:bootstrap -- --email you@example.com --reset-password
+ *
+ * `--reset-password` exists because there was otherwise no way back in. Reset
+ * by email needs a mail transport, and on a deployment where that is not yet
+ * configured a locked-out administrator had no recovery path at all — which,
+ * with no public route to a staff role, means the whole admin side is lost.
+ *
+ * Deliberately CLI-only: it requires direct database credentials, so anyone
+ * able to run it already holds more access than the account being reset.
+ * Add `--password "..."` to choose the value yourself rather than have one
+ * generated and printed.
  */
 // Loads .env.local so `npm run db:*` works as the error messages promise.
 import "./lib/env.mjs";
@@ -70,18 +82,54 @@ try {
   `;
 
   if (existing[0]) {
-    await sql`
-      UPDATE users SET role = 'super_admin', status = 'active',
-                       email_verified = TRUE, updated_at = now()
-      WHERE id = ${existing[0].id}
-    `;
+    const wantsReset = process.argv.includes("--reset-password") || Boolean(providedPassword);
+    const newPassword = wantsReset ? (providedPassword ?? generatePassword()) : null;
+
+    if (newPassword) {
+      const newHash = await hashPassword(newPassword);
+      await sql`
+        UPDATE users SET role = 'super_admin', status = 'active',
+                         email_verified = TRUE, password_hash = ${newHash},
+                         updated_at = now()
+        WHERE id = ${existing[0].id}
+      `;
+      // Recorded as an EVENT, never with the value. An audit log holding
+      // credentials is simply a second place they can leak from.
+      await sql`
+        INSERT INTO audit_logs (actor_email, action, entity, entity_id, meta)
+        VALUES (${email}, 'auth.password_reset', 'user', ${existing[0].id},
+                ${sql.json({ via: "bootstrap-cli" })})
+      `;
+    } else {
+      await sql`
+        UPDATE users SET role = 'super_admin', status = 'active',
+                         email_verified = TRUE, updated_at = now()
+        WHERE id = ${existing[0].id}
+      `;
+    }
     await sql`
       INSERT INTO audit_logs (actor_email, action, entity, entity_id, meta)
       VALUES (${email}, 'user.role_changed', 'user', ${existing[0].id},
               ${sql.json({ from: existing[0].role, to: "super_admin", via: "bootstrap" })})
     `;
-    console.log(`\n  Promoted existing account to super_admin: ${email}`);
-    console.log("  Their existing password is unchanged.\n");
+    if (newPassword) {
+      console.log("\n  ┌──────────────────────────────────────────────────────────");
+      console.log("  │  PASSWORD RESET");
+      console.log("  ├──────────────────────────────────────────────────────────");
+      console.log(`  │  Email:    ${email}`);
+      if (providedPassword) {
+        console.log("  │  Password: (the one you supplied)");
+      } else {
+        console.log(`  │  Password: ${newPassword}`);
+        console.log("  │");
+        console.log("  │  Shown ONCE. Not stored in plain text anywhere.");
+      }
+      console.log("  └──────────────────────────────────────────────────────────\n");
+    } else {
+      console.log(`\n  Promoted existing account to super_admin: ${email}`);
+      console.log("  Their existing password is unchanged.");
+      console.log("  Add --reset-password to set a new one.\n");
+    }
   } else {
     const password = providedPassword ?? generatePassword();
     const hash = await hashPassword(password);
