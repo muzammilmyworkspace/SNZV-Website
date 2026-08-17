@@ -66,7 +66,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
         },
         {
           src: "/images/study-graduation.webp",
-          alt: "Graduation caps held up at a degree ceremony",
+          alt: "Graduates holding their diplomas and caps after a degree ceremony",
         },
       ],
       imageAlt: "Rows of books lining library shelves",
@@ -180,8 +180,8 @@ export const pillars: Record<PathwayKey, Pillar> = {
       image: "/images/path-careers.webp",
       images: [
         {
-          src: "/images/path-careers.webp",
-          alt: "Professionals at work in a European office",
+          src: "/images/careers-office.webp",
+          alt: "A bright open-plan office with desks and workstations ready for the day",
         },
         {
           src: "/images/dest-berlin.webp",
@@ -319,12 +319,12 @@ export const pillars: Record<PathwayKey, Pillar> = {
           alt: "Winter sunrise over Vilnius, Lithuania",
         },
         {
-          src: "/images/atmos-fintech.webp",
-          alt: "Financial data displayed across trading screens",
+          src: "/images/eu-parliament.webp",
+          alt: "The European Parliament building in Strasbourg, France, under a clear sky",
         },
         {
           src: "/images/business-boardroom.webp",
-          alt: "Conference room at Finlandia Hall, Helsinki",
+          alt: "An empty corporate conference room set up for a meeting",
         },
       ],
       imageAlt: "Glass office towers viewed from street level",

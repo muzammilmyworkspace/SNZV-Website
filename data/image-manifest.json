@@ -47,11 +47,11 @@
   {
     "key": "dest-madrid",
     "file": "/images/dest-madrid.webp",
-    "source": "Wikimedia Commons",
-    "licence": "CC0",
-    "artist": "Zarateman",
-    "page": "https://commons.wikimedia.org/wiki/File:Madrid_-_Sky_Bar_360%C2%BA_(Hotel_Riu_Plaza_Espa%C3%B1a),_vistas_19.jpg",
-    "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQBACdASoUAAsAPzmGuVOvKSWisAgB4CcJQBOmUABp7hUcwu5JvZawIAD3Z6TMDubuA1RlMCRXOmELIlmo0gb1KlULck4ScgrYnV5ZR7CXkEmg+NeiscOruiHVwfAA"
+    "source": "Client-supplied",
+    "licence": "Licence to confirm — see CONTENT-HANDOFF §9",
+    "artist": null,
+    "page": null,
+    "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAAAwBACdASoUAA0APzmGuVOvKSWisAgB4CcJbACdL11s/wIDWUQOYS9vuKAA8nIarx9/JIkhxB1iiifiz3Y9ONhuB3SmQ4vWqy7Ja3emmNcIH6ulV/JZd+nm/H/w+Bkg7Ic5V+pCV5/muVHfZMWWfH5HVpN3XagAAAA="
   },
   {
     "key": "dest-rome",
@@ -214,11 +214,11 @@
   {
     "key": "study-graduation",
     "file": "/images/study-graduation.webp",
-    "source": "Wikimedia Commons",
-    "licence": "CC BY-SA 4.0",
-    "artist": "AKS.9955",
-    "page": "https://commons.wikimedia.org/wiki/File:Square_academic_cap_(graduation_hats).JPG",
-    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACwAwCdASoUAAoAPzmGuVOvKSWisAgB4CcJaQAAJ2AE4jmXYIjhgADwWonvG93KFXZSYCo2ioC2ReH5i4y60yUs0EiF2PHAAAA="
+    "source": "Client-supplied",
+    "licence": "Licence to confirm — see CONTENT-HANDOFF §9",
+    "artist": null,
+    "page": null,
+    "blur": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAACwBACdASoUAB4APzmQvFgvKaWjqAqp4CcJZQDJTDAq1asv1/mztbFbPwaaacoAAP7x4KHYOdlYQD9/DIXy9Om0ZXSJWEhzkGB9AEGoY/fqL9pRtY7TX3fSuOzj9NKeBFig9sLDbFKB6tZ5Mqr0ohYcVIihWb9XG30Lf9IZiBH8MJ+C/ciBCvMsDcCZL8CkE2n8Klc9p6+JugDA9Tl3RPMWCmnknPf+ghatztoDqAAAAA=="
   },
   {
     "key": "careers-airport",
@@ -241,10 +241,28 @@
   {
     "key": "business-boardroom",
     "file": "/images/business-boardroom.webp",
-    "source": "Wikimedia Commons",
-    "licence": "CC BY-SA 4.0",
-    "artist": "WanderingTrad",
-    "page": "https://commons.wikimedia.org/wiki/File:Finlandia_Hall_conference_room.jpg",
-    "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJZwAAJp76FJ6nAAD7ye+bEzLXP7keG/qAdPShxeGm6fKBvA4nN7lmtbnx6RZ3lQ3i7crQAAA="
+    "source": "Client-supplied",
+    "licence": "Licence to confirm — see CONTENT-HANDOFF §9",
+    "artist": null,
+    "page": null,
+    "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwBACdASoUAAsAPzmGuVOvKSWisAgB4CcJZQC/OB9wcZAq5c/Lc+/PlOAA4U6pAMz96Gs3pxyGlJIZLT1a3bsCIZWN6NO4Av2dwB1EqbH0yWaNvugES6PQi1oF/PSwjRdgAAAA"
+  },
+  {
+    "key": "careers-office",
+    "file": "/images/careers-office.webp",
+    "source": "Client-supplied",
+    "licence": "Licence to confirm — see CONTENT-HANDOFF §9",
+    "artist": null,
+    "page": null,
+    "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASoUAA0APzmGulOvKKWisAgB4CcJQBjehHpuAMye+gYb/mSxAAD33KbxFjevF3PXlMvw9/A8klluYGQhT71GVwtHQVSFqSncLYo7j9m65oidrQaLysHz5+gSAASAE+Pi+IcIozA4ROSy0W2AGGAAAA=="
+  },
+  {
+    "key": "eu-parliament",
+    "file": "/images/eu-parliament.webp",
+    "source": "Client-supplied",
+    "licence": "Licence to confirm — see CONTENT-HANDOFF §9",
+    "artist": null,
+    "page": null,
+    "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoUAA0APzmGuVOvKSWisAgB4CcJYgCdMoADCjPicUBwm0BgAO/999VBiMC1pg43XEoVIFGzKVQRCUyLTg1XwgvKWpBrecKW+zHIodTBAFDX9jXAAAA="
   }
 ]

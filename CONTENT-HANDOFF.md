@@ -325,12 +325,52 @@ Still to do: **Google Search Console** and **Bing Webmaster Tools** verification
 
 ## 9. Imagery
 
-All 18 photographs are stored locally as WebP in `public/images/` — nothing
+All photographs are stored locally as WebP in `public/images/` — nothing
 depends on a remote host at runtime.
 
-- **9 city photographs** — Wikimedia Commons (CC BY-SA 3.0/4.0, CC BY 2.0/2.5/3.0, CC0)
-- **9 atmosphere / cinematic plates** — Unsplash Licence
-- **Corridor map** — derived from a public-domain equirectangular world map
+- **City photographs** — Wikimedia Commons (CC BY-SA 3.0/4.0, CC BY 2.0/2.5/3.0, CC0)
+- **Atmosphere / cinematic plates** — Unsplash Licence
+- **Corridor map + world mask** — derived from a public-domain equirectangular world map
+- **5 client-supplied photographs** — ⚠ **licence unconfirmed, see below**
+
+### ⚠ Client-supplied images — licence needed
+
+Five photographs from `./Images` are now live:
+
+| Key | Used for |
+|-----|----------|
+| `dest-madrid` | Spain destination card (Cibeles Palace) |
+| `study-graduation` | Study Abroad hero (diplomas and caps) |
+| `careers-office` | Global Careers hero (open-plan office) |
+| `business-boardroom` | Business Setup hero (conference room) |
+| `eu-parliament` | Business Setup hero (European Parliament, Strasbourg) |
+
+They arrived without provenance and the filenames read like stock-library
+slugs. **Confirm the licence for each** — if they came from a stock library,
+confirm the licence covers commercial web use and whether attribution is
+required. They are listed on `/legal/image-credits` as "Licence to confirm"
+rather than being given a licence they may not have.
+
+Import them with `node scripts/import-client-images.mjs`.
+
+### Images deliberately NOT used
+
+Five of the ten files in `./Images` are not on the site, for editorial
+reasons rather than technical ones:
+
+| File | Why not |
+|------|---------|
+| `architecture-independence-palace-ho-chi-minh-city` | Vietnam — not an EU destination, not a source market |
+| `modern-tokyo-street-background` | Japan — same |
+| `old-buildings-waitan-shanghai` | Shanghai — same |
+| `day-city-view` | Also Shanghai — same |
+| `aerial-view-…-chernivtsi-national-university…` | A real university, but in Ukraine — neither an EU member nor one of the ten study destinations |
+
+The whole proposition here is the EU single market. A recognisable non-European
+city standing in for "Europe" is exactly the detail a prospective student
+notices, so these were left out rather than placed loosely. They remain in
+`./Images` if you want them used somewhere they are accurate — an office or
+interior shot from any of them could work in a non-geographic context.
 
 Photography is rendered through a duotone treatment (`.plate`), graded into
 the brand's navy range rather than shown raw. Hero-scale plates use

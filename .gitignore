@@ -55,3 +55,7 @@ next-env.d.ts
 
 # theme comparison screenshots
 /theme-shots
+
+# Client-supplied source photographs — large originals, imported via
+# scripts/import-client-images.mjs into public/images as optimised WebP.
+/Images

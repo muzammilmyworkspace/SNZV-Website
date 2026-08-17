@@ -109,7 +109,7 @@ export const studyDestinations: StudyDestination[] = [
     country: "Spain",
     city: "Madrid",
     image: "/images/dest-madrid.webp",
-    imageAlt: "Rooftop view across central Madrid, Spain",
+    imageAlt: "Cibeles Palace on Plaza de Cibeles, Madrid, Spain",
     tuitionFrom: "From €2,500 / year",
     blurb:
       "Historic universities and a service economy that keeps drawing international graduates.",
