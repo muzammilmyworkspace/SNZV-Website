@@ -122,6 +122,33 @@ the claims a regulator or competitor would challenge.
 
 ---
 
+## 3b. The counters on Home / Study / Careers / Business
+
+`data/stats.ts` drives the animated counter row on all four pages. **Every
+figure there is derived from this site's own content, or is an objective fact
+about the EU.** None is a performance claim:
+
+| Counter | Where it comes from |
+|---------|---------------------|
+| 27 EU member states | Objective fact about the European Union |
+| 10 study destinations | `studyDestinations.length` |
+| 8 source markets | `corridors.length` |
+| 8 European markets | `destinations.length` |
+| 12 funding schemes | `scholarships.length` |
+| 7 programme families | `studyFields.length` |
+| 4 core services | `services.length` |
+| 1 advisor / 1 point of contact | A service commitment, stated as such |
+
+A visitor can verify each of these by scrolling the page. That is deliberate.
+
+**The obvious counters — "5,000+ students placed", "98% visa success rate",
+"300+ partner universities" — are still NOT rendered.** They live in
+`data/company.ts → stats` and `data/study.ts → studyClaims`, both flagged
+`verified: false`. Confirm them and they can replace or join these; until
+then, counting real inventory is the version a sceptical reader can check.
+
+---
+
 ## 4. Ecosystem institutions — handle with care
 
 `data/company.ts` → `ecosystem` lists Bank of Lithuania, Invest Lithuania,

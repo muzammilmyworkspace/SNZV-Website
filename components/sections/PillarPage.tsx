@@ -18,6 +18,9 @@ import { articles } from "@/data/insights";
 import { videoFeatures } from "@/data/media";
 import { VideoFeature } from "./VideoFeature";
 import { Reviews } from "./Reviews";
+import { StatsBand } from "./StatsBand";
+import { PortalPreview } from "./PortalPreview";
+import { careerStats, businessStats } from "@/data/stats";
 import type { Pillar } from "@/data/pillars";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 
@@ -66,6 +69,12 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         secondaryCta={{ label: pillar.hero.secondaryCta, href: "/insights" }}
       />
 
+      <StatsBand
+        stats={pillar.key === "careers" ? careerStats : businessStats}
+        tone="soft"
+        eyebrow="By the numbers"
+      />
+
       <ChallengeGrid
         title={pillar.challenge.title}
         lead={pillar.challenge.lead}
@@ -110,6 +119,11 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
           </Container>
         </Section>
       )}
+
+      <PortalPreview
+        audience={pillar.key === "careers" ? "career" : "business"}
+        tone="paper"
+      />
 
       <Reviews />
 

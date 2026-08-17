@@ -36,7 +36,7 @@ export function Why() {
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
 
       <Shell className="relative">
-        <Chapter index="07" label="Why SnZ" className="mb-10" />
+        <Chapter index="08" label="Why SnZ" className="mb-10" />
 
         <MaskedLines
           as="h2"
@@ -128,7 +128,7 @@ export function Insights() {
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
 
       <Shell className="relative">
-        <Chapter index="09" label="Insights" className="mb-10" />
+        <Chapter index="10" label="Insights" className="mb-10" />
 
         <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <MaskedLines
@@ -255,7 +255,7 @@ export function Final() {
 
       <Shell className="relative">
         <div className="max-w-4xl">
-          <Chapter index="10" label="Your move" className="mb-10" />
+          <Chapter index="11" label="Your move" className="mb-10" />
 
           <MaskedLines
             as="h2"
