@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:portal": "node scripts/run-portal.mjs dev",
+    "start:portal": "node scripts/run-portal.mjs start",
     "build": "next build",
     "start": "next start",
     "audit": "node scripts/audit.mjs",
