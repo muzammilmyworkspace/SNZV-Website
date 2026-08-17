@@ -16,10 +16,10 @@ import {
   EmptyState,
   ProgressRing,
   JourneyTrack,
-  SummaryStat,
+  StatCard,
+  NextAction,
   DataRow,
   StatusPill,
-  BackendRequired,
 } from "@/components/portal/Pieces";
 
 const GREETING: Record<string, { eyebrow: string; lead: string }> = {
@@ -99,49 +99,37 @@ export default async function PortalDashboard() {
         title={`Welcome back, ${firstName}.`}
         lead={greeting.lead}
         meta={
-          <div className="flex flex-wrap gap-x-10 gap-y-5">
-            <SummaryStat
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <StatCard
               label={role === "business" ? "Open requests" : "Applications"}
               value={cases.length}
+              href="/portal/cases"
             />
-            <SummaryStat label="Documents" value={documents.length} hint={`${required.length} typically needed`} />
-            <SummaryStat label="Open tasks" value={tasks.filter((t) => t.status !== "done").length} />
-            <SummaryStat label="Appointments" value={appointments.length} />
+            <StatCard
+              label="Documents"
+              value={documents.length}
+              hint={`${required.length} typically needed`}
+              href="/portal/documents"
+            />
+            <StatCard
+              label="Open tasks"
+              value={tasks.filter((t) => t.status !== "done").length}
+              href="/portal/tasks"
+              urgent={tasks.some((t) => t.status !== "done")}
+            />
+            <StatCard label="Appointments" value={appointments.length} href="/portal/appointments" />
           </div>
         }
       />
 
       {/* Next step + completion */}
       <div className="grid items-start gap-5 lg:grid-cols-[1.55fr_1fr]">
-        <Panel accent padded={false} className="overflow-hidden">
-          <div className="relative p-6 sm:p-7">
-            <span
-              aria-hidden
-              className="bloom-moss pointer-events-none absolute -right-20 -top-20 h-60 w-60 opacity-40"
-            />
-            <div className="relative">
-              <p className="label flex items-center gap-3 text-accent">
-                <span aria-hidden className="inline-block h-px w-5 bg-current opacity-60" />
-                Your next step
-              </p>
-              <h2 className="mt-4 text-[1.4rem] font-bold leading-tight tracking-[-0.025em] text-fg-strong sm:text-[1.7rem]">
-                {nextStep.title}
-              </h2>
-              <p className="mt-3 max-w-xl text-[0.92rem] leading-relaxed text-muted">
-                {nextStep.body}
-              </p>
-              <Link
-                href={nextStep.href}
-                className="label group mt-7 inline-flex items-center gap-2.5 rounded-[var(--radius-sm)] bg-moss-400 px-5 py-3 text-navy-950 shadow-[0_8px_24px_-10px_rgba(114,196,60,0.6)] transition-all duration-400 hover:-translate-y-px hover:bg-moss-300"
-              >
-                {nextStep.cta}
-                <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 transition-transform duration-400 group-hover:translate-x-1">
-                  <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </Panel>
+        <NextAction
+          title={nextStep.title}
+          body={nextStep.body}
+          cta={nextStep.cta}
+          href={nextStep.href}
+        />
 
         {completion && (
           <Panel title="Profile completion">
@@ -257,16 +245,7 @@ export default async function PortalDashboard() {
         </Panel>
       </div>
 
-      <div className="mt-8">
-        <BackendRequired
-          feature="Case, document and messaging data"
-          needs={[
-            "Tables: cases, documents, tasks, conversations, messages, appointments, notifications",
-            "Access-controlled file storage — documents must never be served from public URLs",
-            "Advisor assignment and case stage management in the admin area",
-          ]}
-        />
-      </div>
+
     </>
   );
 }

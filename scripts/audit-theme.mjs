@@ -44,9 +44,53 @@ const ROUTES = [
   "/legal/privacy-policy",
 ];
 
+/**
+ * The portal design system, checked through the role preview.
+ *
+ * Every /portal page redirects when there is no session, so this audit could
+ * never reach the surfaces that carry the portal's cards, status pills, tables
+ * and progress rails — the parts most likely to fail contrast, since they use
+ * the most colour. The /demo routes render from the SAME components in
+ * components/portal/Pieces.tsx and need no sign-in, so auditing them covers
+ * the shared system in both themes.
+ *
+ * Only included when the demo is actually running — the routes 404 without
+ * DEMO_MODE, and a 404 body would pass trivially and prove nothing.
+ */
+const DEMO_ROUTES = [
+  "/demo",
+  "/demo/admin",
+  "/demo/admin/users",
+  "/demo/admin/requests",
+  "/demo/admin/documents",
+  "/demo/student",
+  "/demo/student/journey",
+  "/demo/student/scholarships",
+  "/demo/student/documents",
+  "/demo/job-seeker",
+  "/demo/job-seeker/jobs",
+  "/demo/business",
+  "/demo/business/services",
+];
+
 let fails = 0;
 const bad = (m) => { fails++; console.log("  FAIL  " + m); };
 const ok = (m) => console.log("  ok    " + m);
+
+/* Where the theme toggle lives. Discovered once, reused by the checks below. */
+const TOGGLE = 'header button[aria-label*="theme" i]';
+let toggleAt = null;
+
+// Is the preview served here? One request decides whether to audit it.
+try {
+  const probe = await fetch(`${BASE}/demo`, { redirect: "manual" });
+  if (probe.status === 200) {
+    ROUTES.push(...DEMO_ROUTES);
+    console.log(`  (demo mode detected — auditing ${DEMO_ROUTES.length} preview routes too)`);
+  }
+} catch {
+  // Server not up yet; the run below will report that clearly enough.
+}
 
 /** Runs inside the page. Returns every text element with its true ratio. */
 const COLLECT = () => {
@@ -277,10 +321,28 @@ for (const theme of ["dark", "light"]) {
     if (overflow > 0) bad(`${route}: horizontal overflow of ${overflow}px`);
   }
 
-  await page.goto(BASE + "/", { waitUntil: "load", timeout: 60000 });
-  (await page.locator('header button[aria-label*="theme" i]').count()) >= 1
-    ? ok("theme toggle present in header")
-    : bad("no theme toggle in header");
+  /*
+    Where the toggle lives depends on what this origin serves.
+
+    On the public site it is in the marketing header. On a PORTAL_ONLY origin
+    there is no marketing header at all — `/` is the sign-in screen — so the
+    chrome that carries it is the portal or preview shell. Checking only `/`
+    reported a missing toggle on an origin that has one, which is a false
+    failure and trains the reader to ignore the audit.
+  */
+  const candidates = ROUTES.includes("/demo/admin") ? ["/", "/demo/admin"] : ["/"];
+
+  for (const route of candidates) {
+    await page.goto(BASE + route, { waitUntil: "load", timeout: 60000 });
+    if ((await page.locator(TOGGLE).count()) >= 1) {
+      toggleAt = route;
+      break;
+    }
+  }
+
+  toggleAt
+    ? ok(`theme toggle present in header (${toggleAt})`)
+    : bad("no theme toggle found in any header");
 
   await ctx.close();
 }
@@ -289,9 +351,10 @@ for (const theme of ["dark", "light"]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await ctx.newPage();
-  await page.goto(BASE + "/", { waitUntil: "load", timeout: 60000 });
+  // Same route the toggle was actually found on — see the note above.
+  await page.goto(BASE + (toggleAt ?? "/"), { waitUntil: "load", timeout: 60000 });
   const before = await page.evaluate(() => document.documentElement.getAttribute("data-theme"));
-  await page.locator('header button[aria-label*="theme" i]').first().click();
+  await page.locator(TOGGLE).first().click();
   await page.waitForTimeout(300);
   const after = await page.evaluate(() => document.documentElement.getAttribute("data-theme"));
   before !== after ? ok(`toggle switches ${before} -> ${after}`) : bad("toggle did not change theme");

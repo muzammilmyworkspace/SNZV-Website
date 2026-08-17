@@ -4,7 +4,6 @@ import {
   PortalHeading,
   Panel,
   JourneyTrack,
-  BackendRequired,
 } from "@/components/portal/Pieces";
 
 const isClientRole = (r: Role): r is "student" | "professional" | "business" =>
@@ -41,15 +40,6 @@ export default async function JourneyPage() {
         </Panel>
       )}
 
-      <div className="mt-8">
-        <BackendRequired
-          feature="Journey stage tracking"
-          needs={[
-            "cases table with a stage column per client",
-            "Advisor tooling to advance a stage and record the reason",
-          ]}
-        />
-      </div>
     </>
   );
 }

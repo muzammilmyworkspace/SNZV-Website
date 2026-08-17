@@ -9,6 +9,7 @@ import { demoNav, roleLabel, type IconKey } from "@/lib/demo/nav";
 import { DEMO_ROLES, type DemoRole } from "@/lib/demo/config";
 import { demoIdentities } from "@/lib/demo/data";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 /**
  * The shell all four demo portals share.
@@ -146,7 +147,7 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
             className={cn(
               "group flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.89rem] transition-colors",
               on
-                ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent"
+                ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent-ink"
                 : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg"
             )}
           >
@@ -224,6 +225,9 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
             </p>
 
             <div className="flex items-center gap-2">
+              {/* Also what lets audit-theme reach dark mode on these screens —
+                  without a toggle it can only ever check one palette. */}
+              <ThemeToggle />
               <RoleSwitcher role={role} />
               <span
                 aria-hidden

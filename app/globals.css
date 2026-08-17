@@ -977,3 +977,78 @@ p { text-wrap: pretty; }
     rgba(62, 122, 34, 0.42) 100%
   );
 }
+
+/* ═══════════════════════════════════════════════════════ STATUS PILL TONES ═
+ *
+ * Status colour, defined once and theme-aware.
+ *
+ * These used to be Tailwind utilities like `text-sky-300` chosen while the site
+ * was dark by default. Light is the default now, and a 300-weight colour on a
+ * near-white ground is close to unreadable — a status badge nobody can read is
+ * worse than no badge, because the reader assumes they have understood it.
+ *
+ * Each tone therefore has a LIGHT definition on bare :root and a DARK one under
+ * [data-theme="dark"], so the same class is legible either way. Semantic names,
+ * not colour names: mapping a status to `--pill-warn` survives a palette change
+ * in a way `text-amber-300` does not.
+ */
+:root {
+  --pill-neutral-fg: #5A6478;  --pill-neutral-bd: rgba(90,100,120,0.30);  --pill-neutral-bg: rgba(90,100,120,0.07);
+  --pill-info-fg:    #1D5FA8;  --pill-info-bd:    rgba(29,95,168,0.34);   --pill-info-bg:    rgba(29,95,168,0.09);
+  --pill-work-fg:    #3E4CA8;  --pill-work-bd:    rgba(62,76,168,0.34);   --pill-work-bg:    rgba(62,76,168,0.09);
+  --pill-warn-fg:    #8A5A00;  --pill-warn-bd:    rgba(180,120,0,0.40);   --pill-warn-bg:    rgba(212,150,0,0.12);
+  --pill-ok-fg:      #2F6B22;  --pill-ok-bd:      rgba(60,130,40,0.38);   --pill-ok-bg:      rgba(80,160,50,0.11);
+  --pill-danger-fg:  #B42318;  --pill-danger-bd:  rgba(180,35,24,0.36);   --pill-danger-bg:  rgba(180,35,24,0.09);
+}
+
+:root[data-theme="dark"] {
+  --pill-neutral-fg: #A9B4C8;  --pill-neutral-bd: rgba(169,180,200,0.28); --pill-neutral-bg: rgba(169,180,200,0.08);
+  --pill-info-fg:    #7CC0FF;  --pill-info-bd:    rgba(124,192,255,0.34); --pill-info-bg:    rgba(124,192,255,0.10);
+  --pill-work-fg:    #A7B0FF;  --pill-work-bd:    rgba(167,176,255,0.34); --pill-work-bg:    rgba(167,176,255,0.10);
+  --pill-warn-fg:    #F6C556;  --pill-warn-bd:    rgba(246,197,86,0.38);  --pill-warn-bg:    rgba(246,197,86,0.11);
+  --pill-ok-fg:      #9BE07A;  --pill-ok-bd:      rgba(155,224,122,0.36); --pill-ok-bg:      rgba(155,224,122,0.11);
+  --pill-danger-fg:  #FF9C93;  --pill-danger-bd:  rgba(255,156,147,0.36); --pill-danger-bg:  rgba(255,156,147,0.10);
+}
+
+.pill {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 999px;
+  border: 1px solid;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pill-neutral { color: var(--pill-neutral-fg); border-color: var(--pill-neutral-bd); background: var(--pill-neutral-bg); }
+.pill-info    { color: var(--pill-info-fg);    border-color: var(--pill-info-bd);    background: var(--pill-info-bg); }
+.pill-work    { color: var(--pill-work-fg);    border-color: var(--pill-work-bd);    background: var(--pill-work-bg); }
+.pill-warn    { color: var(--pill-warn-fg);    border-color: var(--pill-warn-bd);    background: var(--pill-warn-bg); }
+.pill-ok      { color: var(--pill-ok-fg);      border-color: var(--pill-ok-bd);      background: var(--pill-ok-bg); }
+.pill-danger  { color: var(--pill-danger-fg);  border-color: var(--pill-danger-bd);  background: var(--pill-danger-bg); }
+
+/* ══════════════════════════════════════════════════════ ACCENT INK (TEXT) ═
+ *
+ * `--accent` is tuned for MARKS — dots, rules, icons, fills — where WCAG's
+ * 3:1 non-text threshold applies. Used as TEXT on an accent-tinted ground it
+ * measured 4.09:1 against the 4.5:1 body-text requirement: the active sidebar
+ * row, which is the one row a reader must be able to identify.
+ *
+ * `--accent-ink` is the same hue carried far enough to pass as text. Marks keep
+ * using `--accent`; anything that has to be READ uses this.
+ */
+:root { --accent-ink: #2C5E18; }
+:root[data-theme="dark"] { --accent-ink: var(--color-moss-300); }
+
+.tone-deep  { --accent-ink: var(--color-moss-300); }
+.tone-soft  { --accent-ink: #2C5E18; }
+.tone-light { --accent-ink: #2C5E18; }
+.tone-white { --accent-ink: #2C5E18; }
+:root[data-theme="dark"] .tone-soft,
+:root[data-theme="dark"] .tone-light,
+:root[data-theme="dark"] .tone-white { --accent-ink: var(--color-moss-300); }
+
+.text-accent-ink { color: var(--accent-ink); }

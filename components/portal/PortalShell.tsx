@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { analytics } from "@/lib/analytics";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { ROLE_LABEL, STAFF_ROLES, type Role } from "@/lib/auth/types";
 import { cn } from "@/lib/utils";
 
@@ -202,25 +203,20 @@ export function PortalShell({
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "group relative flex items-center gap-3 rounded-[var(--radius-sm)] py-2.5 pl-4 pr-3 text-[0.87rem] transition-colors duration-300",
+                        // min-h-11 because a sidebar is navigated by thumb on a
+                        // phone, and 2.5 padding put these at 38px.
+                        "group relative flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.89rem] transition-colors duration-300",
                         active
-                          ? "bg-[color-mix(in_srgb,var(--fg)_6%,transparent)] font-semibold text-fg"
-                          : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] hover:text-fg"
+                          ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent-ink"
+                          : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg"
                       )}
                     >
-                      {active && (
-                        <motion.span
-                          layoutId="portal-active-bar"
-                          className="absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-full bg-moss-400"
-                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        />
-                      )}
                       <svg
                         viewBox="0 0 16 16"
                         fill="none"
                         aria-hidden
                         className={cn(
-                          "h-[15px] w-[15px] shrink-0 transition-colors",
+                          "h-[17px] w-[17px] shrink-0 transition-colors",
                           active ? "text-accent" : "text-faint group-hover:text-muted"
                         )}
                       >
@@ -261,7 +257,7 @@ export function PortalShell({
           type="button"
           onClick={logout}
           disabled={signingOut}
-          className="mt-1 flex w-full items-center gap-3 rounded-[var(--radius-sm)] px-2 py-2.5 text-[0.85rem] text-muted transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] hover:text-fg disabled:opacity-50"
+          className="mt-1 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.87rem] text-muted transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] hover:text-fg disabled:opacity-50"
         >
           <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[15px] w-[15px]">
             <path
@@ -279,7 +275,16 @@ export function PortalShell({
   );
 
   return (
-    <div className="tone-deep relative min-h-screen">
+    /*
+      `tone-soft`, not `tone-deep`.
+
+      The portal was pinned to the dark tone, so it stayed near-black while the
+      rest of the site — light by default since the theme switch — was pale.
+      Signing in felt like arriving at a different product. It now follows the
+      visitor's theme like every other surface, and the dark art direction is
+      still one toggle away.
+    */
+    <div className="tone-soft relative min-h-screen">
       {/* Ground texture — depth without noise */}
       <div
         aria-hidden
@@ -352,6 +357,9 @@ export function PortalShell({
             </Link>
 
             <div className="ml-auto flex items-center gap-2">
+              {/* The portal follows the site theme now, so the control to change
+                  it has to be reachable from inside the portal too. */}
+              <ThemeToggle />
               {[
                 { href: "/portal/messages", label: "Messages", icon: "messages" },
                 { href: "/portal/notifications", label: "Notifications", icon: "notifications" },

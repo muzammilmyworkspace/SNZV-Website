@@ -1,14 +1,22 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
- * PORTAL UI VOCABULARY
+ * THE PORTAL DESIGN SYSTEM
  * ---------------------------------------------------------------------------
- * Classic rather than trendy: layered surfaces with a hairline top highlight,
- * small-caps labels, tabular numerals, and accent colour reserved almost
- * entirely for the single primary action and for progress. Restraint is what
- * makes a workspace feel expensive — not more colour.
+ * Every portal surface — client and staff — is built from these. The visual
+ * language was reworked to match the role-preview design; EVERY EXPORT KEPT ITS
+ * NAME AND SIGNATURE so the twenty-two pages that import from here inherited
+ * the new look without a single page edit. A prop rename here would have meant
+ * twenty-two chances to break a working page for a cosmetic change.
+ *
+ * COLOUR LIVES IN CSS, NOT IN CLASS LISTS. Status tones resolve through the
+ * `.pill-*` classes in globals.css, which are defined per theme. They were
+ * previously Tailwind utilities like `text-moss-300`, picked when the site was
+ * dark by default — on the light theme that is now the default, a 300-weight
+ * colour on near-white is barely readable, and an unreadable status badge is
+ * worse than none because the reader assumes they understood it.
  */
 
 /* ---------------------------------------------------------- PortalHeading */
@@ -27,8 +35,8 @@ export function PortalHeading({
   meta?: ReactNode;
 }) {
   return (
-    <header className="mb-9">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+    <header className="mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           {eyebrow && (
             <p className="label mb-3 flex items-center gap-3 text-accent">
@@ -36,32 +44,22 @@ export function PortalHeading({
               {eyebrow}
             </p>
           )}
-          <h1 className="text-[1.75rem] font-bold leading-[1.1] tracking-[-0.03em] text-fg-strong sm:text-[2.15rem]">
+          <h1 className="text-[1.7rem] font-bold leading-[1.1] tracking-[-0.03em] text-fg-strong sm:text-[2.1rem]">
             {title}
           </h1>
           {lead && (
-            <p className="mt-2.5 max-w-2xl text-[0.94rem] leading-relaxed text-muted">
-              {lead}
-            </p>
+            <p className="mt-3 max-w-2xl text-[0.98rem] leading-relaxed text-muted">{lead}</p>
           )}
         </div>
-        {action}
+        {action && <div className="shrink-0">{action}</div>}
       </div>
       {meta && <div className="mt-6">{meta}</div>}
-      <div
-        aria-hidden
-        className="mt-7 h-px bg-gradient-to-r from-[color:var(--line-strong)] via-[color:var(--line)] to-transparent"
-      />
     </header>
   );
 }
 
-/* -------------------------------------------------------------------- Panel */
+/* ------------------------------------------------------------------ Panel */
 
-/**
- * Layered surface. The inset top highlight is what separates it from the page
- * without needing a heavy border or a drop shadow.
- */
 export function Panel({
   children,
   className,
@@ -83,15 +81,13 @@ export function Panel({
         "relative overflow-hidden rounded-[var(--radius-lg)] border",
         "bg-gradient-to-b from-[color-mix(in_srgb,var(--fg)_5%,transparent)] to-[color-mix(in_srgb,var(--fg)_2%,transparent)]",
         "shadow-[inset_0_1px_0_color-mix(in_srgb,var(--fg)_9%,transparent)]",
-        accent ? "border-moss-400/30" : "border-line",
+        accent ? "border-moss-400/35" : "border-line",
         className
       )}
     >
       {(title || action) && (
         <header className="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
-          {title && (
-            <h2 className="label text-faint">{title}</h2>
-          )}
+          {title && <h2 className="label text-faint">{title}</h2>}
           {action}
         </header>
       )}
@@ -100,13 +96,20 @@ export function Panel({
   );
 }
 
-/* --------------------------------------------------------------- EmptyState */
+/** Small "View all" link in a card header — padded out to a real touch target. */
+export function CardLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="label -my-3 inline-flex min-h-11 items-center py-3 text-faint transition-colors hover:text-accent"
+    >
+      {children}
+    </Link>
+  );
+}
 
-/**
- * Compact and calm. The previous version used a large dashed box, which read
- * as unfinished rather than deliberate — several of them on one screen made
- * the whole workspace look broken.
- */
+/* -------------------------------------------------------------- EmptyState */
+
 export function EmptyState({
   icon = "file",
   title,
@@ -130,77 +133,189 @@ export function EmptyState({
   };
 
   return (
-    <div className="flex items-start gap-4 py-2">
+    <div className="flex items-start gap-4 py-3">
       <span
         aria-hidden
-        className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-faint"
+        className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line text-accent"
       >
-        <svg viewBox="0 0 22 22" fill="none" className="h-4 w-4">
+        <svg viewBox="0 0 22 22" fill="none" className="h-[18px] w-[18px]">
           <path
             d={paths[icon]}
             stroke="currentColor"
-            strokeWidth="1.3"
+            strokeWidth="1.4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </svg>
       </span>
       <div className="min-w-0">
-        <p className="text-[0.94rem] font-semibold text-fg">{title}</p>
-        <p className="mt-1.5 max-w-md text-[0.86rem] leading-relaxed text-muted">
-          {body}
-        </p>
+        <p className="text-[0.98rem] font-semibold text-fg">{title}</p>
+        <p className="mt-1.5 max-w-md text-[0.88rem] leading-relaxed text-muted">{body}</p>
         {action && (
           <Link
             href={action.href}
-            className="label mt-4 inline-flex items-center gap-2 text-accent transition-opacity hover:opacity-80"
+            className="label mt-4 inline-flex min-h-11 items-center rounded-[var(--radius-sm)] border border-line px-4 text-fg transition-colors hover:border-moss-400/60 hover:text-accent"
           >
-            <span className="draw">{action.label}</span>
-            <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5">
-              <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            {action.label}
           </Link>
         )}
-        {note && <p className="mt-3 text-[0.76rem] leading-relaxed text-faint">{note}</p>}
+        {note && <p className="mt-3 text-[0.78rem] leading-relaxed text-faint">{note}</p>}
       </div>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------- Status */
+/* ------------------------------------------------------------------ Status */
 
+/**
+ * Status → semantic tone.
+ *
+ * Covers every value in the case, document, application, task and appointment
+ * enums from lib/db/migrations, plus the intake statuses from 003. Anything
+ * unmapped falls back to neutral rather than rendering unstyled.
+ */
 const STATUS_TONE: Record<string, string> = {
-  approved: "text-moss-300 border-moss-400/35 bg-moss-400/10",
-  completed: "text-moss-300 border-moss-400/35 bg-moss-400/10",
-  confirmed: "text-moss-300 border-moss-400/35 bg-moss-400/10",
-  in_progress: "text-navy-100 border-line bg-transparent",
-  submitted: "text-navy-100 border-line bg-transparent",
-  under_review: "text-navy-100 border-line bg-transparent",
-  pending_review: "text-navy-100 border-line bg-transparent",
-  uploaded: "text-navy-100 border-line bg-transparent",
-  awaiting_response: "text-amber-200 border-amber-400/35 bg-amber-400/10",
-  documents_required: "text-amber-200 border-amber-400/35 bg-amber-400/10",
-  needs_update: "text-amber-200 border-amber-400/35 bg-amber-400/10",
-  required: "text-amber-200 border-amber-400/35 bg-amber-400/10",
-  draft: "text-faint border-line bg-transparent",
-  requested: "text-faint border-line bg-transparent",
-  cancelled: "text-faint border-line bg-transparent",
+  // settled / good
+  approved: "pill-ok",
+  completed: "pill-ok",
+  confirmed: "pill-ok",
+  accepted: "pill-ok",
+  active: "pill-ok",
+  done: "pill-ok",
+  // in flight
+  in_progress: "pill-work",
+  under_review: "pill-work",
+  pending_review: "pill-work",
+  assessment: "pill-work",
+  // received, not started
+  new: "pill-info",
+  submitted: "pill-info",
+  uploaded: "pill-info",
+  scheduled: "pill-info",
+  open: "pill-info",
+  // waiting on the client
+  action_required: "pill-warn",
+  awaiting_client: "pill-warn",
+  awaiting_response: "pill-warn",
+  documents_required: "pill-warn",
+  needs_update: "pill-warn",
+  required: "pill-warn",
+  returned: "pill-warn",
+  pending: "pill-warn",
+  // stopped
+  rejected: "pill-danger",
+  withdrawn: "pill-danger",
+  suspended: "pill-danger",
+  // inert
+  draft: "pill-neutral",
+  requested: "pill-neutral",
+  cancelled: "pill-neutral",
+  closed: "pill-neutral",
 };
 
 export function StatusPill({ status, label }: { status: string; label: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex shrink-0 items-center rounded-full border px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em]",
-        STATUS_TONE[status] ?? "text-faint border-line"
-      )}
+  return <span className={cn("pill", STATUS_TONE[status] ?? "pill-neutral")}>{label}</span>;
+}
+
+/* ---------------------------------------------------------------- StatCard */
+
+/** A single figure, given room. Optionally a link to whatever it counts. */
+export function StatCard({
+  label,
+  value,
+  href,
+  urgent = false,
+  hint,
+}: {
+  label: string;
+  value: number | string;
+  href?: string;
+  urgent?: boolean;
+  hint?: string;
+}) {
+  const inner = (
+    <>
+      <span
+        className={cn(
+          "num block text-[2rem] leading-none tracking-[-0.03em]",
+          urgent ? "text-accent" : "text-fg-strong"
+        )}
+      >
+        {value}
+      </span>
+      <span className="mt-2.5 block text-[0.82rem] leading-snug text-muted">{label}</span>
+      {hint && <span className="mt-1 block text-[0.74rem] text-faint">{hint}</span>}
+    </>
+  );
+
+  const base = cn(
+    "block rounded-[var(--radius-md)] border p-5 bg-[color-mix(in_srgb,var(--fg)_3%,transparent)] transition-all duration-300",
+    urgent ? "border-moss-400/35" : "border-line"
+  );
+
+  return href ? (
+    <Link
+      href={href}
+      className={cn(base, "hover:-translate-y-0.5 hover:border-moss-400/60 motion-reduce:transform-none")}
     >
-      {label}
-    </span>
+      {inner}
+    </Link>
+  ) : (
+    <div className={base}>{inner}</div>
   );
 }
 
-/* ----------------------------------------------------------------- Progress */
+/* -------------------------------------------------------------- NextAction */
+
+/**
+ * The one thing to do next, given its own card at the top of the page.
+ * A dashboard that answers "what now?" at a glance is the product.
+ */
+export function NextAction({
+  title,
+  body,
+  cta,
+  href,
+  eyebrow = "Your next step",
+}: {
+  title: string;
+  body: string;
+  cta: string;
+  href: string;
+  eyebrow?: string;
+}) {
+  return (
+    <Panel accent padded={false} className="overflow-hidden">
+      <div className="relative p-6 sm:p-7">
+        <span
+          aria-hidden
+          className="bloom-moss pointer-events-none absolute -right-20 -top-20 h-60 w-60 opacity-40"
+        />
+        <div className="relative">
+          <p className="label flex items-center gap-3 text-accent">
+            <span aria-hidden className="inline-block h-px w-5 bg-current opacity-60" />
+            {eyebrow}
+          </p>
+          <h2 className="mt-4 text-[1.4rem] font-bold leading-tight tracking-[-0.025em] text-fg-strong sm:text-[1.7rem]">
+            {title}
+          </h2>
+          <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-muted">{body}</p>
+          <Link
+            href={href}
+            className="label group mt-7 inline-flex min-h-11 items-center gap-2.5 rounded-[var(--radius-sm)] bg-moss-400 px-5 text-navy-950 shadow-[0_8px_24px_-10px_rgba(114,196,60,0.6)] transition-all duration-300 hover:-translate-y-px hover:bg-moss-300 motion-reduce:transform-none"
+          >
+            {cta}
+            <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1">
+              <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
+/* ---------------------------------------------------------------- Progress */
 
 export function ProgressBar({ value, label }: { value: number; label?: string }) {
   const v = Math.min(100, Math.max(0, value));
@@ -218,10 +333,10 @@ export function ProgressBar({ value, label }: { value: number; label?: string })
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label={label ?? "Progress"}
-        className="h-1 w-full overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--fg)_10%,transparent)]"
+        className="h-1.5 w-full overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--fg)_10%,transparent)]"
       >
         <div
-          className="h-full rounded-full bg-gradient-to-r from-moss-600 via-moss-400 to-moss-300 transition-[width] duration-[900ms] ease-[var(--ease-out-expo)]"
+          className="h-full rounded-full bg-gradient-to-r from-moss-600 via-moss-400 to-moss-300 transition-[width] duration-[900ms] ease-[var(--ease-out-expo)] motion-reduce:transition-none"
           style={{ width: `${v}%` }}
         />
       </div>
@@ -240,60 +355,39 @@ export function ProgressRing({
   label?: string;
 }) {
   const v = Math.min(100, Math.max(0, value));
-  const stroke = 5;
+  const stroke = 6;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-5">
       <div className="relative shrink-0" style={{ width: size, height: size }}>
-        <svg
-          viewBox={`0 0 ${size} ${size}`}
-          className="-rotate-90"
-          width={size}
-          height={size}
-          role="progressbar"
-          aria-valuenow={v}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label={label ?? "Completion"}
-        >
+        <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90">
           <circle
             cx={size / 2}
             cy={size / 2}
             r={r}
             fill="none"
-            stroke="currentColor"
+            stroke="color-mix(in srgb, var(--fg) 11%, transparent)"
             strokeWidth={stroke}
-            className="text-[color-mix(in_srgb,var(--fg)_10%,transparent)]"
           />
           <circle
             cx={size / 2}
             cy={size / 2}
             r={r}
             fill="none"
-            stroke="url(#ring)"
+            stroke="var(--color-moss-400)"
             strokeWidth={stroke}
             strokeLinecap="round"
             strokeDasharray={c}
             strokeDashoffset={c - (c * v) / 100}
-            style={{ transition: "stroke-dashoffset 900ms cubic-bezier(0.16,1,0.3,1)" }}
           />
-          <defs>
-            <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#4F9628" />
-              <stop offset="100%" stopColor="#93D667" />
-            </linearGradient>
-          </defs>
         </svg>
         <span className="absolute inset-0 flex items-center justify-center">
-          <span className="num text-[1.35rem] font-bold leading-none text-fg-strong">
-            {v}
-            <span className="text-[0.8rem] font-semibold text-faint">%</span>
-          </span>
+          <span className="num text-[1.35rem] font-bold leading-none text-fg-strong">{v}%</span>
         </span>
       </div>
-      {label && <span className="text-[0.88rem] leading-snug text-muted">{label}</span>}
+      {label && <p className="text-[0.88rem] leading-relaxed text-muted">{label}</p>}
     </div>
   );
 }
@@ -301,9 +395,15 @@ export function ProgressRing({
 /* ------------------------------------------------------------- JourneyTrack */
 
 /**
- * The stage sequence, drawn as a connected track rather than a flat grid so
- * progression is legible at a glance. `current` is the index of the active
- * stage; -1 means an advisor has not set one yet, which is the honest default.
+ * The stage sequence, as a rail rather than a bar.
+ *
+ * A bar says how far along you are; this says what each step WAS and what comes
+ * next, which is the question people actually have. `current` is the index of
+ * the active stage; -1 means an advisor has not set one yet, which stays the
+ * honest default rather than implying progress nobody recorded.
+ *
+ * Horizontal on wide screens, vertical on a phone. A seven-step horizontal rail
+ * at 375px is unreadable, so it changes shape rather than shrinking.
  */
 export function JourneyTrack({
   stages,
@@ -313,64 +413,55 @@ export function JourneyTrack({
   current?: number;
 }) {
   return (
-    <ol className="relative">
+    <ol className="flex flex-col lg:flex-row">
       {stages.map((stage, i) => {
         const done = current > -1 && i < current;
         const active = i === current;
         const last = i === stages.length - 1;
 
         return (
-          <li key={stage.key} className="relative flex gap-5 pb-7 last:pb-0">
-            {/* connector */}
+          <li
+            key={stage.key}
+            className="relative flex flex-1 gap-4 pb-6 last:pb-0 lg:flex-col lg:gap-0 lg:pb-0"
+          >
             {!last && (
               <span
                 aria-hidden
                 className={cn(
-                  "absolute left-[15px] top-8 bottom-0 w-px",
-                  done ? "bg-moss-400/50" : "bg-[color-mix(in_srgb,var(--fg)_12%,transparent)]"
+                  "absolute left-[7px] top-5 h-full w-px lg:left-auto lg:top-[7px] lg:h-px lg:w-full",
+                  done ? "bg-moss-400/60" : "bg-[color-mix(in_srgb,var(--fg)_13%,transparent)]"
                 )}
               />
             )}
-
-            {/* marker */}
             <span
               aria-hidden
               className={cn(
-                "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[0.68rem] font-bold tabular-nums",
-                active
-                  ? "border-moss-400 bg-moss-400 text-navy-950"
-                  : done
-                    ? "border-moss-400/50 bg-moss-400/15 text-moss-300"
-                    : "border-line bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] text-faint"
+                "relative z-[1] mt-0.5 flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border-2 lg:mt-0",
+                done && "border-moss-400 bg-moss-400",
+                active && "border-moss-400 bg-surface",
+                !done && !active && "border-[color-mix(in_srgb,var(--fg)_20%,transparent)] bg-surface"
               )}
             >
-              {done ? (
-                <svg viewBox="0 0 12 12" fill="none" className="h-3 w-3">
-                  <path d="M2 6.2l2.6 2.6L10 3.4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              {done && (
+                <svg viewBox="0 0 10 10" className="h-2 w-2 text-navy-950">
+                  <path d="M1 5l2.5 2.5L9 2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              ) : (
-                String(i + 1).padStart(2, "0")
               )}
+              {active && <span className="h-1.5 w-1.5 rounded-full bg-moss-400" />}
             </span>
-
-            <div className="min-w-0 pt-1">
-              <p
+            <span className="min-w-0 lg:mt-3 lg:pr-4">
+              <span
                 className={cn(
-                  "text-[0.98rem] font-semibold tracking-[-0.01em]",
-                  active ? "text-accent" : "text-fg"
+                  "block text-[0.92rem] font-medium",
+                  active ? "text-accent" : done ? "text-fg" : "text-faint"
                 )}
               >
                 {stage.name}
-                {active && (
-                  <span className="label ml-3 rounded-full border border-moss-400/40 bg-moss-400/10 px-2 py-0.5 align-middle text-moss-300">
-                    Current
-                  </span>
-                )}
-              </p>
-              <p className="mt-1 max-w-xl text-[0.85rem] leading-relaxed text-muted">
+              </span>
+              <span className="mt-1 block text-[0.78rem] leading-snug text-muted">
                 {stage.description}
-              </p>
-            </div>
+              </span>
+            </span>
           </li>
         );
       })}
@@ -392,15 +483,13 @@ export function SummaryStat({
   return (
     <div className="border-l border-line pl-4 first:border-l-0 first:pl-0">
       <p className="label text-faint">{label}</p>
-      <p className="num mt-1.5 text-[1.6rem] font-bold leading-none text-fg-strong">
-        {value}
-      </p>
+      <p className="num mt-1.5 text-[1.7rem] font-bold leading-none text-fg-strong">{value}</p>
       {hint && <p className="mt-1 text-[0.76rem] text-faint">{hint}</p>}
     </div>
   );
 }
 
-/* ------------------------------------------------------------- DataRow */
+/* ------------------------------------------------------------------ DataRow */
 
 export function DataRow({
   label,
@@ -412,28 +501,183 @@ export function DataRow({
   meta?: ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-line py-3 last:border-0">
-      <span className="min-w-0 text-[0.89rem] text-fg">{label}</span>
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line py-3.5 last:border-0">
+      <span className="min-w-0 text-[0.92rem] text-fg">{label}</span>
       <span className="flex shrink-0 items-center gap-3">
         {meta}
-        {typeof value === "string" ? (
-          <span className="label text-faint">{value}</span>
-        ) : (
-          value
-        )}
+        {typeof value === "string" ? <span className="label text-faint">{value}</span> : value}
       </span>
     </div>
   );
 }
 
-/* ------------------------------------------------------- BackendRequired */
+/* -------------------------------------------------------------- DataTable -- */
+
+/** Scrolls inside its own container, so the PAGE never scrolls sideways. */
+export function DataTable({
+  columns,
+  children,
+  minWidth = 720,
+  caption,
+}: {
+  columns: string[];
+  children: ReactNode;
+  minWidth?: number;
+  caption?: string;
+}) {
+  return (
+    <div className="rail overflow-x-auto">
+      <table className="w-full text-left" style={{ minWidth }}>
+        {caption && <caption className="sr-only">{caption}</caption>}
+        <thead>
+          <tr className="border-b border-line">
+            {columns.map((c, i) => (
+              <th key={`${c}-${i}`} scope="col" className="label whitespace-nowrap px-5 py-3 text-faint">
+                {c}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </table>
+    </div>
+  );
+}
+
+export function Row({ children }: { children: ReactNode }) {
+  return (
+    <tr className="border-b border-line transition-colors last:border-0 hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)]">
+      {children}
+    </tr>
+  );
+}
+
+export function Cell({
+  children,
+  muted = false,
+  className,
+}: {
+  children: ReactNode;
+  muted?: boolean;
+  className?: string;
+}) {
+  return (
+    <td className={cn("px-5 py-3.5 text-[0.88rem]", muted ? "text-muted" : "text-fg", className)}>
+      {children}
+    </td>
+  );
+}
+
+/* ------------------------------------------------------------------- Tabs -- */
+
+/** Filters as links, so a filtered view is bookmarkable and survives reload. */
+export function Tabs({
+  items,
+  active,
+  label = "Filter",
+}: {
+  items: { key: string; label: string; href: string; count?: number }[];
+  active: string;
+  label?: string;
+}) {
+  return (
+    <nav aria-label={label} className="mb-5 flex flex-wrap gap-2">
+      {items.map((t) => {
+        const on = t.key === active;
+        return (
+          <Link
+            key={t.key}
+            href={t.href}
+            aria-current={on ? "true" : undefined}
+            className={cn(
+              "inline-flex min-h-10 items-center rounded-full px-4 text-[0.83rem] transition-colors",
+              on
+                ? "bg-moss-400 font-medium text-navy-950"
+                : "border border-line text-muted hover:border-moss-400/60 hover:text-fg"
+            )}
+          >
+            {t.label}
+            {t.count !== undefined && <span className="ml-1.5 opacity-65">{t.count}</span>}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+/* -------------------------------------------------------- ActivityTimeline - */
+
+export function ActivityTimeline({
+  items,
+}: {
+  items: { title: string; meta?: string; body?: string }[];
+}) {
+  return (
+    <ol className="space-y-4">
+      {items.map((a, i) => (
+        <li key={i} className="flex gap-3.5">
+          <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-moss-400/70" />
+          <span className="min-w-0">
+            <span className="block text-[0.88rem] leading-relaxed text-fg">{a.title}</span>
+            {a.body && (
+              <span className="mt-0.5 block text-[0.83rem] leading-relaxed text-muted">{a.body}</span>
+            )}
+            {a.meta && <span className="mt-0.5 block text-[0.75rem] text-faint">{a.meta}</span>}
+          </span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/* ----------------------------------------------------------- DocumentCard -- */
+
+export function DocumentCard({
+  name,
+  category,
+  status,
+  statusLabel,
+  note,
+  uploaded,
+  owner,
+  actions,
+}: {
+  name: string;
+  category?: string;
+  status: string;
+  statusLabel?: string;
+  note?: string;
+  uploaded?: string;
+  owner?: string;
+  actions?: ReactNode;
+}) {
+  return (
+    <div className="border-b border-line py-4 last:border-0">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[0.95rem] font-medium text-fg">{name}</p>
+          {(owner || category || uploaded) && (
+            <p className="mt-0.5 text-[0.78rem] text-faint">
+              {[owner, category, uploaded].filter(Boolean).join(" · ")}
+            </p>
+          )}
+        </div>
+        <StatusPill status={status} label={statusLabel ?? status.replace(/_/g, " ")} />
+      </div>
+      {note && <p className="mt-2.5 max-w-2xl text-[0.85rem] leading-relaxed text-muted">{note}</p>}
+      {actions && <div className="mt-3 flex flex-wrap gap-2">{actions}</div>}
+    </div>
+  );
+}
+
+/* --------------------------------------------------------- BackendRequired - */
 
 /**
  * Development-only build note.
  *
- * Hidden in production: a client signing in to their own workspace should
- * never be shown an engineering to-do list. The gap is still visible in every
- * empty state, phrased for them rather than for us.
+ * Hidden in production: a client signing in to their own workspace should never
+ * be shown an engineering to-do list. The gap is still visible in every empty
+ * state, phrased for them rather than for us.
  */
 export function BackendRequired({
   feature,
@@ -446,15 +690,13 @@ export function BackendRequired({
   return (
     <aside
       data-dev-note
-      className="rounded-[var(--radius-md)] border border-dashed border-amber-400/30 bg-amber-400/[0.05] p-5"
+      className="rounded-[var(--radius-md)] border border-dashed border-line p-5"
     >
-      <p className="label text-amber-300/80">Dev note — {feature}</p>
-      <p className="mt-2 text-[0.83rem] leading-relaxed text-amber-100/70">
-        Interface complete, reading from{" "}
-        <span className="font-mono text-[0.78rem]">lib/portal/data.ts</span>.
+      <p className="label text-faint">Dev note — {feature}</p>
+      <p className="mt-2 text-[0.83rem] leading-relaxed text-muted">
         Hidden in production. Populates once these exist:
       </p>
-      <ul className="mt-3 list-disc space-y-1 pl-4 text-[0.81rem] text-amber-100/60 marker:text-amber-400/40">
+      <ul className="mt-3 list-disc space-y-1 pl-4 text-[0.81rem] text-muted marker:text-faint">
         {needs.map((n) => (
           <li key={n}>{n}</li>
         ))}

@@ -54,7 +54,8 @@ export default async function SettingsPage() {
             "Change password and change email flows with re-authentication",
             "Email verification before an address change takes effect",
             "Self-service data export and account deletion, with an audit trail",
-            "Notification preferences per channel",
+            // The notify_* columns landed in migration 003; nothing reads them yet.
+            "Reading the notification preference columns when sending",
           ]}
         />
       </div>
