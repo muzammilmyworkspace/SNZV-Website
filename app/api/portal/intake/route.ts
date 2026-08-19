@@ -66,7 +66,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  const { step, answers } = (body ?? {}) as Record<string, unknown>;
+  const { step, answers, resumeAt } = (body ?? {}) as Record<string, unknown>;
   const steps = intakeFor(pathway).steps;
   const index = Number(step);
 
@@ -83,10 +83,27 @@ export async function PUT(request: Request) {
     requireAll: false,
   });
 
+  /*
+    TWO DIFFERENT NUMBERS, and conflating them caused a real bug.
+
+    `step` is WHICH STEP THESE ANSWERS BELONG TO — it selects the field list
+    they are validated against, so it must always be the step on screen.
+
+    `resumeAt` is WHERE TO REOPEN THE FORM. "Save & continue" sends the next
+    step because this one is done; "Save as draft" sends the current one,
+    because the person is still on it. Deriving the resume point from `step`
+    meant a draft save quietly advanced them, and the form reopened a step
+    ahead with their answers apparently gone. They were not gone — they were
+    one step back, on a page the form had skipped.
+  */
+  const resume = Number.isInteger(Number(resumeAt))
+    ? Math.min(Math.max(Number(resumeAt), 0), steps.length - 1)
+    : index;
+
   const form = await ops.saveIntakeDraft({
     userId: session.userId,
     pathway,
-    step: index + 1,
+    step: resume,
     data: clean,
   });
 

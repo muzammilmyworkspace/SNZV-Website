@@ -4,7 +4,6 @@ import { getSession } from "@/lib/auth/session";
 import { PortalShell, type Badges } from "@/components/portal/PortalShell";
 import * as repo from "@/lib/db/repos/portal";
 import { isDatabaseConfigured } from "@/lib/db/client";
-import { isAdmin } from "@/lib/auth/guard";
 
 export const metadata: Metadata = {
   title: "Client Portal",
@@ -38,21 +37,18 @@ export default async function PortalLayout({ children }: { children: React.React
     Sidebar counts, computed here so every page shows the same numbers rather
     than each recomputing them. Degrades to no badges when the database is
     unreachable — a missing badge is a far better failure than a broken shell.
+
+    ONE query, not four.
+
+    This began as four calls behind a Promise.all. On the `max: 1` pool that
+    serverless needs, those serialise into four network round trips on every
+    portal page — and with the function in one region and the database in
+    another, that alone was enough to hit the gateway timeout. It is now a
+    single statement returning all four counts.
   */
-  let badges: Badges = {};
-  if (isDatabaseConfigured()) {
-    const [messages, notifications, documents, tasks] = await Promise.all([
-      repo.countUnreadMessages(session.userId, session.role),
-      repo.countUnreadNotifications(session.userId),
-      isAdmin(session.role)
-        ? repo.getDocumentsForReview(200).then((d) => d.length)
-        : repo
-            .getDocumentsForOwner(session.userId)
-            .then((d) => d.filter((x) => x.status === "rejected" || x.status === "needs_update").length),
-      repo.getTasksForUser(session.userId).then((t) => t.filter((x) => x.status !== "done").length),
-    ]);
-    badges = { messages, notifications, documents, tasks };
-  }
+  const badges: Badges = isDatabaseConfigured()
+    ? await repo.getSidebarBadges(session.userId, session.role)
+    : {};
 
   return (
     <PortalShell name={session.name} role={session.role} badges={badges}>

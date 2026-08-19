@@ -260,7 +260,7 @@ export function IntakeForm({
   }, [index]);
 
   const save = useCallback(
-    async (stepIndex: number, silent = false) => {
+    async (stepIndex: number, resumeAt = stepIndex, silent = false) => {
       if (submitted) return true;
       if (!silent) setSaving(true);
       setError(null);
@@ -268,7 +268,9 @@ export function IntakeForm({
         const res = await fetch("/api/portal/intake", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ step: stepIndex, answers }),
+          // `step` says which questions these answers are; `resumeAt` says
+          // where to reopen. They are only the same for a draft save.
+          body: JSON.stringify({ step: stepIndex, resumeAt, answers }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) {
@@ -290,7 +292,8 @@ export function IntakeForm({
   async function next() {
     setTouched(true);
     if (missingIn(step, answers).length) return;
-    const ok = await save(index);
+    // Answers belong to `index`; the resume point moves on because it is done.
+    const ok = await save(index, index + 1);
     if (!ok) return;
     setTouched(false);
     setIndex((i) => Math.min(i + 1, steps.length - 1));

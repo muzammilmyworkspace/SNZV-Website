@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav } from "@/data/navigation";
 import { company } from "@/data/company";
+import { portalUrls } from "@/lib/portal-url";
 import { Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
 import { ThemeToggle } from "./ThemeToggle";
@@ -166,6 +167,27 @@ export function MobileNav({
             >
               Book a consultation
             </Action>
+
+            {/*
+              THE PORTAL LINK WAS ONLY IN THE DESKTOP HEADER, behind
+              `hidden sm:inline-flex`. On a phone there was no way into the
+              portal from anywhere on the site — the drawer offered a
+              consultation and nothing else, so an existing client had to type
+              the URL. This is the same destination the header button uses.
+            */}
+            <Link
+              href={portalUrls.login}
+              onClick={() => {
+                analytics.loginClick("mobile_nav");
+                onClose();
+              }}
+              className="label mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-sm)] border border-line text-fg transition-colors hover:border-moss-400/70 hover:text-accent"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-3.5 w-3.5">
+                <path d="M6 2h6a2 2 0 012 2v8a2 2 0 01-2 2H6M9 8H2m0 0l2.5-2.5M2 8l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Client portal login
+            </Link>
             {/*
               Phone / email / WhatsApp are the drawer's fastest exits, and at
               `.label` size they were 17px tall — under a fingertip on the one

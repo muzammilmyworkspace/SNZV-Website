@@ -179,7 +179,7 @@ export function Header() {
             <Link
               href={portalUrls.login}
               onClick={() => analytics.loginClick("header")}
-              className="label hidden items-center gap-2 rounded-[var(--radius-sm)] border border-line px-4 py-2.5 text-fg transition-all duration-400 hover:border-moss-400/70 hover:text-accent sm:inline-flex"
+              className="label hidden min-h-11 items-center gap-2 rounded-[var(--radius-sm)] border border-line px-4 text-fg transition-all duration-400 hover:border-moss-400/70 hover:text-accent sm:inline-flex"
             >
               <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-3.5 w-3.5">
                 <path d="M6 2h6a2 2 0 012 2v8a2 2 0 01-2 2H6M9 8H2m0 0l2.5-2.5M2 8l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

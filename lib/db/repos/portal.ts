@@ -569,6 +569,68 @@ export async function notify(input: {
   }, false);
 }
 
+/**
+ * EVERY SIDEBAR BADGE IN ONE ROUND TRIP.
+ *
+ * These were four separate calls behind a Promise.all. On a `max: 1` pool they
+ * serialise, so that was four network round trips on every single portal page —
+ * and when the function runs in one region while the database sits in another,
+ * four round trips is the difference between a page and a gateway timeout.
+ *
+ * Postgres evaluates scalar subqueries in one pass, so this costs one trip and
+ * returns the same four numbers.
+ */
+export async function getSidebarBadges(
+  userId: string,
+  role: Role
+): Promise<{ messages: number; notifications: number; documents: number; tasks: number }> {
+  const staffWide = role === "admin" || role === "super_admin";
+
+  return safeQuery(async () => {
+    const [r] = await db()`
+      SELECT
+        (
+          SELECT count(*)::int FROM messages m
+          WHERE m.read_at IS NULL AND m.author_id <> ${userId}
+            AND (
+              ${staffWide}::boolean
+              OR EXISTS (
+                SELECT 1 FROM conversations c
+                WHERE c.id = m.conversation_id
+                  AND (c.client_id = ${userId}
+                       OR EXISTS (SELECT 1 FROM staff_assignments sa
+                                  WHERE sa.advisor_id = ${userId}
+                                    AND sa.client_id = c.client_id))
+              )
+            )
+        ) AS messages,
+        (
+          SELECT count(*)::int FROM notifications n
+          WHERE n.user_id = ${userId} AND n.read_at IS NULL
+        ) AS notifications,
+        (
+          -- Staff see the review queue; a client sees only what was returned to
+          -- THEM. Both branches are in SQL so the scoping cannot be lost in JS.
+          SELECT count(*)::int FROM documents d
+          WHERE (${staffWide}::boolean AND d.status IN ('uploaded','pending_review'))
+             OR (NOT ${staffWide}::boolean
+                 AND d.owner_id = ${userId}
+                 AND d.status IN ('rejected','needs_update'))
+        ) AS documents,
+        (
+          SELECT count(*)::int FROM tasks t
+          WHERE t.assignee_id = ${userId} AND t.status <> 'done'
+        ) AS tasks
+    `;
+    return {
+      messages: Number(r?.messages ?? 0),
+      notifications: Number(r?.notifications ?? 0),
+      documents: Number(r?.documents ?? 0),
+      tasks: Number(r?.tasks ?? 0),
+    };
+  }, { messages: 0, notifications: 0, documents: 0, tasks: 0 });
+}
+
 /** Unread count for the sidebar badge. */
 export async function countUnreadNotifications(userId: string): Promise<number> {
   return safeQuery(async () => {

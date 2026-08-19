@@ -62,7 +62,14 @@ function create() {
   return postgres(url, {
     max: onVercel ? 1 : 8,
     idle_timeout: 20,
-    connect_timeout: 15,
+    /*
+      Shorter than a serverless function's budget, on purpose. Vercel kills an
+      invocation at 10s by default; a 15s connect timeout meant the function
+      died before the driver ever reported a connection problem, so the only
+      evidence was FUNCTION_INVOCATION_TIMEOUT with nothing in the logs.
+      Failing at 8s produces an actual error that says what went wrong.
+    */
+    connect_timeout: 8,
     /*
       Fail fast instead of hanging. The server default here is two minutes; a
       page that waits that long has already failed as far as anyone using it is

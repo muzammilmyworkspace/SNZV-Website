@@ -19,6 +19,7 @@
     "db:migrate": "node scripts/migrate.mjs",
     "db:status": "node scripts/migrate.mjs --dry",
     "db:bootstrap": "node scripts/bootstrap-admin.mjs",
+    "qa:accounts": "node scripts/qa-accounts.mjs",
     "db:verify": "node scripts/verify-schema.mjs",
     "db:doctor": "node scripts/db-doctor.mjs",
     "audit:study": "node scripts/audit-study.mjs",
@@ -26,7 +27,8 @@
     "audit:links": "node scripts/audit-links.mjs",
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "audit:security": "node scripts/audit-portal-security.mjs",
-    "audit:auth": "node scripts/audit-auth-flow.mjs"
+    "audit:auth": "node scripts/audit-auth-flow.mjs",
+    "audit:qa": "node scripts/audit-qa-matrix.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
