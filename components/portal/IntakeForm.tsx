@@ -410,7 +410,9 @@ export function IntakeForm({
                   setIndex(i);
                 }}
                 className={cn(
-                  "text-[0.76rem] transition-colors",
+                  // -my-2/py-2 keeps the rail visually tight while giving each
+                  // step a real hit box; these are jump targets, not labels.
+                  "-my-2 inline-flex min-h-11 items-center py-2 text-[0.78rem] transition-colors",
                   i === index && "font-semibold text-accent",
                   i < index && "text-muted hover:text-fg",
                   i > index && "cursor-default text-faint opacity-50"

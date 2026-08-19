@@ -90,6 +90,7 @@ async function post(url: string, body: unknown) {
     error?: string;
     message?: string;
     role?: string;
+    redirectTo?: string;
   };
   return { res, data };
 }
@@ -172,7 +173,17 @@ export function LoginForm({ googleEnabled = false }: { googleEnabled?: boolean }
         return;
       }
       analytics.portalLogin(data.role ?? "unknown");
-      router.push(next && next.startsWith("/portal") ? next : "/portal");
+      /*
+        `next` is honoured only when it is an internal /portal path — anything
+        else, including a protocol-relative "//evil.example", falls back to the
+        destination the SERVER chose for this role. A ?next= that could point
+        off-site is an open redirect wearing a convenience feature.
+      */
+      const target =
+        next && next.startsWith("/portal") && !next.startsWith("//")
+          ? next
+          : (data.redirectTo ?? "/portal");
+      router.replace(target);
       router.refresh();
     } catch {
       setError("Network problem. Please check your connection and try again.");
@@ -242,6 +253,7 @@ export function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -254,6 +266,12 @@ export function RegisterForm() {
   async function submit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (password !== confirm) {
+      setError("Those passwords don't match.");
+      return;
+    }
+
     setBusy(true);
     try {
       const { res, data } = await post("/api/auth/register", {
@@ -268,7 +286,9 @@ export function RegisterForm() {
         return;
       }
       analytics.registrationComplete(data.role ?? "unknown");
-      router.push("/portal");
+      // Straight to their own dashboard, chosen by the server from the role it
+      // just assigned — never from anything this form holds.
+      router.replace(data.redirectTo ?? "/portal");
       router.refresh();
     } catch {
       setError("Network problem. Please check your connection and try again.");
@@ -352,6 +372,15 @@ export function RegisterForm() {
         onChange={setPassword}
         autoComplete="new-password"
         hint="At least 10 characters, including a number or symbol."
+      />
+      <Field
+        id="confirm"
+        label="Confirm password"
+        type="password"
+        value={confirm}
+        onChange={setConfirm}
+        autoComplete="new-password"
+        error={confirm && password !== confirm ? "These don't match yet." : undefined}
       />
 
       {error && <ErrorNote>{error}</ErrorNote>}

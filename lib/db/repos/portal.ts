@@ -604,6 +604,38 @@ export async function markNotificationsRead(userId: string) {
 
 /* --------------------------------------------------------- opportunities */
 
+/**
+ * Published opportunities of one kind.
+ *
+ * `opportunities.kind` already distinguishes a job from a programme from a
+ * scholarship, so the student's Universities and Scholarships pages and the job
+ * seeker's Jobs page are three views of one table rather than three tables. The
+ * filter is in SQL so an unpublished row never leaves the database.
+ */
+export async function getOpportunitiesByKind(
+  kind: "role" | "programme" | "scholarship",
+  limit = 60
+) {
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT * FROM opportunities
+      WHERE is_published = TRUE AND kind = ${kind}
+      ORDER BY created_at DESC LIMIT ${limit}
+    `;
+    return rows.map((r) => ({
+      id: String(r.id),
+      title: String(r.title),
+      organisation: String(r.organisation),
+      country: String(r.country),
+      location: r.location ? String(r.location) : "",
+      employment: r.employment ? String(r.employment) : "",
+      industry: r.industry ? String(r.industry) : "",
+      summary: r.summary ? String(r.summary) : "",
+      requirements: Array.isArray(r.requirements) ? (r.requirements as string[]) : [],
+    }));
+  }, []);
+}
+
 export async function getPublishedOpportunities(limit = 60) {
   return safeQuery(async () => {
     const rows = await db()`

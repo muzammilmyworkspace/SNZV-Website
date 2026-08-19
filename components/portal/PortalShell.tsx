@@ -4,382 +4,249 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { analytics } from "@/lib/analytics";
+import { ROLE_LABEL, type Role } from "@/lib/auth/types";
+import { navFor, portalRoleFor, homeFor, type IconKey, type BadgeKey } from "@/lib/portal/roles";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { ROLE_LABEL, STAFF_ROLES, type Role } from "@/lib/auth/types";
 import { cn } from "@/lib/utils";
 
 /**
- * Portal chrome — a workspace, not a marketing page.
+ * PORTAL CHROME
+ * ---------------------------------------------------------------------------
+ * One shell, four navigations. Which one a person sees comes from the ROLE ON
+ * THEIR SIGNED SESSION, resolved on the server and passed in — there is no
+ * control here for changing it and no client state that could be edited to
+ * change it. The role-preview switcher lives only under /demo, behind
+ * DEMO_MODE, and cannot reach this component.
  *
- * Same palette, type and mark as the public site so it reads as one product.
- * The rail is deliberately quiet: hairline group rules, small-caps headings,
- * and an active state marked by a left accent bar rather than a filled block.
+ * The chrome is presentation. Hiding a link has never protected anything: every
+ * route it points at re-checks the session on the server before rendering.
  */
 
-type NavItem = { href: string; label: string; icon: string };
-
-const ICONS: Record<string, string> = {
-  dashboard: "M2.5 2.5h4.5v4.5H2.5zM9 2.5h4.5v4.5H9zM2.5 9h4.5v4.5H2.5zM9 9h4.5v4.5H9z",
-  profile: "M8 8.2a2.7 2.7 0 100-5.4 2.7 2.7 0 000 5.4zM2.8 14v-.8c0-1.9 2.3-3.4 5.2-3.4s5.2 1.5 5.2 3.4V14",
-  journey: "M4 13.5V5m0 0L2 7m2-2l2 2M12 2.5V11m0 0l2-2m-2 2l-2-2",
-  cases: "M2.5 5h11v8.5h-11zM5.5 5V3.6c0-.6.5-1.1 1.1-1.1h2.8c.6 0 1.1.5 1.1 1.1V5",
-  documents: "M4 2h5l3.5 3.5V14H4zM9 2v3.5h3.5",
-  opportunities: "M8 1.8l1.85 3.9 4.15.55-3.05 2.9.78 4.25L8 11.35 4.27 13.4l.78-4.25L2 6.25l4.15-.55z",
-  messages: "M2.5 3.2h11v7.4h-6l-3.4 2.7v-2.7H2.5z",
-  appointments: "M3 4.2h10v9.3H3zM3 6.9h10M5.6 2.4v2.2M10.4 2.4v2.2",
-  tasks: "M2.4 4.6l1.4 1.4 2.6-2.6M2.4 10.2l1.4 1.4 2.6-2.6M8.6 5h5M8.6 10.6h5",
-  notifications: "M8 2.2a3.4 3.4 0 00-3.4 3.4c0 2.9-1.4 3.9-1.4 3.9h9.6s-1.4-1-1.4-3.9A3.4 3.4 0 008 2.2zM6.7 11.9a1.4 1.4 0 002.6 0",
-  support: "M8 13.8A5.8 5.8 0 108 2.2a5.8 5.8 0 000 11.6zM6.4 6.2a1.7 1.7 0 013.3.6c0 1.1-1.65 1.4-1.65 2.5M8 11.3h.01",
-  settings: "M8 9.8a1.8 1.8 0 100-3.6 1.8 1.8 0 000 3.6zM12.6 8c0-.3 0-.6-.08-.9l1.2-.92-1.2-2.05-1.38.55a4.6 4.6 0 00-1.56-.9L9.35 2.3h-2.7l-.23 1.48a4.6 4.6 0 00-1.56.9L3.48 4.13 2.28 6.18l1.2.92a4.6 4.6 0 000 1.8l-1.2.92 1.2 2.05 1.38-.55c.46.4.99.7 1.56.9l.23 1.48h2.7l.23-1.48a4.6 4.6 0 001.56-.9l1.38.55 1.2-2.05-1.2-.92c.06-.3.08-.6.08-.9z",
-  admin: "M8 1.9l5 2v3.7c0 3-2.1 5.5-5 6.3-2.9-.8-5-3.3-5-6.3V3.9z",
+const ICONS: Record<IconKey, string> = {
+  dashboard: "M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z",
+  journey: "M4 20L20 4M4 20h5M20 4v5",
+  applications: "M6 3h9l4 4v14H6zM15 3v4h4",
+  universities: "M12 3l9 5-9 5-9-5zM5 11v5c0 1.5 3 3 7 3s7-1.5 7-3v-5",
+  documents: "M6 3h9l4 4v14H6zM9 12h7M9 16h5",
+  scholarships: "M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8z",
+  messages: "M4 5h16v11H9l-5 4z",
+  consultations: "M4 6h16v14H4zM4 10h16M9 3v4M15 3v4",
+  profile: "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 3.6-6 8-6s8 2 8 6",
+  settings:
+    "M12 15a3 3 0 100-6 3 3 0 000 6zM3 12h2M19 12h2M12 3v2M12 19v2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4",
+  jobs: "M3 8h18v12H3zM8 8V5h8v3",
+  interviews: "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 3.6-6 8-6s8 2 8 6M18 3l3 3-3 3",
+  requests: "M5 4h14v16H5zM9 9h6M9 13h6M9 17h3",
+  services: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+  users: "M9 12a4 4 0 100-8 4 4 0 000 8zM2 21c0-3.5 3.1-5.5 7-5.5s7 2 7 5.5M17 11a3 3 0 100-6M18 20c0-2.5 1.5-4 4-4",
+  activity: "M3 12h4l3-8 4 16 3-8h4",
+  tasks: "M4 7l2 2 4-4M4 17l2 2 4-4M13 8h7M13 17h7",
 };
 
-function navFor(role: Role): { group: string; items: NavItem[] }[] {
-  const journeyLabel =
-    role === "student"
-      ? "Study journey"
-      : role === "professional"
-        ? "Career journey"
-        : "Setup journey";
-
-  const casesLabel = role === "business" ? "Requests" : "Applications";
-
-  // The intake form is named for what it IS to each audience. "Application"
-  // means nothing to a business user filling in a company profile.
-  const applicationLabel =
-    role === "student"
-      ? "My application"
-      : role === "professional"
-        ? "Career profile"
-        : "Business profile";
-
-  const groups: { group: string; items: NavItem[] }[] = [
-    {
-      group: "Journey",
-      items: [
-        { href: "/portal", label: "Overview", icon: "dashboard" },
-        { href: "/portal/application", label: applicationLabel, icon: "cases" },
-        { href: "/portal/journey", label: journeyLabel, icon: "journey" },
-        { href: "/portal/cases", label: casesLabel, icon: "cases" },
-        ...(role === "professional"
-          ? [{ href: "/portal/opportunities", label: "Opportunities", icon: "opportunities" }]
-          : []),
-      ],
-    },
-    {
-      group: "Your file",
-      items: [
-        { href: "/portal/profile", label: "Profile", icon: "profile" },
-        { href: "/portal/documents", label: "Documents", icon: "documents" },
-        { href: "/portal/tasks", label: "Tasks", icon: "tasks" },
-      ],
-    },
-    {
-      group: "Contact",
-      items: [
-        { href: "/portal/messages", label: "Messages", icon: "messages" },
-        { href: "/portal/appointments", label: "Appointments", icon: "appointments" },
-        { href: "/portal/notifications", label: "Notifications", icon: "notifications" },
-      ],
-    },
-    {
-      group: "Account",
-      items: [
-        { href: "/portal/settings", label: "Settings", icon: "settings" },
-        { href: "/portal/support", label: "Support", icon: "support" },
-      ],
-    },
-  ];
-
-  /*
-    STAFF_ROLES, not a hand-written list.
-
-    This previously read `role === "admin" || role === "advisor"`, which left
-    `super_admin` — the single account the system ships with — unable to see the
-    staff navigation at all. Deriving it from the same constant the server-side
-    guards use means the menu and the authorization can no longer disagree.
-  */
-  if (STAFF_ROLES.includes(role)) {
-    groups.unshift({
-      group: "Staff",
-      items: [
-        { href: "/portal/admin", label: "Overview", icon: "admin" },
-        { href: "/portal/admin/requests", label: "Requests", icon: "cases" },
-        { href: "/portal/admin/users", label: "Users & roles", icon: "profile" },
-        { href: "/portal/admin/cases", label: "Cases", icon: "cases" },
-        { href: "/portal/admin/documents", label: "Document review", icon: "documents" },
-        { href: "/portal/admin/staff", label: "Advisors", icon: "opportunities" },
-        { href: "/portal/admin/audit", label: "Audit log", icon: "tasks" },
-      ],
-    });
-  }
-
-  return groups;
+function Icon({ name }: { name: IconKey }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className="h-[18px] w-[18px] shrink-0">
+      <path d={ICONS[name]} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
 }
+
+export type Badges = Partial<Record<BadgeKey, number>>;
 
 export function PortalShell({
   children,
   name,
   role,
+  badges = {},
 }: {
   children: React.ReactNode;
   name: string;
   role: Role;
+  /** Live counts, computed on the server. Absent or zero renders nothing. */
+  badges?: Badges;
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
-  const groups = navFor(role);
 
-  useEffect(() => setOpen(false), [pathname]);
+  const portalRole = portalRoleFor(role);
+  const groups = navFor[portalRole];
+  const home = homeFor(role);
+
+  useEffect(() => setMenuOpen(false), [pathname]);
 
   useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   async function logout() {
     setSigningOut(true);
     analytics.portalLogout();
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/");
+    /*
+      replace(), not push(). After signing out the dashboard must not be one
+      Back press away — replace drops it from history, and because every portal
+      page is dynamic and no-store, Back re-requests it and meets the guard.
+    */
+    router.replace("/login");
     router.refresh();
   }
 
-  const initials = name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+  const initials =
+    name
+      .split(" ")
+      .map((p) => p[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "—";
 
-  const Rail = (
-    <nav aria-label="Portal" className="flex h-full flex-col">
-      {/* Brand */}
-      <div className="border-b border-line px-5 py-5">
-        <Link href="/portal" className="group flex items-center gap-3">
-          <Image
-            src="/brand/snz-mark.png"
-            alt=""
-            width={34}
-            height={34}
-            className="h-8 w-8 rounded-full ring-1 ring-white/15 transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:rotate-[8deg]"
-          />
-          <span className="flex flex-col leading-none">
-            <span className="text-[0.98rem] font-bold tracking-[-0.02em] text-fg">
-              SnZ Ventures
-            </span>
-            <span className="label mt-1 text-[0.6rem] text-faint">
-              Client portal
-            </span>
-          </span>
-        </Link>
-      </div>
+  const isActive = (href: string) =>
+    href === home ? pathname === home : pathname === href || pathname.startsWith(`${href}/`);
 
-      {/* Groups */}
-      <div className="rail flex-1 overflow-y-auto px-3 py-5">
-        {groups.map((g, gi) => (
-          <div key={g.group} className={cn(gi > 0 && "mt-6 border-t border-line pt-5")}>
-            <p className="label px-3 pb-2.5 text-[0.6rem] text-faint">{g.group}</p>
-            <ul className="space-y-0.5">
-              {g.items.map((item) => {
-                const active =
-                  item.href === "/portal"
-                    ? pathname === "/portal"
-                    : pathname.startsWith(item.href);
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      aria-current={active ? "page" : undefined}
-                      className={cn(
-                        // min-h-11 because a sidebar is navigated by thumb on a
-                        // phone, and 2.5 padding put these at 38px.
-                        "group relative flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.89rem] transition-colors duration-300",
-                        active
-                          ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent-ink"
-                          : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg"
-                      )}
-                    >
-                      <svg
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        aria-hidden
-                        className={cn(
-                          "h-[17px] w-[17px] shrink-0 transition-colors",
-                          active ? "text-accent" : "text-faint group-hover:text-muted"
-                        )}
-                      >
-                        <path
-                          d={ICONS[item.icon]}
-                          stroke="currentColor"
-                          strokeWidth="1.25"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      {item.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      {/* Account */}
-      <div className="border-t border-line p-3">
-        <div className="flex items-center gap-3 px-2 py-2">
-          <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-moss-400 to-moss-600 text-[0.75rem] font-bold text-navy-950 ring-1 ring-white/20">
-            {initials}
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block truncate text-[0.85rem] font-semibold text-fg">
-              {name}
-            </span>
-            <span className="label block text-[0.6rem] text-faint">
-              {ROLE_LABEL[role]}
-            </span>
-          </span>
+  const Nav = (
+    <nav aria-label="Portal" className="flex flex-col gap-6">
+      {groups.map((g) => (
+        <div key={g.group}>
+          <p className="label px-3 pb-2 text-[0.62rem] text-faint">{g.group}</p>
+          <ul className="flex flex-col gap-0.5">
+            {g.items.map((item) => {
+              const on = isActive(item.href);
+              const count = item.badgeKey ? badges[item.badgeKey] ?? 0 : 0;
+              return (
+                <li key={item.href + item.label}>
+                  <Link
+                    href={item.href}
+                    aria-current={on ? "page" : undefined}
+                    className={cn(
+                      "group flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.89rem] transition-colors",
+                      on
+                        ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent-ink"
+                        : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg"
+                    )}
+                  >
+                    <Icon name={item.icon} />
+                    <span className="flex-1">{item.label}</span>
+                    {count > 0 && (
+                      <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-moss-400 px-1.5 text-[0.68rem] font-semibold text-navy-950">
+                        {count > 99 ? "99+" : count}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-        <button
-          type="button"
-          onClick={logout}
-          disabled={signingOut}
-          className="mt-1 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.87rem] text-muted transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] hover:text-fg disabled:opacity-50"
-        >
-          <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[15px] w-[15px]">
-            <path
-              d="M10 2.5H4.5A1.5 1.5 0 003 4v8a1.5 1.5 0 001.5 1.5H10M7 8h6.5m0 0l-2-2m2 2l-2 2"
-              stroke="currentColor"
-              strokeWidth="1.25"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          {signingOut ? "Signing out…" : "Sign out"}
-        </button>
-      </div>
+      ))}
     </nav>
   );
 
   return (
-    /*
-      `tone-soft`, not `tone-deep`.
+    <div className="tone-soft min-h-screen">
+      <div className="mx-auto flex w-full max-w-[100rem]">
+        {/* Sidebar — desktop */}
+        <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-line px-4 py-6 lg:flex">
+          <Link href={home} className="mb-8 flex items-center gap-2.5 px-2">
+            <Image src="/brand/snz-mark.png" alt="" width={32} height={32} className="h-8 w-8 rounded-full" />
+            <span className="flex flex-col leading-none">
+              <span className="text-[1rem] font-bold tracking-[-0.02em] text-fg">SnZ Ventures</span>
+              <span className="label mt-1 text-[0.58rem] text-faint">Client portal</span>
+            </span>
+          </Link>
 
-      The portal was pinned to the dark tone, so it stayed near-black while the
-      rest of the site — light by default since the theme switch — was pale.
-      Signing in felt like arriving at a different product. It now follows the
-      visitor's theme like every other surface, and the dark art direction is
-      still one toggle away.
-    */
-    <div className="tone-soft relative min-h-screen">
-      {/* Ground texture — depth without noise */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 opacity-[0.55]"
-        style={{
-          background:
-            "radial-gradient(1200px 600px at 78% -10%, color-mix(in srgb, #2755A2 22%, transparent), transparent 70%)",
-        }}
-      />
+          <div className="rail flex-1 overflow-y-auto">{Nav}</div>
 
-      <div className="relative mx-auto flex min-h-screen max-w-[1680px]">
-        <aside className="sticky top-0 hidden h-screen w-[268px] shrink-0 border-r border-line bg-[color-mix(in_srgb,var(--fg)_2%,transparent)] backdrop-blur-sm lg:block">
-          {Rail}
-        </aside>
-
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              className="fixed inset-0 z-50 lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <button
-                type="button"
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-                className="absolute inset-0 h-full w-full cursor-default bg-navy-950/75 backdrop-blur-sm"
-              />
-              <motion.div
-                role="dialog"
-                aria-modal="true"
-                aria-label="Portal menu"
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="tone-deep absolute inset-y-0 left-0 w-[min(86vw,300px)] border-r border-line"
-              >
-                {Rail}
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-line bg-[color-mix(in_srgb,var(--surface)_88%,transparent)] px-4 py-3 backdrop-blur-xl sm:px-7 lg:px-9">
+          <div className="mt-4 border-t border-line pt-4">
+            <div className="flex items-center gap-3 px-2 py-1.5">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-moss-400 to-moss-600 text-[0.73rem] font-bold text-navy-950">
+                {initials}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[0.85rem] font-semibold text-fg">{name}</span>
+                <span className="label block text-[0.58rem] text-faint">{ROLE_LABEL[role]}</span>
+              </span>
+            </div>
             <button
               type="button"
-              onClick={() => setOpen(true)}
-              aria-label="Open menu"
-              aria-expanded={open}
-              className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-line text-muted transition-colors hover:text-fg lg:hidden"
+              onClick={logout}
+              disabled={signingOut}
+              className="mt-1 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.87rem] text-muted transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg disabled:opacity-50"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[15px] w-[15px]">
+                <path
+                  d="M10 2.5H4.5A1.5 1.5 0 003 4v8a1.5 1.5 0 001.5 1.5H10M7 8h6.5m0 0l-2-2m2 2l-2 2"
+                  stroke="currentColor"
+                  strokeWidth="1.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              {signingOut ? "Signing out…" : "Sign out"}
+            </button>
+          </div>
+        </aside>
+
+        {/* Main */}
+        <div className="min-w-0 flex-1">
+          <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-line bg-[color-mix(in_srgb,var(--surface)_92%,transparent)] px-4 py-3 backdrop-blur-md sm:px-6 lg:px-8">
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-expanded={menuOpen}
+              aria-controls="portal-mobile-nav"
+              aria-label="Menu"
+              className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] border border-line text-muted transition-colors hover:text-fg lg:hidden"
             >
               <span className="flex flex-col gap-[4px]">
                 <span className="block h-px w-4 bg-current" />
                 <span className="block h-px w-4 bg-current" />
-                <span className="block h-px w-2.5 bg-current" />
+                <span className="block h-px w-4 bg-current" />
               </span>
             </button>
 
-            <Link
-              href="/"
-              className="label flex items-center gap-2 text-faint transition-colors hover:text-fg"
-            >
+            <Link href="/" className="label -my-3 hidden min-h-11 items-center gap-2 py-3 text-faint transition-colors hover:text-fg sm:inline-flex">
               <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5">
                 <path d="M11 6H2m0 0l3.5-3.5M2 6l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               Back to site
             </Link>
 
-            <div className="ml-auto flex items-center gap-2">
-              {/* The portal follows the site theme now, so the control to change
-                  it has to be reachable from inside the portal too. */}
-              <ThemeToggle />
-              {[
-                { href: "/portal/messages", label: "Messages", icon: "messages" },
-                { href: "/portal/notifications", label: "Notifications", icon: "notifications" },
-              ].map((a) => (
-                <Link
-                  key={a.href}
-                  href={a.href}
-                  aria-label={a.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-line text-faint transition-colors hover:border-line-strong hover:text-fg"
-                >
-                  <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[15px] w-[15px]">
-                    <path d={ICONS[a.icon]} stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-              ))}
-            </div>
+            <p className="min-w-0 flex-1 truncate text-[0.85rem] text-faint lg:text-right">
+              <span className="font-medium text-fg">{name}</span>
+            </p>
+
+            <ThemeToggle />
+            <span
+              aria-hidden
+              className="hidden h-9 w-9 items-center justify-center rounded-full border border-line text-[0.72rem] font-semibold text-muted sm:flex"
+            >
+              {initials}
+            </span>
           </header>
 
-          <main id="main" className="flex-1 px-4 py-9 sm:px-7 lg:px-9">
-            <div className="mx-auto max-w-[1180px]">{children}</div>
+          {/* Mobile drawer — a disclosure under the header rather than a shrunk
+              sidebar, so it never overlays the content it navigates to. */}
+          {menuOpen && (
+            <div id="portal-mobile-nav" className="border-b border-line px-4 py-5 lg:hidden">
+              {Nav}
+              <button
+                type="button"
+                onClick={logout}
+                disabled={signingOut}
+                className="mt-5 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] border border-line px-3 text-[0.87rem] text-muted transition-colors hover:text-fg disabled:opacity-50"
+              >
+                {signingOut ? "Signing out…" : "Sign out"}
+              </button>
+            </div>
+          )}
+
+          <main id="main" className="px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+            {children}
           </main>
         </div>
       </div>

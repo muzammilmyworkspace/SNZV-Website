@@ -1,30 +1,61 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
-import { PortalShell } from "@/components/portal/PortalShell";
+import { PortalShell, type Badges } from "@/components/portal/PortalShell";
+import * as repo from "@/lib/db/repos/portal";
+import { isDatabaseConfigured } from "@/lib/db/client";
+import { isAdmin } from "@/lib/auth/guard";
 
 export const metadata: Metadata = {
   title: "Client Portal",
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: false, nocache: true },
 };
+
+/**
+ * Every /portal route is dynamic and uncached.
+ *
+ * Two reasons, both load-bearing. A cached shell could serve one signed-in
+ * person's name and counts to the next. And after signing out, a cached page in
+ * the browser's back-forward store would still show the dashboard — with this,
+ * Back re-requests and meets the guard below.
+ */
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 /**
  * Server-side authorisation for every /portal route.
  *
- * Middleware only checks that a cookie is present; this is where the signature
- * is actually verified. Every page under /portal is therefore guaranteed a
- * real session and none of them needs to re-check.
+ * Proxy only checks that a cookie is PRESENT; this is where the signature is
+ * verified. Every page under /portal is therefore guaranteed a real session.
+ * Pages that need a narrower role still call their own guard — this one only
+ * establishes that somebody is signed in.
  */
-export default async function PortalLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
   if (!session) redirect("/login?next=/portal");
 
+  /*
+    Sidebar counts, computed here so every page shows the same numbers rather
+    than each recomputing them. Degrades to no badges when the database is
+    unreachable — a missing badge is a far better failure than a broken shell.
+  */
+  let badges: Badges = {};
+  if (isDatabaseConfigured()) {
+    const [messages, notifications, documents, tasks] = await Promise.all([
+      repo.countUnreadMessages(session.userId, session.role),
+      repo.countUnreadNotifications(session.userId),
+      isAdmin(session.role)
+        ? repo.getDocumentsForReview(200).then((d) => d.length)
+        : repo
+            .getDocumentsForOwner(session.userId)
+            .then((d) => d.filter((x) => x.status === "rejected" || x.status === "needs_update").length),
+      repo.getTasksForUser(session.userId).then((t) => t.filter((x) => x.status !== "done").length),
+    ]);
+    badges = { messages, notifications, documents, tasks };
+  }
+
   return (
-    <PortalShell name={session.name} role={session.role}>
+    <PortalShell name={session.name} role={session.role} badges={badges}>
       {children}
     </PortalShell>
   );

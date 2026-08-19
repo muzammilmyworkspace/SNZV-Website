@@ -4,6 +4,7 @@ import { verifyPassword } from "@/lib/auth/password";
 import { createToken, setSessionCookie, authConfigured } from "@/lib/auth/session";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 import { audit } from "@/lib/db/repos/audit";
+import { homeFor } from "@/lib/portal/roles";
 
 export const runtime = "nodejs";
 
@@ -95,5 +96,10 @@ export async function POST(request: Request) {
     createToken({ userId: user.id, email: user.email, role: user.role, name: user.name })
   );
 
-  return NextResponse.json({ ok: true, role: user.role });
+  /*
+    The destination is decided HERE, from the role the server just verified.
+    Returning it means the browser never has to guess where a role belongs, and
+    never gets to choose — it follows what the server says.
+  */
+  return NextResponse.json({ ok: true, role: user.role, redirectTo: homeFor(user.role) });
 }
