@@ -782,6 +782,116 @@ export type AdminMetrics = {
   unreadMessages: number;
 };
 
+/**
+ * THE WHOLE ADMIN DASHBOARD IN ONE ROUND TRIP.
+ *
+ * It used to issue five reads through Promise.all — metrics, recent cases,
+ * documents awaiting review, recent users, plus the layout's badges. Every
+ * other admin page issues two and returned in under half a second; this one
+ * timed out at thirty in production, every time, with no error logged.
+ *
+ * The cause was connection starvation, not slow SQL. Supabase's transaction
+ * pooler accepts the TCP and TLS handshake before it has a backend to give
+ * you, so a starved connection looks CONNECTED and the query simply never
+ * starts. `connect_timeout` has already been satisfied and `statement_timeout`
+ * never begins counting, so nothing fires — the request hangs until the
+ * platform kills it. That is why the logs showed a timeout and no database
+ * error.
+ *
+ * Returning everything as JSON from one statement means one connection and one
+ * round trip, which removes the condition entirely rather than tuning around
+ * it. Every figure is still a real COUNT over real rows.
+ */
+export async function getAdminOverview(limitCases = 12, limitDocs = 10, limitUsers = 8) {
+  return safeQuery(async () => {
+    const [r] = await db()`
+      SELECT
+        json_build_object(
+          'totalUsers',       (SELECT count(*)::int FROM users),
+          'students',         (SELECT count(*)::int FROM users WHERE role='student'),
+          'professionals',    (SELECT count(*)::int FROM users WHERE role='professional'),
+          'businesses',       (SELECT count(*)::int FROM users WHERE role='business'),
+          'advisors',         (SELECT count(*)::int FROM users WHERE role IN ('advisor','admin','super_admin')),
+          'openCases',        (SELECT count(*)::int FROM cases WHERE status NOT IN ('completed','closed')),
+          'completedCases',   (SELECT count(*)::int FROM cases WHERE status IN ('completed','closed')),
+          'pendingDocuments', (SELECT count(*)::int FROM documents WHERE status IN ('uploaded','pending_review')),
+          'applications',     (SELECT count(*)::int FROM applications),
+          'appointments',     (SELECT count(*)::int FROM appointments WHERE status IN ('requested','confirmed')),
+          'unreadMessages',   (SELECT count(*)::int FROM messages WHERE read_at IS NULL),
+          'totalQueries',     (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft'),
+          'newQueries',       (SELECT count(*)::int FROM intake_forms WHERE status = 'submitted'),
+          'studentQueries',   (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'study'),
+          'careerQueries',    (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'career'),
+          'businessQueries',  (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'business')
+        ) AS metrics,
+
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT c.id, c.title, c.status, c.pathway, c.country, c.updated_at,
+                   u.name AS client_name, a.name AS advisor_name
+            FROM cases c
+            JOIN users u ON u.id = c.client_id
+            LEFT JOIN users a ON a.id = c.advisor_id
+            ORDER BY c.updated_at DESC LIMIT ${limitCases}
+          ) x
+        ), '[]'::json) AS cases,
+
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT d.id, d.name, d.category, d.status, d.updated_at, u.name AS owner_name
+            FROM documents d
+            JOIN users u ON u.id = d.owner_id
+            WHERE d.status IN ('uploaded','pending_review')
+            ORDER BY d.updated_at DESC LIMIT ${limitDocs}
+          ) x
+        ), '[]'::json) AS pending_documents,
+
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT id, email, name, role, status, created_at, last_login_at
+            FROM users ORDER BY created_at DESC LIMIT ${limitUsers}
+          ) x
+        ), '[]'::json) AS recent_users
+    `;
+
+    return {
+      metrics: (r?.metrics ?? {}) as Record<string, number>,
+      cases: ((r?.cases ?? []) as Record<string, unknown>[]).map((c) => ({
+        id: String(c.id),
+        title: String(c.title),
+        status: String(c.status),
+        pathway: String(c.pathway),
+        country: c.country ? String(c.country) : null,
+        clientName: String(c.client_name),
+        advisorName: c.advisor_name ? String(c.advisor_name) : null,
+        updatedAt: iso(c.updated_at)!,
+      })),
+      pendingDocuments: ((r?.pending_documents ?? []) as Record<string, unknown>[]).map((d) => ({
+        id: String(d.id),
+        name: String(d.name),
+        category: String(d.category),
+        status: String(d.status),
+        ownerName: String(d.owner_name),
+        updatedAt: iso(d.updated_at)!,
+      })),
+      recentUsers: ((r?.recent_users ?? []) as Record<string, unknown>[]).map((u) => ({
+        id: String(u.id),
+        email: String(u.email),
+        name: String(u.name),
+        role: u.role as Role,
+        status: String(u.status),
+        createdAt: iso(u.created_at)!,
+        lastLoginAt: iso(u.last_login_at),
+      })),
+    };
+  }, {
+    metrics: {} as Record<string, number>,
+    cases: [] as { id: string; title: string; status: string; pathway: string; country: string | null; clientName: string; advisorName: string | null; updatedAt: string }[],
+    pendingDocuments: [] as { id: string; name: string; category: string; status: string; ownerName: string; updatedAt: string }[],
+    recentUsers: [] as { id: string; email: string; name: string; role: Role; status: string; createdAt: string; lastLoginAt: string | null }[],
+  });
+}
+
 export async function getAdminMetrics(): Promise<AdminMetrics> {
   return safeQuery(async () => {
     const [r] = await db()`

@@ -70,11 +70,19 @@ function create() {
       timed out in production while its own sub-pages, which query far less,
       returned in under half a second.
 
-      Three is deliberate: enough that a handful of independent reads overlap,
-      small enough that many concurrent lambdas will not exhaust Supabase's
-      transaction pooler. The pooler multiplexes, so these are cheap.
+      Raising it to three was the wrong answer and made things worse: Supabase's
+      transaction pooler does not refuse a connection it cannot serve, it
+      completes the handshake and then never assigns a backend. The connection
+      looks established, `connect_timeout` is already satisfied, and
+      `statement_timeout` never starts counting because the statement never
+      does — so the request hangs until the platform kills it.
+
+      The real fix was to stop issuing five concurrent reads per page (see
+      getAdminOverview). With pages down to one or two round trips, one
+      connection per invocation is both correct for serverless and no longer a
+      bottleneck.
     */
-    max: onVercel ? 3 : 8,
+    max: onVercel ? 1 : 8,
     idle_timeout: 20,
     /*
       Shorter than a serverless function's budget, on purpose. Vercel kills an

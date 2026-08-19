@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { requireStaff } from "@/lib/auth/guard";
 import { isAdmin } from "@/lib/auth/guard";
-import { listUsers } from "@/lib/db/repos/users";
 import {
-  getAdminMetrics,
-  getAllCases,
+  getAdminOverview,
   getCasesForAdvisor,
-  getDocumentsForReview,
   getAssignedClients,
 } from "@/lib/db/repos/portal";
 import { isDatabaseConfigured } from "@/lib/db/client";
@@ -48,13 +45,36 @@ export default async function AdminPage() {
     );
   }
 
-  const [metrics, cases, pendingDocs, recentUsers, myClients] = await Promise.all([
-    admin ? getAdminMetrics() : Promise.resolve(null),
-    admin ? getAllCases(12) : getCasesForAdvisor(session.userId),
-    admin ? getDocumentsForReview(10) : Promise.resolve([]),
-    admin ? listUsers({ limit: 8 }) : Promise.resolve([]),
-    admin ? Promise.resolve([]) : getAssignedClients(session.userId),
-  ]);
+  /*
+    ONE query for the admin view, not five.
+
+    Five independent reads through Promise.all opened five connections at once,
+    and Supabase's transaction pooler starves rather than refuses: it completes
+    the handshake before it has a backend, so the connection looks established
+    and the query never starts. `connect_timeout` is already satisfied by then
+    and `statement_timeout` has not begun, so nothing fires and the request
+    hangs until the platform kills it. Every other admin page issues two reads
+    and was fine; this one timed out at thirty seconds, every time, with a
+    platform timeout in the logs and no database error to explain it.
+
+    `getAdminOverview` returns the counts, the recent cases, the review queue
+    and the newest users as JSON from a single statement — one connection, one
+    round trip, ~200ms. The advisor view still uses its own scoped queries,
+    which are two, not five.
+  */
+  const overview = admin ? await getAdminOverview(12, 10, 8) : null;
+
+  const [advisorCases, myClients] = admin
+    ? [[], []]
+    : await Promise.all([
+        getCasesForAdvisor(session.userId),
+        getAssignedClients(session.userId),
+      ]);
+
+  const metrics = (overview?.metrics ?? {}) as Record<string, number>;
+  const cases = admin ? (overview?.cases ?? []) : advisorCases;
+  const pendingDocs = overview?.pendingDocuments ?? [];
+  const recentUsers = overview?.recentUsers ?? [];
 
   return (
     <>
