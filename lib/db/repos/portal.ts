@@ -163,6 +163,21 @@ function mapCase(r: Record<string, unknown>): CaseRow {
 }
 
 /** True when the viewer may see this case. Enforced server-side, always. */
+/** One case, with the owner needed to scope an advisor's permission. */
+export async function getCaseById(id: string): Promise<CaseRow | null> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT c.*, u.name AS client_name, a.name AS advisor_name
+      FROM cases c
+      JOIN users u ON u.id = c.client_id
+      LEFT JOIN users a ON a.id = c.advisor_id
+      WHERE c.id = ${id}
+      LIMIT 1
+    `;
+    return rows[0] ? mapCase(rows[0]) : null;
+  }, null);
+}
+
 export async function canAccessCase(
   caseId: string,
   viewerId: string,
@@ -191,13 +206,17 @@ export async function updateCaseStatus(
   caseId: string,
   status: string,
   nextAction: string | null
-) {
-  await db()`
-    UPDATE cases SET status = ${status}::case_status,
-                     next_action = ${nextAction},
-                     updated_at = now()
-    WHERE id = ${caseId}
-  `;
+): Promise<boolean> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      UPDATE cases SET status = ${status}::case_status,
+                       next_action = ${nextAction},
+                       updated_at = now()
+      WHERE id = ${caseId}
+      RETURNING id
+    `;
+    return rows.length > 0;
+  }, false);
 }
 
 export async function assignAdvisorToCase(caseId: string, advisorId: string | null) {
@@ -802,6 +821,49 @@ export type AdminMetrics = {
  * round trip, which removes the condition entirely rather than tuning around
  * it. Every figure is still a real COUNT over real rows.
  */
+/**
+ * Query analytics — status distribution and weekly volume, in one round trip.
+ *
+ * Bounded to twelve weeks so the result set cannot grow with the table. Both
+ * aggregations are computed by Postgres rather than by pulling rows and
+ * counting them in JavaScript, which is the version that stops working once
+ * there are real numbers of records.
+ */
+export async function getQueryAnalytics(): Promise<{
+  byStatus: { key: string; count: number }[];
+  overTime: { week: string; count: number }[];
+}> {
+  return safeQuery(async () => {
+    const [r] = await db()`
+      SELECT
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT status::text AS key, count(*)::int AS count
+            FROM intake_forms
+            GROUP BY status
+            ORDER BY count(*) DESC
+          ) x
+        ), '[]'::json) AS by_status,
+
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT to_char(date_trunc('week', submitted_at), 'YYYY-MM-DD') AS week,
+                   count(*)::int AS count
+            FROM intake_forms
+            WHERE submitted_at IS NOT NULL
+              AND submitted_at >= now() - interval '12 weeks'
+            GROUP BY date_trunc('week', submitted_at)
+            ORDER BY date_trunc('week', submitted_at)
+          ) x
+        ), '[]'::json) AS over_time
+    `;
+    return {
+      byStatus: ((r?.by_status ?? []) as { key: string; count: number }[]) ?? [],
+      overTime: ((r?.over_time ?? []) as { week: string; count: number }[]) ?? [],
+    };
+  }, { byStatus: [], overTime: [] });
+}
+
 export async function getAdminOverview(limitCases = 12, limitDocs = 10, limitUsers = 8) {
   return safeQuery(async () => {
     const [r] = await db()`

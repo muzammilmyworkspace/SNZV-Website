@@ -4,6 +4,7 @@ import { getAllCases, getCasesForAdvisor } from "@/lib/db/repos/portal";
 import { isDatabaseConfigured } from "@/lib/db/client";
 import { PortalHeading, Panel, EmptyState, StatusPill } from "@/components/portal/Pieces";
 import { NotConfigured } from "@/components/portal/NotConfigured";
+import { CaseStatusControl } from "@/components/portal/CaseStatusControl";
 
 export default async function AdminCasesPage() {
   const { session, role } = await requireStaff();
@@ -67,6 +68,33 @@ export default async function AdminCasesPage() {
         Clients cannot change case status. Only staff may advance a case, and every change is recorded in the{" "}
         <Link href="/portal/admin/audit" className="text-accent underline underline-offset-4">audit log</Link>.
       </p>
+
+      {cases.length > 0 && (
+        <div className="mt-5">
+          <Panel title="Update a case">
+            {/*
+              Below the table rather than inside it. A table is for scanning;
+              putting a select and a text field in every row turns forty cases
+              into a wall of controls and makes the overview unreadable.
+            */}
+            {cases.slice(0, 25).map((c) => (
+              <CaseStatusControl
+                key={c.id}
+                caseId={c.id}
+                current={c.status}
+                title={`${c.clientName} — ${c.title}`}
+              />
+            ))}
+            {cases.length > 25 && (
+              <p className="mt-4 text-[0.8rem] text-faint">
+                Showing the 25 most recently updated. Older cases are in the
+                table above.
+              </p>
+            )}
+          </Panel>
+        </div>
+      )}
+
     </>
   );
 }

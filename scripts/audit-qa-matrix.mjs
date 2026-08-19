@@ -28,6 +28,7 @@ const ACCOUNTS = [
     pages: [
       "/portal/admin/users", "/portal/admin/requests", "/portal/admin/documents",
       "/portal/admin/cases", "/portal/admin/staff", "/portal/admin/audit",
+      "/portal/admin/analytics",
       "/portal/messages", "/portal/notifications", "/portal/settings",
     ],
     forbidden: ["/portal/student", "/portal/job-seeker", "/portal/business"],

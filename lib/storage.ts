@@ -20,10 +20,59 @@ import { createHmac, createHash } from "node:crypto";
 
 export type StoredObject = { key: string; size: number; contentType: string };
 
-export function storageTransport(): "blob" | "s3" | "none" {
+export function storageTransport(): "supabase" | "blob" | "s3" | "none" {
+  /*
+    Supabase first, because this project already HAS Supabase.
+
+    The alternatives each mean onboarding a second vendor for something the
+    existing one does: a private bucket with server-issued signed URLs. Using
+    it needs one key from a dashboard the operator already has open, and no new
+    account, billing relationship or region decision.
+  */
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) return "supabase";
   if (process.env.BLOB_READ_WRITE_TOKEN) return "blob";
   if (process.env.S3_BUCKET && process.env.S3_ACCESS_KEY_ID) return "s3";
   return "none";
+}
+
+/**
+ * SUPABASE STORAGE — private bucket, server-signed reads.
+ *
+ * Called with the SERVICE ROLE key, which bypasses storage RLS. That is
+ * correct here and only here: every call is made from a route that has already
+ * authorised the caller, and the key never leaves the server — it has no
+ * NEXT_PUBLIC_ prefix and this module is only imported by API routes.
+ *
+ * The bucket is created private on first use. A public bucket would make every
+ * passport scan readable by anyone who guessed a path, which is the whole
+ * thing this exists to prevent.
+ */
+const SUPABASE_BUCKET = process.env.SUPABASE_DOCUMENTS_BUCKET ?? "client-documents";
+
+function supabaseHeaders(): Record<string, string> {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return { apikey: key, Authorization: `Bearer ${key}` };
+}
+
+const supabaseBase = () => process.env.SUPABASE_URL!.replace(/\/+$/, "");
+
+/** Idempotent. Returns true when the bucket exists and is private. */
+export async function ensureSupabaseBucket(): Promise<boolean> {
+  const res = await fetch(`${supabaseBase()}/storage/v1/bucket`, {
+    method: "POST",
+    headers: { ...supabaseHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: SUPABASE_BUCKET,
+      name: SUPABASE_BUCKET,
+      public: false,
+      file_size_limit: MAX_UPLOAD_BYTES,
+    }),
+    cache: "no-store",
+  });
+  // 400 with "already exists" is the normal path on every call after the first.
+  if (res.ok) return true;
+  const text = await res.text().catch(() => "");
+  return /already exists|Duplicate/i.test(text);
 }
 
 export function isStorageConfigured(): boolean {
@@ -84,6 +133,27 @@ export async function putObject(
 ): Promise<StoredObject> {
   const transport = storageTransport();
 
+  if (transport === "supabase") {
+    await ensureSupabaseBucket();
+    const res = await fetch(
+      `${supabaseBase()}/storage/v1/object/${SUPABASE_BUCKET}/${encodeURI(key)}`,
+      {
+        method: "POST",
+        headers: {
+          ...supabaseHeaders(),
+          "Content-Type": contentType || "application/octet-stream",
+          "x-upsert": "true",
+        },
+        body: new Uint8Array(body),
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`Supabase upload failed: ${res.status} ${await res.text().catch(() => "")}`);
+    }
+    return { key, size: body.length, contentType };
+  }
+
   if (transport === "blob") {
     // Imported lazily so the package is only required when actually used.
     const { put } = await import("@vercel/blob");
@@ -119,6 +189,23 @@ export async function putObject(
 export async function getSignedUrl(key: string, expiresSeconds = 120): Promise<string> {
   const transport = storageTransport();
 
+  if (transport === "supabase") {
+    const res = await fetch(
+      `${supabaseBase()}/storage/v1/object/sign/${SUPABASE_BUCKET}/${encodeURI(key)}`,
+      {
+        method: "POST",
+        headers: { ...supabaseHeaders(), "Content-Type": "application/json" },
+        body: JSON.stringify({ expiresIn: expiresSeconds }),
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) throw new Error(`Supabase sign failed: ${res.status}`);
+    const data = (await res.json()) as { signedURL?: string };
+    if (!data.signedURL) throw new Error("Supabase returned no signed URL.");
+    // The API returns a path relative to /storage/v1.
+    return `${supabaseBase()}/storage/v1${data.signedURL}`;
+  }
+
   if (transport === "s3") return presignS3Get(key, expiresSeconds);
 
   if (transport === "blob") {
@@ -132,6 +219,14 @@ export async function getSignedUrl(key: string, expiresSeconds = 120): Promise<s
 
 export async function deleteObject(key: string): Promise<void> {
   const transport = storageTransport();
+  if (transport === "supabase") {
+    await fetch(`${supabaseBase()}/storage/v1/object/${SUPABASE_BUCKET}/${encodeURI(key)}`, {
+      method: "DELETE",
+      headers: supabaseHeaders(),
+      cache: "no-store",
+    });
+    return;
+  }
   if (transport === "blob") {
     const { del } = await import("@vercel/blob");
     const base = process.env.BLOB_PUBLIC_BASE_URL;
