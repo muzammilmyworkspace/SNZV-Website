@@ -39,10 +39,38 @@ function create() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new DatabaseNotConfiguredError();
 
+  /*
+    POOL SIZE DEPENDS ON HOW THIS IS BEING RUN.
+
+    On Vercel each invocation is its own isolate, so one connection per process
+    is correct and more would exhaust the provider's pooler. Anywhere else —
+    `next start`, a container, a VM — ONE process serves every concurrent
+    request, and a single connection makes them queue behind each other.
+
+    That is not theoretical: under load every request stacked on one connection
+    until a statement sat long enough to hit Postgres' two-minute cap and was
+    cancelled, which surfaced as a hung page rather than an error. The queries
+    themselves measured 170-340ms.
+
+    VERCEL_REGION is injected by the Vercel runtime when a function actually
+    executes there. It is not written by `vercel env pull`, so it distinguishes
+    "running on Vercel" from "holding a copy of Vercel's variables" — which a
+    developer's .env.local does.
+  */
+  const onVercel = Boolean(process.env.VERCEL_REGION);
+
   return postgres(url, {
-    max: 1,
+    max: onVercel ? 1 : 8,
     idle_timeout: 20,
     connect_timeout: 15,
+    /*
+      Fail fast instead of hanging. The server default here is two minutes; a
+      page that waits that long has already failed as far as anyone using it is
+      concerned, and every second of it holds a connection others need. Fifteen
+      seconds is far above the slowest real query measured (340ms), so this can
+      only fire when something has genuinely gone wrong.
+    */
+    connection: { statement_timeout: 15_000 },
     // Managed Postgres providers terminate TLS at the pooler with certs that
     // don't chain to a public root; `require` keeps encryption without
     // demanding a verifiable chain. Never downgrade this to `false`.

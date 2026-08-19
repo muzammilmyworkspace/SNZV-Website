@@ -515,12 +515,21 @@ export async function conversationOwner(conversationId: string): Promise<string 
   }, null);
 }
 
+/**
+ * Clearing the unread badge is a SIDE EFFECT of opening a thread, and it runs
+ * during a page render. Wrapped, because a page must never fail — or worse,
+ * hang on an unhandled rejection — because a bookkeeping update did. The reader
+ * still sees their messages; the badge simply clears on the next visit.
+ */
 export async function markConversationRead(conversationId: string, viewerId: string) {
-  await db()`
-    UPDATE messages SET read_at = now()
-    WHERE conversation_id = ${conversationId}
-      AND author_id <> ${viewerId} AND read_at IS NULL
-  `;
+  await safeQuery(async () => {
+    await db()`
+      UPDATE messages SET read_at = now()
+      WHERE conversation_id = ${conversationId}
+        AND author_id <> ${viewerId} AND read_at IS NULL
+    `;
+    return true;
+  }, false);
 }
 
 /* ---------------------------------------------------------- notifications */
@@ -595,11 +604,15 @@ export async function countUnreadMessages(userId: string, role: Role): Promise<n
   }, 0);
 }
 
+/** Same reasoning as markConversationRead — bookkeeping must not break a page. */
 export async function markNotificationsRead(userId: string) {
-  await db()`
-    UPDATE notifications SET read_at = now()
-    WHERE user_id = ${userId} AND read_at IS NULL
-  `;
+  await safeQuery(async () => {
+    await db()`
+      UPDATE notifications SET read_at = now()
+      WHERE user_id = ${userId} AND read_at IS NULL
+    `;
+    return true;
+  }, false);
 }
 
 /* --------------------------------------------------------- opportunities */
