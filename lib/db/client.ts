@@ -60,7 +60,21 @@ function create() {
   const onVercel = Boolean(process.env.VERCEL_REGION);
 
   return postgres(url, {
-    max: onVercel ? 1 : 8,
+    /*
+      `max: 1` on serverless was actively harmful, not merely conservative.
+
+      A page that issues five queries through Promise.all cannot run them in
+      parallel on one connection — postgres.js queues them, so they become five
+      sequential round trips. The admin dashboard does exactly that, and with
+      the guard and the layout on top it was roughly seven trips in series. It
+      timed out in production while its own sub-pages, which query far less,
+      returned in under half a second.
+
+      Three is deliberate: enough that a handful of independent reads overlap,
+      small enough that many concurrent lambdas will not exhaust Supabase's
+      transaction pooler. The pooler multiplexes, so these are cheap.
+    */
+    max: onVercel ? 3 : 8,
     idle_timeout: 20,
     /*
       Shorter than a serverless function's budget, on purpose. Vercel kills an

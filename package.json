@@ -28,7 +28,8 @@
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "audit:security": "node scripts/audit-portal-security.mjs",
     "audit:auth": "node scripts/audit-auth-flow.mjs",
-    "audit:qa": "node scripts/audit-qa-matrix.mjs"
+    "audit:qa": "node scripts/audit-qa-matrix.mjs",
+    "audit:prod": "node scripts/audit-production.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
