@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { analytics } from "@/lib/analytics";
 import { ROLE_LABEL, type Role } from "@/lib/auth/types";
@@ -67,7 +67,6 @@ export function PortalShell({
   badges?: Badges;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
@@ -89,12 +88,15 @@ export function PortalShell({
     analytics.portalLogout();
     await fetch("/api/auth/logout", { method: "POST" });
     /*
-      replace(), not push(). After signing out the dashboard must not be one
-      Back press away — replace drops it from history, and because every portal
-      page is dynamic and no-store, Back re-requests it and meets the guard.
+      A full load, replacing the history entry.
+
+      Same reasoning as sign-in: a client-side transition here can be cancelled
+      mid-flight and leave the person on a dashboard whose session is already
+      gone. `location.replace` drops the dashboard from history so Back cannot
+      return to it, and the fresh document request meets the guard with no
+      cookie and lands on the sign-in screen.
     */
-    router.replace("/login");
-    router.refresh();
+    window.location.replace("/login");
   }
 
   const initials =

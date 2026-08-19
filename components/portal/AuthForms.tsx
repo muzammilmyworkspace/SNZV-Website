@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Action } from "@/components/ui/Editorial";
@@ -28,6 +28,24 @@ function ErrorNote({ children }: { children: React.ReactNode }) {
   );
 }
 
+function EyeIcon({ open }: { open: boolean }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden className="h-[18px] w-[18px]">
+      <path
+        d="M1.7 10S4.6 4.8 10 4.8 18.3 10 18.3 10 15.4 15.2 10 15.2 1.7 10 1.7 10z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="10" r="2.4" stroke="currentColor" strokeWidth="1.4" />
+      {/* The stroke through it is what says "hidden" — an eye alone is ambiguous
+          about whether it shows the state or the action. */}
+      {!open && <path d="M3.5 3.5l13 13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />}
+    </svg>
+  );
+}
+
 function Field({
   id,
   label,
@@ -49,22 +67,48 @@ function Field({
   placeholder?: string;
   hint?: string;
 }) {
+  /*
+    Reveal control for password fields.
+
+    Typing a long password blind is where most sign-in failures actually come
+    from, and on a phone it is worse. The button reports STATE through
+    aria-pressed rather than swapping its label, so a screen reader hears
+    "show password, pressed" instead of a name that changes under it.
+  */
+  const isPassword = type === "password";
+  const [reveal, setReveal] = useState(false);
+  const inputType = isPassword && reveal ? "text" : type;
+
   return (
     <div>
       <label htmlFor={id} className="field-label">
         {label}
       </label>
+      <div className={cn(isPassword && "relative")}>
       <input
         id={id}
-        type={type}
+        type={inputType}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete={autoComplete}
         placeholder={placeholder}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
-        className="field"
+        className={cn("field", isPassword && "pr-12")}
       />
+      {isPassword && (
+        <button
+          type="button"
+          onClick={() => setReveal((r) => !r)}
+          aria-label="Show password"
+          aria-pressed={reveal}
+          aria-controls={id}
+          className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-[var(--radius-sm)] text-faint transition-colors hover:text-fg"
+        >
+          <EyeIcon open={reveal} />
+        </button>
+      )}
+      </div>
       {hint && !error && (
         <p id={`${id}-hint`} className="mt-1.5 text-[0.76rem] text-faint">
           {hint}
@@ -79,12 +123,29 @@ function Field({
   );
 }
 
-async function post(url: string, body: unknown) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+/**
+ * A POST that cannot hang forever.
+ *
+ * `fetch` has no default timeout, so a request that stalls leaves the button
+ * reading "Signing in…" indefinitely with nothing to click and nothing to
+ * read. The visitor cannot tell a slow network from a broken site. Twenty
+ * seconds is far longer than a healthy sign-in (under three) and short enough
+ * that a stall becomes a message instead of a spinner.
+ */
+async function post(url: string, body: unknown, timeoutMs = 20_000) {
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), timeoutMs);
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: abort.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   const data = (await res.json().catch(() => ({}))) as {
     ok?: boolean;
     error?: string;
@@ -149,7 +210,6 @@ function GoogleButton({ enabled, next }: { enabled: boolean; next?: string | nul
 /* -------------------------------------------------------------- LoginForm */
 
 export function LoginForm({ googleEnabled = false }: { googleEnabled?: boolean }) {
-  const router = useRouter();
   const params = useSearchParams();
   const next = params.get("next");
 
@@ -183,10 +243,27 @@ export function LoginForm({ googleEnabled = false }: { googleEnabled?: boolean }
         next && next.startsWith("/portal") && !next.startsWith("//")
           ? next
           : (data.redirectTo ?? "/portal");
-      router.replace(target);
-      router.refresh();
-    } catch {
-      setError("Network problem. Please check your connection and try again.");
+      /*
+        A FULL PAGE LOAD, not a client-side navigation.
+
+        `router.replace()` followed by `router.refresh()` raced: the refresh
+        invalidated the transition that was still in flight, the RSC request for
+        the destination came back net::ERR_ABORTED, and the form sat on
+        "Signing in…" forever while the session cookie was already set.
+
+        A hard navigation is also simply the honest thing to do after
+        authenticating — the document request carries the new cookie, and no
+        part of the client router cache survives from the signed-out session.
+        One reload is a small price for a transition that cannot half-happen.
+      */
+      window.location.assign(target);
+      return;
+    } catch (e) {
+      setError(
+        e instanceof DOMException && e.name === "AbortError"
+          ? "That took too long to respond. Please try again in a moment."
+          : "Network problem. Please check your connection and try again."
+      );
       setBusy(false);
     }
   }
@@ -247,7 +324,6 @@ const PATHWAYS = [
 ];
 
 export function RegisterForm() {
-  const router = useRouter();
   const [step, setStep] = useState(1);
   const [pathway, setPathway] = useState<string | null>(null);
   const [name, setName] = useState("");
@@ -287,11 +363,17 @@ export function RegisterForm() {
       }
       analytics.registrationComplete(data.role ?? "unknown");
       // Straight to their own dashboard, chosen by the server from the role it
-      // just assigned — never from anything this form holds.
-      router.replace(data.redirectTo ?? "/portal");
-      router.refresh();
-    } catch {
-      setError("Network problem. Please check your connection and try again.");
+      // just assigned — never from anything this form holds. Full load, for the
+      // same reason as sign-in: a client transition can be cancelled mid-flight
+      // and leave the button spinning over a session that already exists.
+      window.location.assign(data.redirectTo ?? "/portal");
+      return;
+    } catch (e) {
+      setError(
+        e instanceof DOMException && e.name === "AbortError"
+          ? "That took too long to respond. Please try again in a moment."
+          : "Network problem. Please check your connection and try again."
+      );
       setBusy(false);
     }
   }
@@ -447,7 +529,6 @@ export function ForgotForm() {
 /* ------------------------------------------------------------ ResetForm */
 
 export function ResetForm({ token }: { token: string }) {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -467,8 +548,8 @@ export function ResetForm({ token }: { token: string }) {
       setBusy(false);
       return;
     }
-    router.push("/portal");
-    router.refresh();
+    // Full load — see the note on sign-in. This also establishes a session.
+    window.location.assign("/portal");
   }
 
   if (!token) {

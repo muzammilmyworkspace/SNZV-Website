@@ -73,12 +73,12 @@ export function AuthShell({
           colour beneath stays the thing you actually see.
         */}
         <Image
-          src="/images/plate-europe-dawn.webp"
+          src="/images/study-campus.webp"
           alt=""
           fill
           priority
           sizes="55vw"
-          className="object-cover opacity-[0.16] mix-blend-soft-light"
+          className="object-cover opacity-[0.30] mix-blend-soft-light"
         />
         <div
           aria-hidden
@@ -99,18 +99,26 @@ export function AuthShell({
         </Link>
 
         <div className="relative z-[4] max-w-xl">
-          {/* d-1 rather than d-2 — this is the panel's only headline and was
-              sitting at the same size as the form heading opposite it. */}
-          <p className="d-1 text-white">Your journey, in one place.</p>
-          <p className="mt-6 text-[1.15rem] leading-relaxed text-white/90">
-            Documents, applications, appointments and the honest next step,
-            tracked by the same people you speak to.
+          {/*
+            Set in capitals with open tracking — at this size lowercase read as
+            a sentence someone had typed, where the brand wants a statement.
+            `d-1`, not `d-2`: it is the panel's only headline and was sitting at
+            the same size as the form heading opposite it.
+          */}
+          <p className="d-1 uppercase tracking-[-0.01em] text-white">
+            One Place For
+            <br />
+            The Whole Journey.
+          </p>
+          <p className="mt-6 max-w-lg text-[1.15rem] leading-relaxed text-white/90">
+            Every document, every application, every honest next step — held by
+            the same people you actually speak to.
           </p>
           <ul className="mt-10 space-y-4">
             {[
-              "One place for every document you send us",
-              "A visible next action, always",
-              "Direct messages with your advisor",
+              "Every document you send us, in one place",
+              "The next step, always named",
+              "Your advisor, one message away",
             ].map((item) => (
               <li
                 key={item}
