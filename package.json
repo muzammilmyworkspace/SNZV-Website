@@ -20,6 +20,7 @@
     "db:status": "node scripts/migrate.mjs --dry",
     "db:bootstrap": "node scripts/bootstrap-admin.mjs",
     "qa:accounts": "node scripts/qa-accounts.mjs",
+    "qa:load": "node scripts/qa-loadtest.mjs",
     "db:verify": "node scripts/verify-schema.mjs",
     "db:doctor": "node scripts/db-doctor.mjs",
     "audit:study": "node scripts/audit-study.mjs",

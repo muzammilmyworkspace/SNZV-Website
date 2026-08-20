@@ -58,9 +58,31 @@ export async function POST(request: Request) {
   const valid = await verifyPassword(password, user?.passwordHash ?? DUMMY_HASH);
 
   if (!user || !valid) {
+    /*
+      THE REASON IS RECORDED SERVER-SIDE, and only there.
+
+      This previously logged `auth.login_failed` with empty meta, so a
+      succession of failures was indistinguishable from each other in the audit
+      table — an operator with full database access still could not tell an
+      unknown address from a mistyped password. A real lockout took a day to
+      understand because of it.
+
+      The reply to the BROWSER stays deliberately identical in every case: it
+      must not reveal whether an address is registered, or an attacker can
+      enumerate accounts one request at a time. Distinguishing them in a log
+      only the operator can read carries none of that risk.
+    */
     await audit({
       action: "auth.login_failed",
+      actorId: user?.id ?? null,
       actorEmail: email.slice(0, 200),
+      meta: {
+        reason: !user
+          ? "unknown_email"
+          : user.passwordHash === null
+            ? "account_has_no_password"
+            : "wrong_password",
+      },
       ip,
     });
     return NextResponse.json(

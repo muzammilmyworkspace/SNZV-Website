@@ -118,6 +118,52 @@ export function db() {
 }
 
 /**
+ * Errors worth retrying once: the connection was never established, or it was
+ * established and then died. Not query errors — a constraint violation will
+ * fail identically the second time and retrying only hides it.
+ */
+function isConnectionError(error: unknown): boolean {
+  const e = error as { code?: string; message?: string } | null;
+  const code = e?.code ?? "";
+  const msg = e?.message ?? "";
+  return (
+    ["CONNECT_TIMEOUT", "CONNECTION_CLOSED", "CONNECTION_ENDED", "ECONNRESET", "ETIMEDOUT", "ENOTFOUND", "EPIPE"].includes(code) ||
+    /connect|terminat|socket|closed|timeout/i.test(msg)
+  );
+}
+
+/**
+ * Runs a query, retrying ONCE if the connection failed rather than the query.
+ *
+ * Serverless connections go stale in two ways this handles. A cold instance
+ * pays the full TLS and auth handshake to the pooler, which occasionally
+ * exceeds `connect_timeout`; and an instance frozen between invocations can
+ * wake holding a socket the pooler has already dropped. Both surfaced the same
+ * way — the FIRST request after a deploy returned 500 while every request after
+ * it succeeded, which is precisely the shape of a cold-connection failure.
+ *
+ * The cached client is discarded before the retry, so the second attempt
+ * genuinely reconnects instead of reusing the broken handle.
+ */
+export async function withConnectionRetry<T>(run: () => Promise<T>): Promise<T> {
+  try {
+    return await run();
+  } catch (error) {
+    if (!isConnectionError(error)) throw error;
+
+    // eslint-disable-next-line no-console
+    console.warn("[db] connection failed, reconnecting once:", (error as Error)?.message);
+    try {
+      await globalThis.__snzSql?.end({ timeout: 1 });
+    } catch {
+      // The handle is already broken; failing to close it changes nothing.
+    }
+    globalThis.__snzSql = undefined;
+    return run();
+  }
+}
+
+/**
  * Runs a query, returning `fallback` when no database is configured.
  * Used by read paths so a partially-configured deployment renders empty
  * states rather than a 500.
@@ -128,7 +174,7 @@ export async function safeQuery<T>(
 ): Promise<T> {
   if (!isDatabaseConfigured()) return fallback;
   try {
-    return await run();
+    return await withConnectionRetry(run);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("[db] query failed:", error);

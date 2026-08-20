@@ -1,4 +1,4 @@
-import { db, safeQuery, isDatabaseConfigured } from "../client";
+import { db, safeQuery, isDatabaseConfigured, withConnectionRetry } from "../client";
 import type { Role } from "@/lib/auth/types";
 
 /**
@@ -53,18 +53,35 @@ export async function findById(id: string): Promise<DbUser | null> {
   }, null);
 }
 
-/** Login path only — returns the hash so it can be verified, then discarded. */
+/**
+ * Login path only — returns the hash so it can be verified, then discarded.
+ *
+ * `passwordHash` is NULLABLE because migration 003 allows provider-only
+ * accounts, which genuinely have none. Callers must handle null rather than
+ * assume a string; the login route already verifies against a dummy hash so
+ * response timing does not reveal which case it hit.
+ */
 export async function findAuthByEmail(
   email: string
-): Promise<(DbUser & { passwordHash: string }) | null> {
+): Promise<(DbUser & { passwordHash: string | null }) | null> {
   if (!isDatabaseConfigured()) return null;
-  const rows = await db()`
+  /*
+    Wrapped, because this is the sign-in read and it does NOT use safeQuery —
+    a failure here must surface, not be swallowed into "wrong password". On a
+    cold instance the first connection can fail; retrying once turns the 500
+    that the first person after a deploy was seeing into a normal sign-in.
+  */
+  const rows = await withConnectionRetry(() => db()`
     SELECT id, email, name, role, status, email_verified, last_login_at,
            created_at, password_hash
     FROM users WHERE lower(email) = ${norm(email)} LIMIT 1
-  `;
+  `);
   if (!rows[0]) return null;
-  return { ...mapUser(rows[0]), passwordHash: String(rows[0].password_hash) };
+  return {
+    ...mapUser(rows[0]),
+    // Null for accounts that sign in with a provider rather than a password.
+    passwordHash: rows[0].password_hash ? String(rows[0].password_hash) : null,
+  };
 }
 
 export async function createUser(input: {
@@ -181,6 +198,81 @@ export type UserFilter = {
   limit?: number;
   offset?: number;
 };
+
+/**
+ * A PAGE of users, plus the total, in ONE round trip.
+ *
+ * `listUsers` returns rows only, so any caller wanting "page 3 of 42" had to
+ * issue a second COUNT — two round trips per page view, on a connection pool
+ * of one. A window function computes the total over the same filtered set
+ * Postgres has already scanned, which costs nothing extra and cannot disagree
+ * with the rows it returns.
+ *
+ * `limit` is clamped. A caller that asks for 10,000 rows gets 100: the point of
+ * paginating is that no single request can be made large enough to time out,
+ * and a cap the client cannot raise is the only version of that which holds.
+ *
+ * SORTING IS FROM A FIXED SET, never interpolated. An ORDER BY built from a
+ * query parameter is SQL injection with extra steps.
+ */
+export type UserSort = "recent" | "oldest" | "name" | "last_active";
+
+export async function listUsersPage(filter: UserFilter & { sort?: UserSort } = {}): Promise<{
+  rows: (DbUser & { profileFields: number })[];
+  total: number;
+  page: number;
+  pages: number;
+  limit: number;
+}> {
+  const limit = Math.min(Math.max(filter.limit ?? 25, 1), 100);
+  const offset = Math.max(filter.offset ?? 0, 0);
+  const q = filter.q?.trim() || null;
+  const role = filter.role && filter.role !== "all" ? filter.role : null;
+  const status = filter.status && filter.status !== "all" ? filter.status : null;
+  const sort: UserSort = filter.sort ?? "recent";
+
+  return safeQuery(async () => {
+    const sql = db();
+    const rows = await sql`
+      SELECT u.id, u.email, u.name, u.role, u.status, u.email_verified,
+             u.last_login_at, u.created_at,
+             count(*) OVER () AS total_count,
+             (
+               -- How much of their profile is filled in, counted in SQL so the
+               -- list does not need a second query per row to show it.
+               SELECT count(*)::int FROM (
+                 SELECT p.phone UNION ALL SELECT p.nationality
+                 UNION ALL SELECT p.country UNION ALL SELECT p.city
+               ) f(v) WHERE v IS NOT NULL AND btrim(v) <> ''
+             ) AS profile_fields
+      FROM users u
+      LEFT JOIN profiles p ON p.user_id = u.id
+      WHERE (${q}::text IS NULL
+             OR u.name ILIKE ${"%" + (q ?? "") + "%"}
+             OR u.email ILIKE ${"%" + (q ?? "") + "%"})
+        AND (${role}::user_role IS NULL OR u.role = ${role}::user_role)
+        AND (${status}::user_status IS NULL OR u.status = ${status}::user_status)
+      ORDER BY
+        CASE WHEN ${sort} = 'name'        THEN u.name        END ASC,
+        CASE WHEN ${sort} = 'oldest'      THEN u.created_at  END ASC,
+        CASE WHEN ${sort} = 'last_active' THEN u.last_login_at END DESC NULLS LAST,
+        u.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `;
+
+    const total = rows.length ? Number(rows[0].total_count) : 0;
+    return {
+      rows: rows.map((r) => ({
+        ...mapUser(r),
+        profileFields: Number(r.profile_fields ?? 0),
+      })),
+      total,
+      page: Math.floor(offset / limit) + 1,
+      pages: Math.max(1, Math.ceil(total / limit)),
+      limit,
+    };
+  }, { rows: [], total: 0, page: 1, pages: 1, limit });
+}
 
 export async function listUsers(filter: UserFilter = {}): Promise<DbUser[]> {
   const { q, role, status, limit = 50, offset = 0 } = filter;
