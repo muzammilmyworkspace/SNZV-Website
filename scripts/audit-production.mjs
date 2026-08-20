@@ -152,12 +152,49 @@ console.log("\nAdmin sees real counts\n");
   const cookie = sessions["Super Admin"];
   if (!cookie) bad("no admin session");
   else {
-    for (const p of ["/portal/admin/users", "/portal/admin/requests", "/portal/admin/documents"]) {
+    /*
+      Every admin page, including the client file reached by link below.
+
+      A production check that skips the heaviest page is how a route issuing
+      six concurrent reads passed for days while timing out for real users.
+    */
+    for (const p of [
+      "/portal/admin/users",
+      "/portal/admin/requests",
+      "/portal/admin/documents",
+      "/portal/admin/staff",
+      "/portal/admin/analytics",
+      "/portal/admin/cases",
+      "/portal/admin/users?q=demo&role=student",
+      "/portal/admin/users?sort=name&page=1",
+    ]) {
       const t = Date.now();
       const res = await fetch(PROD + p, { headers: { cookie }, redirect: "manual" });
       res.status === 200
         ? ok(`${p.padEnd(26)} 200  ${Date.now() - t}ms  [${regionOf(res)}]`)
         : bad(`${p} returned ${res.status}`);
+    }
+  }
+}
+
+console.log("\nHeaviest page: a real client file\n");
+
+{
+  const cookie = sessions["Super Admin"];
+  if (!cookie) bad("no admin session");
+  else {
+    // Found by following a link, not by constructing a URL — that also proves
+    // the page is reachable from the interface, which it was not until today.
+    const list = await fetch(PROD + "/portal/admin/users", { headers: { cookie } });
+    const html = await list.text();
+    const m = html.match(/\/portal\/admin\/users\/[0-9a-f-]{36}/);
+    if (!m) bad("no client link found on the users page");
+    else {
+      const t = Date.now();
+      const res = await fetch(PROD + m[0], { headers: { cookie }, redirect: "manual" });
+      res.status === 200
+        ? ok(`client file renders  ${Date.now() - t}ms  [${regionOf(res)}]`)
+        : bad(`client file returned ${res.status}`);
     }
   }
 }
