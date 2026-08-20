@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { ROLE_LABEL, type Role } from "@/lib/auth/types";
@@ -106,7 +108,18 @@ export function UserTable({
                   )}
                 >
                   <td className="px-5 py-3">
-                    <span className="block text-[0.9rem] text-fg">{u.name}</span>
+                    {/*
+                      The client file existed but nothing linked to it, so the
+                      only way to open a user was to type the UUID into the
+                      address bar. Making it reachable is also what let the QA
+                      matrix start testing it.
+                    */}
+                    <Link
+                      href={`/portal/admin/users/${u.id}`}
+                      className="block text-[0.9rem] text-fg underline-offset-4 hover:text-accent hover:underline"
+                    >
+                      {u.name}
+                    </Link>
                     <span className="block text-[0.78rem] text-faint">{u.email}</span>
                   </td>
 

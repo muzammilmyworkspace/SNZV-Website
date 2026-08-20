@@ -218,6 +218,105 @@ export async function deleteAdminNote(id: string, authorId: string): Promise<boo
   }, false);
 }
 
+/**
+ * THE WHOLE CLIENT FILE IN ONE STATEMENT — STAFF ONLY.
+ *
+ * Named `getAdminUserFile`, not `getClientFile`. That is not cosmetic: this
+ * returns `admin_notes`, which must never reach a client surface, and the
+ * authorization audit rejects any admin_notes reader whose name reads as
+ * client-scoped. It caught the earlier name, correctly — a function that
+ * sounds like it serves the client is one somebody will eventually call from a
+ * client page.
+ *
+ * The admin user page issued six reads through Promise.all — profile,
+ * documents, cases, intake, history, notes — on top of the user lookup and the
+ * layout's badges. Eight round trips on a single connection to a database in
+ * another region is a 504, and this page had never been opened by the test
+ * suite, so it had never shown it.
+ *
+ * Each part is bounded, so a client with a thousand documents still returns a
+ * page rather than a timeout.
+ */
+export async function getAdminUserFile(
+  userId: string,
+  pathway: "study" | "career" | "business" | null
+): Promise<{
+  documents: { id: string; name: string; category: string; status: string; reviewNote: string | null; updatedAt: string }[];
+  cases: { id: string; title: string; status: string; pathway: string; country: string | null; reference: string | null; advisorName: string | null; updatedAt: string }[];
+  intake: IntakeForm | null;
+  history: HistoryEntry[];
+  notes: AdminNote[];
+}> {
+  return safeQuery(async () => {
+    const [r] = await db()`
+      SELECT
+        COALESCE((SELECT json_agg(x) FROM (
+          SELECT d.id, d.name, d.category, d.status, d.review_note, d.updated_at
+          FROM documents d WHERE d.owner_id = ${userId}
+          ORDER BY d.updated_at DESC LIMIT 50
+        ) x), '[]'::json) AS documents,
+
+        COALESCE((SELECT json_agg(x) FROM (
+          SELECT c.id, c.title, c.status, c.pathway, c.country, c.reference,
+                 c.updated_at, a.name AS advisor_name
+          FROM cases c LEFT JOIN users a ON a.id = c.advisor_id
+          WHERE c.client_id = ${userId}
+          ORDER BY c.updated_at DESC LIMIT 50
+        ) x), '[]'::json) AS cases,
+
+        (SELECT row_to_json(f) FROM (
+          SELECT * FROM intake_forms
+          WHERE user_id = ${userId} AND pathway = ${pathway}
+        ) f) AS intake,
+
+        COALESCE((SELECT json_agg(x) FROM (
+          SELECT h.id, h.entity, h.entity_id, h.from_status, h.to_status,
+                 h.note, h.internal, h.created_at, u.name AS actor_name
+          FROM status_history h LEFT JOIN users u ON u.id = h.actor_id
+          WHERE h.subject_id = ${userId}
+          ORDER BY h.created_at DESC LIMIT 40
+        ) x), '[]'::json) AS history,
+
+        COALESCE((SELECT json_agg(x) FROM (
+          SELECT n.id, n.body, n.case_id, n.created_at, u.name AS author_name
+          FROM admin_notes n LEFT JOIN users u ON u.id = n.author_id
+          WHERE n.subject_id = ${userId}
+          ORDER BY n.created_at DESC LIMIT 50
+        ) x), '[]'::json) AS notes
+    `;
+
+    return {
+      documents: ((r?.documents ?? []) as Record<string, unknown>[]).map((d) => ({
+        id: String(d.id),
+        name: String(d.name),
+        category: String(d.category),
+        status: String(d.status),
+        reviewNote: d.review_note ? String(d.review_note) : null,
+        updatedAt: iso(d.updated_at)!,
+      })),
+      cases: ((r?.cases ?? []) as Record<string, unknown>[]).map((c) => ({
+        id: String(c.id),
+        title: String(c.title),
+        status: String(c.status),
+        pathway: String(c.pathway),
+        country: c.country ? String(c.country) : null,
+        reference: c.reference ? String(c.reference) : null,
+        advisorName: c.advisor_name ? String(c.advisor_name) : null,
+        updatedAt: iso(c.updated_at)!,
+      })),
+      intake: r?.intake ? mapIntake(r.intake as Record<string, unknown>) : null,
+      history: ((r?.history ?? []) as Record<string, unknown>[]).map(mapHistory),
+      notes: ((r?.notes ?? []) as Record<string, unknown>[]).map((n) => ({
+        id: n.id as string,
+        body: n.body as string,
+        caseId: (n.case_id as string) ?? null,
+        authorName: (n.author_name as string) ?? null,
+        createdAt: iso(n.created_at)!,
+      })),
+    };
+  }, { documents: [], cases: [], intake: null, history: [], notes: [] });
+}
+
 /* ----------------------------------------------------------- intake forms */
 
 const mapIntake = (r: Record<string, unknown>): IntakeForm => ({

@@ -767,6 +767,40 @@ export async function unassignAdvisor(clientId: string, advisorId: string) {
   `;
 }
 
+/**
+ * Advisors WITH their client counts, in one statement.
+ *
+ * The staff page did `advisors.map(a => getAssignedClients(a.id))` — one query
+ * per advisor, the textbook N+1. Twenty advisors meant twenty round trips, and
+ * it grew with every hire. A LEFT JOIN and a GROUP BY answers it once.
+ */
+export async function getAdvisorsWithLoad(): Promise<
+  { id: string; name: string; email: string; clientCount: number; openCases: number }[]
+> {
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT u.id, u.name, u.email,
+             count(DISTINCT sa.client_id)::int AS client_count,
+             count(DISTINCT c.id) FILTER (
+               WHERE c.status NOT IN ('completed','closed')
+             )::int AS open_cases
+      FROM users u
+      LEFT JOIN staff_assignments sa ON sa.advisor_id = u.id
+      LEFT JOIN cases c ON c.advisor_id = u.id
+      WHERE u.role IN ('advisor','admin','super_admin')
+      GROUP BY u.id, u.name, u.email
+      ORDER BY u.name
+    `;
+    return rows.map((r) => ({
+      id: String(r.id),
+      name: String(r.name),
+      email: String(r.email),
+      clientCount: Number(r.client_count ?? 0),
+      openCases: Number(r.open_cases ?? 0),
+    }));
+  }, []);
+}
+
 export async function getAssignedClients(advisorId: string) {
   return safeQuery(async () => {
     const rows = await db()`

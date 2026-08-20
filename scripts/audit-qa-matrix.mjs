@@ -122,6 +122,27 @@ for (const acct of ACCOUNTS) {
   }
   if (!leaked) ok(`blocked from all ${acct.forbidden.length} other-role routes`);
 
+  // ADMIN ONLY: open a real client file and the advisor page.
+  //
+  // The matrix used to walk only the pages listed above, so the client-detail
+  // page — the heaviest query in the product — was never once opened by a
+  // test. It was issuing eight round trips and timing out in production while
+  // every check here passed.
+  if (acct.label === "Super Admin") {
+    await page.goto(BASE + "/portal/admin/users", { waitUntil: "load" });
+    const firstUser = page.locator('a[href^="/portal/admin/users/"]').first();
+    if ((await firstUser.count()) > 0) {
+      const href = await firstUser.getAttribute("href");
+      const t = Date.now();
+      const res = await page.goto(BASE + href, { waitUntil: "load", timeout: 60000 });
+      res?.status() === 200
+        ? ok(`client file ${href} renders (${Date.now() - t}ms)`)
+        : bad(`client file ${href} returned ${res?.status()}`);
+    } else {
+      bad("no client link found on the users page");
+    }
+  }
+
   // Sign out, and confirm Back cannot return.
   await page.goto(acct.home === "/portal/admin" ? BASE + acct.home : BASE + acct.home, {
     waitUntil: "load",

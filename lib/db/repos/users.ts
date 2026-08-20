@@ -217,6 +217,123 @@ export type UserFilter = {
  */
 export type UserSort = "recent" | "oldest" | "name" | "last_active";
 
+/**
+ * EVERYTHING THE USERS PAGE NEEDS, IN ONE STATEMENT.
+ *
+ * The page previously issued three reads through Promise.all — the page of
+ * users, the advisor list, the role counts — plus the layout's badges. On this
+ * stack that is a 504, and it is the third time the same shape has caused one.
+ *
+ * The rule this codebase has learned the hard way: on a `max: 1` pool talking
+ * to Supabase's transaction pooler, a page must make ONE round trip. Concurrent
+ * queries do not parallelise (one connection), and raising the pool makes it
+ * worse, because the pooler completes a handshake before it has a backend to
+ * give — so the connection looks alive, `statement_timeout` never starts, and
+ * the request hangs until the platform kills it.
+ *
+ * Rows, total, advisors and counts therefore come back together as JSON.
+ */
+export async function getUsersPageData(
+  filter: UserFilter & { sort?: UserSort } = {}
+): Promise<{
+  rows: (DbUser & { profileFields: number })[];
+  total: number;
+  page: number;
+  pages: number;
+  limit: number;
+  advisors: { id: string; name: string }[];
+  roleCounts: Record<string, number>;
+}> {
+  const limit = Math.min(Math.max(filter.limit ?? 25, 1), 100);
+  const offset = Math.max(filter.offset ?? 0, 0);
+  const q = filter.q?.trim() || null;
+  const role = filter.role && filter.role !== "all" ? filter.role : null;
+  const status = filter.status && filter.status !== "all" ? filter.status : null;
+  const sort: UserSort = filter.sort ?? "recent";
+
+  const empty = {
+    rows: [] as (DbUser & { profileFields: number })[],
+    total: 0,
+    page: 1,
+    pages: 1,
+    limit,
+    advisors: [] as { id: string; name: string }[],
+    roleCounts: {} as Record<string, number>,
+  };
+
+  return safeQuery(async () => {
+    const [r] = await db()`
+      SELECT
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT u.id, u.email, u.name, u.role, u.status, u.email_verified,
+                   u.last_login_at, u.created_at,
+                   (
+                     SELECT count(*)::int FROM (
+                       SELECT p.phone UNION ALL SELECT p.nationality
+                       UNION ALL SELECT p.country UNION ALL SELECT p.city
+                     ) f(v) WHERE v IS NOT NULL AND btrim(v) <> ''
+                   ) AS profile_fields
+            FROM users u
+            LEFT JOIN profiles p ON p.user_id = u.id
+            WHERE (${q}::text IS NULL
+                   OR u.name ILIKE ${"%" + (q ?? "") + "%"}
+                   OR u.email ILIKE ${"%" + (q ?? "") + "%"})
+              AND (${role}::user_role IS NULL OR u.role = ${role}::user_role)
+              AND (${status}::user_status IS NULL OR u.status = ${status}::user_status)
+            ORDER BY
+              CASE WHEN ${sort} = 'name'        THEN u.name          END ASC,
+              CASE WHEN ${sort} = 'oldest'      THEN u.created_at    END ASC,
+              CASE WHEN ${sort} = 'last_active' THEN u.last_login_at END DESC NULLS LAST,
+              u.created_at DESC
+            LIMIT ${limit} OFFSET ${offset}
+          ) x
+        ), '[]'::json) AS rows,
+
+        (
+          -- Counted over the same filter, so the total always agrees with the
+          -- rows beside it — and it stays correct on a page past the end,
+          -- where a window function over zero rows would report nothing.
+          SELECT count(*)::int FROM users u
+          WHERE (${q}::text IS NULL
+                 OR u.name ILIKE ${"%" + (q ?? "") + "%"}
+                 OR u.email ILIKE ${"%" + (q ?? "") + "%"})
+            AND (${role}::user_role IS NULL OR u.role = ${role}::user_role)
+            AND (${status}::user_status IS NULL OR u.status = ${status}::user_status)
+        ) AS total,
+
+        COALESCE((
+          SELECT json_agg(x) FROM (
+            SELECT id, name FROM users
+            WHERE role IN ('advisor','admin','super_admin') AND status = 'active'
+            ORDER BY name LIMIT 100
+          ) x
+        ), '[]'::json) AS advisors,
+
+        COALESCE((
+          SELECT json_object_agg(role, n) FROM (
+            SELECT role::text AS role, count(*)::int AS n FROM users GROUP BY role
+          ) y
+        ), '{}'::json) AS role_counts
+    `;
+
+    const total = Number(r?.total ?? 0);
+    return {
+      rows: ((r?.rows ?? []) as Record<string, unknown>[]).map((u) => ({
+        ...mapUser(u),
+        profileFields: Number(u.profile_fields ?? 0),
+      })),
+      total,
+      page: Math.floor(offset / limit) + 1,
+      pages: Math.max(1, Math.ceil(total / limit)),
+      limit,
+      advisors: (r?.advisors ?? []) as { id: string; name: string }[],
+      roleCounts: (r?.role_counts ?? {}) as Record<string, number>,
+    };
+  }, empty);
+}
+
+
 export async function listUsersPage(filter: UserFilter & { sort?: UserSort } = {}): Promise<{
   rows: (DbUser & { profileFields: number })[];
   total: number;

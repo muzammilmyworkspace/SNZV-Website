@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/lib/auth/guard";
-import { listUsersPage, listAdvisors, countUsersByRole, type UserSort } from "@/lib/db/repos/users";
+import { getUsersPageData, type UserSort } from "@/lib/db/repos/users";
 import { isDatabaseConfigured } from "@/lib/db/client";
 import { PortalHeading, Panel, EmptyState } from "@/components/portal/Pieces";
 import { NotConfigured } from "@/components/portal/NotConfigured";
@@ -62,18 +62,23 @@ export default async function AdminUsersPage({
 
   const page = Math.max(1, Number(current.page) || 1);
 
-  const [result, advisors, roleCounts] = await Promise.all([
-    listUsersPage({
-      q: current.q,
-      role: (current.role as never) ?? "all",
-      status: (current.status as never) ?? "all",
-      sort,
-      limit: PAGE_SIZE,
-      offset: (page - 1) * PAGE_SIZE,
-    }),
-    listAdvisors(),
-    countUsersByRole(),
-  ]);
+  /*
+    ONE query, not three behind a Promise.all.
+
+    Three concurrent reads plus the layout's badges is a 504 on this stack —
+    the third time that exact shape has caused one. See getUsersPageData for
+    why concurrency does not help here and raising the pool makes it worse.
+  */
+  const result = await getUsersPageData({
+    q: current.q,
+    role: (current.role as never) ?? "all",
+    status: (current.status as never) ?? "all",
+    sort,
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE,
+  });
+
+  const { advisors, roleCounts } = result;
 
   return (
     <>

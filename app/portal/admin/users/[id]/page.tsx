@@ -91,14 +91,16 @@ export default async function AdminUserPage({
 
   const pathway = PATHWAY_FOR_ROLE[user.role as keyof typeof PATHWAY_FOR_ROLE];
 
-  const [profile, documents, cases, intake, history, notes] = await Promise.all([
-    profilesRepo.getProfile(id, user.role),
-    repo.getDocumentsForOwner(id),
-    repo.getCasesForClient(id),
-    pathway ? ops.getIntake(id, pathway) : Promise.resolve(null),
-    ops.getSubjectHistory(id, 40),
-    ops.getAdminNotes(id),
-  ]);
+  /*
+    ONE statement for the whole file, not six behind a Promise.all.
+
+    Six concurrent reads plus the user lookup and the layout's badges is eight
+    round trips on a single connection to a database in another region — a 504.
+    This page had never been opened by the test suite, so it had never shown it.
+  */
+  const file = await ops.getAdminUserFile(id, pathway ?? null);
+  const profile = await profilesRepo.getProfile(id, user.role);
+  const { documents, cases, intake, history, notes } = file;
 
   const definition = pathway ? intakeFor(pathway) : null;
 
