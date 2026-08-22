@@ -7,7 +7,7 @@ import { PATHWAY_TO_ROLE, type Role } from "@/lib/auth/types";
 import { audit } from "@/lib/db/repos/audit";
 import { homeFor } from "@/lib/portal/roles";
 import { sendMail, mailConfigured } from "@/lib/mail";
-import { company } from "@/data/company";
+import { siteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
   if (mailConfigured()) {
     try {
       const token = await store.issueToken(user.id, "email_verify", 60 * 24);
-      const base = process.env.NEXT_PUBLIC_SITE_URL ?? company.siteUrl;
+      const base = siteUrl();
       await sendMail({
         to: user.email,
         subject: "Confirm your SnZ Ventures account",

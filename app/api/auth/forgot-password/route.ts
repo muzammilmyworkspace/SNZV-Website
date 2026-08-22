@@ -4,7 +4,7 @@ import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 import { sendMail, mailConfigured } from "@/lib/mail";
 import { authConfigured } from "@/lib/auth/session";
 import { audit } from "@/lib/db/repos/audit";
-import { company } from "@/data/company";
+import { siteUrl } from "@/lib/site-url";
 import { passwordResetEmail } from "@/lib/mail-templates";
 
 export const runtime = "nodejs";
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
   try {
     const token = await store.issueToken(user.id, "password_reset", 30);
-    const base = process.env.NEXT_PUBLIC_SITE_URL ?? company.siteUrl;
+    const base = siteUrl();
     const link = `${base}/reset-password?token=${encodeURIComponent(token)}`;
 
     await audit({

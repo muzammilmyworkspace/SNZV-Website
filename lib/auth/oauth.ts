@@ -43,10 +43,26 @@ export function googleConfigured(): boolean {
   return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
 }
 
-/** Absolute callback URL. Must match a redirect URI registered in Google Cloud. */
+/**
+ * Absolute callback URL. Must match a redirect URI registered in Google Cloud.
+ *
+ * The fallback used to be localhost, which is right on a laptop and completely
+ * wrong on Vercel — a deployment without NEXT_PUBLIC_SITE_URL sent people to a
+ * machine that isn't there. `VERCEL_PROJECT_PRODUCTION_URL` only exists on the
+ * platform, so local development keeps the localhost behaviour untouched.
+ *
+ * Whatever this returns must be registered verbatim in Google Cloud; Google
+ * compares the string, not the host.
+ */
 export function googleRedirectUri(): string {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
-  return `${base}/api/auth/google/callback`;
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const platform = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  const base = explicit
+    ? explicit
+    : platform
+      ? `https://${platform.replace(/^https?:\/\//, "")}`
+      : "http://localhost:3000";
+  return `${base.replace(/\/+$/, "")}/api/auth/google/callback`;
 }
 
 /* ------------------------------------------------------------------ state */
