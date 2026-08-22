@@ -177,11 +177,35 @@ export async function POST(request: Request) {
     );
   }
 
-  const form = await ops.submitIntake({ userId: session.userId, pathway, data: clean });
+  /*
+    The case gets a title from the definition and, where the applicant named
+    countries, the first one they chose. Not invented: if they picked none, the
+    case simply has no country rather than a guessed one.
+  */
+  const chosen = Array.isArray(clean.countries) ? (clean.countries as string[]) : [];
+  const country = chosen.find((c) => c && c !== "Open to advice") ?? null;
+
+  const form = await ops.submitIntake({
+    userId: session.userId,
+    pathway,
+    data: clean,
+    title: definition.title,
+    country,
+  });
   if (!form) {
+    /*
+      Reaching here means no DRAFT matched — the form was never started, or it
+      has already been submitted. "Please try again" was the message, and
+      retrying cannot possibly help with either cause; it just sends someone
+      round the same loop until they give up and email instead.
+    */
     return NextResponse.json(
-      { ok: false, error: "We couldn't submit this form. Please try again." },
-      { status: 503 }
+      {
+        ok: false,
+        error:
+          "We couldn't find an open form to submit. It may already have been sent — open your application to check.",
+      },
+      { status: 409 }
     );
   }
 

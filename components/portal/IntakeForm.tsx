@@ -183,7 +183,22 @@ function Field({
         {field.required && (
           <>
             {" "}
-            <span aria-hidden className="text-accent">
+            {/*
+              RED, and theme-aware.
+
+              It was the brand green, which is the same colour this interface
+              uses for "done", "approved" and "on track" — so the one mark
+              meaning "you must fill this in" was drawn in the palette's
+              reassuring colour and did not read as a requirement at all.
+
+              `text-red-300` alone is too pale on the light theme to carry
+              meaning, so the darker red is the base and the pale one is the
+              override, the same pairing ErrorNote uses in AuthForms.
+            */}
+            <span
+              aria-hidden
+              className="font-semibold text-[#D92D20] dark:text-red-300 [html[data-theme=dark]_&]:text-red-300"
+            >
               *
             </span>
             <span className="sr-only">(required)</span>

@@ -134,11 +134,25 @@ export default async function DocumentsPage() {
                   meta={<span className="label text-faint">{d.category}</span>}
                 />
               ))}
+              {/*
+                Required and optional are drawn differently on purpose. Several
+                items on the student list only apply to some applicants — a
+                Master's transcript means nothing to a school leaver — and a
+                checklist where everything says "Required" either reads as a
+                demand for documents that do not exist, or teaches people to
+                ignore the word. Neither is what a checklist is for.
+              */}
               {outstanding.map((r) => (
                 <DataRow
                   key={r.name}
                   label={r.name}
-                  value={<StatusPill status="required" label="Required" />}
+                  value={
+                    r.optional ? (
+                      <StatusPill status="draft" label="If applicable" />
+                    ) : (
+                      <StatusPill status="required" label="Required" />
+                    )
+                  }
                   meta={<span className="label text-faint">{r.category}</span>}
                 />
               ))}

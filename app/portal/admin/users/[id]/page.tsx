@@ -100,7 +100,7 @@ export default async function AdminUserPage({
   */
   const file = await ops.getAdminUserFile(id, pathway ?? null);
   const profile = await profilesRepo.getProfile(id, user.role);
-  const { documents, cases, intake, history, notes } = file;
+  const { documents, cases, intake, history, notes, consents } = file;
 
   const definition = pathway ? intakeFor(pathway) : null;
 
@@ -274,6 +274,53 @@ export default async function AdminUserPage({
                   </div>
                 ))}
             </dl>
+          </Panel>
+
+          {/*
+            THE SIGNED UNDERTAKING, on the file it belongs to.
+
+            A consent recorded in a table nobody displays is a record that does
+            no work: the first time it matters will be a dispute, and hunting
+            for it in the database then is not a process. What is shown is what
+            makes it evidence — the version of the wording that was on screen,
+            the name the applicant typed, and when.
+
+            The IP is stored but deliberately NOT displayed. It belongs in the
+            record; putting it on a page staff read daily makes it ordinary
+            personal data on show for no operational benefit.
+          */}
+          <Panel title="Signed consent">
+            {consents.length === 0 ? (
+              <p className="text-[0.85rem] leading-relaxed text-muted">
+                No undertaking on file. Students accept one when they register;
+                accounts created before that, or by staff, will not have one.
+              </p>
+            ) : (
+              <ul className="space-y-4">
+                {consents.map((c) => (
+                  <li key={c.id} className="border-b border-line pb-4 last:border-0 last:pb-0">
+                    <p className="text-[0.88rem] font-medium text-fg-strong">
+                      {c.kind === "student_undertaking"
+                        ? "Student Consent & Undertaking"
+                        : c.kind.replace(/_/g, " ")}
+                    </p>
+                    <p className="mt-1.5 text-[0.82rem] text-muted">
+                      Signed <span className="text-fg">{c.signedName}</span>
+                    </p>
+                    <p className="mt-0.5 text-[0.78rem] text-faint">
+                      {new Date(c.acceptedAt).toLocaleString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                    <p className="mt-0.5 text-[0.74rem] text-faint">Version {c.version}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </Panel>
 
           <Panel title="History">

@@ -246,6 +246,7 @@ export async function getAdminUserFile(
   intake: IntakeForm | null;
   history: HistoryEntry[];
   notes: AdminNote[];
+  consents: { id: string; kind: string; version: string; signedName: string; acceptedAt: string }[];
 }> {
   return safeQuery(async () => {
     const [r] = await db()`
@@ -282,7 +283,17 @@ export async function getAdminUserFile(
           FROM admin_notes n LEFT JOIN users u ON u.id = n.author_id
           WHERE n.subject_id = ${userId}
           ORDER BY n.created_at DESC LIMIT 50
-        ) x), '[]'::json) AS notes
+        ) x), '[]'::json) AS notes,
+
+        -- Folded into the SAME statement rather than fetched separately: this
+        -- page is already one round trip and must stay that way. A consent
+        -- nobody can see is a record that exists and does no work.
+        COALESCE((SELECT json_agg(x) FROM (
+          SELECT c.id, c.kind, c.version, c.signed_name, c.accepted_at
+          FROM consents c
+          WHERE c.user_id = ${userId}
+          ORDER BY c.accepted_at DESC
+        ) x), '[]'::json) AS consents
     `;
 
     return {
@@ -306,6 +317,13 @@ export async function getAdminUserFile(
       })),
       intake: r?.intake ? mapIntake(r.intake as Record<string, unknown>) : null,
       history: ((r?.history ?? []) as Record<string, unknown>[]).map(mapHistory),
+      consents: ((r?.consents ?? []) as Record<string, unknown>[]).map((c) => ({
+        id: String(c.id),
+        kind: String(c.kind),
+        version: String(c.version),
+        signedName: String(c.signed_name),
+        acceptedAt: iso(c.accepted_at)!,
+      })),
       notes: ((r?.notes ?? []) as Record<string, unknown>[]).map((n) => ({
         id: n.id as string,
         body: n.body as string,
@@ -314,7 +332,7 @@ export async function getAdminUserFile(
         createdAt: iso(n.created_at)!,
       })),
     };
-  }, { documents: [], cases: [], intake: null, history: [], notes: [] });
+  }, { documents: [], cases: [], intake: null, history: [], notes: [], consents: [] });
 }
 
 /* ----------------------------------------------------------- intake forms */
@@ -377,10 +395,32 @@ export async function saveIntakeDraft(input: {
 }
 
 /** Final submit. Same draft-only guard, so a form cannot be submitted twice. */
+/**
+ * Marks the form submitted AND opens the case it belongs to.
+ *
+ * WHY A CASE IS CREATED HERE
+ * Submitting used to write one intake_forms row and stop. Staff saw it under
+ * Requests, but no case existed — so the answers someone gave, the documents
+ * they uploaded and the undertaking they signed were three unrelated records on
+ * three screens, and "open this applicant's file" was not something anyone
+ * could do. `intake_forms.case_id` had been in the schema since 003 and was
+ * never once populated.
+ *
+ * TWO ROUND TRIPS, NOT THREE. The insert and the back-reference are one
+ * statement via a CTE, which is safe because they touch different tables.
+ * Folding the first UPDATE in as well is not: Postgres does not define what
+ * happens when one statement modifies the same row twice, and intake_forms
+ * would be written by both the submit and the link.
+ *
+ * The case is deliberately NOT created when the update matches nothing — a
+ * second submit of an already-submitted form must not open a second case.
+ */
 export async function submitIntake(input: {
   userId: string;
   pathway: IntakeForm["pathway"];
   data: Record<string, unknown>;
+  title: string;
+  country?: string | null;
 }): Promise<IntakeForm | null> {
   return safeQuery(async () => {
     const [row] = await db()`
@@ -394,7 +434,32 @@ export async function submitIntake(input: {
          AND status  = 'draft'
       RETURNING *
     `;
-    return row ? mapIntake(row) : null;
+    if (!row) return null;
+
+    const [linked] = await db()`
+      WITH opened AS (
+        INSERT INTO cases (client_id, pathway, title, country, status, next_action)
+        VALUES (
+          ${input.userId},
+          ${input.pathway},
+          ${input.title.slice(0, 160)},
+          ${input.country ?? null},
+          'new',
+          'Review the submitted application'
+        )
+        RETURNING id
+      )
+      UPDATE intake_forms
+         SET case_id    = (SELECT id FROM opened),
+             updated_at = now()
+       WHERE id = ${row.id}
+      RETURNING *
+    `;
+
+    // If the link failed for any reason the form IS still submitted, which is
+    // the part that matters to the applicant. Returning the earlier row keeps
+    // that true rather than reporting a failure that did not happen.
+    return mapIntake(linked ?? row);
   }, null);
 }
 

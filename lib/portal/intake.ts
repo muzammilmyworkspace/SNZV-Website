@@ -83,205 +83,317 @@ const ENGLISH_TESTS = [
   "Not taken yet",
 ];
 
+const YES_NO = ["Yes", "No"];
+
+const PROFICIENCY = ["Beginner (A1)", "Elementary (A2)", "Intermediate (B1)", "Upper intermediate (B2)", "Advanced (C1)", "Proficient (C2)", "Native"];
+
+/**
+ * The twelve documents named on the paper form, in its order.
+ *
+ * Kept in step with REQUIRED_DOCUMENTS in lib/portal/data.ts, which is what the
+ * documents area checks against. Two lists is one more than ideal; they serve
+ * different jobs — this one is "tick what you already have", that one is "here
+ * is what your file still needs" — and merging them would make one of the two
+ * screens wrong.
+ */
+const STUDY_DOCUMENTS = [
+  "Formal passport-size photo (white background)",
+  "NIC — front & back in a single PDF",
+  "Passport — first 4 pages, scanned",
+  "Passport — full copy",
+  "SSC / Matric result card & certificate (attested)",
+  "HSC / FA result card & certificate (attested)",
+  "Professional diploma (if any)",
+  "Bachelor's degree certificate & transcript (attested)",
+  "Master's degree certificate & transcript (attested)",
+  "IELTS or other English proficiency certificate",
+  "English proficiency letter (if applicable)",
+  "Curriculum vitae (Master's applicants)",
+  "Experience certificates (if mentioned in CV)",
+];
+
 /* ------------------------------------------------------------- STUDY (§8) */
 
+/**
+ * THE ADMISSION FORM, following SnZ Ventures' own paper document.
+ *
+ * Section order and wording follow the printed form so that a student who has
+ * seen one recognises the other, and so staff reading a submission can put it
+ * side by side with a file that arrived on paper.
+ *
+ * TWO SECTIONS ARE NOT ON THE PAPER FORM and are kept anyway: preferred
+ * countries, and how the studies will be funded. The paper form is headed
+ * "admission — Lithuania", but the portal advises on several destinations, and
+ * funding is the question every immigration authority asks. Dropping questions
+ * the business already collects would have been a silent downgrade dressed up
+ * as matching a document.
+ *
+ * WHAT IS REQUIRED IS DELIBERATE. Only fields an application genuinely cannot
+ * proceed without carry `required`. Marking optional things required is how a
+ * long form starts collecting invented answers — a made-up Skype ID is worse
+ * than a blank one, because nobody can tell it is made up.
+ */
 const STUDY: IntakeDefinition = {
   pathway: "study",
-  title: "Study abroad application",
+  title: "Student admission application",
   steps: [
     {
       key: "personal",
       title: "Personal information",
-      blurb: "The basics, exactly as they appear on your passport.",
-      fields: CONTACT_FIELDS,
+      blurb: "Exactly as printed in your passport. A mismatch here is the most common reason an application is returned.",
+      fields: [
+        { key: "givenName", label: "Given name", type: "text", required: true, max: 80 },
+        { key: "familyName", label: "Family name", type: "text", required: true, max: 80 },
+        { key: "gender", label: "Gender", type: "select", required: true, options: ["Male", "Female", "Other"] },
+        { key: "citizenship", label: "Citizenship", type: "text", required: true, max: 60 },
+        { key: "passportNumber", label: "Passport number", type: "text", required: true, max: 30 },
+        { key: "passportIssueDate", label: "Passport issue date", type: "date", required: true },
+        {
+          key: "passportExpiryDate",
+          label: "Passport expiry date",
+          type: "date",
+          required: true,
+          hint: "Most institutions expect a passport valid well beyond your intended start date.",
+        },
+        { key: "passportIssuedBy", label: "Issued by", type: "text", required: true, max: 80 },
+        { key: "dateOfBirth", label: "Date of birth", type: "date", required: true },
+        { key: "countryOfBirth", label: "Country of birth", type: "text", required: true, max: 60 },
+        { key: "placeOfBirth", label: "Place of birth", type: "text", required: true, max: 80 },
+      ],
     },
     {
-      key: "academic",
-      title: "Academic background",
-      blurb: "What you have studied so far. Approximate grades are fine at this stage.",
+      key: "contact",
+      title: "Contact information",
+      blurb: "Where we and the institution can reach you. Use an address you will still have in a year.",
+      fields: [
+        { key: "contactEmail", label: "Email", type: "email", required: true, max: 120 },
+        { key: "mobile", label: "Mobile number", type: "tel", required: true, max: 40 },
+        { key: "skypeId", label: "Skype ID", type: "text", max: 80, hint: "Optional. Some institutions interview over Skype." },
+        { key: "streetAddress", label: "Street address", type: "text", required: true, max: 160 },
+        { key: "cityRegion", label: "City / province / region", type: "text", required: true, max: 100 },
+        { key: "postalCode", label: "Postal code", type: "text", max: 20 },
+        { key: "country", label: "Country", type: "text", required: true, max: 60 },
+      ],
+    },
+    {
+      key: "emergency",
+      title: "Emergency contact",
+      blurb: "Someone we or the institution can reach if we cannot reach you.",
+      fields: [
+        { key: "emergencyName", label: "Full name", type: "text", required: true, max: 120 },
+        { key: "emergencyPhone", label: "Telephone number", type: "tel", required: true, max: 40 },
+        { key: "emergencyRelation", label: "Relation to applicant", type: "text", required: true, max: 60 },
+      ],
+    },
+    {
+      key: "education",
+      title: "Education background",
+      blurb: "Your most recent or highest qualification. Approximate dates are fine if you are still studying.",
       fields: [
         {
           key: "highestQualification",
-          label: "Highest completed qualification",
+          label: "Highest level of education",
           type: "select",
           required: true,
           options: [
-            "Secondary school / high school",
-            "Diploma / associate degree",
+            "Secondary school (Matric / SSC / O-Level)",
+            "Higher secondary (FA / FSc / HSC / A-Level)",
+            "Diploma",
             "Bachelor's degree",
             "Master's degree",
             "Doctorate",
           ],
         },
         { key: "institution", label: "Institution name", type: "text", required: true, max: 140 },
-        { key: "fieldOfStudy", label: "Field of study", type: "text", required: true, max: 100 },
-        { key: "graduationYear", label: "Year completed (or expected)", type: "number", required: true },
+        { key: "programName", label: "Program name", type: "text", required: true, max: 140 },
+        { key: "awardedQualification", label: "Awarded qualification / degree", type: "text", required: true, max: 140 },
+        { key: "diplomaTitle", label: "Diploma title", type: "text", max: 140 },
+        { key: "studyStartDate", label: "Start date", type: "date", required: true },
+        { key: "expectedGraduation", label: "Expected graduation date", type: "date", required: true },
+        { key: "programLength", label: "Nominal program length", type: "text", max: 60, placeholder: "e.g. 4 years" },
+        { key: "honours", label: "Honours / distinctions (if any)", type: "text", max: 200 },
+        { key: "institutionCountry", label: "Country of institution", type: "text", required: true, max: 60 },
+        { key: "languageOfInstruction", label: "Language of instruction", type: "text", required: true, max: 60 },
+      ],
+    },
+    {
+      key: "language",
+      title: "Language proficiency",
+      blurb: "Nearly every institution asks for evidence of English. If you have not tested yet, say so — it changes which options are realistic, not whether we can help.",
+      fields: [
+        { key: "nativeLanguage", label: "Native language", type: "text", required: true, max: 60 },
+        { key: "englishTest", label: "English test taken", type: "select", required: true, options: ENGLISH_TESTS },
+        { key: "englishScore", label: "Overall score", type: "text", max: 40 },
+        { key: "englishDate", label: "Date taken", type: "date" },
+        { key: "foreignLanguage1", label: "Other language", type: "text", max: 60 },
+        { key: "foreignLanguage1Level", label: "Proficiency level", type: "select", options: PROFICIENCY },
+        { key: "foreignLanguage1Years", label: "Years of study or use", type: "text", max: 30 },
+        { key: "foreignLanguage2", label: "A further language (if any)", type: "text", max: 60 },
+        { key: "foreignLanguage2Level", label: "Proficiency level", type: "select", options: PROFICIENCY },
+        { key: "foreignLanguage2Years", label: "Years of study or use", type: "text", max: 30 },
+      ],
+    },
+    {
+      key: "employment",
+      title: "Employment history",
+      blurb: "Your most recent position. Leave blank if you have not worked yet — that is common and counts against nobody.",
+      fields: [
+        { key: "companyName", label: "Company name", type: "text", max: 140 },
+        { key: "businessSector", label: "Business sector", type: "text", max: 100 },
+        { key: "positionHeld", label: "Position held", type: "text", max: 100 },
+        { key: "employmentStart", label: "Start date", type: "date" },
+        { key: "employmentEnd", label: "End date", type: "date" },
+        { key: "currentlyEmployed", label: "Currently employed?", type: "select", options: YES_NO },
+      ],
+    },
+    {
+      key: "activities",
+      title: "Activities & residence history",
+      blurb: "Institutions read this. Time abroad also matters to a visa officer, so it is worth stating plainly.",
+      fields: [
         {
-          key: "grade",
-          label: "Final grade / GPA",
-          type: "text",
-          max: 40,
-          hint: "In whatever scale your institution uses — we convert it.",
+          key: "keyActivities",
+          label: "Key activities (sports, hobbies, volunteer work)",
+          type: "textarea",
+          max: 800,
         },
         {
-          key: "gaps",
-          label: "Any gaps in your education?",
+          key: "stayedAbroad",
+          label: "Have you stayed abroad for extended periods?",
+          type: "select",
+          required: true,
+          options: YES_NO,
+        },
+        {
+          key: "abroadDetails",
+          label: "If yes — purpose, country and duration",
           type: "textarea",
-          max: 600,
-          hint: "A gap is not a problem. Explaining it up front saves questions later.",
+          max: 800,
+        },
+      ],
+    },
+    {
+      key: "motivation",
+      title: "Motivation letter",
+      blurb: "Answer in your own words. These four answers become the basis of the motivation letter that goes with your application, so what you write here matters more than anything else on this form.",
+      fields: [
+        {
+          key: "whyProgram",
+          label: "Why have you chosen this program?",
+          type: "textarea",
+          required: true,
+          max: 1500,
+        },
+        {
+          key: "expectedGain",
+          label: "What do you expect to gain from your studies?",
+          type: "textarea",
+          required: true,
+          max: 1500,
+        },
+        {
+          key: "suitability",
+          label: "Why does your background make you a suitable candidate?",
+          type: "textarea",
+          required: true,
+          max: 1500,
+        },
+        {
+          key: "careerGoals",
+          label: "How will this program help you achieve your goals?",
+          type: "textarea",
+          required: true,
+          max: 1500,
         },
       ],
     },
     {
       key: "preferences",
-      title: "Study preferences",
-      blurb: "What you want to study, and when.",
-      fields: [
-        {
-          key: "intendedLevel",
-          label: "Level you want to study",
-          type: "select",
-          required: true,
-          options: ["Bachelor's", "Master's", "PhD / research", "Foundation / pathway", "Professional qualification"],
-        },
-        { key: "intendedField", label: "Subject or field", type: "text", required: true, max: 100 },
-        {
-          key: "intake",
-          label: "Preferred intake",
-          type: "select",
-          required: true,
-          options: ["Next 6 months", "6–12 months", "More than a year away", "Undecided"],
-        },
-        {
-          key: "studyMode",
-          label: "Study mode",
-          type: "select",
-          options: ["Full time on campus", "Part time", "Open to either"],
-        },
-      ],
-    },
-    {
-      key: "destinations",
-      title: "Preferred countries",
-      blurb: "Where you would like to study. Choose as many as genuinely interest you.",
+      title: "Where and how you will study",
+      blurb: "Not on the paper form, and asked because it changes what we can realistically propose.",
       fields: [
         {
           key: "countries",
-          label: "Countries of interest",
+          label: "Countries you would consider",
           type: "multiselect",
           required: true,
           options: [
-            "Lithuania", "Poland", "Germany", "Netherlands", "Ireland",
-            "Latvia", "Estonia", "Czechia", "Hungary", "Finland",
-            "Sweden", "Denmark", "Spain", "Italy", "France", "Open to advice",
+            "Lithuania", "Latvia", "Estonia", "Poland", "Germany", "Netherlands",
+            "Ireland", "United Kingdom", "Sweden", "Denmark", "Spain", "Italy",
+            "France", "Open to advice",
           ],
         },
-        {
-          key: "countryReason",
-          label: "What is drawing you to those countries?",
-          type: "textarea",
-          max: 600,
-          hint: "Cost, language, family, work rights after study — whatever is actually driving it.",
-        },
-      ],
-    },
-    {
-      key: "programmes",
-      title: "University & programme preferences",
-      blurb: "Skip anything you have not decided yet — this is a starting point, not a commitment.",
-      fields: [
-        { key: "targetUniversities", label: "Universities you have in mind", type: "textarea", max: 600 },
-        { key: "targetProgrammes", label: "Specific programmes", type: "textarea", max: 600 },
-        {
-          key: "priority",
-          label: "What matters most to you?",
-          type: "select",
-          options: [
-            "Lowest total cost",
-            "Ranking and reputation",
-            "Work opportunities after study",
-            "Speed of admission",
-            "Specific subject specialism",
-          ],
-        },
-      ],
-    },
-    {
-      key: "language",
-      title: "English language",
-      blurb: "Most institutions ask for evidence of English. If you have not tested yet, say so.",
-      fields: [
-        { key: "englishTest", label: "Test taken", type: "select", required: true, options: ENGLISH_TESTS },
-        { key: "englishScore", label: "Overall score", type: "text", max: 40 },
-        { key: "englishDate", label: "Date taken", type: "date" },
-        {
-          key: "otherLanguages",
-          label: "Other languages you speak",
-          type: "text",
-          max: 200,
-        },
-      ],
-    },
-    {
-      key: "finance",
-      title: "Financial information",
-      blurb:
-        "Institutions and immigration authorities both ask how studies will be funded. Answering honestly here means we only propose options that are actually open to you.",
-      fields: [
         {
           key: "fundingSource",
-          label: "How do you expect to fund your studies?",
+          label: "How will your studies be funded?",
           type: "select",
           required: true,
           options: [
-            "Self funded",
-            "Family sponsored",
+            "Family support",
+            "Personal savings",
             "Bank loan",
-            "Employer sponsored",
-            "Scholarship required",
-            "Combination",
+            "Employer sponsorship",
+            "Scholarship (applied or hoping to)",
+            "Combination of the above",
             "Not yet decided",
           ],
+          hint: "Immigration authorities ask for evidence of this. An honest answer now avoids a refused application later.",
         },
         {
           key: "annualBudget",
-          label: "Approximate annual budget",
+          label: "Approximate budget per year, including living costs",
+          type: "select",
+          options: [
+            "Under €6,000",
+            "€6,000 – €10,000",
+            "€10,000 – €15,000",
+            "€15,000 – €25,000",
+            "Over €25,000",
+            "Not sure yet",
+          ],
+        },
+      ],
+    },
+    {
+      key: "other",
+      title: "Anything else we should know",
+      blurb: "All optional except the last question.",
+      fields: [
+        {
+          key: "medicalInformation",
+          label: "Any medical conditions to disclose?",
+          type: "textarea",
+          max: 800,
+          hint: "Optional, and only shared where an institution or insurer genuinely requires it.",
+        },
+        { key: "additionalRequests", label: "Additional requests", type: "textarea", max: 800 },
+        {
+          key: "informationSource",
+          label: "How did you learn about this study opportunity?",
           type: "text",
           required: true,
-          max: 60,
-          hint: "Tuition plus living costs, in any currency. A range is fine.",
-        },
-        {
-          key: "scholarshipInterest",
-          label: "Scholarship interest",
-          type: "select",
-          required: true,
-          options: ["Essential — I cannot proceed without one", "Helpful but not essential", "Not needed"],
+          max: 200,
         },
       ],
     },
     {
       key: "documents",
       title: "Documents",
-      blurb:
-        "Nothing to upload here — the Documents area handles that, so you can come back to it whenever a file is ready.",
+      blurb: "Tick what you already have. Nothing here is uploaded on this screen — you upload files in Documents, and we will tell you if anything needs replacing.",
       fields: [
         {
           key: "documentsReady",
-          label: "Which documents do you already have?",
+          label: "Documents you already hold",
           type: "multiselect",
-          options: [
-            "Passport",
-            "Academic transcripts",
-            "Degree certificate",
-            "English test result",
-            "CV",
-            "Statement of purpose",
-            "Reference letters",
-            "Proof of funds",
-          ],
+          options: STUDY_DOCUMENTS,
         },
-        { key: "documentNotes", label: "Anything we should know about your documents?", type: "textarea", max: 600 },
+        {
+          key: "documentNotes",
+          label: "Anything we should know about your documents?",
+          type: "textarea",
+          max: 800,
+          hint: "Attestation still pending, a name spelled differently, a certificate lost — tell us now rather than later.",
+        },
       ],
     },
     {
@@ -291,10 +403,9 @@ const STUDY: IntakeDefinition = {
       fields: [
         {
           key: "additionalInfo",
-          label: "Anything else we should know?",
+          label: "Anything else you would like us to know?",
           type: "textarea",
-          max: 1500,
-          hint: "Previous visa refusals, health matters, dependants travelling with you — anything that affects the route.",
+          max: 1200,
         },
         {
           key: "declaration",

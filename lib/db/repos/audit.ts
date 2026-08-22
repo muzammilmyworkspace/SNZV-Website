@@ -47,6 +47,9 @@ export type AuditAction =
   | "intake.status_changed"
   | "note.added"
   | "note.deleted"
+  // Student consent (005). The entry records THAT an undertaking was accepted
+  // and which version; the consents table holds the signature and address.
+  | "consent.accepted"
   | "task.status_changed"
   | "appointment.requested"
   | "admin.action";

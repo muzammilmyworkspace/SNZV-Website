@@ -265,14 +265,19 @@ export async function ClientDashboard({ session }: { session: Session }) {
               <p className="mb-4 text-[0.86rem] leading-relaxed text-muted">
                 Nothing uploaded yet. For your pathway we typically need:
               </p>
-              {required.slice(0, 5).map((d) => (
-                <DataRow
-                  key={d.name}
-                  label={d.name}
-                  value={<StatusPill status="required" label="Required" />}
-                  meta={<span className="label text-faint">{d.category}</span>}
-                />
-              ))}
+              {/* Genuinely-required first: the list is long for students and
+                  the first five are what someone will actually act on. */}
+              {required
+                .filter((d) => !d.optional)
+                .slice(0, 5)
+                .map((d) => (
+                  <DataRow
+                    key={d.name}
+                    label={d.name}
+                    value={<StatusPill status="required" label="Required" />}
+                    meta={<span className="label text-faint">{d.category}</span>}
+                  />
+                ))}
             </div>
           ) : (
             documents.slice(0, 5).map((d) => (

@@ -8,6 +8,8 @@ import { audit } from "@/lib/db/repos/audit";
 import { homeFor } from "@/lib/portal/roles";
 import { sendMail, mailConfigured } from "@/lib/mail";
 import { siteUrl } from "@/lib/site-url";
+import { recordConsent } from "@/lib/db/repos/consents";
+import { CONSENT_VERSION } from "@/lib/portal/consent";
 
 export const runtime = "nodejs";
 
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  const { name, email, password, pathway } = (body ?? {}) as Record<string, unknown>;
+  const { name, email, password, pathway, consent } = (body ?? {}) as Record<string, unknown>;
 
   if (typeof name !== "string" || name.trim().length < 2 || name.length > 120) {
     return NextResponse.json({ ok: false, error: "Please enter your name." }, { status: 400 });
@@ -67,6 +69,18 @@ export async function POST(request: Request) {
   const pwError = validatePassword(password);
   if (pwError) return NextResponse.json({ ok: false, error: pwError }, { status: 400 });
 
+  /*
+    THE UNDERTAKING IS ENFORCED HERE, not in the browser.
+
+    The registration form hides the consent panel for every pathway but study,
+    and a client that simply omits the field would otherwise create a student
+    account with no agreement on record. The browser is not the place this is
+    decided: anything posting to this endpoint can claim any pathway it likes.
+
+    Only students are asked. The document is about university admission and
+    student visa processing, so requiring it of a job seeker or a business
+    would be asking them to agree to terms that do not apply to them.
+  */
   if (typeof pathway !== "string" || !(pathway in PATHWAY_TO_ROLE)) {
     return NextResponse.json(
       { ok: false, error: "Please choose what brings you here." },
@@ -75,6 +89,21 @@ export async function POST(request: Request) {
   }
   // Role is decided here, never taken from the client.
   const role: Role = PATHWAY_TO_ROLE[pathway as keyof typeof PATHWAY_TO_ROLE];
+
+  const { accepted, signedName } = (consent ?? {}) as Record<string, unknown>;
+  const signature = typeof signedName === "string" ? signedName.trim() : "";
+
+  if (pathway === "study") {
+    if (accepted !== true || signature.length < 2) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Please read and accept the Student Consent & Undertaking, and type your name as signature.",
+        },
+        { status: 400 }
+      );
+    }
+  }
 
   const existing = await store.findByEmail(email);
   if (existing) {
@@ -111,6 +140,34 @@ export async function POST(request: Request) {
     meta: { role },
     ip,
   });
+
+  /*
+    The consent row is written with the version from the SERVER's constant,
+    never from the request. A browser must not be able to claim it accepted a
+    different document — or an older one — than the one it was actually shown.
+
+    The audit entry records that a consent happened and which version; the
+    consents table holds the evidence. Neither records anything the person did
+    not deliberately type.
+  */
+  if (pathway === "study") {
+    await recordConsent({
+      userId: user.id,
+      version: CONSENT_VERSION,
+      signedName: signature,
+      ip,
+      userAgent: request.headers.get("user-agent"),
+    });
+    await audit({
+      action: "consent.accepted",
+      actorId: user.id,
+      actorEmail: user.email,
+      entity: "user",
+      entityId: user.id,
+      meta: { kind: "student_undertaking", version: CONSENT_VERSION },
+      ip,
+    });
+  }
 
   // Verification email — best effort, never blocks registration.
   if (mailConfigured()) {

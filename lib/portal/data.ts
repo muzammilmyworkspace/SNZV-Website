@@ -37,14 +37,37 @@ export const getAdminMetrics = repo.getAdminMetrics;
  * client data, so it is real and safe to render — it tells a new user exactly
  * what they will eventually be asked for.
  */
-export const REQUIRED_DOCUMENTS: Record<string, { name: string; category: string }[]> = {
+export const REQUIRED_DOCUMENTS: Record<
+  string,
+  { name: string; category: string; optional?: boolean }[]
+> = {
+  /*
+    The student list follows SnZ Ventures' own admission form, section 11.
+
+    It was six generic items — "Academic certificates", "Transcripts" — which
+    told an applicant almost nothing. The paper form is specific about what is
+    actually needed, including the attestations, and vagueness at this step is
+    what produces a file that has to be sent back twice.
+
+    `optional` marks what genuinely depends on the applicant. A Master's
+    transcript is required of someone who holds one and meaningless to a
+    school leaver, and listing it flatly as required would either be a lie or
+    an instruction to invent something.
+  */
   student: [
-    { name: "Passport", category: "Identity" },
-    { name: "Academic certificates", category: "Education" },
-    { name: "Transcripts", category: "Education" },
-    { name: "Language certificate", category: "Education" },
-    { name: "CV", category: "Profile" },
-    { name: "Statement of purpose", category: "Profile" },
+    { name: "Formal passport-size photo (white background)", category: "Identity" },
+    { name: "NIC — front & back in one PDF", category: "Identity" },
+    { name: "Passport — first 4 pages, scanned", category: "Identity" },
+    { name: "Passport — full copy", category: "Identity" },
+    { name: "SSC / Matric result card & certificate (attested)", category: "Education" },
+    { name: "HSC / FA result card & certificate (attested)", category: "Education" },
+    { name: "Professional diploma", category: "Education", optional: true },
+    { name: "Bachelor's degree certificate & transcript (attested)", category: "Education", optional: true },
+    { name: "Master's degree certificate & transcript (attested)", category: "Education", optional: true },
+    { name: "IELTS or other English proficiency certificate", category: "Education" },
+    { name: "English proficiency letter", category: "Education", optional: true },
+    { name: "Curriculum vitae", category: "Profile", optional: true },
+    { name: "Experience certificates", category: "Profile", optional: true },
   ],
   professional: [
     { name: "Passport", category: "Identity" },

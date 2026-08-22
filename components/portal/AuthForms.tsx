@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { ConsentNotice } from "@/components/portal/ConsentNotice";
 
 /* ------------------------------------------------------------- shared bits */
 
@@ -330,8 +331,18 @@ export function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [signedName, setSignedName] = useState("");
+  const [consented, setConsented] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  /*
+    The undertaking is about university admission and student visa processing,
+    so it is asked of students and nobody else. A job seeker agreeing to terms
+    about a visa decision that has nothing to do with them would be noise at
+    best and misleading at worst.
+  */
+  const needsConsent = pathway === "study";
 
   function choose(key: string) {
     setPathway(key);
@@ -348,6 +359,20 @@ export function RegisterForm() {
       return;
     }
 
+    /*
+      Guidance only. The API refuses a study registration without a consent
+      regardless of what the browser sends — this exists so the reason appears
+      immediately instead of after a round trip.
+    */
+    if (needsConsent && !consented) {
+      setError("Please read and accept the Student Consent & Undertaking to continue.");
+      return;
+    }
+    if (needsConsent && !signedName.trim()) {
+      setError("Please type your full name as your signature.");
+      return;
+    }
+
     setBusy(true);
     try {
       const { res, data } = await post("/api/auth/register", {
@@ -355,6 +380,7 @@ export function RegisterForm() {
         email,
         password,
         pathway,
+        ...(needsConsent ? { consent: { accepted: true, signedName } } : {}),
       });
       if (!res.ok || !data.ok) {
         setError(data.error ?? "We couldn't create that account.");
@@ -464,6 +490,16 @@ export function RegisterForm() {
         autoComplete="new-password"
         error={confirm && password !== confirm ? "These don't match yet." : undefined}
       />
+
+      {needsConsent && (
+        <ConsentNotice
+          signedName={signedName}
+          onSignedName={setSignedName}
+          accepted={consented}
+          onAccepted={setConsented}
+          invalid={Boolean(error)}
+        />
+      )}
 
       {error && <ErrorNote>{error}</ErrorNote>}
 
