@@ -79,13 +79,24 @@ export function Pain() {
                 delay: v.delay,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group flex items-baseline gap-4 py-1.5"
-              style={{ paddingLeft: `min(${v.x}, 42vw)` }}
+              /*
+                THE STAGGER IS A DESKTOP IDEA, and it was being applied at every
+                width. `min(x, 42vw)` is 157px of indent on a 375px phone, which
+                left roughly 170px for a non-shrinking label AND a question like
+                "Which opportunity is actually right for me?" at 1.35rem. It did
+                not overflow — which is why the mobile audit passed it — it just
+                collapsed into an unreadable ragged column.
+
+                The indent now starts at `md`, and below that the speaker sits
+                above the question instead of fighting it for the same line.
+              */
+              className="group flex flex-col gap-1 py-2 md:flex-row md:items-baseline md:gap-4 md:py-1.5 md:[padding-left:min(var(--indent),38vw)]"
+              style={{ "--indent": v.x } as React.CSSProperties}
             >
-              <span className="label shrink-0 text-faint transition-colors group-hover:text-accent">
+              <span className="label text-faint transition-colors group-hover:text-accent md:shrink-0">
                 {v.who}
               </span>
-              <span className="font-display text-[1.35rem] leading-snug tracking-[-0.015em] text-muted transition-colors duration-500 group-hover:text-fg sm:text-[1.75rem]">
+              <span className="font-display text-[1.15rem] leading-snug tracking-[-0.015em] text-muted transition-colors duration-500 group-hover:text-fg sm:text-[1.4rem] md:text-[1.75rem]">
                 &ldquo;{v.q}&rdquo;
               </span>
             </motion.li>

@@ -142,18 +142,42 @@ export function AuthShell({
       {/* Form panel */}
       <main id="main" className="flex flex-col justify-center px-5 py-12 sm:px-10 lg:px-16">
         <div className="mx-auto w-full max-w-md">
-          <Link href="/" className="mb-10 inline-flex items-center gap-3 lg:hidden">
-            <Image
-              src="/brand/snz-mark.png"
-              alt=""
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full"
-            />
-            <span className="text-[1.15rem] font-bold tracking-[-0.02em] text-fg">
-              SnZ Ventures
-            </span>
-          </Link>
+          {/*
+            A WAY BACK OUT, at every width.
+
+            The brand mark on the left panel is a link home, but that panel is
+            hidden below `lg` — so on a phone the sign-in screen was a dead end
+            with no route back to the site. Someone who clicked Login by mistake
+            had only the browser's Back button.
+
+            The mark stays as the mobile masthead; this is the explicit exit,
+            and it is shown on desktop too because "click the logo" is a
+            convention people should not have to already know.
+          */}
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <Link href="/" className="inline-flex items-center gap-3 lg:hidden">
+              <Image
+                src="/brand/snz-mark.png"
+                alt=""
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full"
+              />
+              <span className="text-[1.15rem] font-bold tracking-[-0.02em] text-fg">
+                SnZ Ventures
+              </span>
+            </Link>
+
+            <Link
+              href="/"
+              className="label group ml-auto inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-sm)] border border-line px-4 text-muted transition-colors hover:border-moss-400/60 hover:text-accent"
+            >
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 transition-transform duration-300 group-hover:-translate-x-0.5">
+                <path d="M11 6H2m0 0l3.5-3.5M2 6l3.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Back to home
+            </Link>
+          </div>
 
           <h1 className="d-1 text-fg-strong">{title}</h1>
           <p className="mt-4 text-[1.05rem] leading-relaxed text-muted">{lead}</p>

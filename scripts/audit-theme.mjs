@@ -353,6 +353,20 @@ for (const theme of ["dark", "light"]) {
   const page = await ctx.newPage();
   // Same route the toggle was actually found on — see the note above.
   await page.goto(BASE + (toggleAt ?? "/"), { waitUntil: "load", timeout: 60000 });
+  /*
+    Wait for React to hydrate before clicking.
+
+    `load` fires when the document and its assets are done, which is BEFORE the
+    toggle's click handler is attached. Clicking in that window does nothing and
+    the check failed intermittently — a test that cries wolf gets ignored, so
+    the wait is the fix rather than a retry.
+  */
+  await page.waitForFunction(
+    () => document.documentElement.hasAttribute("data-theme"),
+    { timeout: 15000 }
+  );
+  await page.waitForTimeout(600);
+
   const before = await page.evaluate(() => document.documentElement.getAttribute("data-theme"));
   await page.locator(TOGGLE).first().click();
   await page.waitForTimeout(300);
