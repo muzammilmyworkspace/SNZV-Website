@@ -12,7 +12,9 @@ import {
   PortalHeading,
   Panel,
   EmptyState,
-  SummaryStat,
+  WorkCard,
+  AllClear,
+  Breakdown,
   StatusPill,
   DataRow,
 } from "@/components/portal/Pieces";
@@ -28,6 +30,28 @@ import { NotConfigured } from "@/components/portal/NotConfigured";
  * The scoping is done in SQL (see lib/db/repos/portal.ts), not by filtering in
  * this component, so an authorization mistake here still cannot leak rows.
  * Every figure is a real COUNT — nothing is seeded or estimated.
+ *
+ * ---------------------------------------------------------------------------
+ * HOW THIS PAGE IS ORGANISED, and why it changed
+ *
+ * It used to open with eight figures in one row — total users, students,
+ * professionals, businesses, open cases, docs to review, appointments, unread
+ * — all the same size, five of them zero. Two completely different kinds of
+ * fact were sitting side by side at equal weight: JOBS WAITING FOR A PERSON,
+ * and FACTS ABOUT THE BUSINESS. You could not tell them apart without reading
+ * every one and deciding for yourself, which is a report, not a dashboard.
+ *
+ * Now the page answers two questions in order:
+ *
+ *   1. What is waiting on me?   → work cards, quiet at zero, or one "all
+ *                                 clear" line when there is genuinely nothing
+ *   2. What does the portal
+ *      look like right now?     → the make-up of the people in it, and the
+ *                                 real queues underneath
+ *
+ * The row of shortcut links that used to sit at the bottom is gone. It
+ * repeated five destinations the sidebar already carries, on every load,
+ * costing a card's worth of space to say nothing new.
  */
 export default async function AdminPage() {
   const { session, role } = await requireStaff();
@@ -71,10 +95,74 @@ export default async function AdminPage() {
         getAssignedClients(session.userId),
       ]);
 
-  const metrics = (overview?.metrics ?? {}) as Record<string, number>;
+  const m = (overview?.metrics ?? {}) as Record<string, number>;
   const cases = admin ? (overview?.cases ?? []) : advisorCases;
   const pendingDocs = overview?.pendingDocuments ?? [];
   const recentUsers = overview?.recentUsers ?? [];
+
+  /*
+    THE WORK, in the order a person would actually pick it up.
+
+    An unanswered enquiry is someone waiting on a first reply, which is the
+    only item here where the delay is felt by a stranger deciding whether this
+    firm is responsive. A held-up document blocks a case that is already
+    underway. A message is a conversation in progress. A consultation is
+    already scheduled, so it is the least urgent of the four.
+
+    `newQueries` was in the query all along and never shown, which meant the
+    most time-sensitive thing on the page was the one thing invisible on it.
+  */
+  const work = [
+    {
+      label: "New enquiries",
+      value: m.newQueries ?? 0,
+      note: "Submitted and waiting for a first reply.",
+      href: "/portal/admin/requests",
+    },
+    {
+      label: "Documents to review",
+      value: m.pendingDocuments ?? 0,
+      note: "Uploaded by clients, waiting on your approval.",
+      href: "/portal/admin/documents",
+    },
+    {
+      label: "Unread messages",
+      value: m.unreadMessages ?? 0,
+      note: "Nobody on the team has opened these yet.",
+      href: "/portal/messages",
+    },
+    {
+      label: "Consultations",
+      value: m.appointments ?? 0,
+      note: "Requested or confirmed, still to be held.",
+      href: "/portal/appointments",
+    },
+  ];
+
+  const advisorWork = [
+    {
+      label: "My cases",
+      value: cases.length,
+      note: "Cases you are responsible for.",
+      href: "/portal/admin/cases",
+    },
+    {
+      label: "My clients",
+      value: myClients.length,
+      note: "People assigned to you by an administrator.",
+      href: "/portal/admin/users",
+    },
+  ];
+
+  const shown = admin ? work : advisorWork;
+  const nothingWaiting = shown.every((w) => w.value === 0);
+
+  const people = [
+    { label: "Students", value: m.students ?? 0 },
+    { label: "Job seekers", value: m.professionals ?? 0 },
+    { label: "Businesses", value: m.businesses ?? 0 },
+    { label: "Team", value: m.advisors ?? 0 },
+  ];
 
   return (
     <>
@@ -83,30 +171,36 @@ export default async function AdminPage() {
         title={admin ? "Administrator overview" : "Advisor overview"}
         lead={
           admin
-            ? "Live figures from the database. Every number is a real count."
+            ? "What's waiting on the team right now, and how the portal stands today."
             : "Your assigned clients and the cases you are responsible for."
-        }
-        meta={
-          metrics ? (
-            <div className="flex flex-wrap gap-x-9 gap-y-5">
-              <SummaryStat label="Total users" value={metrics.totalUsers} />
-              <SummaryStat label="Students" value={metrics.students} />
-              <SummaryStat label="Professionals" value={metrics.professionals} />
-              <SummaryStat label="Businesses" value={metrics.businesses} />
-              <SummaryStat label="Open cases" value={metrics.openCases} />
-              <SummaryStat label="Docs to review" value={metrics.pendingDocuments} />
-              <SummaryStat label="Appointments" value={metrics.appointments} />
-              <SummaryStat label="Unread" value={metrics.unreadMessages} />
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-x-9 gap-y-5">
-              <SummaryStat label="My clients" value={myClients.length} />
-              <SummaryStat label="My cases" value={cases.length} />
-            </div>
-          )
         }
       />
 
+      {/* ------------------------------------------------ what needs a person */}
+      <section className="mb-5">
+        <h2 className="label mb-3.5 text-faint">Needs attention</h2>
+        {nothingWaiting ? (
+          <AllClear
+            title="Nothing is waiting on you."
+            body={
+              admin
+                ? "No unanswered enquiries, no documents held up, no unread messages. New work appears here the moment it arrives."
+                : "No cases or clients assigned to you yet. An administrator assigns them, and they appear here."
+            }
+            action={admin ? { label: "Open cases", href: "/portal/admin/cases" } : undefined}
+          />
+        ) : (
+          <div
+            className={`grid gap-4 sm:grid-cols-2 ${admin ? "lg:grid-cols-4" : ""}`}
+          >
+            {shown.map((w) => (
+              <WorkCard key={w.label} {...w} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* --------------------------------------------------- the live queues */}
       <div className="grid items-start gap-5 lg:grid-cols-[1.5fr_1fr]">
         <Panel
           title={admin ? "Recent cases" : "My cases"}
@@ -122,7 +216,7 @@ export default async function AdminPage() {
               title="No cases yet"
               body={
                 admin
-                  ? "Cases appear here as they are opened for clients."
+                  ? "A case is opened for a client once you take their enquiry forward. They appear here as they are created."
                   : "Cases assigned to you appear here."
               }
             />
@@ -183,7 +277,7 @@ export default async function AdminPage() {
               <EmptyState
                 icon="check"
                 title="Nothing awaiting review"
-                body="Documents clients upload appear here for approval."
+                body="When a client uploads a passport, transcript or bank letter, it queues here for approval."
               />
             ) : (
               pendingDocs.map((d) => (
@@ -203,18 +297,31 @@ export default async function AdminPage() {
             />
           ) : (
             myClients.map((c) => (
-              <DataRow
-                key={c.id}
-                label={c.name}
-                value={ROLE_LABEL[c.role as Role]}
-              />
+              <DataRow key={c.id} label={c.name} value={ROLE_LABEL[c.role as Role]} />
             ))
           )}
         </Panel>
       </div>
 
+      {/* ------------------------------------------------------ who is here */}
       {admin && (
-        <div className="mt-5 grid items-start gap-5 lg:grid-cols-2">
+        <div className="mt-5 grid items-start gap-5 lg:grid-cols-[1fr_1.5fr]">
+          <Panel
+            title="Who's in the portal"
+            action={
+              <Link href="/portal/admin/users" className="label text-faint transition-colors hover:text-accent">
+                Manage
+              </Link>
+            }
+          >
+            <Breakdown parts={people} total={m.totalUsers ?? 0} totalLabel="people with an account" />
+            <p className="mt-5 border-t border-line pt-4 text-[0.78rem] leading-relaxed text-faint">
+              {(m.openCases ?? 0) === 0 && (m.completedCases ?? 0) === 0
+                ? "No cases have been opened yet."
+                : `${m.openCases ?? 0} case${(m.openCases ?? 0) === 1 ? "" : "s"} open, ${m.completedCases ?? 0} completed.`}
+            </p>
+          </Panel>
+
           <Panel
             title="Recent registrations"
             action={
@@ -227,7 +334,7 @@ export default async function AdminPage() {
               <EmptyState
                 icon="search"
                 title="No accounts yet"
-                body="Registrations appear here as clients create accounts."
+                body="Anyone who signs up appears here, newest first, with the pathway they chose."
               />
             ) : (
               recentUsers.map((u) => (
@@ -244,29 +351,6 @@ export default async function AdminPage() {
                 />
               ))
             )}
-          </Panel>
-
-          <Panel title="Operations">
-            <div className="grid gap-2">
-              {[
-                { href: "/portal/admin/users", label: "Users & roles" },
-                { href: "/portal/admin/cases", label: "Cases" },
-                { href: "/portal/admin/documents", label: "Document review" },
-                { href: "/portal/admin/staff", label: "Advisor assignments" },
-                { href: "/portal/admin/audit", label: "Audit log" },
-              ].map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="group flex items-center justify-between rounded-[var(--radius-sm)] border border-line px-4 py-3 text-[0.88rem] text-fg transition-colors hover:border-moss-400/50"
-                >
-                  {l.label}
-                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 text-accent opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
-                    <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-              ))}
-            </div>
           </Panel>
         </div>
       )}

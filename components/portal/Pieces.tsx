@@ -265,6 +265,210 @@ export function StatCard({
   );
 }
 
+/* ---------------------------------------------------------------- WorkCard */
+
+/**
+ * A number that means WORK, with the words that make it mean something.
+ *
+ * The dashboards used to open with a row of bare figures — "Professionals 1",
+ * "Docs to review 0", "Unread 1" — eight of them, all the same size, five of
+ * them zero. Nothing told you which were jobs waiting for you and which were
+ * just facts about the business, so the honest way to read it was to read all
+ * eight and work it out. That is not a dashboard, it is a report.
+ *
+ * So each card here carries one line saying what the number MEANS and what
+ * acting on it does. `note` is not decoration; a figure nobody can interpret
+ * is worse than no figure, because it still costs attention.
+ *
+ * ZERO IS DELIBERATELY QUIET. A count above zero is work and gets the accent
+ * colour, a ring and an arrow; a zero is drawn back in muted text. Making
+ * "nothing to do" look identical to "four things to do" is how a screen full
+ * of zeros teaches people to stop reading it.
+ */
+export function WorkCard({
+  label,
+  value,
+  note,
+  href,
+}: {
+  label: string;
+  value: number;
+  note: string;
+  href: string;
+}) {
+  const waiting = value > 0;
+
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group relative block rounded-[var(--radius-md)] border p-5 transition-all duration-300",
+        "hover:-translate-y-0.5 motion-reduce:transform-none",
+        waiting
+          ? "border-moss-400/40 bg-[color-mix(in_srgb,var(--accent)_7%,transparent)] hover:border-moss-400/70"
+          : "border-line bg-[color-mix(in_srgb,var(--fg)_3%,transparent)] hover:border-line-strong"
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span
+          className={cn(
+            "num block text-[2.1rem] leading-none tracking-[-0.03em]",
+            waiting ? "text-accent-ink" : "text-faint"
+          )}
+        >
+          {value}
+        </span>
+        {waiting && (
+          <svg
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden
+            className="mt-1 h-3 w-3 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1"
+          >
+            <path
+              d="M1 6h9M6.5 2.5L10 6l-3.5 3.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
+      </div>
+
+      <span
+        className={cn(
+          "mt-3 block text-[0.92rem] font-semibold leading-snug",
+          waiting ? "text-fg-strong" : "text-muted"
+        )}
+      >
+        {label}
+      </span>
+      <span className="mt-1.5 block text-[0.78rem] leading-relaxed text-faint">{note}</span>
+    </Link>
+  );
+}
+
+/**
+ * What the top of the page says when none of the work cards has anything in
+ * it. Four zeros in a row read as a broken screen; one sentence reads as good
+ * news, which is what it is.
+ */
+export function AllClear({
+  title,
+  body,
+  action,
+}: {
+  title: string;
+  body: string;
+  action?: { label: string; href: string };
+}) {
+  return (
+    <div className="flex flex-col gap-4 rounded-[var(--radius-md)] border border-moss-400/30 bg-[color-mix(in_srgb,var(--accent)_6%,transparent)] p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-start gap-3.5">
+        <span
+          aria-hidden
+          className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--accent)_18%,transparent)]"
+        >
+          <svg viewBox="0 0 14 14" fill="none" className="h-3.5 w-3.5 text-accent-ink">
+            <path
+              d="M2.5 7.5L5.5 10.5L11.5 4"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+        <div className="min-w-0">
+          <p className="text-[0.95rem] font-semibold text-fg-strong">{title}</p>
+          <p className="mt-1 text-[0.84rem] leading-relaxed text-muted">{body}</p>
+        </div>
+      </div>
+      {action && (
+        <Link
+          href={action.href}
+          className="label inline-flex min-h-11 shrink-0 items-center rounded-[var(--radius-sm)] border border-line px-4 text-fg transition-colors hover:border-moss-400/60 hover:text-accent"
+        >
+          {action.label}
+        </Link>
+      )}
+    </div>
+  );
+}
+
+/* --------------------------------------------------------------- Breakdown */
+
+/**
+ * How a total divides up — one labelled row per part, each with its own bar.
+ *
+ * NOT A STACKED BAR AND NOT A PIE. Both of those need a legend, and a legend
+ * means reading a colour, finding it in a key, and carrying the answer back —
+ * three steps to learn one number. Rows carry their own label, so there is
+ * nothing to decode.
+ *
+ * The bars are proportional to the LARGEST part, not to the total, because
+ * with a lopsided split every bar against the total collapses into a stub and
+ * the comparison the chart exists to make becomes invisible. The numbers
+ * beside them are exact either way.
+ */
+export function Breakdown({
+  parts,
+  total,
+  totalLabel,
+}: {
+  parts: { label: string; value: number }[];
+  total: number;
+  totalLabel: string;
+}) {
+  const largest = Math.max(1, ...parts.map((p) => p.value));
+
+  return (
+    <div>
+      <div className="flex items-baseline gap-2.5 border-b border-line pb-4">
+        <span className="num text-[2rem] leading-none tracking-[-0.03em] text-fg-strong">
+          {total}
+        </span>
+        <span className="text-[0.85rem] text-muted">{totalLabel}</span>
+      </div>
+
+      <ul className="mt-5 space-y-3.5">
+        {parts.map((p) => (
+          <li key={p.label} className="grid grid-cols-[7.5rem_1fr_2rem] items-center gap-3">
+            <span className="truncate text-[0.84rem] text-muted">{p.label}</span>
+            {/*
+              `block` on the track is load-bearing, not tidiness. A <span> is
+              inline by default, so `h-1.5` had nothing to apply to and the
+              fill's `h-full` resolved against a zero-height parent: every bar
+              rendered as an empty grey track, identical whatever the number
+              was. The chart looked broken in exactly the way that suggests no
+              data, on a page whose whole job is showing real counts.
+            */}
+            <span
+              aria-hidden
+              className="block h-1.5 overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--fg)_9%,transparent)]"
+            >
+              {/*
+                The moss ramp, not `bg-accent` — there is no such utility here.
+                `--accent` is a CSS variable and only `.text-accent` is written
+                by hand (see globals.css); `bg-accent` silently matched nothing,
+                so the fill had width and no colour and every bar came out an
+                empty grey track. Same gradient as ProgressBar, so the two read
+                as the same kind of measure.
+              */}
+              <span
+                className="block h-full rounded-full bg-gradient-to-r from-moss-600 via-moss-400 to-moss-300 transition-[width] duration-500 motion-reduce:transition-none"
+                style={{ width: `${Math.round((p.value / largest) * 100)}%` }}
+              />
+            </span>
+            <span className="num text-right text-[0.95rem] text-fg-strong">{p.value}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 /* -------------------------------------------------------------- NextAction */
 
 /**
@@ -405,12 +609,27 @@ export function ProgressRing({
  * Horizontal on wide screens, vertical on a phone. A seven-step horizontal rail
  * at 375px is unreadable, so it changes shape rather than shrinking.
  */
+/**
+ * The stages of a case, as a track.
+ *
+ * `compact` DROPS THE PER-STAGE DESCRIPTIONS. Laid out horizontally, seven
+ * stages divide the panel into columns about 110px wide — wide enough for a
+ * name, nowhere near enough for a sentence. The descriptions wrapped into
+ * narrow ragged stacks that were technically present and practically unread,
+ * and the whole card looked cramped because of it.
+ *
+ * The dashboard therefore shows the shape of the journey and where you are on
+ * it; the full text lives on the journey page, which has one column per stage
+ * and room to say it properly. Same data, told at the size each screen has.
+ */
 export function JourneyTrack({
   stages,
   current = -1,
+  compact = false,
 }: {
   stages: readonly { key: string; name: string; description: string }[];
   current?: number;
+  compact?: boolean;
 }) {
   return (
     <ol className="flex flex-col lg:flex-row">
@@ -458,9 +677,11 @@ export function JourneyTrack({
               >
                 {stage.name}
               </span>
-              <span className="mt-1 block text-[0.78rem] leading-snug text-muted">
-                {stage.description}
-              </span>
+              {!compact && (
+                <span className="mt-1 block text-[0.78rem] leading-snug text-muted">
+                  {stage.description}
+                </span>
+              )}
             </span>
           </li>
         );

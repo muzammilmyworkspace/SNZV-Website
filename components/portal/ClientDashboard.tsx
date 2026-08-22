@@ -17,7 +17,7 @@ import {
   PortalHeading,
   Panel,
   EmptyState,
-  StatCard,
+  WorkCard,
   NextAction,
   JourneyTrack,
   ProgressRing,
@@ -128,34 +128,75 @@ export async function ClientDashboard({ session }: { session: Session }) {
         eyebrow={ctx.eyebrow}
         title={`Welcome back, ${firstName}.`}
         lead={ctx.lead}
-        meta={
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            <StatCard label={casesLabel} value={cases.length} href="/portal/cases" />
-            <StatCard
-              label="Documents"
-              value={documents.length}
-              hint={`${required.length} typically needed`}
-              href="/portal/documents"
-              urgent={actionDocs.length > 0}
-            />
-            <StatCard
-              label="Open tasks"
-              value={openTasks.length}
-              href="/portal/tasks"
-              urgent={openTasks.length > 0}
-            />
-            <StatCard label="Consultations" value={appointments.length} href="/portal/appointments" />
-          </div>
-        }
       />
 
       <NextAction {...nextStep} />
 
+      {/*
+        THE FOUR NUMBERS, EACH WITH THE WORDS THAT MAKE IT MEAN SOMETHING.
+
+        These were bare figures under the heading — "Documents 0", "Open tasks
+        0" — which on a new account is a row of zeros that explains nothing and
+        looks broken. A count with no sentence beside it asks the reader to
+        work out both what it counts AND whether it is good news.
+
+        They sit BELOW the next step on purpose. The next step is the answer to
+        "what do I do now"; these are the answer to "where does my case stand",
+        which is the second question, not the first.
+      */}
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <WorkCard
+          label="Documents needing you"
+          value={actionDocs.length}
+          note={
+            actionDocs.length
+              ? "Returned by your advisor — replacing them lets your case continue."
+              : `${documents.length} on file. Nothing has been sent back.`
+          }
+          href="/portal/documents"
+        />
+        <WorkCard
+          label="Open tasks"
+          value={openTasks.length}
+          note={
+            openTasks.length
+              ? "Things your advisor has asked you for."
+              : "Nothing outstanding. Tasks appear here when we need something."
+          }
+          href="/portal/tasks"
+        />
+        <WorkCard
+          label={casesLabel}
+          value={cases.length}
+          note={
+            cases.length
+              ? "Open with us, each with a status and a named next step."
+              : role === "business"
+                ? "Requests you raise with us will be tracked here."
+                : "Applications we prepare with you will be tracked here."
+          }
+          href="/portal/cases"
+        />
+        <WorkCard
+          label="Consultations"
+          value={appointments.length}
+          note={
+            appointments.length
+              ? "Booked with your advisor."
+              : "No calls booked. You can request one at any time."
+          }
+          href="/portal/appointments"
+        />
+      </div>
+
       <div className="mt-5 grid items-start gap-5 lg:grid-cols-[1.55fr_1fr]">
-        <Panel title={role === "business" ? "Where your setup stands" : "Where you are"}>
+        <Panel
+          title={role === "business" ? "Where your setup stands" : "Where you are"}
+          action={<CardLink href="/portal/journey">See each stage</CardLink>}
+        >
           {/* current = -1 until an advisor sets a stage — the honest default */}
-          <JourneyTrack stages={journey} current={-1} />
-          <p className="mt-6 border-t border-line pt-4 text-[0.8rem] text-faint">
+          <JourneyTrack stages={journey} current={-1} compact />
+          <p className="mt-6 border-t border-line pt-4 text-[0.8rem] leading-relaxed text-faint">
             Your current stage is set by your advisor as the case progresses.
           </p>
         </Panel>
