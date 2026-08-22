@@ -31,7 +31,8 @@
     "audit:auth": "node scripts/audit-auth-flow.mjs",
     "audit:qa": "node scripts/audit-qa-matrix.mjs",
     "audit:prod": "node scripts/audit-production.mjs",
-    "check:config": "node scripts/check-config.mjs"
+    "check:config": "node scripts/check-config.mjs",
+    "audit:session": "node scripts/audit-session.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

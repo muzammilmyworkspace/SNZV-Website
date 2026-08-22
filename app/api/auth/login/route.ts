@@ -115,7 +115,14 @@ export async function POST(request: Request) {
   });
 
   await setSessionCookie(
-    createToken({ userId: user.id, email: user.email, role: user.role, name: user.name })
+    createToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      // Stamped so this session can be revoked later; see users.session_epoch.
+      ep: user.sessionEpoch,
+    })
   );
 
   /*

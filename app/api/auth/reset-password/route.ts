@@ -4,6 +4,7 @@ import { hashPassword, validatePassword } from "@/lib/auth/password";
 import { createToken, setSessionCookie, authConfigured } from "@/lib/auth/session";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 import { audit } from "@/lib/db/repos/audit";
+import { revokeSessions } from "@/lib/db/repos/users";
 
 export const runtime = "nodejs";
 
@@ -62,8 +63,21 @@ export async function POST(request: Request) {
     ip,
   });
 
+  /*
+    Everything else signs out. Someone resetting a forgotten password may well
+    be recovering an account that is not solely theirs any more, so this is the
+    case where leaving old sessions alive matters most.
+  */
+  const epoch = await revokeSessions(user.id);
+
   await setSessionCookie(
-    createToken({ userId: user.id, email: user.email, role: user.role, name: user.name })
+    createToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      ep: epoch ?? undefined,
+    })
   );
 
   return NextResponse.json({ ok: true, role: user.role });

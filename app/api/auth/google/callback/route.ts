@@ -98,11 +98,23 @@ export async function GET(request: Request) {
 
   await usersRepo.markLogin(user.id);
 
+  /*
+    The epoch has to be READ here, not assumed to be zero.
+
+    This path signs in accounts that already exist, and any of them may have
+    signed out or changed a password before — which leaves the column above
+    zero. Minting a token without the current value would produce one that
+    fails verification immediately, i.e. an endless bounce back to sign-in for
+    exactly the returning users this flow is for.
+  */
+  const epoch = await usersRepo.sessionEpoch(user.id);
+
   const token = createToken({
     userId: user.id,
     email: user.email,
     role: user.role,
     name: user.name,
+    ep: epoch ?? undefined,
   });
   await setSessionCookie(token);
 

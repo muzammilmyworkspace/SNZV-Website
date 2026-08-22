@@ -112,14 +112,27 @@ export async function POST(request: Request) {
 
   await usersRepo.setPasswordHash(session.userId, await hashPassword(newPassword));
 
-  // Re-issue this caller's cookie so the session they are holding matches the
-  // credential they just set.
+  /*
+    EVERY OTHER SESSION ENDS HERE.
+
+    The usual reason to change a password is suspecting somebody else has it.
+    A change that left their session alive would be the one moment the product
+    absolutely has to work and quietly didn't — they would keep the account
+    until the old token aged out a week later.
+
+    Order matters: revoke first, then mint this caller a token carrying the new
+    epoch, so the person who just changed their password stays signed in and
+    everyone else is out.
+  */
+  const epoch = await usersRepo.revokeSessions(session.userId);
+
   await setSessionCookie(
     createToken({
       userId: session.userId,
       email: session.email,
       role: session.role,
       name: session.name,
+      ep: epoch ?? undefined,
     })
   );
 

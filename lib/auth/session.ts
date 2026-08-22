@@ -1,5 +1,7 @@
 import { createHmac, timingSafeEqual, randomBytes } from "node:crypto";
+import { cache } from "react";
 import { cookies } from "next/headers";
+import * as usersRepo from "@/lib/db/repos/users";
 import type { Session, Role } from "./types";
 
 /**
@@ -109,11 +111,50 @@ export async function clearSessionCookie() {
   });
 }
 
-/** Current session, or null. Safe to call from server components. */
+/**
+ * The user's current session epoch, read at most once per request.
+ *
+ * `cache` is what keeps this affordable. `getSession()` is called by the page,
+ * by its layout, and sometimes by a component underneath both; without
+ * deduplication that is three round trips on a connection pool of one, which
+ * is exactly the shape of starvation that took production down before. With
+ * it, an authenticated request pays for one extra query and no more.
+ */
+const epochForRequest = cache(async (userId: string) => usersRepo.sessionEpoch(userId));
+
+/**
+ * Current session, or null. Safe to call from server components.
+ *
+ * A VALID SIGNATURE IS NO LONGER SUFFICIENT. The token is checked against the
+ * user's session epoch, so signing out or changing a password genuinely ends
+ * the session everywhere instead of only forgetting the cookie in one browser.
+ *
+ * Signing out previously did nothing a determined holder of the cookie would
+ * notice: the token stayed valid for its full seven days, on any machine that
+ * had a copy. That is fixed here, and it is deliberately fixed HERE rather
+ * than in `proxy.ts` — the proxy may be hoisted to a CDN and must never be
+ * what authorisation depends on.
+ */
 export async function getSession(): Promise<Session | null> {
   if (!authConfigured()) return null;
   const jar = await cookies();
-  return verifyToken(jar.get(SESSION_COOKIE)?.value);
+  const session = verifyToken(jar.get(SESSION_COOKIE)?.value);
+  if (!session) return null;
+
+  const current = await epochForRequest(session.userId);
+
+  /*
+    Null means the epoch could not be established, and that is a rejection —
+    see `sessionEpoch`. Failing open would quietly reinstate exactly the
+    sessions somebody went out of their way to revoke.
+  */
+  if (current === null) return null;
+
+  // Tokens minted before the column existed carry no value and read as 0,
+  // which matches the column default, so nobody is signed out by the deploy.
+  if ((session.ep ?? 0) !== current) return null;
+
+  return session;
 }
 
 export async function requireSession(): Promise<Session> {

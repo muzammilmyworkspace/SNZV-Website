@@ -109,6 +109,11 @@ const PUBLIC_ROUTES = new Map([
   ["app/api/auth/verify-email/route.ts", "authorises with a single-use token"],
   ["app/api/auth/google/route.ts", "starts the OAuth redirect"],
   ["app/api/auth/google/callback/route.ts", "authorises with a signed state + provider code"],
+  [
+    "app/api/auth/expired/route.ts",
+    "only deletes the caller's own cookies and redirects; grants nothing, " +
+      "reads nothing, and `next` is restricted to same-site paths",
+  ],
   ["app/api/enquiry/route.ts", "public contact form; rate limited"],
 ]);
 

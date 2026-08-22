@@ -63,7 +63,7 @@ export async function findById(id: string): Promise<DbUser | null> {
  */
 export async function findAuthByEmail(
   email: string
-): Promise<(DbUser & { passwordHash: string | null }) | null> {
+): Promise<(DbUser & { passwordHash: string | null; sessionEpoch: number }) | null> {
   if (!isDatabaseConfigured()) return null;
   /*
     Wrapped, because this is the sign-in read and it does NOT use safeQuery —
@@ -73,7 +73,7 @@ export async function findAuthByEmail(
   */
   const rows = await withConnectionRetry(() => db()`
     SELECT id, email, name, role, status, email_verified, last_login_at,
-           created_at, password_hash
+           created_at, password_hash, session_epoch
     FROM users WHERE lower(email) = ${norm(email)} LIMIT 1
   `);
   if (!rows[0]) return null;
@@ -81,6 +81,9 @@ export async function findAuthByEmail(
     ...mapUser(rows[0]),
     // Null for accounts that sign in with a provider rather than a password.
     passwordHash: rows[0].password_hash ? String(rows[0].password_hash) : null,
+    // Minted into the session token so it can be revoked later. Read from the
+    // query that was already happening rather than costing a second one.
+    sessionEpoch: Number(rows[0].session_epoch ?? 0),
   };
 }
 
@@ -430,4 +433,42 @@ export async function listAdvisors(): Promise<DbUser[]> {
     `;
     return rows.map(mapUser);
   }, []);
+}
+
+/* ------------------------------------------------------- session revocation */
+
+/**
+ * The user's current session epoch, or null if it cannot be established.
+ *
+ * NULL MEANS "DON'T KNOW", AND CALLERS MUST TREAT THAT AS A REJECTION. Failing
+ * open here would mean a database blip silently restores every revoked session
+ * — precisely the sessions someone bothered to revoke. Every portal page needs
+ * the database to render anything at all, so failing closed costs nothing that
+ * was going to work anyway.
+ */
+export async function sessionEpoch(userId: string): Promise<number | null> {
+  if (!isDatabaseConfigured()) return null;
+  return safeQuery(async () => {
+    const rows = await db()`SELECT session_epoch FROM users WHERE id = ${userId} LIMIT 1`;
+    return rows[0] ? Number(rows[0].session_epoch) : null;
+  }, null);
+}
+
+/**
+ * Ends every session this user currently holds, on every device.
+ *
+ * Called when signing out and whenever the password changes. A password change
+ * that leaves old sessions alive is the worst case of the two: the usual
+ * reason for changing a password is suspecting somebody else has it.
+ */
+export async function revokeSessions(userId: string): Promise<number | null> {
+  if (!isDatabaseConfigured()) return null;
+  return safeQuery(async () => {
+    const rows = await db()`
+      UPDATE users SET session_epoch = session_epoch + 1, updated_at = now()
+      WHERE id = ${userId}
+      RETURNING session_epoch
+    `;
+    return rows[0] ? Number(rows[0].session_epoch) : null;
+  }, null);
 }

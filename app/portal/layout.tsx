@@ -31,7 +31,8 @@ export const revalidate = 0;
  */
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
-  if (!session) redirect("/login?next=/portal");
+  // Through the clearing route — see lib/auth/guard.ts for why not /login.
+  if (!session) redirect("/api/auth/expired?next=/portal");
 
   /*
     Sidebar counts, computed here so every page shows the same numbers rather

@@ -36,10 +36,23 @@ const page = await ctx.newPage();
 try {
   /* 1 — the entry point exists on the sign-in screen ---------------------- */
   await page.goto(`${BASE}/login`, { waitUntil: "load" });
+
+  /*
+    WAIT FOR IT, don't count immediately.
+
+    The sign-in form reads search params, which bails the route out to
+    client-side rendering — so the server HTML has the heading but not the
+    form, and everything in it appears only once React has hydrated. Counting
+    on `load` therefore measured how fast the machine was, not whether the link
+    exists, and reported a missing link on a page that plainly has one.
+  */
   const forgot = page.locator('a:has-text("Forgot your password")');
-  (await forgot.count()) > 0
-    ? ok("sign-in screen offers 'Forgot your password?'")
-    : bad("no forgot-password link on the sign-in screen");
+  try {
+    await forgot.first().waitFor({ state: "visible", timeout: 20000 });
+    ok("sign-in screen offers 'Forgot your password?'");
+  } catch {
+    bad("no forgot-password link on the sign-in screen");
+  }
 
   /* 2 — it leads to a page asking only for an email ----------------------- */
   await forgot.first().click();

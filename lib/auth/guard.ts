@@ -30,8 +30,18 @@ async function assertActive(session: Session): Promise<boolean> {
 
 export async function requireUser(next = "/portal"): Promise<Guarded> {
   const session = await getSession();
-  if (!session) redirect(`/login?next=${encodeURIComponent(next)}`);
-  if (!(await assertActive(session))) redirect("/login?suspended=1");
+  /*
+    Via the clearing route, not straight to /login.
+
+    Reaching this line means a session cookie was present — the proxy would
+    have redirected already if it were not — but did not verify: expired, or
+    revoked by a sign-out or password change. Sending such a visitor to /login
+    directly makes the proxy see the still-present cookie and bounce them back
+    here, forever. `/api/auth/expired` throws the cookie away first.
+  */
+  if (!session) redirect(`/api/auth/expired?next=${encodeURIComponent(next)}`);
+  if (!(await assertActive(session)))
+    redirect("/api/auth/expired?reason=suspended");
   return { session, role: session.role };
 }
 

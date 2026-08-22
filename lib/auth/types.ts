@@ -64,6 +64,15 @@ export type Session = {
   name: string;
   /** epoch seconds */
   exp: number;
+  /**
+   * The value of `users.session_epoch` when this token was minted.
+   *
+   * Verification rejects the token if the column has moved on since, which is
+   * how signing out and changing a password actually end sessions rather than
+   * merely forgetting them locally. Optional because tokens issued before the
+   * column existed carry no value; those read as 0 and match the default.
+   */
+  ep?: number;
 };
 
 /* ---------------------------------------------------------------- Journeys */
