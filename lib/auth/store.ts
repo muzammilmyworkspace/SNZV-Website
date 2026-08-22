@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
-import { db, isDatabaseConfigured } from "@/lib/db/client";
+import { db, isDatabaseConfigured, safeQuery } from "@/lib/db/client";
 import * as usersRepo from "@/lib/db/repos/users";
 import * as profilesRepo from "@/lib/db/repos/profiles";
 import type { Role } from "./types";
@@ -100,6 +100,36 @@ export async function issueToken(
     VALUES (${userId}, ${kind}, ${hashToken(raw)}, ${expires})
   `;
   return raw;
+}
+
+/**
+ * Is this token still usable? Checked WITHOUT consuming it.
+ *
+ * The reset page rendered its form for any token at all, so a link that had
+ * already been used looked perfectly functional — you only discovered it was
+ * dead after choosing and confirming a new password. The API refused it
+ * correctly, so nothing was ever insecure; it was simply a wasted minute and a
+ * confusing failure at the worst moment.
+ *
+ * Deliberately separate from `consumeToken`: this must not mark anything used,
+ * or merely LOADING the page would burn the link.
+ */
+export async function isTokenValid(
+  raw: string,
+  kind: "email_verify" | "password_reset"
+): Promise<boolean> {
+  if (!isDatabaseConfigured() || !raw) return false;
+  return safeQuery(async () => {
+    const rows = await db()`
+      SELECT 1 FROM user_tokens
+      WHERE token_hash = ${hashToken(raw)}
+        AND kind = ${kind}
+        AND used_at IS NULL
+        AND expires_at > now()
+      LIMIT 1
+    `;
+    return rows.length > 0;
+  }, false);
 }
 
 export async function consumeToken(

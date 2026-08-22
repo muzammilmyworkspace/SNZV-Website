@@ -5,6 +5,7 @@ import { sendMail, mailConfigured } from "@/lib/mail";
 import { authConfigured } from "@/lib/auth/session";
 import { audit } from "@/lib/db/repos/audit";
 import { company } from "@/data/company";
+import { passwordResetEmail } from "@/lib/mail-templates";
 
 export const runtime = "nodejs";
 
@@ -49,19 +50,14 @@ export async function POST(request: Request) {
     });
 
     if (mailConfigured()) {
+      // Branded HTML with a button, plus the full link as plain text — see
+      // lib/mail-templates.ts for why both parts are always sent.
+      const mail = passwordResetEmail({ name: user.name, link, minutes: 30 });
       await sendMail({
         to: user.email,
-        subject: "Reset your SnZ Ventures password",
-        text: [
-          `Hello ${user.name},`,
-          "",
-          "Use the link below to set a new password. It expires in 30 minutes.",
-          link,
-          "",
-          "If you didn't ask for this, you can ignore this email — nothing has changed.",
-          "",
-          "SnZ Ventures",
-        ].join("\n"),
+        subject: mail.subject,
+        text: mail.text,
+        html: mail.html,
       });
     } else {
       // eslint-disable-next-line no-console

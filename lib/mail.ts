@@ -20,7 +20,17 @@
 export type MailMessage = {
   to?: string;
   subject: string;
+  /**
+   * ALWAYS REQUIRED, even when `html` is supplied.
+   *
+   * It is the fallback every client falls back to — plain-text readers, screen
+   * readers, and the spam filters that penalise HTML-only mail. A password
+   * reset that lands in spam is a password reset that did not happen, so the
+   * text part carries the full link rather than "view this in a browser".
+   */
   text: string;
+  /** Optional rich version. Clients that render it get the button. */
+  html?: string;
   replyTo?: string;
 };
 
@@ -54,6 +64,7 @@ export async function sendMail(message: MailMessage): Promise<void> {
         to: [to],
         subject: message.subject,
         text: message.text,
+        ...(message.html ? { html: message.html } : {}),
         ...(message.replyTo ? { reply_to: message.replyTo } : {}),
       }),
     });
