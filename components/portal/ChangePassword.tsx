@@ -140,7 +140,7 @@ export function ChangePassword() {
         value={next}
         onChange={setNext}
         autoComplete="new-password"
-        hint="At least 10 characters, including a number or symbol."
+        hint="At least 4 characters."
       />
       <PasswordField
         id="confirm-password"

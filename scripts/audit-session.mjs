@@ -138,11 +138,11 @@ try {
       /*
         Restored by writing the hash directly, NOT through the API.
 
-        The API refuses to set it: "12345" does not meet the password policy,
-        and it should not — the QA accounts were seeded by a script that goes
-        underneath the policy on purpose. Which is also the plainest possible
-        argument for removing them before launch; they hold a password the
-        product itself would not accept.
+        The API route would accept it now that the policy allows four
+        characters, but going through it would make this cleanup depend on a
+        CSRF token, a session that the test has just deliberately invalidated,
+        and the policy staying where it is. Writing the hash is unconditional,
+        so the QA password comes back even when the checks above failed.
       */
       await restoreQaPassword();
       ok("QA password restored");

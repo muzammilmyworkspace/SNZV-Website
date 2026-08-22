@@ -72,13 +72,38 @@ export async function verifyPassword(
   }
 }
 
-/** Minimum viable policy. Deliberately not a maze of character classes. */
+/**
+ * The minimum is FOUR CHARACTERS, and the composition rules are gone.
+ *
+ * This was ten characters plus "one letter" plus "one number or symbol". It
+ * was lowered on request so short passwords can be used to open an account.
+ * The composition rules had to go with it: keeping them would have rejected
+ * `1234` for containing no letter, so changing the length alone would not have
+ * allowed the passwords this change exists to allow.
+ *
+ * ⚠ WHAT THIS COSTS, recorded here so the decision stays visible to whoever
+ * reads this next rather than being rediscovered afterwards. This portal holds
+ * passport scans, financial documents and immigration paperwork. A
+ * four-character password of lowercase letters and digits is one of about 1.7
+ * million — seconds of work for anyone who ever obtains the password table.
+ * Online, guessing is held back only by the rate limiter, which is per-instance
+ * on Vercel and so looser in production than it looks.
+ *
+ * WHAT STILL PROTECTS ACCOUNTS:
+ *   • Hashing is unchanged — scrypt at OWASP parameters, so a stolen table is
+ *     still expensive to attack, just far less expensive than it was.
+ *   • Sign-in is rate limited (8 attempts per 15 minutes per IP).
+ *   • The 200-character ceiling stays. It is not a strength rule; it stops a
+ *     megabyte-long input turning one sign-in into a memory-hard
+ *     denial-of-service against the server.
+ *
+ * If this is revisited, the middle ground is keeping a strong policy for staff
+ * and admin accounts — those can read every client's documents — while leaving
+ * clients free to choose. Every rule is in this one function, so that is a
+ * small change.
+ */
 export function validatePassword(password: string): string | null {
-  if (password.length < 10) return "Use at least 10 characters.";
+  if (password.length < 4) return "Use at least 4 characters.";
   if (password.length > 200) return "That password is too long.";
-  if (!/[a-zA-Z]/.test(password)) return "Include at least one letter.";
-  if (!/[0-9]/.test(password) && !/[^a-zA-Z0-9]/.test(password)) {
-    return "Include at least one number or symbol.";
-  }
   return null;
 }
