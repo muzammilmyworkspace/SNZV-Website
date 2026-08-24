@@ -128,11 +128,23 @@ console.log("\nDatabase writes persist\n");
   const cookie = sessions.Student;
   if (!cookie) bad("no student session — skipping persistence");
   else {
+    /*
+      `givenName` because it is a real field on step 0 of the student form.
+
+      This wrote `fullName`, which the admission form no longer has — the paper
+      form asks for given and family names separately. The server correctly
+      dropped the unknown key, the read came back undefined, and the test
+      reported that production was not persisting writes when it was.
+
+      The coupling is unavoidable: the check has to name a field, and it is a
+      script that cannot import the TypeScript definition. Keep this in step
+      with the first step of STUDY in lib/portal/intake.ts.
+    */
     const stamp = "Prod-" + Date.now().toString().slice(-6);
     const put = await fetch(PROD + "/api/portal/intake", {
       method: "PUT",
       headers: { "Content-Type": "application/json", cookie },
-      body: JSON.stringify({ step: 0, resumeAt: 0, answers: { fullName: stamp } }),
+      body: JSON.stringify({ step: 0, resumeAt: 0, answers: { givenName: stamp } }),
     });
     put.ok ? ok(`intake draft written  [${regionOf(put)}]`) : bad(`write failed: ${put.status}`);
 
@@ -140,9 +152,9 @@ console.log("\nDatabase writes persist\n");
     // rather than the same invocation remembering it.
     const get = await fetch(PROD + "/api/portal/intake", { headers: { cookie } });
     const body = await get.json().catch(() => ({}));
-    body?.form?.data?.fullName === stamp
+    body?.form?.data?.givenName === stamp
       ? ok(`read back on a new request: ${stamp}`)
-      : bad(`read back "${body?.form?.data?.fullName}", expected "${stamp}"`);
+      : bad(`read back "${body?.form?.data?.givenName}", expected "${stamp}"`);
   }
 }
 
