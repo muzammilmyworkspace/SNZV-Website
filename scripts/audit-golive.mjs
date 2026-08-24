@@ -218,11 +218,49 @@ for (const route of ROUTES) {
 
 head("Budgets");
 
+/*
+  A NOISY MEASUREMENT IS REPORTED AS NOISY, NOT AS A FAILURE.
+
+  Run against production from a long way off, three loads of the same page gave
+  LCPs of 1080, 4308 and 4480ms — a fourfold spread on identical requests. That
+  is the connection between here and the deployment, not the page: the same
+  pages measured locally, with no network in the way, come in between 368 and
+  1348ms.
+
+  Failing on those numbers would put "LCP over budget" in a go-live report for
+  five pages that are not slow, and the next person would learn to skip the
+  timing section. So when the spread across runs is more than half the median,
+  the number is called unreliable and said so plainly. Real user timings come
+  from field data — Chrome UX Report, or Vercel's own analytics — not from one
+  browser on one connection.
+*/
 for (const p of perf) {
+  const noisy = p.spread > p.load * 0.5;
+
   if (p.ttfb > LIMIT.ttfb) warn(`${p.route} — TTFB ${p.ttfb}ms (over ${LIMIT.ttfb}ms)`);
-  if (p.load > LIMIT.load) bad(`${p.route} — full load ${p.load}ms (over ${LIMIT.load}ms)`);
-  if (p.lcp > LIMIT.lcp) bad(`${p.route} — LCP ${p.lcp}ms (over ${LIMIT.lcp}ms, Google's "good" bar)`);
+
+  if (p.load > LIMIT.load) {
+    noisy
+      ? warn(`${p.route} — load ${p.load}ms, but runs varied by ${p.spread}ms; too noisy to call`)
+      : bad(`${p.route} — full load ${p.load}ms (over ${LIMIT.load}ms)`);
+  }
+
+  if (p.lcp > LIMIT.lcp) {
+    noisy
+      ? warn(`${p.route} — LCP ${p.lcp}ms, measured over a connection varying by ${p.spread}ms`)
+      : bad(`${p.route} — LCP ${p.lcp}ms (over ${LIMIT.lcp}ms, Google's "good" bar)`);
+  }
+
+  // Weight does not depend on the connection, so it is judged either way.
   if (p.bytes > LIMIT.weight) bad(`${p.route} — ${mb(p.bytes)} transferred (over ${mb(LIMIT.weight)})`);
+}
+
+const noisyRuns = perf.filter((p) => p.spread > p.load * 0.5).length;
+if (noisyRuns > perf.length / 3) {
+  warn(
+    `${noisyRuns} of ${perf.length} routes varied by more than half their median between runs — ` +
+      "treat the timings above as indicative and use field data for real user metrics"
+  );
 }
 
 const slowest = [...perf].sort((a, b) => b.load - a.load)[0];
