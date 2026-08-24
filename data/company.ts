@@ -90,7 +90,25 @@ export const company = {
   regulatoryNotice:
     "SnZ Ventures is an advisory firm. Regulated activities — audit, legal representation, licensing submissions and AML officer functions — are delivered through licensed partner firms. SnZ Ventures is not itself a regulated financial institution.",
 
-  siteUrl: "https://www.snzventures.com",
+  /*
+    THE APEX, NOT www.
+
+    This was `https://www.snzventures.com`, and that hostname does not serve
+    this site. It resolves to different hosting whose TLS certificate is for
+    another name, so a browser opening it gets a full-page security warning
+    before it renders anything.
+
+    That address was not just a link — SITE_URL is built from it, so every
+    canonical tag, every og:url and every entry in the sitemap on the live site
+    pointed at a hostname that fails to connect. Told that the canonical version
+    of a page is a URL it cannot fetch, a search engine has no reason to index
+    the one that works.
+
+    The apex is what is attached to the deployment and what answers 200, so it
+    is what the site should call itself. If `www` is added later, point it at
+    the apex with a redirect rather than moving this back.
+  */
+  siteUrl: "https://snzventures.com",
   locale: "en",
 } as const;
 

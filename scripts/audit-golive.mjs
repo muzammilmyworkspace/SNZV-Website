@@ -401,6 +401,38 @@ head("Titles, descriptions and social cards");
   }
   if (!dupes) ok(`all ${titles.size} titles and descriptions are unique`);
 
+  /*
+    THE CANONICAL HOST MUST ACTUALLY ANSWER.
+
+    On the live site every canonical tag, every og:url and every sitemap entry
+    named `www.snzventures.com`, which is not the deployment: it resolves to
+    other hosting whose certificate is for a different name, so it fails TLS
+    outright. Told the canonical version of a page is a URL it cannot fetch, a
+    search engine has no reason to index the one that works — and the whole site
+    was one launch away from being invisible while every page returned 200.
+
+    Nothing else here would have caught it. Every page had a canonical, it was
+    unique, it was well-formed. It simply pointed somewhere that does not exist,
+    and only fetching it says so.
+  */
+  const canonicalHref = await page.evaluate(
+    () => document.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? ""
+  );
+  if (canonicalHref) {
+    const host = new URL(canonicalHref).origin;
+    const res = await fetch(`${host}/`, { redirect: "follow" }).catch((e) => ({
+      ok: false,
+      status: 0,
+      err: String(e),
+    }));
+    res.ok
+      ? ok(`the canonical host resolves and serves: ${host}`)
+      : bad(
+          `CANONICAL HOST DOES NOT RESOLVE: ${host} — every canonical, og:url ` +
+            `and sitemap entry points there${res.status ? ` (HTTP ${res.status})` : ""}`
+        );
+  }
+
   /* og:image must actually resolve — a 404 preview is worse than none. */
   const sample = await page.evaluate(
     () => document.querySelector('meta[property="og:image"]')?.getAttribute("content") ?? ""
