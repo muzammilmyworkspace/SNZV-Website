@@ -20,9 +20,9 @@ import {
 import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "About — More Than Guidance, a Gateway to Possibility",
+  title: "About — A Gateway to Possibility",
   description:
-    "SnZ Ventures is a woman-owned advisory firm in Vilnius, Lithuania, working across company formation, fintech licensing, international recruitment and investor relocation.",
+    "A woman-owned advisory firm in Vilnius, Lithuania, working across company formation, fintech licensing, recruitment and investor relocation.",
   path: "/about",
 });
 

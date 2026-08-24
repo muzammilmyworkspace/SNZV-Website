@@ -533,7 +533,13 @@ body {
 .skip-link:focus {
   left: 12px;
   top: 12px;
-  padding: 10px 18px;
+  /* Sized so the focused chip clears 44px, the WCAG 2.5.5 target minimum. At
+     10px of padding it came to about 39px — close enough to look fine and
+     still short, and this is the first thing a keyboard user ever reaches. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 20px;
   background: var(--color-moss-400);
   color: var(--color-navy-950);
   border-radius: 5px;

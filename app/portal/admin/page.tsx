@@ -113,10 +113,21 @@ export default async function AdminPage() {
     most time-sensitive thing on the page was the one thing invisible on it.
   */
   const work = [
+    /*
+      Contact-form enquiries come FIRST because they are from people with no
+      account and no relationship yet — the only ones who will simply go
+      elsewhere if nobody replies.
+    */
     {
-      label: "New enquiries",
+      label: "Contact enquiries",
+      value: m.newEnquiries ?? 0,
+      note: "From the public site, nobody has picked these up yet.",
+      href: "/portal/admin/enquiries",
+    },
+    {
+      label: "Submitted applications",
       value: m.newQueries ?? 0,
-      note: "Submitted and waiting for a first reply.",
+      note: "Completed forms waiting for a first reply.",
       href: "/portal/admin/requests",
     },
     {
@@ -157,6 +168,16 @@ export default async function AdminPage() {
   const shown = admin ? work : advisorWork;
   const nothingWaiting = shown.every((w) => w.value === 0);
 
+  /*
+    Five cards for an admin, so 3+2 on a laptop and five across on a wide
+    screen. A four-column grid left the fifth alone on its own row.
+
+    Held in a variable rather than written inline because the div sits in a
+    ternary branch, where a JSX comment beside it counts as a second expression
+    and will not parse.
+  */
+  const workGrid = `grid gap-4 sm:grid-cols-2 ${admin ? "lg:grid-cols-3 xl:grid-cols-5" : ""}`;
+
   const people = [
     { label: "Students", value: m.students ?? 0 },
     { label: "Job seekers", value: m.professionals ?? 0 },
@@ -190,9 +211,7 @@ export default async function AdminPage() {
             action={admin ? { label: "Open cases", href: "/portal/admin/cases" } : undefined}
           />
         ) : (
-          <div
-            className={`grid gap-4 sm:grid-cols-2 ${admin ? "lg:grid-cols-4" : ""}`}
-          >
+          <div className={workGrid}>
             {shown.map((w) => (
               <WorkCard key={w.label} {...w} />
             ))}

@@ -66,7 +66,8 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-pressed={mounted ? isLight : undefined}
       title={mounted ? `Switch to ${isLight ? "dark" : "light"} theme` : undefined}
       className={cn(
-        "group relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-line text-fg transition-colors duration-400 hover:border-moss-400/70 hover:text-accent",
+        // 44px for WCAG 2.5.5, matching the menu button beside it.
+        "group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-line text-fg transition-colors duration-400 hover:border-moss-400/70 hover:text-accent",
         className
       )}
     >

@@ -155,7 +155,9 @@ export function AuthShell({
             convention people should not have to already know.
           */}
           <div className="mb-8 flex items-center justify-between gap-4">
-            <Link href="/" className="inline-flex items-center gap-3 lg:hidden">
+            {/* py/-my: the mark is 40px, leaving the link 4px short of the
+                44px target minimum, without moving the masthead. */}
+            <Link href="/" className="inline-flex items-center gap-3 py-0.5 -my-0.5 lg:hidden">
               <Image
                 src="/brand/snz-mark.png"
                 alt=""

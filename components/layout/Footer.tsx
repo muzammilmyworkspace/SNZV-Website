@@ -25,7 +25,14 @@ export function Footer() {
         {/* Brand statement, set large */}
         <div className="grid gap-10 py-12 lg:grid-cols-[1.05fr_2fr] lg:gap-16 lg:py-14">
           <div>
-            <Link href="/" aria-label="SnZ Ventures — home" className="group inline-flex items-center gap-3">
+            {/* py/-my: the mark is 40px, so the link was 4px short of the 44px
+                target minimum. Padding out and pulling the margin back leaves
+                the footer layout unchanged. */}
+            <Link
+              href="/"
+              aria-label="SnZ Ventures — home"
+              className="group inline-flex items-center gap-3 py-0.5 -my-0.5"
+            >
               <Image
                 src="/brand/snz-mark.png"
                 alt=""

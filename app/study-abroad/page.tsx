@@ -23,9 +23,9 @@ import { company } from "@/data/company";
 import { breadcrumbSchema, buildMetadata, faqSchema, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Study Abroad in Europe — Universities, Scholarships & Visas",
+  title: "Study Abroad in Europe — Degrees & Visas",
   description:
-    "Study in Europe with SnZ Ventures. Ten EU destinations, English-taught degrees from €900 a year, and one named advisor from choosing a university through application, scholarships, visa and departure.",
+    "Ten EU destinations, English-taught degrees from €900 a year, and one named advisor from choosing a university through to departure.",
   path: "/study-abroad",
 });
 

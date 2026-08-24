@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Global Careers — International Jobs Across Europe",
   description:
-    "Real roles with named European employers, honest eligibility screening and relocation support. SnZ Ventures recruits into EU SMEs and regulated firms from South Asia and the Middle East.",
+    "Real roles with named European employers, honest eligibility screening and relocation support — recruiting from South Asia and the Middle East.",
   path: "/global-careers",
 });
 

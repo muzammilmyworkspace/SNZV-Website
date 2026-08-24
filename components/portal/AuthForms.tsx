@@ -104,7 +104,9 @@ function Field({
           aria-label="Show password"
           aria-pressed={reveal}
           aria-controls={id}
-          className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-[var(--radius-sm)] text-faint transition-colors hover:text-fg"
+          // h-11 w-11 for the 44px target minimum. The field is 48px tall, so
+          // the larger hit area still sits inside it.
+          className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-[var(--radius-sm)] text-faint transition-colors hover:text-fg"
         >
           <EyeIcon open={reveal} />
         </button>
@@ -299,9 +301,16 @@ export function LoginForm({ googleEnabled = false }: { googleEnabled?: boolean }
       <div className="flex items-center justify-between gap-4 pt-1">
         <Link
           href="/forgot-password"
-          // Padding-in / margin-out, so the recovery link is a real touch
-          // target on a phone without shifting where it sits in the form.
-          className="inline-flex items-center py-3 -my-3 text-[0.83rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
+          /*
+            Padding-in / margin-out, so the recovery link is a real touch
+            target on a phone without shifting where it sits in the form.
+
+            `min-h-11` is stated outright rather than left to padding plus line
+            height, which landed a fraction under 44px and kept turning up in
+            the target audit. A number the browser has to arrive at by addition
+            is a number that drifts the next time the type size changes.
+          */
+          className="inline-flex min-h-11 items-center py-3 -my-3 text-[0.83rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
         >
           Forgot your password?
         </Link>

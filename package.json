@@ -33,7 +33,9 @@
     "audit:prod": "node scripts/audit-production.mjs",
     "check:config": "node scripts/check-config.mjs",
     "audit:session": "node scripts/audit-session.mjs",
-    "audit:intake": "node scripts/audit-student-intake.mjs"
+    "audit:intake": "node scripts/audit-student-intake.mjs",
+    "audit:golive": "node scripts/audit-golive.mjs",
+    "audit:enquiry": "node scripts/audit-enquiry.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

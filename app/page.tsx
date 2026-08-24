@@ -17,7 +17,7 @@ import { buildMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "SnZ Ventures — Your Ambition Has No Borders",
   description:
-    "Vilnius-based advisory moving students, professionals and founders into Europe. Company formation, fintech licensing, international recruitment and investor relocation across all 27 EU member states.",
+    "Vilnius-based advisory moving students, professionals and founders into Europe: company formation, fintech licensing, recruitment and relocation.",
   path: "/",
 });
 

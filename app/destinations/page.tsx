@@ -16,7 +16,7 @@ import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Destinations — Where SnZ Ventures Operates",
   description:
-    "Eight European destination markets and eight talent source corridors. See exactly which services are available in each country, and where the honest answer is still 'ask us'.",
+    "Eight European destination markets and eight talent corridors. See which services are available in each country, and where the answer is still 'ask us'.",
   path: "/destinations",
 });
 

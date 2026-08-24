@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendMail, mailConfigured, DEFAULT_TO } from "@/lib/mail";
+import { createEnquiry, markDelivered } from "@/lib/db/repos/enquiries";
 import { company } from "@/data/company";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 
@@ -98,24 +99,62 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Invalid submission." }, { status: 400 });
   }
 
-  if (!mailConfigured()) {
+  /*
+    WRITTEN DOWN FIRST, EMAILED SECOND.
+
+    This used to email the enquiry and store nothing. With no mail transport
+    configured it answered 503 and logged a line to the server console, so every
+    enquiry submitted was lost — on the primary conversion path of the entire
+    marketing site. Even with mail working, a provider outage or a bounce would
+    swallow a lead silently and nobody would know somebody had tried to reach us.
+
+    Now delivery is a convenience on top of a record that already exists. The
+    only case where the visitor is told to email instead is a failed WRITE,
+    because that is the only case where we genuinely do not have their enquiry.
+  */
+  const ip = clientIp(request);
+  const enquiryId = await createEnquiry({
+    pathway: payload.pathway,
+    name: String(payload.answers.name ?? ""),
+    email: String(payload.answers.email ?? ""),
+    phone: payload.answers.phone ?? null,
+    preferredContact: payload.answers.preferredContact ?? null,
+    notes: payload.answers.notes ?? null,
+    answers: payload.answers,
+    ip,
+  });
+
+  const fallbackAddress =
+    process.env.MAIL_TO ?? company.contact.consultationEmail ?? DEFAULT_TO;
+
+  if (!enquiryId) {
     // eslint-disable-next-line no-console
-    console.warn(
-      "[enquiry] NOT DELIVERED — no mail transport configured. Set RESEND_API_KEY or MAIL_WEBHOOK_URL.",
-      JSON.stringify({ pathway: payload.pathway, fields: Object.keys(payload.answers) })
-    );
+    console.error("[enquiry] COULD NOT STORE — the enquiry has been lost.");
     return NextResponse.json(
       {
         ok: false,
-        error: "unconfigured",
+        error: "unavailable",
         // Name the address. "Email us directly" without it makes the visitor
         // go hunting at exactly the moment they were ready to convert.
-        message: `Our enquiry system isn't accepting messages right now. Please email ${
-          process.env.MAIL_TO ?? company.contact.consultationEmail ?? DEFAULT_TO
-        } and we'll pick it up.`,
+        message: `We couldn't record that just now. Please email ${fallbackAddress} and we'll pick it up.`,
       },
       { status: 503 }
     );
+  }
+
+  if (!mailConfigured()) {
+    /*
+      The enquiry IS received — it is on the file and staff can see it in the
+      portal — so telling the visitor it failed would be a lie that costs a
+      lead. What is missing is the notification, which is an operator problem,
+      not theirs. It is logged loudly so it does not go unnoticed.
+    */
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[enquiry] stored ${enquiryId} but NOT EMAILED — no mail transport configured. ` +
+        "Set RESEND_API_KEY or MAIL_WEBHOOK_URL. Enquiries are visible at /portal/admin/requests."
+    );
+    return NextResponse.json({ ok: true, stored: true, delivered: false });
   }
 
   try {
@@ -127,13 +166,17 @@ export async function POST(request: Request) {
       text: format(payload),
       replyTo: payload.answers.email,
     });
+    await markDelivered(enquiryId);
   } catch (error) {
+    /*
+      Delivery failed but the enquiry is stored, so this is NOT the visitor's
+      problem and telling them it failed would send a lead away from a message
+      we already have. It stays `delivered = false`, which is what makes the
+      undelivered queue in the portal worth looking at.
+    */
     // eslint-disable-next-line no-console
-    console.error("[enquiry] delivery failed:", error);
-    return NextResponse.json(
-      { ok: false, error: "Delivery failed. Please email us directly." },
-      { status: 502 }
-    );
+    console.error(`[enquiry] stored ${enquiryId} but delivery failed:`, error);
+    return NextResponse.json({ ok: true, stored: true, delivered: false });
   }
 
   return NextResponse.json({ ok: true });

@@ -4,9 +4,9 @@ import { pillars } from "@/data/pillars";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Business Setup — Company Formation & Expansion in the EU",
+  title: "Business Setup — EU Company Formation",
   description:
-    "Form a Lithuanian company that actually operates: UAB/MB incorporation, VAT and EORI, accounting, fintech licensing and investor relocation — coordinated through one point of contact.",
+    "Form a Lithuanian company that actually operates: UAB/MB incorporation, VAT and EORI, accounting, fintech licensing and investor relocation.",
   path: "/business-setup",
 });
 

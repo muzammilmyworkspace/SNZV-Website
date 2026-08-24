@@ -918,7 +918,11 @@ export async function getAdminOverview(limitCases = 12, limitDocs = 10, limitUse
           'newQueries',       (SELECT count(*)::int FROM intake_forms WHERE status = 'submitted'),
           'studentQueries',   (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'study'),
           'careerQueries',    (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'career'),
-          'businessQueries',  (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'business')
+          'businessQueries',  (SELECT count(*)::int FROM intake_forms WHERE status <> 'draft' AND pathway = 'business'),
+          -- Public contact-form enquiries. Folded into the same statement
+          -- because this page must stay one round trip.
+          'newEnquiries',     (SELECT count(*)::int FROM enquiries WHERE handled_at IS NULL),
+          'undeliveredEnquiries', (SELECT count(*)::int FROM enquiries WHERE delivered = FALSE)
         ) AS metrics,
 
         COALESCE((

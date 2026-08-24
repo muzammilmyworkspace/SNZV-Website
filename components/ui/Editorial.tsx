@@ -420,9 +420,17 @@ export function TextLink({
   external?: boolean;
 }) {
   const cls = cn(
-    // min-h-8 + padding: these are real CTAs ("Talk to an advisor"), and at
-    // text height they were 17px tall — under any sane touch minimum.
-    "group inline-flex min-h-8 items-center gap-2 py-1.5 label transition-colors",
+    /*
+      min-h-11 + padding: these are real CTAs ("Talk to an advisor", "Create an
+      account") and at text height they were 17px tall. This was raised to 32px
+      once, which is better and still under the bar — WCAG 2.5.5 asks for 44,
+      and these sit directly beside primary buttons in the same flex row, so
+      they are peers of a button and should be thumbable like one.
+
+      Growing the box does not move anything: the row is `items-center`, and the
+      button beside it is already taller than 44px.
+    */
+    "group inline-flex min-h-11 items-center gap-2 py-1.5 label transition-colors",
     tone === "dark" ? "text-accent hover:text-accent" : "text-accent hover:text-moss-600",
     className
   );

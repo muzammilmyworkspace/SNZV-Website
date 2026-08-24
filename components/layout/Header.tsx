@@ -69,7 +69,16 @@ export function Header() {
           <Link
             href="/"
             aria-label="SnZ Ventures — home"
-            className="group flex shrink-0 items-center gap-3"
+            /*
+              PADDING OUT, MARGIN BACK IN.
+
+              Below `xs` the wordmark is hidden, so this link was just the 36px
+              mark — a 36×36 target for the control that takes you home. Making
+              the mark itself bigger would change the design at every width;
+              padding the link and pulling the margin back leaves the layout
+              pixel-identical and gives the tap area its missing 8px.
+            */
+            className="group flex shrink-0 items-center gap-3 py-1 -my-1"
           >
             <Image
               src="/brand/snz-mark.png"
@@ -195,7 +204,11 @@ export function Header() {
               aria-label="Open menu"
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
-              className="group flex h-10 w-10 items-center justify-center border border-line transition-colors hover:border-line xl:hidden"
+              /* 44px, not 40. WCAG 2.5.5 asks for 44×44, and this is the only
+                 way into the navigation on a phone — the one control where
+                 being four pixels short is felt most. The header is 64px even
+                 when scrolled, so it fits with room to spare. */
+              className="group flex h-11 w-11 items-center justify-center border border-line transition-colors hover:border-line xl:hidden"
             >
               <span className="flex flex-col gap-[5px]">
                 <span className="block h-px w-4 bg-paper transition-transform duration-400 group-hover:translate-x-0.5" />
