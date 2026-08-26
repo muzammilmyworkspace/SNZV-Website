@@ -106,7 +106,7 @@ export function Dream() {
                   <span className="min-w-0 flex-1">
                     <span
                       className={cn(
-                        "block font-display text-[2rem] leading-[0.98] tracking-[-0.024em] transition-colors duration-500 sm:text-[2.9rem]",
+                        "block font-display text-[2rem] leading-[0.98] tracking-[-0.024em] transition-colors duration-500 sm:text-[3rem]",
                         active === i
                           ? "text-fg"
                           : "text-muted group-hover:text-fg"

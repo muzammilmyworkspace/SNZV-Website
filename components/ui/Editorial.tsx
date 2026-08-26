@@ -304,8 +304,8 @@ export function Action({
   ariaLabel?: string;
 }) {
   const sizes = {
-    sm: "h-9 px-4 text-[0.74rem]",
-    md: "h-12 px-6 text-[0.78rem]",
+    sm: "h-9 px-4 text-[0.75rem]",
+    md: "h-12 px-6 text-[0.8rem]",
     lg: "h-14 px-8 text-[0.8rem]",
   }[size];
 
@@ -468,7 +468,7 @@ export function Caveat({
   return (
     <p
       className={cn(
-        "mt-8 max-w-2xl border-l pl-5 text-[0.78rem] leading-relaxed",
+        "mt-8 max-w-2xl border-l pl-5 text-[0.8rem] leading-relaxed",
         "border-line text-faint",
         className
       )}
@@ -490,7 +490,7 @@ export function ContentRequired({
   return (
     <aside
       data-content-required
-      className="my-8 rounded-[var(--radius-sm)] border border-dashed border-amber-400/60 bg-amber-400/10 p-5 text-[0.82rem] text-amber-200"
+      className="my-8 rounded-[var(--radius-sm)] border border-dashed border-amber-400/60 bg-amber-400/10 p-5 text-[0.85rem] text-amber-200"
     >
       <p className="label text-amber-300">[Content required] — {label}</p>
       {items && (

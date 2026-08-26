@@ -18,7 +18,7 @@ export default function RegisterPage() {
       title="Start your journey."
       lead="Two short steps. We only ask for what we need to be useful."
       footer={
-        <p className="text-[0.88rem] text-muted">
+        <p className="text-[0.9rem] text-muted">
           Already have an account?{" "}
           <Link href="/login" className="font-semibold text-accent underline underline-offset-4">
             Sign in

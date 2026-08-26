@@ -73,8 +73,8 @@ export function CaseStatusControl({
     <div className="border-t border-line pt-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="min-w-0">
-          <span className="block text-[0.92rem] font-medium text-fg">{title}</span>
-          <span className="mt-0.5 block text-[0.78rem] text-faint">Current status</span>
+          <span className="block text-[0.95rem] font-medium text-fg">{title}</span>
+          <span className="mt-0.5 block text-[0.8rem] text-faint">Current status</span>
         </span>
         <StatusPill status={current} label={current.replace(/_/g, " ")} />
       </div>
@@ -123,12 +123,12 @@ export function CaseStatusControl({
       </div>
 
       {error && (
-        <p role="alert" className="mt-2 text-[0.82rem] text-[#B42318] [html[data-theme=dark]_&]:text-red-300">
+        <p role="alert" className="mt-2 text-[0.85rem] text-[#B42318] [html[data-theme=dark]_&]:text-red-300">
           {error}
         </p>
       )}
       {saved && (
-        <p role="status" className="mt-2 text-[0.82rem] text-accent-ink">
+        <p role="status" className="mt-2 text-[0.85rem] text-accent-ink">
           Updated. The client has been notified.
         </p>
       )}

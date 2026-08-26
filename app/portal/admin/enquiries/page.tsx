@@ -108,7 +108,7 @@ export default async function EnquiriesPage() {
               <tbody>
                 {rows.map((e) => (
                   <tr key={e.id} className="border-b border-line align-top last:border-0">
-                    <td className="py-3 pr-4 text-[0.82rem] text-faint">
+                    <td className="py-3 pr-4 text-[0.85rem] text-faint">
                       {new Date(e.createdAt).toLocaleDateString("en-GB", {
                         day: "numeric",
                         month: "short",
@@ -116,7 +116,7 @@ export default async function EnquiriesPage() {
                       })}
                     </td>
                     <td className="py-3 pr-4 text-[0.9rem] text-fg">{e.name}</td>
-                    <td className="py-3 pr-4 text-[0.84rem] text-muted">
+                    <td className="py-3 pr-4 text-[0.85rem] text-muted">
                       <a
                         href={`mailto:${e.email}`}
                         className="inline-flex min-h-11 items-center break-all underline underline-offset-2 hover:text-accent"
@@ -125,7 +125,7 @@ export default async function EnquiriesPage() {
                       </a>
                       {e.phone && <div className="text-[0.8rem] text-faint">{e.phone}</div>}
                     </td>
-                    <td className="py-3 pr-4 text-[0.84rem] text-muted">
+                    <td className="py-3 pr-4 text-[0.85rem] text-muted">
                       {PATHWAY_LABEL[e.pathway] ?? e.pathway}
                       {e.notes && (
                         <div className="mt-1 max-w-md text-[0.8rem] leading-relaxed text-faint">

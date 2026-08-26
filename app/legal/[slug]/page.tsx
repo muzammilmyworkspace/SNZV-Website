@@ -74,10 +74,10 @@ export default async function LegalPage({
         <Container size="narrow">
           {/* Unmissable draft warning — these documents are not launch-ready. */}
           <div className="mb-9 border border-amber-300 bg-amber-50 p-4">
-            <p className="text-[0.82rem] font-semibold uppercase tracking-wide text-amber-900">
+            <p className="text-[0.85rem] font-semibold uppercase tracking-wide text-amber-900">
               Draft — legal review required
             </p>
-            <p className="mt-1.5 text-[0.86rem] leading-relaxed text-amber-900">
+            <p className="mt-1.5 text-[0.85rem] leading-relaxed text-amber-900">
               This document provides structure only. Sections marked{" "}
               <span className="font-mono text-[0.8rem]">[CONFIRM]</span> require
               company facts and legal determinations that must be supplied and
@@ -102,7 +102,7 @@ export default async function LegalPage({
                   {section.list.map((item) => (
                     <li
                       key={item}
-                      className="text-[0.92rem] leading-relaxed text-fg"
+                      className="text-[0.95rem] leading-relaxed text-fg"
                     >
                       {item}
                     </li>

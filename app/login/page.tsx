@@ -20,7 +20,7 @@ export default function LoginPage() {
       title="Welcome back."
       lead="Sign in to pick up where your journey left off."
       footer={
-        <p className="text-[0.88rem] text-muted">
+        <p className="text-[0.9rem] text-muted">
           Don&rsquo;t have an account yet?{" "}
           <Link href="/register" className="font-semibold text-accent underline underline-offset-4">
             Create one

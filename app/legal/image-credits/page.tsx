@@ -62,25 +62,25 @@ export default function ImageCreditsPage() {
                 <tr className="border-b border-line">
                   <th
                     scope="col"
-                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
+                    className="py-3 pr-4 text-[0.75rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Asset
                   </th>
                   <th
                     scope="col"
-                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
+                    className="py-3 pr-4 text-[0.75rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Author
                   </th>
                   <th
                     scope="col"
-                    className="py-3 pr-4 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
+                    className="py-3 pr-4 text-[0.75rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Source
                   </th>
                   <th
                     scope="col"
-                    className="py-3 text-[0.74rem] font-semibold uppercase tracking-wider text-faint"
+                    className="py-3 text-[0.75rem] font-semibold uppercase tracking-wider text-faint"
                   >
                     Licence
                   </th>
@@ -89,13 +89,13 @@ export default function ImageCreditsPage() {
               <tbody>
                 {entries.map((e) => (
                   <tr key={e.key} className="border-b border-line">
-                    <td className="py-3 pr-4 align-top font-mono text-[0.78rem] text-fg">
+                    <td className="py-3 pr-4 align-top font-mono text-[0.8rem] text-fg">
                       {e.key}
                     </td>
-                    <td className="py-3 pr-4 align-top text-[0.83rem] text-muted">
+                    <td className="py-3 pr-4 align-top text-[0.85rem] text-muted">
                       {e.artist?.split("\n")[0] ?? "—"}
                     </td>
-                    <td className="py-3 pr-4 align-top text-[0.83rem]">
+                    <td className="py-3 pr-4 align-top text-[0.85rem]">
                       {e.page ? (
                         <a
                           href={e.page}
@@ -109,19 +109,19 @@ export default function ImageCreditsPage() {
                         <span className="text-muted">{e.source}</span>
                       )}
                     </td>
-                    <td className="py-3 align-top text-[0.83rem] text-muted">
+                    <td className="py-3 align-top text-[0.85rem] text-muted">
                       {e.licence ?? "—"}
                     </td>
                   </tr>
                 ))}
                 <tr className="border-b border-line">
-                  <td className="py-3 pr-4 align-top font-mono text-[0.78rem] text-fg">
+                  <td className="py-3 pr-4 align-top font-mono text-[0.8rem] text-fg">
                     corridor-map
                   </td>
-                  <td className="py-3 pr-4 align-top text-[0.83rem] text-muted">
+                  <td className="py-3 pr-4 align-top text-[0.85rem] text-muted">
                     Wikimedia contributors
                   </td>
-                  <td className="py-3 pr-4 align-top text-[0.83rem]">
+                  <td className="py-3 pr-4 align-top text-[0.85rem]">
                     <a
                       href="https://commons.wikimedia.org/wiki/File:BlankMap-World-Equirectangular.svg"
                       target="_blank"
@@ -131,7 +131,7 @@ export default function ImageCreditsPage() {
                       Wikimedia Commons
                     </a>
                   </td>
-                  <td className="py-3 align-top text-[0.83rem] text-muted">
+                  <td className="py-3 align-top text-[0.85rem] text-muted">
                     {mapGeo.licence}
                   </td>
                 </tr>
@@ -139,7 +139,7 @@ export default function ImageCreditsPage() {
             </table>
           </div>
 
-          <p className="mt-8 text-[0.83rem] leading-relaxed text-faint">
+          <p className="mt-8 text-[0.85rem] leading-relaxed text-faint">
             The SnZ Ventures logo and brand marks are the property of SnZ
             Ventures. The corridor map is derived from a public-domain
             equirectangular world map, resampled as a dot matrix.

@@ -119,7 +119,7 @@ export default async function AdminUserPage({
           </Link>
         }
         meta={
-          <div className="flex flex-wrap gap-x-8 gap-y-3 text-[0.83rem]">
+          <div className="flex flex-wrap gap-x-8 gap-y-3 text-[0.85rem]">
             <span className="text-muted">
               Status <StatusPill status={user.status} label={user.status} />
             </span>
@@ -156,7 +156,7 @@ export default async function AdminUserPage({
             }
           >
             {!definition ? (
-              <p className="text-[0.88rem] text-muted">
+              <p className="text-[0.9rem] text-muted">
                 This account type has no intake form.
               </p>
             ) : !intake ? (
@@ -182,7 +182,7 @@ export default async function AdminUserPage({
                             className="grid gap-1 border-b border-line py-2.5 last:border-0 sm:grid-cols-[14rem_1fr] sm:gap-4"
                           >
                             <dt className="text-[0.8rem] text-faint">{f.label}</dt>
-                            <dd className="whitespace-pre-wrap text-[0.88rem] leading-relaxed text-fg">
+                            <dd className="whitespace-pre-wrap text-[0.9rem] leading-relaxed text-fg">
                               {value}
                             </dd>
                           </div>
@@ -192,7 +192,7 @@ export default async function AdminUserPage({
                   );
                 })}
                 {intake.submittedAt && (
-                  <p className="border-t border-line pt-4 text-[0.78rem] text-faint">
+                  <p className="border-t border-line pt-4 text-[0.8rem] text-faint">
                     Submitted{" "}
                     {new Date(intake.submittedAt).toLocaleString("en-GB", {
                       day: "numeric",
@@ -258,16 +258,16 @@ export default async function AdminUserPage({
         {/* Sidebar */}
         <div className="space-y-5">
           <Panel title="Contact">
-            <dl className="space-y-3 text-[0.86rem]">
+            <dl className="space-y-3 text-[0.85rem]">
               <div>
-                <dt className="text-[0.78rem] text-faint">Email</dt>
+                <dt className="text-[0.8rem] text-faint">Email</dt>
                 <dd className="mt-0.5 break-all text-fg">{user.email}</dd>
               </div>
               {Object.entries(profile ?? {})
                 .filter(([, v]) => v && String(v).trim())
                 .map(([k, v]) => (
                   <div key={k}>
-                    <dt className="text-[0.78rem] capitalize text-faint">
+                    <dt className="text-[0.8rem] capitalize text-faint">
                       {k.replace(/_/g, " ")}
                     </dt>
                     <dd className="mt-0.5 text-fg">{String(v)}</dd>
@@ -299,15 +299,15 @@ export default async function AdminUserPage({
               <ul className="space-y-4">
                 {consents.map((c) => (
                   <li key={c.id} className="border-b border-line pb-4 last:border-0 last:pb-0">
-                    <p className="text-[0.88rem] font-medium text-fg-strong">
+                    <p className="text-[0.9rem] font-medium text-fg-strong">
                       {c.kind === "student_undertaking"
                         ? "Student Consent & Undertaking"
                         : c.kind.replace(/_/g, " ")}
                     </p>
-                    <p className="mt-1.5 text-[0.82rem] text-muted">
+                    <p className="mt-1.5 text-[0.85rem] text-muted">
                       Signed <span className="text-fg">{c.signedName}</span>
                     </p>
-                    <p className="mt-0.5 text-[0.78rem] text-faint">
+                    <p className="mt-0.5 text-[0.8rem] text-faint">
                       {new Date(c.acceptedAt).toLocaleString("en-GB", {
                         day: "numeric",
                         month: "short",
@@ -316,7 +316,7 @@ export default async function AdminUserPage({
                         minute: "2-digit",
                       })}
                     </p>
-                    <p className="mt-0.5 text-[0.74rem] text-faint">Version {c.version}</p>
+                    <p className="mt-0.5 text-[0.75rem] text-faint">Version {c.version}</p>
                   </li>
                 ))}
               </ul>
@@ -334,7 +334,7 @@ export default async function AdminUserPage({
                       {h.toStatus.replace(/_/g, " ")}
                       {h.internal && (
                         <span
-                          className="ml-2 rounded-full border border-line px-1.5 py-0.5 text-[0.68rem] uppercase tracking-[0.1em] text-faint"
+                          className="ml-2 rounded-full border border-line px-1.5 py-0.5 text-[0.7rem] uppercase tracking-[0.1em] text-faint"
                           title="Not shown to the client"
                         >
                           internal
@@ -344,7 +344,7 @@ export default async function AdminUserPage({
                     {h.note && (
                       <p className="mt-0.5 text-[0.8rem] leading-relaxed text-muted">{h.note}</p>
                     )}
-                    <p className="mt-0.5 text-[0.74rem] text-faint">
+                    <p className="mt-0.5 text-[0.75rem] text-faint">
                       {new Date(h.createdAt).toLocaleDateString("en-GB", {
                         day: "numeric",
                         month: "short",

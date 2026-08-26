@@ -129,7 +129,7 @@ function Journey({ pathway, index }: { pathway: Pathway; index: number }) {
             />
 
             <Reveal delay={0.12}>
-              <p className="mt-6 max-w-md text-[0.97rem] leading-[1.68] text-muted">
+              <p className="mt-6 max-w-md text-[0.95rem] leading-[1.68] text-muted">
                 {pathway.body}
               </p>
             </Reveal>

@@ -53,7 +53,7 @@ export function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
               (i === 0 ? " border-t border-line" : " border-t border-line")
             }
           >
-            <dt className="shrink-0 text-[0.82rem] text-faint">{term}</dt>
+            <dt className="shrink-0 text-[0.85rem] text-faint">{term}</dt>
             <dd className="text-right text-[0.85rem] font-semibold text-fg">
               {def}
             </dd>

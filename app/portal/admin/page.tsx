@@ -263,11 +263,11 @@ export default async function AdminPage() {
                           {c.clientName}
                         </Link>
                       </td>
-                      <td className="py-3 pr-4 text-[0.86rem] text-muted">{c.title}</td>
+                      <td className="py-3 pr-4 text-[0.85rem] text-muted">{c.title}</td>
                       <td className="py-3 pr-4">
                         <StatusPill status={c.status} label={c.status.replace(/_/g, " ")} />
                       </td>
-                      <td className="py-3 text-[0.82rem] text-faint">
+                      <td className="py-3 text-[0.85rem] text-faint">
                         {new Date(c.updatedAt).toLocaleDateString("en-GB", {
                           day: "numeric",
                           month: "short",
@@ -334,7 +334,7 @@ export default async function AdminPage() {
             }
           >
             <Breakdown parts={people} total={m.totalUsers ?? 0} totalLabel="people with an account" />
-            <p className="mt-5 border-t border-line pt-4 text-[0.78rem] leading-relaxed text-faint">
+            <p className="mt-5 border-t border-line pt-4 text-[0.8rem] leading-relaxed text-faint">
               {(m.openCases ?? 0) === 0 && (m.completedCases ?? 0) === 0
                 ? "No cases have been opened yet."
                 : `${m.openCases ?? 0} case${(m.openCases ?? 0) === 1 ? "" : "s"} open, ${m.completedCases ?? 0} completed.`}

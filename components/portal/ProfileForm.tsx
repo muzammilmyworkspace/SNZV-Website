@@ -57,7 +57,7 @@ export function ProfileForm({
     <form onSubmit={submit}>
       <div className="mb-8 rounded-[var(--radius-lg)] border border-line bg-raised p-5">
         <ProgressBar value={percent} label="Profile completion" />
-        <p className="mt-3 text-[0.83rem] text-muted">
+        <p className="mt-3 text-[0.85rem] text-muted">
           {percent === 100
             ? "Complete. You can update any of this at any time."
             : "Add what you know. Nothing here is binding, and you can come back to it."}
@@ -142,12 +142,12 @@ export function ProfileForm({
           {status === "saving" ? "Saving…" : "Save profile"}
         </Action>
         {status === "saved" && (
-          <p role="status" className="text-[0.87rem] text-accent">
+          <p role="status" className="text-[0.85rem] text-accent">
             Saved.
           </p>
         )}
         {status === "error" && (
-          <p role="alert" className="text-[0.87rem] text-red-300">
+          <p role="alert" className="text-[0.85rem] text-red-300">
             We couldn&rsquo;t save that. Please try again.
           </p>
         )}

@@ -118,9 +118,9 @@ export function Header() {
                       aria-current={active ? "page" : undefined}
                       aria-expanded={hasKids ? open === item.href : undefined}
                       className={cn(
-                        "label relative flex items-center gap-1.5 whitespace-nowrap px-3 py-2.5 transition-colors duration-300",
+                        "label relative flex min-h-11 items-center gap-1.5 whitespace-nowrap px-3 py-2.5 transition-colors duration-300",
                         active
-                          ? "text-fg"
+                          ? "font-bold text-fg"
                           : "text-muted hover:text-fg"
                       )}
                     >
@@ -128,7 +128,7 @@ export function Header() {
                       {active && (
                         <motion.span
                           layoutId="nav-dot"
-                          className="grad-rule absolute -bottom-0.5 left-3 h-px w-[calc(100%-1.5rem)]"
+                          className="grad-rule absolute bottom-1 left-3 h-[2px] w-[calc(100%-1.5rem)] rounded-full"
                           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                         />
                       )}
@@ -163,7 +163,7 @@ export function Header() {
                                 className="group/i block px-4 py-3 transition-colors hover:bg-white/[0.05]"
                               >
                                 <span className="flex items-center justify-between gap-4">
-                                  <span className="font-display text-[1.02rem] tracking-[-0.01em] text-fg">
+                                  <span className="font-display text-[1rem] tracking-[-0.01em] text-fg">
                                     {c.label}
                                   </span>
                                   <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 shrink-0 text-accent opacity-0 transition-all duration-400 group-hover/i:translate-x-1 group-hover/i:opacity-100">

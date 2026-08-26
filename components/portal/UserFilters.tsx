@@ -110,7 +110,7 @@ export function UserFilters({
             href={usersHref(current, { status: s.key, page: "1" })}
             aria-current={status === s.key ? "true" : undefined}
             className={cn(
-              "inline-flex min-h-10 items-center rounded-full px-4 text-[0.82rem] transition-colors",
+              "inline-flex min-h-10 items-center rounded-full px-4 text-[0.85rem] transition-colors",
               status === s.key
                 ? "border border-moss-400/60 font-medium text-accent-ink"
                 : "border border-line text-muted hover:border-moss-400/60 hover:text-fg"
@@ -144,7 +144,7 @@ export function Pagination({
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line px-5 py-4">
-      <p className="text-[0.83rem] text-muted">
+      <p className="text-[0.85rem] text-muted">
         Showing <strong className="font-semibold text-fg">{from}</strong>–
         <strong className="font-semibold text-fg">{to}</strong> of{" "}
         <strong className="font-semibold text-fg">{total}</strong>
@@ -164,7 +164,7 @@ export function Pagination({
           Previous
         </Link>
 
-        <span className="px-1 text-[0.83rem] text-muted">
+        <span className="px-1 text-[0.85rem] text-muted">
           Page {page} of {pages}
         </span>
 

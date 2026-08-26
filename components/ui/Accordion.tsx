@@ -49,7 +49,7 @@ export function FaqAccordion({
 
                 <span
                   className={cn(
-                    "flex-1 font-display text-[1.28rem] leading-snug tracking-[-0.015em] transition-colors duration-400 sm:text-[1.5rem]",
+                    "flex-1 font-display text-[1.25rem] leading-snug tracking-[-0.015em] transition-colors duration-400 sm:text-[1.5rem]",
                     isOpen ? "text-accent" : "text-fg group-hover:text-accent"
                   )}
                 >
@@ -86,7 +86,7 @@ export function FaqAccordion({
                   transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="max-w-2xl pb-7 pl-[3.1rem] pr-8 text-[0.92rem] leading-[1.7] text-muted sm:pl-[4.4rem]">
+                  <p className="max-w-2xl pb-7 pl-[3.1rem] pr-8 text-[0.95rem] leading-[1.7] text-muted sm:pl-[4.4rem]">
                     {faq.a}
                   </p>
                 </motion.div>

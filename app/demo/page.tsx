@@ -29,7 +29,7 @@ const CTA = {
 export default function DemoChooser() {
   return (
     <div className="tone-soft flex min-h-screen flex-col">
-      <div className="flex flex-wrap items-center justify-center gap-x-3 bg-amber-400 px-4 py-2 text-center text-[0.78rem] font-semibold text-[#3B2A02]">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 bg-amber-400 px-4 py-2 text-center text-[0.8rem] font-semibold text-[#3B2A02]">
         DEMO PREVIEW — every name, number and record inside is invented.
       </div>
 
@@ -78,7 +78,7 @@ export default function DemoChooser() {
                     <span className="block text-[1.15rem] font-bold tracking-[-0.02em] text-fg-strong">
                       {roleLabel[role]}
                     </span>
-                    <span className="block text-[0.78rem] text-faint">{who.name}</span>
+                    <span className="block text-[0.8rem] text-faint">{who.name}</span>
                   </span>
                 </span>
 

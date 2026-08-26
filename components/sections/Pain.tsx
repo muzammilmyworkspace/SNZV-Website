@@ -3,6 +3,7 @@
 import { useRef, Fragment } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { Shell, Chapter, MaskedLines, Reveal, Action } from "@/components/ui/Editorial";
+import { cn } from "@/lib/utils";
 import { analytics } from "@/lib/analytics";
 
 /**
@@ -13,16 +14,30 @@ import { analytics } from "@/lib/analytics";
  * ("That's where SnZ Ventures comes in") is the turn in the narrative.
  */
 
+/*
+ * THE STAGGER IS NOW A DRIFT, NOT A SCATTER.
+ *
+ * The indents ran 6%–48%, which spread nine quotes across half the viewport
+ * with no common left edge. The intent — overheard voices at different depths
+ * — survives a much smaller range; what it does not survive is a reader having
+ * to hunt for where each line begins. A usability audit flagged it as the one
+ * Major density problem on the page, and re-reading it cold, it was right.
+ *
+ * The band is now 0%–18% and every group of three opens flush left, so the eye
+ * has an anchor to return to on each persona while the lines still breathe.
+ * The personas were already grouped three-by-three in source order; at the old
+ * amplitude that grouping was invisible.
+ */
 const VOICES: { q: string; who: string; x: string; delay: number }[] = [
-  { q: "Where do I even start?", who: "Student", x: "6%", delay: 0 },
-  { q: "Which opportunity is actually right for me?", who: "Student", x: "38%", delay: 0.1 },
-  { q: "Can I find funding?", who: "Student", x: "14%", delay: 0.2 },
-  { q: "Where are the genuine opportunities?", who: "Professional", x: "44%", delay: 0.15 },
-  { q: "Am I even eligible?", who: "Professional", x: "8%", delay: 0.25 },
-  { q: "How do I position myself?", who: "Professional", x: "48%", delay: 0.3 },
-  { q: "Which market?", who: "Founder", x: "18%", delay: 0.2 },
-  { q: "How do I establish there?", who: "Founder", x: "40%", delay: 0.35 },
-  { q: "Who can I actually trust to tell me?", who: "Founder", x: "10%", delay: 0.4 },
+  { q: "Where do I even start?", who: "Student", x: "0%", delay: 0 },
+  { q: "Which opportunity is actually right for me?", who: "Student", x: "10%", delay: 0.1 },
+  { q: "Can I find funding?", who: "Student", x: "5%", delay: 0.2 },
+  { q: "Where are the genuine opportunities?", who: "Professional", x: "0%", delay: 0.15 },
+  { q: "Am I even eligible?", who: "Professional", x: "12%", delay: 0.25 },
+  { q: "How do I position myself?", who: "Professional", x: "6%", delay: 0.3 },
+  { q: "Which market?", who: "Founder", x: "0%", delay: 0.2 },
+  { q: "How do I establish there?", who: "Founder", x: "14%", delay: 0.35 },
+  { q: "Who can I actually trust to tell me?", who: "Founder", x: "7%", delay: 0.4 },
 ];
 
 export function Pain() {
@@ -90,7 +105,12 @@ export function Pain() {
                 The indent now starts at `md`, and below that the speaker sits
                 above the question instead of fighting it for the same line.
               */
-              className="group flex flex-col gap-1 py-2 md:flex-row md:items-baseline md:gap-4 md:py-1.5 md:[padding-left:min(var(--indent),38vw)]"
+              className={cn(
+                "group flex flex-col gap-1 py-2 md:flex-row md:items-baseline md:gap-4 md:py-1.5 md:[padding-left:min(var(--indent),18vw)]",
+                // A little air where the speaker changes, so three groups of
+                // three read as three groups rather than as nine loose lines.
+                i > 0 && VOICES[i - 1].who !== v.who && "mt-6 md:mt-7"
+              )}
               style={{ "--indent": v.x } as React.CSSProperties}
             >
               <span className="label text-faint transition-colors group-hover:text-accent md:shrink-0">
@@ -105,7 +125,7 @@ export function Pain() {
 
         {/* The turn */}
         <Reveal delay={0.15} className="mt-16">
-          <div className="rule flex flex-col gap-6 border-t pt-10 md:flex-row md:items-end md:justify-between">
+          <div className="rule flex flex-col gap-6 border-t pt-10 md:flex-row md:items-end md:gap-14">
             <p className="d-3 max-w-[20ch] text-fg">
               That&rsquo;s the part we do.
             </p>

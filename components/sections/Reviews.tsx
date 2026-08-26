@@ -64,7 +64,7 @@ export async function Reviews() {
               )}
               <div className="border-l border-line pl-5">
                 <GoogleMark />
-                <p className="mt-2 text-[0.82rem] leading-snug text-faint">
+                <p className="mt-2 text-[0.85rem] leading-snug text-faint">
                   {data.total !== null
                     ? `${data.total.toLocaleString("en-GB")} Google review${data.total === 1 ? "" : "s"}`
                     : "Google reviews"}
@@ -92,7 +92,7 @@ export async function Reviews() {
           </div>
         </Reveal>
 
-        <p className="mt-8 max-w-2xl border-l border-line pl-5 text-[0.78rem] leading-relaxed text-faint">
+        <p className="mt-8 max-w-2xl border-l border-line pl-5 text-[0.8rem] leading-relaxed text-faint">
           Reviews are published by their authors on Google and shown here
           unedited. SnZ Ventures cannot alter or remove them — follow the link
           above to read all of them, including any not shown here.

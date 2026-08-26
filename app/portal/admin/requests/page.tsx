@@ -183,12 +183,12 @@ export default async function AdminRequestsPage({
                       >
                         {r.userName}
                       </Link>
-                      <span className="mt-0.5 block text-[0.78rem] text-faint">{r.userEmail}</span>
+                      <span className="mt-0.5 block text-[0.8rem] text-faint">{r.userEmail}</span>
                     </td>
                     <td className="px-5 py-3">
                       <span className="label text-faint">{PATHWAY_LABEL[r.pathway] ?? r.pathway}</span>
                     </td>
-                    <td className="px-5 py-3 text-[0.82rem] text-muted">
+                    <td className="px-5 py-3 text-[0.85rem] text-muted">
                       {ROLE_LABEL[r.userRole as Role] ?? r.userRole}
                     </td>
                     <td className="px-5 py-3 text-[0.8rem] text-faint">
@@ -199,7 +199,7 @@ export default async function AdminRequestsPage({
                           })
                         : "—"}
                     </td>
-                    <td className="px-5 py-3 text-[0.82rem] text-muted">
+                    <td className="px-5 py-3 text-[0.85rem] text-muted">
                       {waitingFor(r.submittedAt)}
                     </td>
                     <td className="px-5 py-3">

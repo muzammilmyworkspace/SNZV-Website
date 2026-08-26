@@ -133,7 +133,7 @@ export function VideoFeature({ data }: { data: VideoFeatureData }) {
                         </svg>
                       </span>
                       <p className="label text-moss-300">{data.requirement}</p>
-                      <p className="max-w-md text-[0.85rem] leading-relaxed text-white/80">
+                      <p className="max-w-md text-[0.85rem] leading-relaxed ink-on-photo-soft">
                         Supply the film and a poster frame in{" "}
                         <span className="font-mono text-[0.8rem]">data/media.ts</span>.
                         The player, framing and motion are already in place.

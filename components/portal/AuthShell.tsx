@@ -93,7 +93,7 @@ export function AuthShell({
             height={44}
             className="no-grade h-11 w-11 rounded-full ring-1 ring-white/20"
           />
-          <span className="text-[1.3rem] font-bold tracking-[-0.02em] text-white">
+          <span className="text-[1.35rem] font-bold tracking-[-0.02em] text-white">
             SnZ Ventures
           </span>
         </Link>
@@ -110,7 +110,7 @@ export function AuthShell({
             <br />
             The Whole Journey.
           </p>
-          <p className="mt-6 max-w-lg text-[1.15rem] leading-relaxed text-white/90">
+          <p className="mt-6 max-w-lg text-[1.15rem] leading-relaxed ink-on-photo">
             Every document, every application, every honest next step — held by
             the same people you actually speak to.
           </p>
@@ -122,7 +122,7 @@ export function AuthShell({
             ].map((item) => (
               <li
                 key={item}
-                className="flex items-start gap-3.5 text-[1.02rem] leading-relaxed text-white/90"
+                className="flex items-start gap-3.5 text-[1rem] leading-relaxed ink-on-photo"
               >
                 <span
                   aria-hidden
@@ -134,7 +134,7 @@ export function AuthShell({
           </ul>
         </div>
 
-        <p className="relative z-[4] text-[0.82rem] text-white/70">
+        <p className="relative z-[4] text-[0.85rem] ink-on-photo-soft">
           {company.contact.city}, {company.contact.country}
         </p>
       </aside>

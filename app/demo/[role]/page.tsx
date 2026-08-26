@@ -91,7 +91,7 @@ function AdminDashboard() {
             {urgent.map((r) => (
               <Row key={r.ref}>
                 <Cell>
-                  <span className="num text-[0.84rem] text-accent">{r.ref}</span>
+                  <span className="num text-[0.85rem] text-accent">{r.ref}</span>
                 </Cell>
                 <Cell>{r.who}</Cell>
                 <Cell muted>{r.type}</Cell>
@@ -176,9 +176,9 @@ function StudentDashboard() {
                 className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4 last:border-0 last:pb-0"
               >
                 <span className="min-w-0">
-                  <span className="block text-[0.98rem] font-medium text-fg">{a.university}</span>
+                  <span className="block text-[0.95rem] font-medium text-fg">{a.university}</span>
                   <span className="mt-0.5 block text-[0.85rem] text-muted">{a.programme}</span>
-                  <span className="mt-0.5 block text-[0.76rem] text-faint">
+                  <span className="mt-0.5 block text-[0.75rem] text-faint">
                     {a.country} · {a.intake}
                   </span>
                 </span>
@@ -244,9 +244,9 @@ function JobSeekerDashboard() {
                 className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4 last:border-0 last:pb-0"
               >
                 <span className="min-w-0">
-                  <span className="block text-[0.98rem] font-medium text-fg">{a.role}</span>
+                  <span className="block text-[0.95rem] font-medium text-fg">{a.role}</span>
                   <span className="mt-0.5 block text-[0.85rem] text-muted">{a.employer}</span>
-                  <span className="mt-0.5 block text-[0.76rem] text-faint">
+                  <span className="mt-0.5 block text-[0.75rem] text-faint">
                     {a.city}, {a.country}
                     {a.note ? ` · ${a.note}` : ""}
                   </span>
@@ -269,11 +269,11 @@ function JobSeekerDashboard() {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <span className="min-w-0">
                     <span className="block text-[0.95rem] font-medium text-fg">{i.employer}</span>
-                    <span className="mt-0.5 block text-[0.83rem] text-muted">{i.role}</span>
+                    <span className="mt-0.5 block text-[0.85rem] text-muted">{i.role}</span>
                   </span>
                   <StatusBadge status={i.status} />
                 </div>
-                <p className="mt-1.5 text-[0.78rem] text-faint">
+                <p className="mt-1.5 text-[0.8rem] text-faint">
                   {i.when} · {i.format}
                 </p>
               </li>
@@ -314,7 +314,7 @@ function BusinessDashboard() {
                 className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4 last:border-0 last:pb-0"
               >
                 <span className="min-w-0">
-                  <span className="block text-[0.98rem] font-medium text-fg">{r.name}</span>
+                  <span className="block text-[0.95rem] font-medium text-fg">{r.name}</span>
                   <span className="mt-0.5 block text-[0.85rem] text-muted">{r.detail}</span>
                   <span className="num mt-0.5 block text-[0.75rem] text-faint">
                     {r.ref} · updated {r.updated}

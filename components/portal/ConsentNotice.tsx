@@ -46,13 +46,13 @@ export function ConsentNotice({
   return (
     <div className="rounded-[var(--radius-md)] border border-line bg-[color-mix(in_srgb,var(--fg)_3%,transparent)]">
       <div className="border-b border-line px-4 py-3">
-        <p className="text-[0.92rem] font-semibold text-fg-strong">{CONSENT_TITLE}</p>
-        <p className="mt-0.5 text-[0.76rem] text-faint">{CONSENT_PARTY}</p>
+        <p className="text-[0.95rem] font-semibold text-fg-strong">{CONSENT_TITLE}</p>
+        <p className="mt-0.5 text-[0.75rem] text-faint">{CONSENT_PARTY}</p>
       </div>
 
       <div className="rail max-h-56 space-y-3 overflow-y-auto px-4 py-4">
         {CONSENT_CLAUSES.map((clause, i) => (
-          <p key={i} className="text-[0.82rem] leading-relaxed text-muted">
+          <p key={i} className="text-[0.85rem] leading-relaxed text-muted">
             {consentRuns(clause).map((run, j) =>
               run.strong ? (
                 <strong key={j} className="font-semibold text-fg">
@@ -64,7 +64,7 @@ export function ConsentNotice({
             )}
           </p>
         ))}
-        <p className="border-t border-line pt-3 text-[0.82rem] leading-relaxed text-muted">
+        <p className="border-t border-line pt-3 text-[0.85rem] leading-relaxed text-muted">
           {CONSENT_CLOSING}
         </p>
       </div>

@@ -159,7 +159,7 @@ export function PortalPreview({
                   >
                     <span className="flex items-center gap-3">
                       <span className={`block h-1.5 w-1.5 rounded-full ${DOT[r.state]}`} />
-                      <span className="text-[0.87rem] text-fg">{r.label}</span>
+                      <span className="text-[0.85rem] text-fg">{r.label}</span>
                     </span>
                     <span className="text-[0.8rem] text-muted">{r.value}</span>
                   </li>
@@ -167,7 +167,7 @@ export function PortalPreview({
               </ul>
 
               <div className="mt-4 rounded-[var(--radius-sm)] border border-line px-4 py-3">
-                <span className="text-[0.78rem] leading-snug text-faint">
+                <span className="text-[0.8rem] leading-snug text-faint">
                   Documents are stored privately and shared through short-lived
                   links — never a public URL.
                 </span>

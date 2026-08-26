@@ -65,7 +65,7 @@ function RoleSwitcher({ role }: { role: DemoRole }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="inline-flex min-h-10 items-center gap-2 rounded-[var(--radius-sm)] border border-line px-3.5 text-[0.83rem] text-fg transition-colors hover:border-moss-400/60"
+        className="inline-flex min-h-10 items-center gap-2 rounded-[var(--radius-sm)] border border-line px-3.5 text-[0.85rem] text-fg transition-colors hover:border-moss-400/60"
       >
         <span className="text-faint">Preview as</span>
         <span className="font-medium">{roleLabel[role]}</span>
@@ -96,7 +96,7 @@ function RoleSwitcher({ role }: { role: DemoRole }) {
                 href={`/demo/${r}`}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "flex min-h-12 items-center gap-3 px-4 text-[0.88rem] transition-colors",
+                  "flex min-h-12 items-center gap-3 px-4 text-[0.9rem] transition-colors",
                   r === role
                     ? "bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] font-medium text-accent"
                     : "text-fg hover:bg-[color-mix(in_srgb,var(--fg)_6%,transparent)]"
@@ -145,7 +145,7 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
             onClick={() => setMenuOpen(false)}
             aria-current={on ? "page" : undefined}
             className={cn(
-              "group flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.89rem] transition-colors",
+              "group flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.9rem] transition-colors",
               on
                 ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent-ink"
                 : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg"
@@ -154,7 +154,7 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
             <Icon name={item.icon} />
             <span className="flex-1">{item.label}</span>
             {item.badge ? (
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-moss-400 px-1.5 text-[0.68rem] font-semibold text-navy-950">
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-moss-400 px-1.5 text-[0.7rem] font-semibold text-navy-950">
                 {item.badge}
               </span>
             ) : null}
@@ -171,7 +171,7 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
         screenshotted and pasted into chats; without a mark on every frame, a
         fabricated metric can be quoted back as a real one months later.
       */}
-      <div className="sticky top-0 z-[60] flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-amber-400 px-4 py-2 text-center text-[0.78rem] font-semibold text-[#3B2A02]">
+      <div className="sticky top-0 z-[60] flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-amber-400 px-4 py-2 text-center text-[0.8rem] font-semibold text-[#3B2A02]">
         <span>DEMO PREVIEW — all names, numbers and records on these screens are invented.</span>
         <Link
           href="/demo"
@@ -197,7 +197,7 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
           {sidebar}
           <div className="mt-auto border-t border-line pt-4">
             <p className="px-3 text-[0.8rem] font-medium text-fg">{who.name}</p>
-            <p className="px-3 text-[0.74rem] text-faint">{roleLabel[role]}</p>
+            <p className="px-3 text-[0.75rem] text-faint">{roleLabel[role]}</p>
           </div>
         </aside>
 

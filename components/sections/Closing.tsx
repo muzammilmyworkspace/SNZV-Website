@@ -60,7 +60,7 @@ export function Why() {
               <span className="label num text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-display text-[1.6rem] leading-[1.05] tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[2rem]">
+              <h3 className="font-display text-[1.65rem] leading-[1.05] tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[2rem]">
                 {t.title}
               </h3>
               <p className="max-w-md text-[0.9rem] leading-relaxed text-muted">
@@ -94,12 +94,12 @@ export function Why() {
                 <div key={s.label} className="max-w-[16rem]">
                   <dt className="sr-only">{s.label}</dt>
                   <dd>
-                    <span className="block font-display text-[3.4rem] leading-none tracking-[-0.03em] text-accent">
+                    <span className="block font-display text-[3.5rem] leading-none tracking-[-0.03em] text-accent">
                       {s.value}
                       {s.suffix}
                     </span>
                     <span className="label mt-3 block text-fg">{s.label}</span>
-                    <span className="mt-1.5 block text-[0.82rem] leading-snug text-faint">
+                    <span className="mt-1.5 block text-[0.85rem] leading-snug text-faint">
                       {s.detail}
                     </span>
                   </dd>
@@ -146,7 +146,13 @@ export function Insights() {
       <Shell className="relative">
         <Chapter index="10" label="Insights" className="mb-10" />
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+        {/*
+          The heading column was `1fr`, which ate all the spare width and threw
+          the sentence that explains the section to the opposite edge of the
+          page. Sizing it to its own content keeps the two together as one
+          block, which is what they are.
+        */}
+        <div className="grid gap-10 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
             className="d-1 max-w-[14ch] text-fg"
@@ -187,7 +193,7 @@ export function Insights() {
               <h3 className="d-2 mt-4 text-fg transition-colors duration-500 group-hover:text-accent">
                 {lead.title}
               </h3>
-              <p className="mt-5 max-w-md text-[0.93rem] leading-relaxed text-muted">
+              <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-muted">
                 {lead.excerpt}
               </p>
               <span className="label mt-7 inline-flex items-center gap-2 text-accent">
@@ -200,22 +206,31 @@ export function Insights() {
         {/* Secondary */}
         <RevealGroup className="mt-14 grid gap-px rule border-t sm:grid-cols-3">
           {rest.map((a) => (
-            <RevealItem key={a.slug}>
+            <RevealItem key={a.slug} className="h-full">
               <Link
                 href={`/insights/${a.slug}`}
                 onClick={() => analytics.articleView(a.slug, a.category)}
-                className="group block border-b border-line py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
+                className="group flex h-full flex-col border-b border-line py-7 pr-6 sm:border-b-0 sm:border-r sm:pr-8 sm:last:border-r-0"
               >
-                <span className="label text-accent">{a.category}</span>
+                {/*
+                  Category and reading time TOGETHER, ABOVE the title — the same
+                  order the lead feature above uses. Reading time used to sit at
+                  the bottom of these cards and at the top of the lead, so the
+                  same fact moved between two places inside one section; and
+                  being last, it landed at a different height in every card
+                  because the excerpts differ in length.
+                */}
+                <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                  <span className="label text-accent">{a.category}</span>
+                  <span aria-hidden className="h-3 w-px bg-line" />
+                  <span className="label text-faint">{a.readMinutes} min read</span>
+                </span>
                 <h3 className="mt-3 font-display text-[1.25rem] leading-snug tracking-[-0.015em] text-fg transition-colors duration-500 group-hover:text-accent">
                   {a.title}
                 </h3>
                 <p className="mt-2.5 text-[0.85rem] leading-relaxed text-faint">
                   {a.excerpt}
                 </p>
-                <span className="label mt-4 block text-faint">
-                  {a.readMinutes} min
-                </span>
               </Link>
             </RevealItem>
           ))}
@@ -314,7 +329,7 @@ export function Final() {
           </Reveal>
 
           <Reveal delay={0.36}>
-            <p className="mt-8 text-[0.82rem] text-faint">
+            <p className="mt-8 text-[0.85rem] text-faint">
               A real person replies. If we&rsquo;re not the right fit,
               we&rsquo;ll tell you that too.
             </p>

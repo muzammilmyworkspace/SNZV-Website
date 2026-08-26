@@ -47,11 +47,11 @@ export default async function Page() {
             <Panel key={o.id} title={o.country}>
               <h3 className="text-[1.05rem] font-semibold text-fg">{o.title}</h3>
               <p className="mt-1 text-[0.85rem] text-muted">{o.organisation}{o.location ? " · " + o.location : ""}</p>
-              {o.summary && <p className="mt-3 text-[0.86rem] leading-relaxed text-muted">{o.summary}</p>}
+              {o.summary && <p className="mt-3 text-[0.85rem] leading-relaxed text-muted">{o.summary}</p>}
               {o.requirements.length > 0 && (
                 <ul className="mt-4 border-t border-line pt-3">
                   {o.requirements.map((r: string) => (
-                    <li key={r} className="border-b border-line py-2 text-[0.83rem] text-muted last:border-0">{r}</li>
+                    <li key={r} className="border-b border-line py-2 text-[0.85rem] text-muted last:border-0">{r}</li>
                   ))}
                 </ul>
               )}

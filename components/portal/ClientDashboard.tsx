@@ -213,13 +213,13 @@ export async function ClientDashboard({ session }: { session: Session }) {
           {completion.missing.length > 0 && (
             <ul className="mt-6 space-y-2 border-t border-line pt-5">
               {completion.missing.slice(0, 4).map((m) => (
-                <li key={m} className="flex items-center gap-2.5 text-[0.83rem] text-muted">
+                <li key={m} className="flex items-center gap-2.5 text-[0.85rem] text-muted">
                   <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-current opacity-50" />
                   {m}
                 </li>
               ))}
               {completion.missing.length > 4 && (
-                <li className="text-[0.78rem] text-faint">
+                <li className="text-[0.8rem] text-faint">
                   +{completion.missing.length - 4} more
                 </li>
               )}
@@ -262,7 +262,7 @@ export async function ClientDashboard({ session }: { session: Session }) {
         <Panel title="Documents" action={<CardLink href="/portal/documents">View all</CardLink>}>
           {documents.length === 0 ? (
             <div>
-              <p className="mb-4 text-[0.86rem] leading-relaxed text-muted">
+              <p className="mb-4 text-[0.85rem] leading-relaxed text-muted">
                 Nothing uploaded yet. For your pathway we typically need:
               </p>
               {/* Genuinely-required first: the list is long for students and

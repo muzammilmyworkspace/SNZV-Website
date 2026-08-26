@@ -48,7 +48,7 @@ function Bars({
 }) {
   const total = rows.reduce((n, r) => n + r.count, 0);
   if (!total) {
-    return <p className="text-[0.87rem] leading-relaxed text-muted">{empty}</p>;
+    return <p className="text-[0.85rem] leading-relaxed text-muted">{empty}</p>;
   }
   const max = Math.max(...rows.map((r) => r.count));
 
@@ -57,10 +57,10 @@ function Bars({
       {rows.map((r) => (
         <li key={r.key}>
           <div className="flex items-baseline justify-between gap-4">
-            <span className="text-[0.87rem] text-fg">{labels[r.key] ?? r.key}</span>
-            <span className="num text-[0.87rem] font-semibold text-fg-strong">
+            <span className="text-[0.85rem] text-fg">{labels[r.key] ?? r.key}</span>
+            <span className="num text-[0.85rem] font-semibold text-fg-strong">
               {r.count}
-              <span className="ml-1.5 text-[0.76rem] font-normal text-faint">
+              <span className="ml-1.5 text-[0.75rem] font-normal text-faint">
                 {Math.round((r.count / total) * 100)}%
               </span>
             </span>

@@ -126,7 +126,7 @@ export default async function ServicePage({
                 <RevealItem
                   as="li"
                   key={w}
-                  className="flex items-start gap-3 rounded-[var(--radius-sm)] border border-line bg-raised px-4 py-3 text-[0.88rem] leading-snug text-fg"
+                  className="flex items-start gap-3 rounded-[var(--radius-sm)] border border-line bg-raised px-4 py-3 text-[0.9rem] leading-snug text-fg"
                 >
                   <span
                     aria-hidden
@@ -175,7 +175,7 @@ export default async function ServicePage({
                   the margin, so the text sits exactly where it did while the
                   tappable area meets the touch minimum on a phone.
                 */
-                className="group inline-flex items-center gap-1.5 py-3 -my-3 text-[0.88rem] font-medium text-accent"
+                className="group inline-flex items-center gap-1.5 py-3 -my-3 text-[0.9rem] font-medium text-accent"
               >
                 <span className="link-draw">See all business services</span>
                 <Arrow />

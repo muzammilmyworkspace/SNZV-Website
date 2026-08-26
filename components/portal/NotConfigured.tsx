@@ -15,12 +15,12 @@ export function NotConfigured({ what = "This area" }: { what?: string }) {
       </h2>
       <p className="mt-3 max-w-2xl text-[0.9rem] leading-relaxed text-muted">
         The portal is fully built, but this deployment has no{" "}
-        <span className="font-mono text-[0.82rem]">DATABASE_URL</span> set, so
+        <span className="font-mono text-[0.85rem]">DATABASE_URL</span> set, so
         there is nothing to read from yet. Add the variable in your hosting
         project settings, run the migrations, and this page fills in with no
         code change.
       </p>
-      <p className="mt-4 text-[0.84rem] text-faint">
+      <p className="mt-4 text-[0.85rem] text-faint">
         See <span className="font-mono text-[0.8rem]">DEPLOYMENT.md</span> for the
         exact steps.
       </p>

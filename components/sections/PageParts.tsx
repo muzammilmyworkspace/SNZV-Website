@@ -192,11 +192,11 @@ export function ChallengeGrid({
               <span className="label num text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-display text-[1.4rem] leading-tight tracking-[-0.018em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[1.7rem]">
+              <h3 className="font-display text-[1.4rem] leading-tight tracking-[-0.018em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[1.75rem]">
                 {item.title}
               </h3>
               {item.body && (
-                <p className="max-w-md text-[0.88rem] leading-relaxed text-faint">
+                <p className="max-w-md text-[0.9rem] leading-relaxed text-faint">
                   {item.body}
                 </p>
               )}
@@ -276,7 +276,7 @@ export function HelpGrid({
                 <h3 className="mt-3 font-display text-[1.5rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-[0.89rem] leading-relaxed text-faint">
+                <p className="mt-3 text-[0.9rem] leading-relaxed text-faint">
                   {item.body}
                 </p>
                 {item.href && (
@@ -330,7 +330,7 @@ export function ProcessTimeline({
               <h3 className="mt-3 font-display text-[1.25rem] leading-none tracking-[-0.018em] text-fg">
                 {s.name}
               </h3>
-              <p className="mt-2.5 text-[0.83rem] leading-relaxed text-faint">
+              <p className="mt-2.5 text-[0.85rem] leading-relaxed text-faint">
                 {s.body}
               </p>
             </RevealItem>

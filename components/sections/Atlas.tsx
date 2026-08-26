@@ -100,7 +100,7 @@ export function Atlas() {
                       </span>
                       <span
                         className={cn(
-                          "font-display text-[1.5rem] leading-none tracking-[-0.02em] transition-colors duration-400 sm:text-[1.9rem]",
+                          "font-display text-[1.5rem] leading-none tracking-[-0.02em] transition-colors duration-400 sm:text-[2rem]",
                           active === i ? "text-fg" : "text-faint group-hover:text-fg"
                         )}
                       >
@@ -155,7 +155,7 @@ export function Atlas() {
             </div>
 
             <div className="mt-5">
-              <p className="text-[0.88rem] leading-relaxed text-muted">
+              <p className="text-[0.9rem] leading-relaxed text-muted">
                 {current.blurb}
               </p>
 
@@ -182,22 +182,25 @@ export function Atlas() {
                 ))}
               </dl>
 
-              <p className="mt-4 border-t border-line pt-4 text-[0.78rem] leading-snug text-faint">
+              <p className="mt-4 border-t border-line pt-4 text-[0.8rem] leading-snug text-faint">
                 {current.marketNote}
               </p>
 
-              <Link
-                href="/destinations"
-                /*
-                  CTA form #3 — the one that changes as you explore. It names
-                  whichever country is selected, so the invitation is always
-                  about the place the reader is currently looking at rather
-                  than a generic "learn more". min-h-11 keeps it thumb-sized.
-                */
-                className="label mt-5 inline-flex min-h-11 items-center gap-2 text-accent transition-colors hover:text-accent"
-              >
-                <span className="draw">Explore {current.country}</span>
-              </Link>
+              {/*
+                CTA form #3 — the one that changes as you explore. It names
+                whichever country is selected, so the invitation is always
+                about the place the reader is currently looking at rather than
+                a generic "learn more".
+
+                This was a hand-rolled anchor that reproduced TextLink's classes
+                but omitted its trailing arrow, so it was the one navigational
+                link in the region without one — "Open the full atlas" and "See
+                all ten destinations" both have it. Using the component means it
+                cannot drift out of step again.
+              */}
+              <TextLink href="/destinations" className="mt-5">
+                Explore {current.country}
+              </TextLink>
             </div>
           </div>
         </div>

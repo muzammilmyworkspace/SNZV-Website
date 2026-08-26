@@ -114,7 +114,7 @@ export function PortalShell({
     <nav aria-label="Portal" className="flex flex-col gap-6">
       {groups.map((g) => (
         <div key={g.group}>
-          <p className="label px-3 pb-2 text-[0.62rem] text-faint">{g.group}</p>
+          <p className="label px-3 pb-2 text-[0.6rem] text-faint">{g.group}</p>
           <ul className="flex flex-col gap-0.5">
             {g.items.map((item) => {
               const on = isActive(item.href);
@@ -125,7 +125,7 @@ export function PortalShell({
                     href={item.href}
                     aria-current={on ? "page" : undefined}
                     className={cn(
-                      "group flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.89rem] transition-colors",
+                      "group flex min-h-11 items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.9rem] transition-colors",
                       on
                         ? "bg-[color-mix(in_srgb,var(--accent)_13%,transparent)] font-medium text-accent-ink"
                         : "text-muted hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg"
@@ -134,7 +134,7 @@ export function PortalShell({
                     <Icon name={item.icon} />
                     <span className="flex-1">{item.label}</span>
                     {count > 0 && (
-                      <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-moss-400 px-1.5 text-[0.68rem] font-semibold text-navy-950">
+                      <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-moss-400 px-1.5 text-[0.7rem] font-semibold text-navy-950">
                         {count > 99 ? "99+" : count}
                       </span>
                     )}
@@ -157,7 +157,7 @@ export function PortalShell({
             <Image src="/brand/snz-mark.png" alt="" width={32} height={32} className="h-8 w-8 rounded-full" />
             <span className="flex flex-col leading-none">
               <span className="text-[1rem] font-bold tracking-[-0.02em] text-fg">SnZ Ventures</span>
-              <span className="label mt-1 text-[0.58rem] text-faint">Client portal</span>
+              <span className="label mt-1 text-[0.6rem] text-faint">Client portal</span>
             </span>
           </Link>
 
@@ -165,19 +165,19 @@ export function PortalShell({
 
           <div className="mt-4 border-t border-line pt-4">
             <div className="flex items-center gap-3 px-2 py-1.5">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-moss-400 to-moss-600 text-[0.73rem] font-bold text-navy-950">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-moss-400 to-moss-600 text-[0.75rem] font-bold text-navy-950">
                 {initials}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-[0.85rem] font-semibold text-fg">{name}</span>
-                <span className="label block text-[0.58rem] text-faint">{ROLE_LABEL[role]}</span>
+                <span className="label block text-[0.6rem] text-faint">{ROLE_LABEL[role]}</span>
               </span>
             </div>
             <button
               type="button"
               onClick={logout}
               disabled={signingOut}
-              className="mt-1 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.87rem] text-muted transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg disabled:opacity-50"
+              className="mt-1 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] px-3 text-[0.85rem] text-muted transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] hover:text-fg disabled:opacity-50"
             >
               <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[15px] w-[15px]">
                 <path
@@ -225,7 +225,7 @@ export function PortalShell({
             <ThemeToggle />
             <span
               aria-hidden
-              className="hidden h-9 w-9 items-center justify-center rounded-full border border-line text-[0.72rem] font-semibold text-muted sm:flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-full border border-line text-[0.7rem] font-semibold text-muted sm:flex"
             >
               {initials}
             </span>
@@ -240,7 +240,7 @@ export function PortalShell({
                 type="button"
                 onClick={logout}
                 disabled={signingOut}
-                className="mt-5 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] border border-line px-3 text-[0.87rem] text-muted transition-colors hover:text-fg disabled:opacity-50"
+                className="mt-5 flex min-h-11 w-full items-center gap-3 rounded-[var(--radius-sm)] border border-line px-3 text-[0.85rem] text-muted transition-colors hover:text-fg disabled:opacity-50"
               >
                 {signingOut ? "Signing out…" : "Sign out"}
               </button>

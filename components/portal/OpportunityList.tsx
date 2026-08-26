@@ -45,18 +45,18 @@ export async function OpportunityList({
           {items.map((o) => (
             <Panel key={o.id}>
               <p className="text-[1.05rem] font-bold tracking-[-0.02em] text-fg-strong">{o.title}</p>
-              <p className="mt-1 text-[0.88rem] text-muted">
+              <p className="mt-1 text-[0.9rem] text-muted">
                 {[o.organisation, o.location || o.country].filter(Boolean).join(" · ")}
               </p>
               {o.summary && (
-                <p className="mt-3 border-t border-line pt-3 text-[0.86rem] leading-relaxed text-muted">
+                <p className="mt-3 border-t border-line pt-3 text-[0.85rem] leading-relaxed text-muted">
                   {o.summary}
                 </p>
               )}
               {o.requirements.length > 0 && (
                 <ul className="mt-3 space-y-1.5">
                   {o.requirements.slice(0, 4).map((r) => (
-                    <li key={r} className="flex items-start gap-2.5 text-[0.83rem] text-muted">
+                    <li key={r} className="flex items-start gap-2.5 text-[0.85rem] text-muted">
                       <span aria-hidden className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-moss-400" />
                       {r}
                     </li>

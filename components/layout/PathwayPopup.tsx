@@ -49,6 +49,7 @@ const SUPPRESSED = [
   "/register",
   "/forgot-password",
   "/reset-password",
+  "/verify-email",
 ];
 
 function dismissedRecently(): boolean {
@@ -172,7 +173,7 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[80] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[80] flex items-center justify-center p-3 sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -185,6 +186,24 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
             className="absolute inset-0 h-full w-full cursor-default bg-navy-950/80 backdrop-blur-md"
           />
 
+          {/*
+            BOUNDED, AND A COLUMN — both matter on a phone.
+
+            This was `w-full max-w-4xl` with no height limit. Stacked to one
+            column the panel measured about 1290px against roughly 810px of
+            usable viewport, and because the flex parent centres it, the
+            overflow was split evenly above and below the fold. That put the
+            close button off the top of the screen and the whole footer off the
+            bottom, while the oversized panel covered the backdrop so there was
+            nothing left to tap. Body scroll is locked whenever this is open and
+            phones have no Escape key, so the only way out was to reload.
+
+            Capping the height keeps the close button and footer on screen at
+            every size; the column split below lets the middle scroll instead of
+            the panel growing. `dvh` rather than `vh` because mobile browser
+            chrome collapses on scroll and `vh` measures the taller state, which
+            reintroduces the same overflow this exists to stop.
+          */}
           <motion.div
             ref={panelRef}
             role="dialog"
@@ -194,7 +213,7 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.99 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="tone-deep relative w-full max-w-4xl overflow-hidden rounded-[var(--radius-lg)] border border-line shadow-[0_40px_120px_-30px_rgba(0,0,0,0.8)]"
+            className="pathway-popup tone-deep relative flex w-full max-w-4xl flex-col overflow-hidden rounded-[var(--radius-lg)] border border-line shadow-[0_40px_120px_-30px_rgba(0,0,0,0.8)]"
           >
             <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
             <div
@@ -202,29 +221,49 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
               className="bloom-moss pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 opacity-30"
             />
 
+            {/*
+              `bg-surface` because the region below now scrolls under it, and a
+              transparent control over moving artwork stops being readable. The
+              drawn box stays 36px; `before:-inset-1` grows the touch target to
+              44px for WCAG 2.5.5 without enlarging the graphic.
+            */}
             <button
               type="button"
               onClick={() => close("button")}
               aria-label="Close"
-              className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-line text-fg transition-colors hover:border-line-strong"
+              className="pp-close absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-[var(--radius-sm)] border border-line bg-surface text-fg transition-colors before:absolute before:-inset-1 before:content-[''] hover:border-line-strong sm:right-4 sm:top-4"
             >
-              <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5">
+              <svg viewBox="0 0 16 16" aria-hidden className="pp-close-icon h-3.5 w-3.5">
                 <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
 
-            <div className="relative px-6 pt-8 text-center sm:px-10">
+            {/*
+              Fixed head — stays put so the close button is always reachable.
+              Padding stays symmetric so the centred type reads as centred, and
+              is wide enough on mobile to clear the close button in the corner
+              rather than letting a long heading line run underneath it.
+            */}
+            <div className="pp-head relative shrink-0 px-12 pt-6 text-center sm:px-10 sm:pt-8">
               <p className="label text-accent">Three routes</p>
-              <h2 id="pathway-popup-title" className="d-2 mt-3 text-fg-strong">
+              <h2 id="pathway-popup-title" className="pp-title d-2 mt-2 text-fg-strong sm:mt-3">
                 Where are you going next?
               </h2>
-              <p className="mx-auto mt-3 max-w-lg text-[0.92rem] leading-relaxed text-muted">
+              <p className="pp-lede mx-auto mt-2 max-w-lg text-[0.85rem] leading-relaxed text-muted sm:mt-3 sm:text-[0.95rem]">
                 Pick the one closest to your situation. We&rsquo;ll show you what
                 that route actually involves — no sign-up needed.
               </p>
             </div>
 
-            <div className="relative grid gap-px p-6 sm:grid-cols-3 sm:p-8">
+            {/*
+              The only region allowed to scroll. `min-h-0` is load-bearing: a
+              flex child defaults to `min-height: auto`, which refuses to
+              shrink below its content, so without it the panel would grow past
+              its own max-height again and nothing would scroll.
+              `overscroll-contain` stops a flick at the end of the list from
+              chaining through to the page behind.
+            */}
+            <div className="pp-cards relative grid min-h-0 flex-1 gap-2 overflow-y-auto overscroll-contain px-4 py-4 sm:grid-cols-3 sm:gap-px sm:p-8">
               {pathways.map((p, i) => (
                 <motion.div
                   key={p.key}
@@ -232,29 +271,38 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
+                  {/*
+                    TWO LAYOUTS, ONE MARKUP. Below `sm` each card is a short
+                    horizontal row — thumbnail beside the words — which is what
+                    brings three of them plus the head and footer inside a phone
+                    viewport. Stacked full-bleed 16:10 plates cost roughly 300px
+                    per card and were most of the overflow. From `sm` up the
+                    original vertical card is unchanged.
+                  */}
                   <Link
                     href={p.href}
                     onClick={() => choose(p.key)}
-                    className="group block h-full overflow-hidden rounded-[var(--radius-md)] border border-line transition-all duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:border-moss-400/60"
+                    className="pp-card group flex h-full items-center gap-3 overflow-hidden rounded-[var(--radius-md)] border border-line p-2 transition-all duration-500 ease-[var(--ease-out-expo)] hover:border-moss-400/60 sm:block sm:p-0 sm:hover:-translate-y-1"
                   >
-                    <span className="plate relative block aspect-[16/10] overflow-hidden">
+                    <span className="pp-thumb plate relative block aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-[var(--radius-xs)] sm:aspect-[16/10] sm:w-full sm:rounded-none">
                       <Image
                         src={p.image}
                         alt=""
                         fill
-                        sizes="(max-width: 640px) 100vw, 33vw"
+                        sizes="(max-width: 640px) 80px, 33vw"
                         loading="lazy"
                         className="object-cover transition-transform duration-[1100ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
                       />
                     </span>
-                    <span className="block p-4">
-                      <span className="block text-[1.05rem] font-bold tracking-[-0.02em] text-fg transition-colors group-hover:text-accent">
+                    {/* `min-w-0` so a long hook wraps instead of stretching the row. */}
+                    <span className="pp-body block min-w-0 flex-1 sm:p-4">
+                      <span className="block text-[0.95rem] font-bold tracking-[-0.02em] text-fg transition-colors group-hover:text-accent sm:text-[1.05rem]">
                         {p.title}
                       </span>
-                      <span className="mt-1.5 block text-[0.83rem] leading-snug text-muted">
+                      <span className="mt-1 block text-[0.8rem] leading-snug text-muted sm:mt-1.5 sm:text-[0.85rem]">
                         {p.hook}
                       </span>
-                      <span className="label mt-4 inline-flex items-center gap-2 text-accent">
+                      <span className="label mt-2 inline-flex items-center gap-2 text-accent sm:mt-4">
                         <span className="draw">Explore</span>
                         <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 transition-transform duration-500 group-hover:translate-x-1">
                           <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -272,13 +320,14 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
               actions were three pathway pages — someone ready to talk had to
               dismiss the popup and go find the contact form themselves.
             */}
-            <div className="relative flex flex-col items-center gap-4 border-t border-line px-6 py-5 text-center sm:flex-row sm:justify-between sm:px-10 sm:text-left">
-              <p className="text-[0.86rem] leading-snug text-muted">
+            {/* Fixed foot — never scrolls away, so the consultation CTA is always offered. */}
+            <div className="pp-foot relative flex shrink-0 flex-col items-center gap-3 border-t border-line bg-surface px-5 py-4 text-center sm:flex-row sm:justify-between sm:gap-4 sm:px-10 sm:py-5 sm:text-left">
+              <p className="text-[0.85rem] leading-snug text-muted sm:text-[0.85rem]">
                 Not sure which one fits?{" "}
                 <span className="text-fg">Tell us where you want to end up.</span>
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:gap-x-6 sm:gap-y-3">
                 <Action
                   href="/contact#journey"
                   size="sm"
@@ -294,7 +343,7 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
                 <button
                   type="button"
                   onClick={() => close("not-sure")}
-                  className="text-[0.84rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
+                  className="text-[0.85rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
                 >
                   I&rsquo;m just looking around
                 </button>

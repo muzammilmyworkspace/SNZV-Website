@@ -70,7 +70,7 @@ function PasswordField({
         </button>
       </div>
       {hint && (
-        <p id={`${id}-hint`} className="mt-1.5 text-[0.76rem] text-faint">
+        <p id={`${id}-hint`} className="mt-1.5 text-[0.75rem] text-faint">
           {hint}
         </p>
       )}
@@ -153,7 +153,7 @@ export function ChangePassword() {
       {error && (
         <p
           role="alert"
-          className="rounded-[var(--radius-sm)] border border-red-500/45 bg-red-500/10 px-4 py-3 text-[0.88rem] font-medium text-[#B42318] [html[data-theme=dark]_&]:text-red-200"
+          className="rounded-[var(--radius-sm)] border border-red-500/45 bg-red-500/10 px-4 py-3 text-[0.9rem] font-medium text-[#B42318] [html[data-theme=dark]_&]:text-red-200"
         >
           {error}
         </p>
@@ -161,7 +161,7 @@ export function ChangePassword() {
       {done && (
         <p
           role="status"
-          className="rounded-[var(--radius-sm)] border border-moss-400/45 bg-moss-400/10 px-4 py-3 text-[0.88rem] font-medium text-accent-ink"
+          className="rounded-[var(--radius-sm)] border border-moss-400/45 bg-moss-400/10 px-4 py-3 text-[0.9rem] font-medium text-accent-ink"
         >
           Password changed. Use it the next time you sign in.
         </p>
@@ -178,7 +178,7 @@ export function ChangePassword() {
         {busy ? "Changing…" : "Change password"}
       </button>
 
-      <p className="text-[0.76rem] leading-relaxed text-faint">
+      <p className="text-[0.75rem] leading-relaxed text-faint">
         Signing in on other devices will still work until those sessions expire.
       </p>
     </form>

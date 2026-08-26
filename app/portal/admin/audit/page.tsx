@@ -55,13 +55,13 @@ export default async function AuditPage() {
                         day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
                       })}
                     </td>
-                    <td className="px-5 py-3 text-[0.84rem] text-muted">
+                    <td className="px-5 py-3 text-[0.85rem] text-muted">
                       {r.actorEmail ?? "—"}
                     </td>
                     <td className="px-5 py-3">
                       <span className="label text-accent">{r.action}</span>
                     </td>
-                    <td className="px-5 py-3 text-[0.82rem] text-faint">{r.entity ?? "—"}</td>
+                    <td className="px-5 py-3 text-[0.85rem] text-faint">{r.entity ?? "—"}</td>
                     <td className="px-5 py-3 text-[0.8rem] text-faint">
                       {r.meta ? JSON.stringify(r.meta).slice(0, 80) : "—"}
                     </td>

@@ -26,7 +26,7 @@ export default async function JourneyPage() {
         <Panel title="Stages">
           {/* current = -1 until an advisor sets one. We do not guess. */}
           <JourneyTrack stages={journey} current={-1} />
-          <p className="mt-7 border-t border-line pt-5 text-[0.84rem] leading-relaxed text-muted">
+          <p className="mt-7 border-t border-line pt-5 text-[0.85rem] leading-relaxed text-muted">
             Your advisor marks the current stage as your case moves. Until then
             nothing here is assumed — if you want to know where you stand, ask
             and you will get a straight answer.
@@ -34,7 +34,7 @@ export default async function JourneyPage() {
         </Panel>
       ) : (
         <Panel title="Stages">
-          <p className="text-[0.88rem] text-muted">
+          <p className="text-[0.9rem] text-muted">
             Journey tracking applies to client accounts.
           </p>
         </Panel>

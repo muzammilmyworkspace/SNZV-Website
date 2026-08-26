@@ -79,7 +79,7 @@ export default function ContactPage() {
                       <span className="block text-[0.95rem] font-semibold tracking-[-0.01em] text-fg">
                         {e.title}
                       </span>
-                      <span className="mt-0.5 block text-[0.86rem] leading-relaxed text-muted">
+                      <span className="mt-0.5 block text-[0.85rem] leading-relaxed text-muted">
                         {e.body}
                       </span>
                     </span>

@@ -138,7 +138,7 @@ export function Testimonials() {
                     "Every review shown in full, unedited",
                     "Open to anyone we have worked with",
                   ].map((line) => (
-                    <li key={line} className="flex items-start gap-3 text-[0.86rem] leading-snug text-muted">
+                    <li key={line} className="flex items-start gap-3 text-[0.85rem] leading-snug text-muted">
                       <svg viewBox="0 0 16 16" fill="none" aria-hidden className="mt-[0.15em] h-3.5 w-3.5 shrink-0 text-accent">
                         <path d="M2.5 8.4l3.2 3.2 7.8-7.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
@@ -147,18 +147,31 @@ export function Testimonials() {
                   ))}
                 </ul>
 
-                <a
-                  href={company.social.googleReviews}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => analytics.outbound(company.social.googleReviews)}
-                  className="label group mt-auto inline-flex items-center gap-2 pt-7 text-accent"
-                >
-                  <span className="draw">Open our Google listing</span>
-                  <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-2.5 w-2.5 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">
-                    <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
+                {/*
+                  A BUTTON, BECAUSE ITS PEERS ARE BUTTONS.
+
+                  This was a bare text link sitting a few hundred pixels from
+                  "Read our Google reviews" and "Start a conversation", both of
+                  which are buttons — three actions of equal standing in one
+                  section wearing two different costumes. It now uses the same
+                  component, in the outline variant, so it reads as the card's
+                  action without outranking the primary button beside it.
+
+                  NOTE: this points at the same URL as "Read our Google reviews"
+                  in the column opposite. Two labels for one destination inside
+                  one section is worth a copy decision — see the write-up.
+                */}
+                <div className="mt-auto pt-7">
+                  <Action
+                    href={company.social.googleReviews}
+                    external
+                    variant="line"
+                    size="sm"
+                    onClick={() => analytics.outbound(company.social.googleReviews)}
+                  >
+                    Open our Google listing
+                  </Action>
+                </div>
               </figure>
             </Reveal>
           </div>
@@ -235,7 +248,7 @@ export function Testimonials() {
                   <span className="block text-[0.95rem] font-semibold text-fg">
                     {current.name}
                   </span>
-                  <span className="mt-0.5 block text-[0.82rem] text-muted">
+                  <span className="mt-0.5 block text-[0.85rem] text-muted">
                     {current.role}
                   </span>
                 </span>

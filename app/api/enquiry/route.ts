@@ -127,9 +127,45 @@ export async function POST(request: Request) {
   const fallbackAddress =
     process.env.MAIL_TO ?? company.contact.consultationEmail ?? DEFAULT_TO;
 
+  /*
+    NO DATABASE IS NOT THE SAME AS A LOST ENQUIRY.
+
+    Writing first is right, but treating a failed write as the end of the road
+    made the database a hard dependency of the public contact form. A
+    deployment with a working mail transport and no DATABASE_URL — which is
+    exactly the "marketing site now, portal later" setup README advertises as
+    supported — answered 503 to every enquiry and threw it away, on the one
+    form the whole site funnels towards.
+
+    So the record and the delivery are now two independent chances to keep the
+    lead, and the visitor is only turned away when BOTH have failed. Delivering
+    without a stored row is worse than doing both (nothing to reconcile later,
+    and it will not appear in the portal queue) but it is far better than
+    losing the enquiry, so it is logged loudly rather than passed over.
+  */
   if (!enquiryId) {
+    if (mailConfigured()) {
+      try {
+        await sendMail({
+          to: fallbackAddress,
+          subject: `SnZ enquiry — ${LABELS[payload.pathway] ?? payload.pathway} — ${payload.answers.name}`,
+          text: format(payload),
+          replyTo: payload.answers.email,
+        });
+        // eslint-disable-next-line no-console
+        console.error(
+          "[enquiry] NOT STORED but emailed. The enquiry is safe in the inbox " +
+            "and NOT in the portal queue. Set DATABASE_URL so enquiries are recorded."
+        );
+        return NextResponse.json({ ok: true, stored: false, delivered: true });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("[enquiry] not stored AND delivery failed:", error);
+      }
+    }
+
     // eslint-disable-next-line no-console
-    console.error("[enquiry] COULD NOT STORE — the enquiry has been lost.");
+    console.error("[enquiry] COULD NOT STORE OR SEND — the enquiry has been lost.");
     return NextResponse.json(
       {
         ok: false,

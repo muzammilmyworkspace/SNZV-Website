@@ -120,7 +120,7 @@ export function UserTable({
                     >
                       {u.name}
                     </Link>
-                    <span className="block text-[0.78rem] text-faint">{u.email}</span>
+                    <span className="block text-[0.8rem] text-faint">{u.email}</span>
                   </td>
 
                   <td className="px-5 py-3">
@@ -132,7 +132,7 @@ export function UserTable({
                         value={u.role}
                         disabled={pending}
                         onChange={(e) => act(u.id, { action: "set_role", role: e.target.value })}
-                        className="field py-1.5 text-[0.82rem]"
+                        className="field py-1.5 text-[0.85rem]"
                       >
                         {grantable.map((r) => (
                           <option key={r} value={r}>
@@ -162,7 +162,7 @@ export function UserTable({
                           e.target.value &&
                           act(u.id, { action: "assign_advisor", advisorId: e.target.value })
                         }
-                        className="field py-1.5 text-[0.82rem]"
+                        className="field py-1.5 text-[0.85rem]"
                       >
                         <option value="">Assign…</option>
                         {advisors.map((a) => (

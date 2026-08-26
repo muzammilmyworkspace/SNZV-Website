@@ -45,8 +45,8 @@ export default async function StaffPage() {
         <div className="grid items-start gap-5 md:grid-cols-2">
           {advisors.map((a) => (
             <Panel key={a.id} title={a.name}>
-              <p className="text-[0.82rem] text-faint">{a.email}</p>
-              <dl className="mt-4 border-t border-line pt-3.5 text-[0.88rem]">
+              <p className="text-[0.85rem] text-faint">{a.email}</p>
+              <dl className="mt-4 border-t border-line pt-3.5 text-[0.9rem]">
                 <div className="flex justify-between py-1">
                   <dt className="text-faint">Clients assigned</dt>
                   <dd className="num text-fg">{a.clientCount}</dd>
@@ -57,7 +57,7 @@ export default async function StaffPage() {
                 </div>
               </dl>
               {a.clientCount === 0 && (
-                <p className="mt-3 text-[0.83rem] text-muted">
+                <p className="mt-3 text-[0.85rem] text-muted">
                   No clients assigned yet. Assign them from Users.
                 </p>
               )}

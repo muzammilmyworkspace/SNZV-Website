@@ -87,7 +87,7 @@ export function DocumentUploader({
 
   if (!configured) {
     return (
-      <p className="text-[0.88rem] leading-relaxed text-muted">
+      <p className="text-[0.9rem] leading-relaxed text-muted">
         Uploads are switched off on this deployment because secure document
         storage has not been configured yet. Please don&rsquo;t email documents
         containing passport or financial details — we&rsquo;ll tell you the
@@ -149,10 +149,10 @@ export function DocumentUploader({
             strokeLinejoin="round"
           />
         </svg>
-        <span className="mt-3 block text-[0.92rem] font-medium text-fg">
+        <span className="mt-3 block text-[0.95rem] font-medium text-fg">
           {file ? file.name : "Choose a file or drag it here"}
         </span>
-        <span className="mt-1 block text-[0.78rem] text-faint">
+        <span className="mt-1 block text-[0.8rem] text-faint">
           PDF, JPG, PNG or Word · up to {MAX_MB} MB
         </span>
       </button>
@@ -166,12 +166,12 @@ export function DocumentUploader({
       />
 
       {error && (
-        <p role="alert" className="mt-3 text-[0.83rem] text-red-300">
+        <p role="alert" className="mt-3 text-[0.85rem] text-red-300">
           {error}
         </p>
       )}
       {done && (
-        <p role="status" className="mt-3 text-[0.83rem] text-accent">
+        <p role="status" className="mt-3 text-[0.85rem] text-accent">
           {done} We&rsquo;ll review it and update its status.
         </p>
       )}

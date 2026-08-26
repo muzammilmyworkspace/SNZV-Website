@@ -44,11 +44,11 @@ export function PortalHeading({
               {eyebrow}
             </p>
           )}
-          <h1 className="text-[1.7rem] font-bold leading-[1.1] tracking-[-0.03em] text-fg-strong sm:text-[2.1rem]">
+          <h1 className="text-[1.75rem] font-bold leading-[1.1] tracking-[-0.03em] text-fg-strong sm:text-[2rem]">
             {title}
           </h1>
           {lead && (
-            <p className="mt-3 max-w-2xl text-[0.98rem] leading-relaxed text-muted">{lead}</p>
+            <p className="mt-3 max-w-2xl text-[0.95rem] leading-relaxed text-muted">{lead}</p>
           )}
         </div>
         {action && <div className="shrink-0">{action}</div>}
@@ -149,8 +149,8 @@ export function EmptyState({
         </svg>
       </span>
       <div className="min-w-0">
-        <p className="text-[0.98rem] font-semibold text-fg">{title}</p>
-        <p className="mt-1.5 max-w-md text-[0.88rem] leading-relaxed text-muted">{body}</p>
+        <p className="text-[0.95rem] font-semibold text-fg">{title}</p>
+        <p className="mt-1.5 max-w-md text-[0.9rem] leading-relaxed text-muted">{body}</p>
         {action && (
           <Link
             href={action.href}
@@ -159,7 +159,7 @@ export function EmptyState({
             {action.label}
           </Link>
         )}
-        {note && <p className="mt-3 text-[0.78rem] leading-relaxed text-faint">{note}</p>}
+        {note && <p className="mt-3 text-[0.8rem] leading-relaxed text-faint">{note}</p>}
       </div>
     </div>
   );
@@ -243,8 +243,8 @@ export function StatCard({
       >
         {value}
       </span>
-      <span className="mt-2.5 block text-[0.82rem] leading-snug text-muted">{label}</span>
-      {hint && <span className="mt-1 block text-[0.74rem] text-faint">{hint}</span>}
+      <span className="mt-2.5 block text-[0.85rem] leading-snug text-muted">{label}</span>
+      {hint && <span className="mt-1 block text-[0.75rem] text-faint">{hint}</span>}
     </>
   );
 
@@ -312,7 +312,7 @@ export function WorkCard({
       <div className="flex items-start justify-between gap-3">
         <span
           className={cn(
-            "num block text-[2.1rem] leading-none tracking-[-0.03em]",
+            "num block text-[2rem] leading-none tracking-[-0.03em]",
             waiting ? "text-accent-ink" : "text-faint"
           )}
         >
@@ -338,13 +338,13 @@ export function WorkCard({
 
       <span
         className={cn(
-          "mt-3 block text-[0.92rem] font-semibold leading-snug",
+          "mt-3 block text-[0.95rem] font-semibold leading-snug",
           waiting ? "text-fg-strong" : "text-muted"
         )}
       >
         {label}
       </span>
-      <span className="mt-1.5 block text-[0.78rem] leading-relaxed text-faint">{note}</span>
+      <span className="mt-1.5 block text-[0.8rem] leading-relaxed text-faint">{note}</span>
     </Link>
   );
 }
@@ -382,7 +382,7 @@ export function AllClear({
         </span>
         <div className="min-w-0">
           <p className="text-[0.95rem] font-semibold text-fg-strong">{title}</p>
-          <p className="mt-1 text-[0.84rem] leading-relaxed text-muted">{body}</p>
+          <p className="mt-1 text-[0.85rem] leading-relaxed text-muted">{body}</p>
         </div>
       </div>
       {action && (
@@ -435,7 +435,7 @@ export function Breakdown({
       <ul className="mt-5 space-y-3.5">
         {parts.map((p) => (
           <li key={p.label} className="grid grid-cols-[7.5rem_1fr_2rem] items-center gap-3">
-            <span className="truncate text-[0.84rem] text-muted">{p.label}</span>
+            <span className="truncate text-[0.85rem] text-muted">{p.label}</span>
             {/*
               `block` on the track is load-bearing, not tidiness. A <span> is
               inline by default, so `h-1.5` had nothing to apply to and the
@@ -500,7 +500,7 @@ export function NextAction({
             <span aria-hidden className="inline-block h-px w-5 bg-current opacity-60" />
             {eyebrow}
           </p>
-          <h2 className="mt-4 text-[1.4rem] font-bold leading-tight tracking-[-0.025em] text-fg-strong sm:text-[1.7rem]">
+          <h2 className="mt-4 text-[1.4rem] font-bold leading-tight tracking-[-0.025em] text-fg-strong sm:text-[1.75rem]">
             {title}
           </h2>
           <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-muted">{body}</p>
@@ -591,7 +591,7 @@ export function ProgressRing({
           <span className="num text-[1.35rem] font-bold leading-none text-fg-strong">{v}%</span>
         </span>
       </div>
-      {label && <p className="text-[0.88rem] leading-relaxed text-muted">{label}</p>}
+      {label && <p className="text-[0.9rem] leading-relaxed text-muted">{label}</p>}
     </div>
   );
 }
@@ -671,14 +671,14 @@ export function JourneyTrack({
             <span className="min-w-0 lg:mt-3 lg:pr-4">
               <span
                 className={cn(
-                  "block text-[0.92rem] font-medium",
+                  "block text-[0.95rem] font-medium",
                   active ? "text-accent" : done ? "text-fg" : "text-faint"
                 )}
               >
                 {stage.name}
               </span>
               {!compact && (
-                <span className="mt-1 block text-[0.78rem] leading-snug text-muted">
+                <span className="mt-1 block text-[0.8rem] leading-snug text-muted">
                   {stage.description}
                 </span>
               )}
@@ -704,8 +704,8 @@ export function SummaryStat({
   return (
     <div className="border-l border-line pl-4 first:border-l-0 first:pl-0">
       <p className="label text-faint">{label}</p>
-      <p className="num mt-1.5 text-[1.7rem] font-bold leading-none text-fg-strong">{value}</p>
-      {hint && <p className="mt-1 text-[0.76rem] text-faint">{hint}</p>}
+      <p className="num mt-1.5 text-[1.75rem] font-bold leading-none text-fg-strong">{value}</p>
+      {hint && <p className="mt-1 text-[0.75rem] text-faint">{hint}</p>}
     </div>
   );
 }
@@ -723,7 +723,7 @@ export function DataRow({
 }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line py-3.5 last:border-0">
-      <span className="min-w-0 text-[0.92rem] text-fg">{label}</span>
+      <span className="min-w-0 text-[0.95rem] text-fg">{label}</span>
       <span className="flex shrink-0 items-center gap-3">
         {meta}
         {typeof value === "string" ? <span className="label text-faint">{value}</span> : value}
@@ -783,7 +783,7 @@ export function Cell({
   className?: string;
 }) {
   return (
-    <td className={cn("px-5 py-3.5 text-[0.88rem]", muted ? "text-muted" : "text-fg", className)}>
+    <td className={cn("px-5 py-3.5 text-[0.9rem]", muted ? "text-muted" : "text-fg", className)}>
       {children}
     </td>
   );
@@ -811,7 +811,7 @@ export function Tabs({
             href={t.href}
             aria-current={on ? "true" : undefined}
             className={cn(
-              "inline-flex min-h-10 items-center rounded-full px-4 text-[0.83rem] transition-colors",
+              "inline-flex min-h-10 items-center rounded-full px-4 text-[0.85rem] transition-colors",
               on
                 ? "bg-moss-400 font-medium text-navy-950"
                 : "border border-line text-muted hover:border-moss-400/60 hover:text-fg"
@@ -839,9 +839,9 @@ export function ActivityTimeline({
         <li key={i} className="flex gap-3.5">
           <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-moss-400/70" />
           <span className="min-w-0">
-            <span className="block text-[0.88rem] leading-relaxed text-fg">{a.title}</span>
+            <span className="block text-[0.9rem] leading-relaxed text-fg">{a.title}</span>
             {a.body && (
-              <span className="mt-0.5 block text-[0.83rem] leading-relaxed text-muted">{a.body}</span>
+              <span className="mt-0.5 block text-[0.85rem] leading-relaxed text-muted">{a.body}</span>
             )}
             {a.meta && <span className="mt-0.5 block text-[0.75rem] text-faint">{a.meta}</span>}
           </span>
@@ -878,7 +878,7 @@ export function DocumentCard({
         <div className="min-w-0">
           <p className="text-[0.95rem] font-medium text-fg">{name}</p>
           {(owner || category || uploaded) && (
-            <p className="mt-0.5 text-[0.78rem] text-faint">
+            <p className="mt-0.5 text-[0.8rem] text-faint">
               {[owner, category, uploaded].filter(Boolean).join(" · ")}
             </p>
           )}
@@ -914,10 +914,10 @@ export function BackendRequired({
       className="rounded-[var(--radius-md)] border border-dashed border-line p-5"
     >
       <p className="label text-faint">Dev note — {feature}</p>
-      <p className="mt-2 text-[0.83rem] leading-relaxed text-muted">
+      <p className="mt-2 text-[0.85rem] leading-relaxed text-muted">
         Hidden in production. Populates once these exist:
       </p>
-      <ul className="mt-3 list-disc space-y-1 pl-4 text-[0.81rem] text-muted marker:text-faint">
+      <ul className="mt-3 list-disc space-y-1 pl-4 text-[0.8rem] text-muted marker:text-faint">
         {needs.map((n) => (
           <li key={n}>{n}</li>
         ))}

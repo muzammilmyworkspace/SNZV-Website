@@ -37,7 +37,7 @@ export default async function SupportPage() {
           </ul>
           <address className="mt-6 not-italic border-t border-line pt-5">
             <span className="label block text-faint">Office</span>
-            <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
+            <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
               {company.contact.streetAddress}
               <br />
               {company.contact.postalCode} {company.contact.city}
@@ -48,10 +48,10 @@ export default async function SupportPage() {
         </Panel>
 
         <Panel title="What we can and cannot do">
-          <p className="text-[0.88rem] leading-relaxed text-muted">
+          <p className="text-[0.9rem] leading-relaxed text-muted">
             {company.regulatoryNotice}
           </p>
-          <p className="mt-4 text-[0.88rem] leading-relaxed text-muted">
+          <p className="mt-4 text-[0.9rem] leading-relaxed text-muted">
             We do not guarantee admission, employment, banking, licensing or
             immigration outcomes. Those decisions rest with institutions,
             employers, financial institutions and national authorities.

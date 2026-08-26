@@ -149,8 +149,8 @@ export default async function AdminUsersPage({
             aria-current={sort === s.key ? "true" : undefined}
             className={
               sort === s.key
-                ? "inline-flex min-h-9 items-center text-[0.82rem] font-medium text-accent-ink"
-                : "inline-flex min-h-9 items-center text-[0.82rem] text-muted transition-colors hover:text-fg"
+                ? "inline-flex min-h-9 items-center text-[0.85rem] font-medium text-accent-ink"
+                : "inline-flex min-h-9 items-center text-[0.85rem] text-muted transition-colors hover:text-fg"
             }
           >
             {s.label}

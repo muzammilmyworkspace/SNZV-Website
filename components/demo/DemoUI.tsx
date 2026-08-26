@@ -161,13 +161,13 @@ export function ProgressTracker({ stages }: { stages: Stage[] }) {
             <span className="min-w-0 lg:mt-3 lg:pr-4">
               <span
                 className={cn(
-                  "block text-[0.92rem] font-medium",
+                  "block text-[0.95rem] font-medium",
                   current ? "text-accent" : done ? "text-fg" : "text-faint"
                 )}
               >
                 {s.name}
               </span>
-              <span className="mt-1 block text-[0.78rem] text-faint">
+              <span className="mt-1 block text-[0.8rem] text-faint">
                 {s.date ?? (current ? "In progress" : done ? "Completed" : "Upcoming")}
               </span>
             </span>
@@ -217,7 +217,7 @@ export function ChatThread({
             <li key={i} className={cn("flex", mine ? "justify-end" : "justify-start")}>
               <div className={cn("max-w-[min(85%,34rem)]", mine && "text-right")}>
                 {!mine && (
-                  <p className="mb-1 px-1 text-[0.74rem] text-faint">
+                  <p className="mb-1 px-1 text-[0.75rem] text-faint">
                     {m.name} <span className="text-accent">· SnZ Ventures</span>
                   </p>
                 )}
@@ -245,7 +245,7 @@ export function ChatThread({
         <input id="demo-chat" className="field flex-1" placeholder="Write a message…" disabled />
         <DemoButton tone="solid">Send</DemoButton>
       </div>
-      <p className="mt-2 text-[0.72rem] text-faint">
+      <p className="mt-2 text-[0.7rem] text-faint">
         Preview only — messages are not sent in demo mode.
       </p>
     </div>

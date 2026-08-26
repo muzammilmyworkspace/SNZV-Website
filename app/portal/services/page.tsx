@@ -48,14 +48,14 @@ export default async function Page() {
           return (
             <Panel key={s.slug} className="flex flex-col" accent={Boolean(status)}>
               <div className="flex items-start justify-between gap-3">
-                <p className="text-[1.02rem] font-bold tracking-[-0.02em] text-fg-strong">{s.name}</p>
+                <p className="text-[1rem] font-bold tracking-[-0.02em] text-fg-strong">{s.name}</p>
                 {status ? (
                   <StatusPill status={status} label={status.replace(/_/g, " ")} />
                 ) : (
                   <StatusPill status="new" label="Available" />
                 )}
               </div>
-              <p className="mt-2.5 flex-1 text-[0.86rem] leading-relaxed text-muted">{s.tagline}</p>
+              <p className="mt-2.5 flex-1 text-[0.85rem] leading-relaxed text-muted">{s.tagline}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link
                   href={status ? "/portal/cases" : "/portal/messages"}

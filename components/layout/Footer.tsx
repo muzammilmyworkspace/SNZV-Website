@@ -45,7 +45,7 @@ export function Footer() {
               </span>
             </Link>
 
-            <p className="mt-7 max-w-sm font-display text-[1.45rem] leading-[1.2] tracking-[-0.018em] text-fg">
+            <p className="mt-7 max-w-sm font-display text-[1.5rem] leading-[1.2] tracking-[-0.018em] text-fg">
               Geography should not be a barrier to ambition.
             </p>
           </div>
@@ -61,7 +61,7 @@ export function Footer() {
                     <li key={l.href}>
                       <Link
                         href={l.href}
-                        className="text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
+                        className="text-[0.85rem] text-muted transition-colors duration-300 hover:text-fg"
                       >
                         {l.label}
                       </Link>
@@ -84,7 +84,7 @@ export function Footer() {
                 <li>
                   <a
                     href={`mailto:${company.contact.email}`}
-                    className="break-all text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
+                    className="break-all text-[0.85rem] text-muted transition-colors duration-300 hover:text-fg"
                   >
                     {company.contact.email}
                   </a>
@@ -92,14 +92,14 @@ export function Footer() {
                 <li>
                   <a
                     href={`tel:${company.contact.phoneHref}`}
-                    className="text-[0.87rem] text-muted transition-colors duration-300 hover:text-fg"
+                    className="text-[0.85rem] text-muted transition-colors duration-300 hover:text-fg"
                   >
                     {company.contact.phone}
                   </a>
                 </li>
               </ul>
 
-              <address className="mt-4 not-italic text-[0.87rem] leading-relaxed text-muted">
+              <address className="mt-4 not-italic text-[0.85rem] leading-relaxed text-muted">
                 {company.contact.streetAddress}
                 <br />
                 {company.contact.postalCode} {company.contact.city},{" "}
@@ -119,7 +119,7 @@ export function Footer() {
           column, so the foot of the page carries almost nothing.
         */}
         <div className="flex flex-col gap-3 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[0.76rem] text-faint">
+          <p className="text-[0.75rem] text-faint">
             © {year} {company.name}
           </p>
           {/*
@@ -133,7 +133,7 @@ export function Footer() {
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className="text-[0.74rem] text-faint transition-colors hover:text-fg"
+                  className="text-[0.75rem] text-faint transition-colors hover:text-fg"
                 >
                   {l.label}
                 </Link>

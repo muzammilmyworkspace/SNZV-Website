@@ -42,7 +42,7 @@ export default async function SettingsPage() {
         </Panel>
 
         <Panel title="Your data">
-          <p className="text-[0.88rem] leading-relaxed text-muted">
+          <p className="text-[0.9rem] leading-relaxed text-muted">
             Under the GDPR you can ask us for a copy of your data, ask us to
             correct it, or ask us to delete it. Email{" "}
             <a href="mailto:info@snzventures.com" className="text-accent underline underline-offset-4">
@@ -50,7 +50,7 @@ export default async function SettingsPage() {
             </a>{" "}
             and we will respond within the statutory period.
           </p>
-          <p className="mt-4 text-[0.83rem] leading-relaxed text-faint">
+          <p className="mt-4 text-[0.85rem] leading-relaxed text-faint">
             Deleting your account removes your profile and messages. Records we
             are legally required to retain — for example accounting records —
             are kept for the statutory period and nothing longer.

@@ -195,14 +195,14 @@ export function ChatPanel({
               return (
                 <li key={m.id}>
                   {newDay && (
-                    <p className="my-4 text-center text-[0.72rem] uppercase tracking-[0.14em] text-faint">
+                    <p className="my-4 text-center text-[0.7rem] uppercase tracking-[0.14em] text-faint">
                       {day}
                     </p>
                   )}
                   <div className={cn("flex", mine ? "justify-end" : "justify-start")}>
                     <div className={cn("max-w-[min(85%,34rem)]", mine && "text-right")}>
                       {!mine && (
-                        <p className="mb-1 px-1 text-[0.74rem] text-faint">
+                        <p className="mb-1 px-1 text-[0.75rem] text-faint">
                           {m.authorName}
                           {STAFF.has(m.authorRole) && (
                             <span className="ml-1.5 text-accent">· SnZ Ventures</span>
@@ -271,7 +271,7 @@ export function ChatPanel({
             {sending ? "Sending…" : "Send"}
           </button>
         </div>
-        <p className="mt-2 text-[0.72rem] text-faint">
+        <p className="mt-2 text-[0.7rem] text-faint">
           Enter sends · Shift + Enter for a new line
         </p>
       </div>

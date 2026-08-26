@@ -74,7 +74,7 @@ export default async function DocumentsPage() {
         title="Documents"
         lead="Everything you send us, in one place — with its review status."
         meta={
-          <div className="flex flex-wrap gap-x-8 gap-y-3 text-[0.83rem]">
+          <div className="flex flex-wrap gap-x-8 gap-y-3 text-[0.85rem]">
             <span className="text-muted">
               <strong className="font-semibold text-fg">{documents.length}</strong> uploaded
             </span>

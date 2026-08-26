@@ -125,7 +125,7 @@ export default function AboutPage() {
                 {company.attributes.map((a) => (
                   <li
                     key={a}
-                    className="rounded-[var(--radius-xs)] border border-line px-3 py-1 text-[0.78rem] text-muted"
+                    className="rounded-[var(--radius-xs)] border border-line px-3 py-1 text-[0.8rem] text-muted"
                   >
                     {a}
                   </li>
@@ -152,7 +152,7 @@ export default function AboutPage() {
                 <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-fg">
                   {b.title}
                 </h3>
-                <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
+                <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
                   {b.body}
                 </p>
               </RevealItem>
@@ -184,7 +184,7 @@ export default function AboutPage() {
                 <div className="grid gap-6 sm:grid-cols-3 sm:gap-4">
                   {CORRIDOR_FLOW.map((step, i) => (
                     <div key={step.label} className="relative">
-                      <span className="num block text-[2.3rem] leading-none tracking-[-0.03em] text-fg">
+                      <span className="num block text-[2.4rem] leading-none tracking-[-0.03em] text-fg">
                         {step.value}
                       </span>
                       <span className="label mt-2 block text-accent">
@@ -215,7 +215,7 @@ export default function AboutPage() {
                   ))}
                 </div>
 
-                <p className="mt-7 border-t border-line pt-5 text-[0.84rem] leading-relaxed text-muted">
+                <p className="mt-7 border-t border-line pt-5 text-[0.85rem] leading-relaxed text-muted">
                   Both ends of the same route. We recruit where the talent is
                   and place where the demand is, so neither side is guesswork.
                 </p>
@@ -268,7 +268,7 @@ export default function AboutPage() {
                 <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-fg">
                   {t.title}
                 </h3>
-                <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
+                <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
                   {t.body}
                 </p>
               </RevealItem>

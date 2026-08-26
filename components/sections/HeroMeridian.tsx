@@ -144,8 +144,14 @@ export function HeroMeridian() {
         aria-hidden
         className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[62%] items-center lg:flex"
       >
-        <RouteField className="w-full opacity-[0.85]" />
+        <RouteField className="w-full opacity-[0.62]" />
       </div>
+
+      {/*
+        Scrim — keeps the headline the focal point over the corridor map.
+        Sits above the artwork and below the type; see .hero-scrim in globals.
+      */}
+      <div aria-hidden className="hero-scrim pointer-events-none absolute inset-0 -z-10" />
 
       {/* 4 — type */}
       <Shell className="relative z-10">
@@ -165,7 +171,7 @@ export function HeroMeridian() {
               54.6872° N, 25.2797° E
             </span>
             <span aria-hidden className="hidden h-3 w-px bg-raised sm:block" />
-            <span className="label text-muted">{company.positioning}</span>
+            <span className="label-lead text-muted">{company.positioning}</span>
           </motion.div>
 
           {/* Headline */}
@@ -199,7 +205,7 @@ export function HeroMeridian() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center gap-3"
+              className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center xl:flex-nowrap"
             >
               <Action
                 href="/contact#journey"

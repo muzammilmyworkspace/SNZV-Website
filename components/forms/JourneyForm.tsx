@@ -316,7 +316,7 @@ export function JourneyForm({
           </svg>
         </div>
         <h3 className="d-3 mt-6 text-fg">Thank you — that's enough to work with.</h3>
-        <p className="mx-auto mt-4 max-w-md text-[0.93rem] leading-relaxed text-muted">
+        <p className="mx-auto mt-4 max-w-md text-[0.95rem] leading-relaxed text-muted">
           We'll review what you've told us and come back with an honest read on
           your options — including if we think the route isn't right for you.
         </p>
@@ -388,7 +388,7 @@ export function JourneyForm({
             <legend className="d-3 mb-2 text-fg">
               What are you looking to achieve?
             </legend>
-            <p className="mb-7 text-[0.88rem] text-faint">
+            <p className="mb-7 text-[0.9rem] text-faint">
               This decides what we ask next — so you only answer what's
               relevant.
             </p>
@@ -411,7 +411,7 @@ export function JourneyForm({
                     <span className="block font-display text-[1.25rem] tracking-[-0.015em] text-fg">
                       {opt.title}
                     </span>
-                    <span className="mt-1 block text-[0.82rem] text-faint">
+                    <span className="mt-1 block text-[0.85rem] text-faint">
                       {opt.blurb}
                     </span>
                   </span>
@@ -440,7 +440,7 @@ export function JourneyForm({
                   ? "Tell us about your work"
                   : "Tell us about the business"}
             </legend>
-            <p className="mb-7 text-[0.88rem] text-faint">
+            <p className="mb-7 text-[0.9rem] text-faint">
               Rough answers are fine. Nothing here is binding.
             </p>
 
@@ -475,7 +475,7 @@ export function JourneyForm({
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             <legend className="d-3 mb-2 text-fg">Where should we reply?</legend>
-            <p className="mb-7 text-[0.88rem] text-faint">
+            <p className="mb-7 text-[0.9rem] text-faint">
               A real person reads this. You'll get a considered answer, not a
               brochure.
             </p>
@@ -539,14 +539,14 @@ export function JourneyForm({
                   rows={3}
                   value={answers.notes ?? ""}
                   onChange={(e) => set("notes", e.target.value)}
-                  className="w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.92rem] text-fg outline-none transition-colors placeholder:text-faint focus:border-moss-400"
+                  className="w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none transition-colors placeholder:text-faint focus:border-moss-400"
                   placeholder="Constraints, deadlines, questions…"
                 />
               </div>
             </div>
 
             <div className="mt-4">
-              <label className="flex cursor-pointer items-start gap-2.5 text-[0.82rem] leading-relaxed text-muted">
+              <label className="flex cursor-pointer items-start gap-2.5 text-[0.85rem] leading-relaxed text-muted">
                 <input
                   type="checkbox"
                   checked={answers.consent === "yes"}
@@ -567,7 +567,7 @@ export function JourneyForm({
                 </span>
               </label>
               {errors.consent && (
-                <p className="mt-1 text-[0.78rem] text-red-300">
+                <p className="mt-1 text-[0.8rem] text-red-300">
                   {errors.consent}
                 </p>
               )}
@@ -576,7 +576,7 @@ export function JourneyForm({
             {status === "error" && (
               <p
                 role="alert"
-                className="mt-4 border border-red-400/40 bg-red-500/10 px-4 py-3 text-[0.83rem] text-red-200"
+                className="mt-4 border border-red-400/40 bg-red-500/10 px-4 py-3 text-[0.85rem] text-red-200"
               >
                 {serverMessage ?? "Something went wrong sending that."} Please email{" "}
                 <a
@@ -620,7 +620,7 @@ function Field({
   const id = `jf-${field.name}`;
   const errorId = `${id}-error`;
   const base =
-    "w-full border bg-white/[0.04] px-4 py-3 text-[0.92rem] text-fg outline-none transition-colors placeholder:text-faint";
+    "w-full border bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none transition-colors placeholder:text-faint";
   const border = error
     ? "border-red-400/70 focus:border-red-400"
     : "border-line focus:border-moss-400";
@@ -677,7 +677,7 @@ function Field({
       )}
 
       {error && (
-        <p id={errorId} className="mt-1 text-[0.78rem] text-red-300">
+        <p id={errorId} className="mt-1 text-[0.8rem] text-red-300">
           {error}
         </p>
       )}

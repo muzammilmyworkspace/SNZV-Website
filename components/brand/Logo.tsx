@@ -45,7 +45,7 @@ export function Logo({
           {/* Hidden on the narrowest screens, where it wraps and crowds the bar. */}
           <span
             className={cn(
-              "mt-[3px] hidden text-[0.56rem] font-medium uppercase tracking-[0.2em] whitespace-nowrap xs:block",
+              "mt-[3px] hidden text-[0.6rem] font-medium uppercase tracking-[0.2em] whitespace-nowrap xs:block",
               "text-faint"
             )}
           >

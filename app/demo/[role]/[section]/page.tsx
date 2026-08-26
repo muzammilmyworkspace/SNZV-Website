@@ -121,10 +121,10 @@ function MessagesPage({ role }: { role: DemoRole }) {
                       className="flex min-h-16 items-center justify-between gap-4 px-5 py-4"
                     >
                       <span className="min-w-0">
-                        <span className="block truncate text-[0.93rem] font-medium text-fg">
+                        <span className="block truncate text-[0.95rem] font-medium text-fg">
                           {c.who}
                         </span>
-                        <span className="mt-0.5 block truncate text-[0.83rem] text-muted">
+                        <span className="mt-0.5 block truncate text-[0.85rem] text-muted">
                           {c.preview}
                         </span>
                       </span>
@@ -180,7 +180,7 @@ function SettingsPage() {
               <li key={label} className="flex items-start justify-between gap-4">
                 <span>
                   <span className="block text-[0.9rem] text-fg">{label}</span>
-                  <span className="mt-0.5 block text-[0.78rem] text-faint">{hint}</span>
+                  <span className="mt-0.5 block text-[0.8rem] text-faint">{hint}</span>
                 </span>
                 <span
                   aria-hidden
@@ -194,7 +194,7 @@ function SettingsPage() {
         </Card>
 
         <Card title="Security">
-          <p className="text-[0.88rem] leading-relaxed text-muted">
+          <p className="text-[0.9rem] leading-relaxed text-muted">
             Password and sign-in settings live here in the real portal. In this
             preview they are shown but inactive.
           </p>
@@ -323,7 +323,7 @@ function ProfilePage({ role }: { role: DemoRole }) {
                 key={k}
                 className="grid gap-1 border-b border-line py-3 last:border-0 sm:grid-cols-[14rem_1fr] sm:gap-4"
               >
-                <dt className="text-[0.82rem] text-faint">{k}</dt>
+                <dt className="text-[0.85rem] text-faint">{k}</dt>
                 <dd className="text-[0.9rem] text-fg">{v}</dd>
               </div>
             ))}
@@ -372,7 +372,7 @@ function ProfilePage({ role }: { role: DemoRole }) {
                 key={k}
                 className="grid gap-1 border-b border-line py-3 last:border-0 sm:grid-cols-[13rem_1fr] sm:gap-4"
               >
-                <dt className="text-[0.82rem] text-faint">{k}</dt>
+                <dt className="text-[0.85rem] text-faint">{k}</dt>
                 <dd className="text-[0.9rem] text-fg">{v}</dd>
               </div>
             ))}
@@ -476,7 +476,7 @@ function adminSection(section: string, search: Record<string, string>) {
               {rows.map((r) => (
                 <Row key={r.ref}>
                   <Cell>
-                    <span className="num text-[0.84rem] text-accent">{r.ref}</span>
+                    <span className="num text-[0.85rem] text-accent">{r.ref}</span>
                   </Cell>
                   <Cell>{r.who}</Cell>
                   <Cell>
@@ -546,7 +546,7 @@ function studentSection(section: string) {
                   </div>
                   <StatusBadge status={a.status} />
                 </div>
-                <dl className="mt-4 border-t border-line pt-3.5 text-[0.83rem]">
+                <dl className="mt-4 border-t border-line pt-3.5 text-[0.85rem]">
                   <div className="flex justify-between py-1">
                     <dt className="text-faint">Country</dt>
                     <dd className="text-fg">{a.country}</dd>
@@ -602,7 +602,7 @@ function studentSection(section: string) {
                     label={s.eligible ? "Eligible" : "Not eligible"}
                   />
                 </div>
-                <p className="mt-1 text-[0.83rem] text-faint">{s.provider}</p>
+                <p className="mt-1 text-[0.85rem] text-faint">{s.provider}</p>
                 <dl className="mt-4 border-t border-line pt-3.5 text-[0.85rem]">
                   <div className="flex justify-between gap-4 py-1">
                     <dt className="text-faint">Value</dt>
@@ -644,7 +644,7 @@ function jobSeekerSection(section: string) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-[1.05rem] font-bold tracking-[-0.02em] text-fg-strong">{m.role}</p>
-                    <p className="mt-1 text-[0.88rem] text-muted">
+                    <p className="mt-1 text-[0.9rem] text-muted">
                       {m.employer} · {m.country}
                     </p>
                   </div>
@@ -704,7 +704,7 @@ function jobSeekerSection(section: string) {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-[1.05rem] font-bold tracking-[-0.02em] text-fg-strong">{i.employer}</p>
-                    <p className="mt-1 text-[0.88rem] text-muted">{i.role}</p>
+                    <p className="mt-1 text-[0.9rem] text-muted">{i.role}</p>
                   </div>
                   <StatusBadge status={i.status} />
                 </div>
@@ -738,7 +738,7 @@ function businessSection(section: string) {
               {d.businessRequests.map((r) => (
                 <Row key={r.ref}>
                   <Cell>
-                    <span className="num text-[0.84rem] text-accent">{r.ref}</span>
+                    <span className="num text-[0.85rem] text-accent">{r.ref}</span>
                   </Cell>
                   <Cell>{r.name}</Cell>
                   <Cell muted>{r.detail}</Cell>
@@ -765,10 +765,10 @@ function businessSection(section: string) {
             {d.businessServices.map((s) => (
               <Card key={s.name} className="flex flex-col">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-[1.02rem] font-bold tracking-[-0.02em] text-fg-strong">{s.name}</p>
+                  <p className="text-[1rem] font-bold tracking-[-0.02em] text-fg-strong">{s.name}</p>
                   <StatusBadge status={s.status} />
                 </div>
-                <p className="mt-2.5 flex-1 text-[0.86rem] leading-relaxed text-muted">{s.blurb}</p>
+                <p className="mt-2.5 flex-1 text-[0.85rem] leading-relaxed text-muted">{s.blurb}</p>
                 <div className="mt-4">
                   <DemoButton tone={s.status === "new" ? "solid" : "line"}>{s.action}</DemoButton>
                 </div>

@@ -645,11 +645,43 @@ body {
   color: var(--fg-muted);
 }
 
+/**
+ * The micro-label: eyebrows, chapter marks, badges, metadata.
+ *
+ * 0.7rem computed to 11.2px, which a usability audit flagged as below the
+ * ~12px floor for readable copy. It is a tracked uppercase label rather than
+ * body text, so the rule is not a perfect fit — but 11px set in +0.16em
+ * tracking really is the smallest thing on the page, and it carries the
+ * chapter numbers and the metadata people scan. 0.75rem is exactly 12px and
+ * costs the design nothing.
+ */
 .label {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/**
+ * SENTENCE-CASE VARIANT, for label-sized text that is a SENTENCE.
+ *
+ * Uppercase is a device for short marks — "Study abroad", "6 min read". Run it
+ * across a whole descriptive line and it slows reading measurably, because the
+ * even cap height removes the word-shape cues readers actually use. The hero
+ * standfirst ("European Gateway for Business, Fintech & Talent", 47 characters)
+ * was set in it and got flagged for exactly that.
+ *
+ * This keeps the label size and weight, drops the shouting, and eases the
+ * tracking back to something appropriate for running words rather than for a
+ * two-word mark. Reach for it whenever a label holds more than about three
+ * words; keep `.label` for the marks it was designed for.
+ */
+.label-lead {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1058,3 +1090,201 @@ p { text-wrap: pretty; }
 :root[data-theme="dark"] .tone-white { --accent-ink: var(--color-moss-300); }
 
 .text-accent-ink { color: var(--accent-ink); }
+
+/* ══════════════════════════════════════════ PATHWAY POPUP — SHORT VIEWPORTS ═
+ *
+ * The popup's compact layout was gated on WIDTH (`sm:`), which is the wrong
+ * axis for the case that actually broke it. A phone in LANDSCAPE is wide and
+ * short — 844x390, 800x360 — so every `sm:` rule fired and it rendered the
+ * full desktop treatment into 390px of height. The panel is height-capped, so
+ * nothing overflowed the screen; instead the fixed head and foot ate the lot
+ * and the card region collapsed to 64-87px. Measured on three landscape
+ * profiles: what you saw was a sliver of three photographs and not one card
+ * title. Bounded, but useless.
+ *
+ * So the compact treatment is driven by HEIGHT here, independently of width.
+ * Below 560px of viewport height the head gives up its lede and its display
+ * scale, the padding tightens, and the cards revert to the thumbnail-beside-
+ * the-words row — the same row the narrow-width layout uses, reached by the
+ * other axis. Three of them then cost about 90px total instead of 350px.
+ *
+ * WHY THIS IS CSS AND NOT `[@media(max-height:560px)]:` UTILITIES. It touches
+ * seven elements and has to beat `sm:` utilities that are already applying at
+ * these widths. Two-class selectors win that on specificity regardless of
+ * source order, which an arbitrary variant does not — it would be a single
+ * class racing Tailwind's own, decided by emission order.
+ *
+ * 560px is chosen to sit clear of the shortest PORTRAIT phone in use (568px),
+ * so this never fires on a phone held upright.
+ */
+@media (max-height: 560px) {
+  .pathway-popup .pp-head {
+    padding-top: 0.75rem;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+
+  /* Supporting copy, not the offer. The three cards say the same thing. */
+  .pathway-popup .pp-lede { display: none; }
+
+  .pathway-popup .pp-title {
+    font-size: 1.35rem;
+    line-height: 1.15;
+    margin-top: 0.25rem;
+  }
+
+  .pathway-popup .pp-cards {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  /* The row layout, reached by height rather than by width. */
+  .pathway-popup .pp-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .pathway-popup .pp-thumb {
+    width: 4.5rem;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-xs);
+  }
+
+  .pathway-popup .pp-body { padding: 0; }
+
+  .pathway-popup .pp-foot {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* ══════════════════════════════════════ PATHWAY POPUP — HEIGHT CAP + CLOSE ═
+ *
+ * ⚠ THE `vh` LINE IS A FALLBACK AND MUST STAY ABOVE THE `dvh` LINE.
+ *
+ * The cap used to be a lone Tailwind `max-h-[calc(100dvh-1.5rem)]`. `dvh`
+ * needs Safari iOS 15.4+ or Chrome 108+; anywhere older — an ageing Android,
+ * or the in-app browsers Instagram and Facebook open links in — the whole
+ * declaration is INVALID, so the browser throws it away and the panel is left
+ * with no height limit whatsoever. That is not a degraded layout, it is the
+ * original bug back in full: a panel far taller than the screen, centred, with
+ * its close button off the top edge and the backdrop completely covered. Body
+ * scroll is locked and a phone has no Escape key, so the visitor cannot get
+ * out except by reloading. It was reported from a real handset after emulator
+ * testing passed, because every emulator here supports `dvh`.
+ *
+ * Two declarations of the same property is the whole point: browsers keep the
+ * last one they can parse. Old engines stop at `vh` and still get a working
+ * cap; new ones take `dvh` and also handle the collapsing URL bar. Never
+ * "tidy" this into a single line.
+ *
+ * The mobile cap is deliberately TIGHTER than the desktop one. Leaving a
+ * margin of backdrop visible around the panel is what makes it read as a card
+ * over the page rather than a new screen, and it keeps a reliable area to tap
+ * outside to dismiss — a second way out that does not depend on hitting a
+ * small control in the corner.
+ */
+.pathway-popup {
+  max-height: calc(100vh - 2rem);
+}
+@supports (max-height: 100dvh) {
+  .pathway-popup {
+    max-height: calc(100dvh - 2rem);
+  }
+}
+
+@media (max-width: 639px) {
+  .pathway-popup {
+    /* ~40px of visible backdrop above and below. */
+    max-height: calc(100vh - 5rem);
+  }
+
+  @supports (max-height: 100dvh) {
+    .pathway-popup {
+      max-height: calc(100dvh - 5rem);
+    }
+  }
+
+  /* Clear the larger touch control so a heading line never runs under it. */
+  .pathway-popup .pp-head {
+    padding-left: 3.75rem;
+    padding-right: 3.75rem;
+  }
+}
+
+/*
+ * A BIGGER, SOLIDER CLOSE CONTROL WHEREVER THE INPUT IS A FINGER.
+ *
+ * It was a 36px box with a hairline border, a 1.5px stroke and the panel's own
+ * background — on the light theme, over a light panel, it read as decoration
+ * rather than as the way out. Reported from a real handset as "cannot dismiss
+ * it", which is as much about not FINDING the control as not hitting it. Now
+ * 44px square (WCAG 2.5.5 met by the drawn box itself, not only by the
+ * pseudo-element), circular, with a stronger border and a shadow so it
+ * separates from whatever sits behind it.
+ *
+ * Keyed on pointer:coarse rather than on a width. Width was the wrong axis here
+ * for the same reason it was wrong for the layout: a phone in landscape is
+ * 844px wide, so a max-width gate left the very devices that need a finger
+ * target on the 36px mouse-sized one. What decides this is whether the visitor
+ * is pointing with a finger, which is exactly what this query asks.
+ */
+@media (pointer: coarse) {
+  .pathway-popup .pp-close {
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 2.75rem;
+    width: 2.75rem;
+    border-radius: 9999px;
+    border-color: var(--line-strong, var(--line));
+    box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.45);
+  }
+
+  .pathway-popup .pp-close-icon {
+    height: 1.05rem;
+    width: 1.05rem;
+    stroke-width: 2;
+  }
+}
+
+/* ══════════════════════════════════════════════════ HERO — TYPE LEGIBILITY ═
+ *
+ * The corridor map (RouteField) occupies the right 62% of the hero at high
+ * opacity, and its arcs and city labels are the brightest marks in the frame.
+ * Where they run under the headline and lede they compete with the type for
+ * the same attention, which a usability audit picked up as the message being
+ * harder to parse than it should be.
+ *
+ * This lays a scrim between the artwork and the type: opaque at the left edge
+ * where the words live, gone by the point the map becomes the subject. It is
+ * angled rather than straight so it follows the diagonal the composition
+ * already has, and it uses the tone token rather than a fixed navy so it works
+ * in both themes.
+ */
+.hero-scrim {
+  background-image: linear-gradient(
+    100deg,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--surface) 82%, transparent) 30%,
+    color-mix(in srgb, var(--surface) 40%, transparent) 48%,
+    transparent 66%
+  );
+}
+/* ═══════════════════════════════════════════════ INK FOR TYPE OVER PHOTOS ═
+ *
+ * Type set over a photograph cannot use the tone tokens — the image, not the
+ * CSS background, is the real ground under it. The pattern in use was
+ * `text-white/70` and `text-white/80`, which is the one thing the design notes
+ * in README explicitly rule out: an alpha lands at whatever contrast the
+ * photograph underneath happens to give, and it also multiplies the number of
+ * distinct text colours on the page (a usability audit counted 16, and three
+ * of them were the same white at three opacities).
+ *
+ * These are the same intent expressed as SOLID colours, so the contrast is a
+ * known quantity and the palette stays countable. `.plate` already grades the
+ * photograph dark, so both sit comfortably above 4.5:1 on it.
+ */
+.ink-on-photo      { color: #FFFFFF; }
+.ink-on-photo-soft { color: #D7DEEA; }

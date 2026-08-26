@@ -48,12 +48,12 @@ export default async function AdminCasesPage() {
                 {cases.map((c) => (
                   <tr key={c.id} className="border-b border-line last:border-0">
                     <td className="px-5 py-3 text-[0.9rem] text-fg">{c.clientName}</td>
-                    <td className="px-5 py-3 text-[0.86rem] text-muted">{c.title}</td>
+                    <td className="px-5 py-3 text-[0.85rem] text-muted">{c.title}</td>
                     <td className="px-5 py-3"><span className="label text-faint">{c.pathway}</span></td>
                     <td className="px-5 py-3">
                       <StatusPill status={c.status} label={c.status.replace(/_/g, " ")} />
                     </td>
-                    <td className="px-5 py-3 text-[0.84rem] text-muted">{c.advisorName ?? "—"}</td>
+                    <td className="px-5 py-3 text-[0.85rem] text-muted">{c.advisorName ?? "—"}</td>
                     <td className="px-5 py-3 text-[0.8rem] text-faint">
                       {new Date(c.updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                     </td>

@@ -77,10 +77,10 @@ export function DocumentReview({ documents }: { documents: Doc[] }) {
                   >
                     {d.name}
                   </a>
-                  <span className="block text-[0.76rem] text-faint">{d.category}</span>
+                  <span className="block text-[0.75rem] text-faint">{d.category}</span>
                 </td>
                 <td className="px-5 py-3 text-[0.85rem] text-muted">{d.ownerName ?? "—"}</td>
-                <td className="px-5 py-3 text-[0.82rem] text-faint">{size(d.sizeBytes)}</td>
+                <td className="px-5 py-3 text-[0.85rem] text-faint">{size(d.sizeBytes)}</td>
                 <td className="px-5 py-3">
                   <StatusPill status={d.status} label={d.status.replace(/_/g, " ")} />
                 </td>

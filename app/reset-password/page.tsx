@@ -54,7 +54,7 @@ export default async function ResetPasswordPage({
         lead="Reset links last 30 minutes and work once. Request a fresh one and it'll be in your inbox in a moment."
       >
         <div className="space-y-5">
-          <p className="rounded-[var(--radius-sm)] border border-line bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] px-4 py-3 text-[0.88rem] leading-relaxed text-muted">
+          <p className="rounded-[var(--radius-sm)] border border-line bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] px-4 py-3 text-[0.9rem] leading-relaxed text-muted">
             {token
               ? "This link has already been used, or it's older than 30 minutes."
               : "That link is missing its reset code. Copy the whole link from the email, or request a new one."}

@@ -207,12 +207,12 @@ function Field({
       </label>
       <FieldControl field={field} value={value} onChange={onChange} invalid={invalid} />
       {field.hint && (
-        <p id={`${id}-hint`} className="mt-1.5 text-[0.76rem] leading-relaxed text-faint">
+        <p id={`${id}-hint`} className="mt-1.5 text-[0.75rem] leading-relaxed text-faint">
           {field.hint}
         </p>
       )}
       {invalid && (
-        <p role="alert" className="mt-1.5 text-[0.78rem] text-red-300">
+        <p role="alert" className="mt-1.5 text-[0.8rem] text-red-300">
           This one is required.
         </p>
       )}
@@ -363,7 +363,7 @@ export function IntakeForm({
         <h2 className="mt-3 text-[1.35rem] font-bold tracking-[-0.02em] text-fg-strong">
           Your {definition.title.toLowerCase()} is with us.
         </h2>
-        <p className="mt-3 max-w-xl text-[0.92rem] leading-relaxed text-muted">
+        <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-muted">
           An advisor reads it and comes back to you with the next step. You can
           keep uploading documents in the meantime — that is usually what moves
           things fastest.
@@ -397,7 +397,7 @@ export function IntakeForm({
           <p className="label text-faint">
             Step {index + 1} of {steps.length}
           </p>
-          <p className="text-[0.78rem] text-faint" aria-live="polite">
+          <p className="text-[0.8rem] text-faint" aria-live="polite">
             {saving ? "Saving…" : savedAt ? "Progress saved" : " "}
           </p>
         </div>
@@ -430,7 +430,7 @@ export function IntakeForm({
                 className={cn(
                   // -my-2/py-2 keeps the rail visually tight while giving each
                   // step a real hit box; these are jump targets, not labels.
-                  "-my-2 inline-flex min-h-11 items-center py-2 text-[0.78rem] transition-colors",
+                  "-my-2 inline-flex min-h-11 items-center py-2 text-[0.8rem] transition-colors",
                   i === index && "font-semibold text-accent",
                   i < index && "text-muted hover:text-fg",
                   i > index && "cursor-default text-faint opacity-50"
@@ -447,7 +447,7 @@ export function IntakeForm({
       <h2
         ref={headingRef}
         tabIndex={-1}
-        className="text-[1.3rem] font-bold tracking-[-0.02em] text-fg-strong outline-none sm:text-[1.5rem]"
+        className="text-[1.35rem] font-bold tracking-[-0.02em] text-fg-strong outline-none sm:text-[1.5rem]"
       >
         {step.title}
       </h2>
@@ -546,7 +546,7 @@ export function IntakeForm({
         </button>
       </div>
 
-      <p className="mt-4 text-[0.76rem] text-faint">
+      <p className="mt-4 text-[0.75rem] text-faint">
         Your answers are saved as you go. You can close this and come back to it.
       </p>
     </div>

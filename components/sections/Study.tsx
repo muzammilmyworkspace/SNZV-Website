@@ -146,7 +146,7 @@ export function StudyHero() {
                     {f.suffix}
                   </span>
                   <span className="label mt-2 block text-accent">{f.label}</span>
-                  <span className="mt-1.5 block text-[0.76rem] leading-snug text-faint">
+                  <span className="mt-1.5 block text-[0.75rem] leading-snug text-faint">
                     {f.detail}
                   </span>
                 </dd>
@@ -222,7 +222,7 @@ export function StudyOverview() {
                 <h3 className="mt-3 font-display text-[1.4rem] leading-tight tracking-[-0.018em] text-fg transition-colors duration-500 group-hover:text-accent sm:text-[1.65rem]">
                   {item.title}
                 </h3>
-                <p className="mt-3 max-w-xl text-[0.88rem] leading-relaxed text-muted">
+                <p className="mt-3 max-w-xl text-[0.9rem] leading-relaxed text-muted">
                   {item.body}
                 </p>
               </RevealItem>
@@ -268,7 +268,7 @@ export function StudyDestinations({
           className="mb-8"
         />
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
             className="d-2 max-w-[17ch] text-fg-strong"
@@ -287,7 +287,16 @@ export function StudyDestinations({
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-6 lg:grid-cols-5">
+        {/*
+          FIVE ACROSS ONLY ONCE THE CARDS CAN CARRY IT.
+
+          At lg this was five columns of roughly 180px, which broke the
+          descriptions into three- and four-word lines and stretched the cards
+          vertically. Three across through the laptop range gives the copy a
+          readable measure; five returns at xl where there is genuinely width
+          for it, keeping the ten-up composition on large screens.
+        */}
+        <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-6 md:grid-cols-3 xl:grid-cols-5">
           {shown.map((d, i) => (
             <StudyDestinationCard
               key={d.slug}
@@ -386,10 +395,10 @@ export function StudyUniversities() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3 className="font-display text-[1.2rem] leading-tight tracking-[-0.015em] text-fg">
+                    <h3 className="font-display text-[1.25rem] leading-tight tracking-[-0.015em] text-fg">
                       {c.title}
                     </h3>
-                    <p className="mt-2 text-[0.87rem] leading-relaxed text-muted">
+                    <p className="mt-2 text-[0.85rem] leading-relaxed text-muted">
                       {c.body}
                     </p>
                   </div>
@@ -431,7 +440,7 @@ export function StudyProgrammes() {
       />
       <Container className="relative">
         <Chapter index="04" label="Programmes" className="mb-8" />
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
@@ -471,7 +480,7 @@ export function StudyProgrammes() {
                 </span>
               </span>
 
-              <h3 className="mt-5 font-display text-[1.3rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
+              <h3 className="mt-5 font-display text-[1.35rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
                 {f.name}
               </h3>
               <p className="label mt-2 text-faint">{f.examples}</p>
@@ -530,7 +539,7 @@ export function StudyScholarships() {
                 <h3 className="mt-3 font-display text-[1.25rem] leading-tight tracking-[-0.018em] text-fg">
                   {n.title}
                 </h3>
-                <p className="mt-2.5 text-[0.86rem] leading-relaxed text-muted">
+                <p className="mt-2.5 text-[0.85rem] leading-relaxed text-muted">
                   {n.body}
                 </p>
               </RevealItem>
@@ -578,7 +587,7 @@ export function StudyJourney() {
     <Section id="journey" tone="paper" edge className="anchor-target">
       <Container>
         <Chapter index="06" label="How it works" tone="light" className="mb-8" />
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
             className="d-2 max-w-[17ch] text-fg-strong"
@@ -599,7 +608,7 @@ export function StudyJourney() {
               <h3 className="mt-3 font-display text-[1.25rem] leading-none tracking-[-0.018em] text-fg">
                 {s.name}
               </h3>
-              <p className="mt-2.5 text-[0.83rem] leading-relaxed text-muted">
+              <p className="mt-2.5 text-[0.85rem] leading-relaxed text-muted">
                 {s.body}
               </p>
             </RevealItem>
@@ -628,7 +637,7 @@ export function StudySupport() {
       />
       <Container className="relative">
         <Chapter index="07" label="Student support" className="mb-8" />
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
             className="d-2 max-w-[16ch] text-fg-strong"
@@ -651,7 +660,7 @@ export function StudySupport() {
               <h3 className="mt-3 font-display text-[1.35rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
                 {s.title}
               </h3>
-              <p className="mt-3 text-[0.87rem] leading-relaxed text-muted">
+              <p className="mt-3 text-[0.85rem] leading-relaxed text-muted">
                 {s.body}
               </p>
             </RevealItem>

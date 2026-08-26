@@ -56,13 +56,13 @@ export function PathwayCard({
           </span>
         </div>
 
-        <h3 className="mt-6 font-display text-[1.9rem] leading-none tracking-[-0.022em] text-fg transition-colors duration-500 group-hover:text-accent">
+        <h3 className="mt-6 font-display text-[2rem] leading-none tracking-[-0.022em] text-fg transition-colors duration-500 group-hover:text-accent">
           {pathway.title}
         </h3>
-        <p className="mt-3 text-[0.92rem] leading-snug text-fg">
+        <p className="mt-3 text-[0.95rem] leading-snug text-fg">
           {pathway.hook}
         </p>
-        <p className="mt-3 max-w-md text-[0.86rem] leading-relaxed text-faint">
+        <p className="mt-3 max-w-md text-[0.85rem] leading-relaxed text-faint">
           {pathway.body}
         </p>
 
@@ -70,7 +70,7 @@ export function PathwayCard({
           {pathway.bullets.map((b) => (
             <li
               key={b}
-              className="border-b border-line py-2.5 text-[0.83rem] leading-snug text-muted"
+              className="border-b border-line py-2.5 text-[0.85rem] leading-snug text-muted"
             >
               {b}
             </li>
@@ -125,7 +125,7 @@ export function DestinationCard({
           </span>
         )}
         <div className="absolute inset-x-4 bottom-4 z-[3]">
-          <h3 className="font-display text-[1.55rem] leading-none tracking-[-0.02em] text-fg">
+          <h3 className="font-display text-[1.5rem] leading-none tracking-[-0.02em] text-fg">
             {destination.country}
           </h3>
           <span className="label mt-1.5 block text-muted">
@@ -161,7 +161,7 @@ export function DestinationCard({
         ))}
       </dl>
 
-      <p className="mt-3 border-t border-line pt-3 text-[0.76rem] leading-snug text-faint">
+      <p className="mt-3 border-t border-line pt-3 text-[0.75rem] leading-snug text-faint">
         {destination.marketNote}
       </p>
     </motion.article>
@@ -221,7 +221,7 @@ export function StudyDestinationCard({
             <h3 className="font-display text-[1.5rem] leading-none tracking-[-0.02em] text-white">
               {destination.country}
             </h3>
-            <span className="label mt-1.5 block text-white/70">
+            <span className="label mt-1.5 block ink-on-photo-soft">
               {destination.city}
             </span>
           </div>
@@ -231,7 +231,7 @@ export function StudyDestinationCard({
           {destination.blurb}
         </p>
 
-        <p className="mt-auto flex items-start gap-2.5 border-t border-line pt-3 text-[0.76rem] leading-snug text-faint">
+        <p className="mt-auto flex items-start gap-2.5 border-t border-line pt-3 text-[0.75rem] leading-snug text-faint">
           <span
             aria-hidden
             className="mt-[0.42em] block h-1 w-1 shrink-0 rounded-full bg-moss-400/70"
@@ -289,12 +289,12 @@ export function InsightCard({
           <h3
             className={cn(
               "mt-3 font-display leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent",
-              featured ? "text-[2rem]" : "text-[1.3rem]"
+              featured ? "text-[2rem]" : "text-[1.35rem]"
             )}
           >
             {article.title}
           </h3>
-          <p className="mt-3 max-w-md text-[0.87rem] leading-relaxed text-faint">
+          <p className="mt-3 max-w-md text-[0.85rem] leading-relaxed text-faint">
             {article.excerpt}
           </p>
           <span className="label mt-5 inline-flex items-center gap-2 text-accent">
@@ -328,7 +328,7 @@ export function ServiceCard({
         <h3 className="mt-3 font-display text-[1.5rem] leading-tight tracking-[-0.02em] text-fg transition-colors duration-500 group-hover:text-accent">
           {service.name}
         </h3>
-        <p className="mt-3 max-w-sm text-[0.87rem] leading-relaxed text-faint">
+        <p className="mt-3 max-w-sm text-[0.85rem] leading-relaxed text-faint">
           {service.tagline}
         </p>
         <span className="label mt-5 inline-flex items-center gap-2 text-accent">

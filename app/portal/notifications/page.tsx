@@ -75,15 +75,15 @@ export default async function NotificationsPage() {
                       <span
                         className={
                           n.read
-                            ? "block text-[0.92rem] text-muted"
-                            : "block text-[0.92rem] font-medium text-fg"
+                            ? "block text-[0.95rem] text-muted"
+                            : "block text-[0.95rem] font-medium text-fg"
                         }
                       >
                         {n.title}
                         {!n.read && <span className="sr-only"> (unread)</span>}
                       </span>
                       {n.body && (
-                        <span className="mt-0.5 block text-[0.84rem] leading-relaxed text-muted">
+                        <span className="mt-0.5 block text-[0.85rem] leading-relaxed text-muted">
                           {n.body}
                         </span>
                       )}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
@@ -113,12 +113,12 @@ function Field({
       )}
       </div>
       {hint && !error && (
-        <p id={`${id}-hint`} className="mt-1.5 text-[0.76rem] text-faint">
+        <p id={`${id}-hint`} className="mt-1.5 text-[0.75rem] text-faint">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-[0.78rem] text-red-300">
+        <p id={`${id}-error`} className="mt-1.5 text-[0.8rem] text-red-300">
           {error}
         </p>
       )}
@@ -196,7 +196,7 @@ function GoogleButton({ enabled, next }: { enabled: boolean; next?: string | nul
       </div>
       <a
         href={href}
-        className="flex min-h-12 w-full items-center justify-center gap-3 rounded-[var(--radius-sm)] border border-line bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] px-5 text-[0.92rem] font-medium text-fg transition-colors hover:border-moss-400/60 hover:bg-[color-mix(in_srgb,var(--fg)_7%,transparent)]"
+        className="flex min-h-12 w-full items-center justify-center gap-3 rounded-[var(--radius-sm)] border border-line bg-[color-mix(in_srgb,var(--fg)_4%,transparent)] px-5 text-[0.95rem] font-medium text-fg transition-colors hover:border-moss-400/60 hover:bg-[color-mix(in_srgb,var(--fg)_7%,transparent)]"
       >
         <svg viewBox="0 0 18 18" aria-hidden className="h-4 w-4">
           <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z" />
@@ -310,7 +310,7 @@ export function LoginForm({ googleEnabled = false }: { googleEnabled?: boolean }
             the target audit. A number the browser has to arrive at by addition
             is a number that drifts the next time the type size changes.
           */
-          className="inline-flex min-h-11 items-center py-3 -my-3 text-[0.83rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
+          className="inline-flex min-h-11 items-center py-3 -my-3 text-[0.85rem] text-muted underline underline-offset-4 transition-colors hover:text-fg"
         >
           Forgot your password?
         </Link>
@@ -435,7 +435,7 @@ export function RegisterForm() {
                 <span className="block text-[1rem] font-semibold tracking-[-0.01em] text-fg">
                   {p.title}
                 </span>
-                <span className="mt-0.5 block text-[0.82rem] text-muted">{p.blurb}</span>
+                <span className="mt-0.5 block text-[0.85rem] text-muted">{p.blurb}</span>
               </span>
               <svg viewBox="0 0 12 12" fill="none" aria-hidden className="h-3 w-3 shrink-0 text-accent opacity-0 transition-all duration-400 group-hover:translate-x-1 group-hover:opacity-100">
                 <path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -539,7 +539,7 @@ export function ForgotForm() {
     return (
       <div className="rounded-[var(--radius-md)] border border-line bg-raised p-6">
         <p className="text-[0.95rem] font-semibold text-fg">Check your inbox</p>
-        <p className="mt-2 text-[0.88rem] leading-relaxed text-muted">
+        <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
           If that address has an account, we&rsquo;ve sent reset instructions to
           it. The link expires in 30 minutes.
         </p>
@@ -638,16 +638,132 @@ export function ResetForm({ token }: { token: string }) {
 
 /* ------------------------------------------------ auth-not-configured note */
 
+/**
+ * Amber is picked PER THEME, for the same reason `ErrorNote` above is.
+ *
+ * This was `text-amber-300` over a heading and `text-amber-100` over the body,
+ * chosen when the site was dark by default. Light is the default now, and pale
+ * amber on a pale amber tint measured 1.32:1 and 1.01:1 — `npm run audit:theme`
+ * fails /login and /register on it. 1.01:1 is text the same brightness as its
+ * own background: the notice explaining why nobody can sign in was, in the
+ * theme most visitors get, effectively invisible.
+ *
+ * The dark values are kept for the dark theme, where they were always correct.
+ */
 export function AuthUnavailable() {
   return (
     <div className={cn("rounded-[var(--radius-md)] border border-amber-400/40 bg-amber-400/10 p-5")}>
-      <p className="label text-amber-300">Portal not yet enabled</p>
-      <p className="mt-2 text-[0.87rem] leading-relaxed text-amber-100">
-        Accounts are unavailable because this deployment has no{" "}
-        <span className="font-mono text-[0.82rem]">AUTH_SECRET</span> configured.
-        Set one and restart to enable the client portal — see{" "}
-        <span className="font-mono text-[0.82rem]">CONTENT-HANDOFF.md</span>.
+      <p className="label text-[#7A4A02] [html[data-theme=dark]_&]:text-amber-300">
+        Portal not yet enabled
       </p>
+      <p className="mt-2 text-[0.85rem] leading-relaxed text-[#6B4102] [html[data-theme=dark]_&]:text-amber-100">
+        Accounts are unavailable because this deployment has no{" "}
+        <span className="font-mono text-[0.85rem]">AUTH_SECRET</span> configured.
+        Set one and restart to enable the client portal — see{" "}
+        <span className="font-mono text-[0.85rem]">CONTENT-HANDOFF.md</span>.
+      </p>
+    </div>
+  );
+}
+
+/* ----------------------------------------------------- email confirmation */
+
+/**
+ * CONFIRMS THE EMAIL TOKEN.
+ *
+ * The registration email's link previously pointed at /verify-email, which was
+ * never built — so every confirmation link 404'd and no account could be
+ * verified at all. This is the missing other half.
+ *
+ * WHY A POST FROM THE CLIENT RATHER THAN A SERVER COMPONENT.
+ * Consuming the token during a GET render would let anything that merely
+ * FETCHES the link burn it — mail scanners, link previewers and corporate
+ * security gateways all follow URLs in email before a human ever clicks. They
+ * issue plain GETs and do not run scripts, so requiring JavaScript and a POST
+ * means the token is only ever spent by a real visitor. It is the same reason
+ * `isTokenValid` exists separately from `consumeToken` in lib/auth/store.ts.
+ *
+ * The page has already checked the token is live, so this runs on mount and
+ * the visitor is not asked to press a second button for something they
+ * already confirmed by clicking the one in their inbox.
+ */
+export function VerifyEmailConfirm({ token }: { token: string }) {
+  const [state, setState] = useState<"working" | "done" | "failed">("working");
+  const [error, setError] = useState<string | null>(null);
+  /*
+    The token is single-use. React StrictMode runs effects twice in
+    development, and the second POST would find the token already spent and
+    report failure over the top of a success that genuinely happened.
+  */
+  const started = useRef(false);
+
+  const confirm = useCallback(async () => {
+    setState("working");
+    setError(null);
+    const { res, data } = await post("/api/auth/verify-email", { token });
+    if (!res.ok || !data.ok) {
+      setError(data.error ?? "We couldn't confirm that link.");
+      setState("failed");
+      return;
+    }
+    setState("done");
+  }, [token]);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    void confirm();
+  }, [confirm]);
+
+  if (state === "working") {
+    return (
+      <p role="status" className="text-[0.9rem] leading-relaxed text-muted">
+        Confirming your email address…
+      </p>
+    );
+  }
+
+  if (state === "failed") {
+    return (
+      <div className="space-y-5">
+        <ErrorNote>{error}</ErrorNote>
+        <button
+          type="button"
+          onClick={() => void confirm()}
+          className="label inline-flex min-h-12 w-full items-center justify-center rounded-[var(--radius-sm)] border border-line text-fg transition-colors hover:border-moss-400/70 hover:text-accent"
+        >
+          Try again
+        </button>
+        <p className="text-[0.85rem] leading-relaxed text-muted">
+          Still not working? Sign in and we&rsquo;ll send a fresh confirmation
+          link.{" "}
+          <Link href="/login" className="font-semibold text-accent underline underline-offset-4">
+            Sign in
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      <p
+        role="status"
+        className="rounded-[var(--radius-sm)] border border-moss-400/45 bg-moss-400/10 px-4 py-3 text-[0.9rem] leading-relaxed text-fg"
+      >
+        Your email address is confirmed.
+      </p>
+      {/*
+        A full load rather than a router push — the same reason the sign-in
+        forms use one. It re-reads the session cookie server-side instead of
+        rendering the portal from a client cache that predates verification.
+      */}
+      <a
+        href="/portal"
+        className="label inline-flex min-h-12 w-full items-center justify-center rounded-[var(--radius-sm)] bg-moss-400 px-5 text-navy-950 transition-colors hover:bg-moss-300"
+      >
+        Go to your portal
+      </a>
     </div>
   );
 }

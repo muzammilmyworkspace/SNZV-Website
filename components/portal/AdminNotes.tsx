@@ -79,7 +79,7 @@ export function AdminNotes({
         placeholder="What was discussed, agreed or flagged."
         className="field min-h-24 resize-y"
       />
-      <p className="mt-1.5 text-[0.74rem] text-faint">
+      <p className="mt-1.5 text-[0.75rem] text-faint">
         Internal only. Never shown to the client.
       </p>
 
@@ -103,7 +103,7 @@ export function AdminNotes({
           {notes.map((n) => (
             <li key={n.id}>
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[0.78rem] text-faint">
+                <span className="text-[0.8rem] text-faint">
                   {n.authorName ?? "Staff"} ·{" "}
                   <time dateTime={n.createdAt}>
                     {new Date(n.createdAt).toLocaleDateString("en-GB", {
@@ -116,12 +116,12 @@ export function AdminNotes({
                 <button
                   type="button"
                   onClick={() => remove(n.id)}
-                  className="text-[0.74rem] text-faint transition-colors hover:text-red-300"
+                  className="text-[0.75rem] text-faint transition-colors hover:text-red-300"
                 >
                   Delete
                 </button>
               </div>
-              <p className="mt-1 whitespace-pre-wrap text-[0.88rem] leading-relaxed text-muted">
+              <p className="mt-1 whitespace-pre-wrap text-[0.9rem] leading-relaxed text-muted">
                 {n.body}
               </p>
             </li>

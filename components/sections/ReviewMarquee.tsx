@@ -114,7 +114,7 @@ function ReviewCard({
     >
       <Stars value={review.rating} />
 
-      <blockquote className="mt-4 line-clamp-6 text-[0.92rem] leading-relaxed text-fg">
+      <blockquote className="mt-4 line-clamp-6 text-[0.95rem] leading-relaxed text-fg">
         {review.text}
       </blockquote>
 
@@ -136,10 +136,10 @@ function ReviewCard({
           </span>
         )}
         <span className="min-w-0">
-          <span className="block truncate text-[0.88rem] font-semibold text-fg">
+          <span className="block truncate text-[0.9rem] font-semibold text-fg">
             {review.author}
           </span>
-          <span className="mt-0.5 block text-[0.76rem] text-faint">
+          <span className="mt-0.5 block text-[0.75rem] text-faint">
             {review.relativeTime}
           </span>
         </span>
