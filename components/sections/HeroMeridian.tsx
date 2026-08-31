@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { portalUrls } from "@/lib/portal-url";
 import { useEffect, useRef, useState, Fragment } from "react";
 import {
   motion,
@@ -224,21 +223,6 @@ export function HeroMeridian() {
                 }
               >
                 Explore possibilities
-              </Action>
-              {/*
-                Two different intents, kept separate on purpose. The first two
-                are for someone deciding; this is for someone who has already
-                decided and just wants their file. Sending an existing client
-                through a consultation form to reach their own dashboard is the
-                friction this removes.
-              */}
-              <Action
-                href={portalUrls.login}
-                variant="quiet"
-                size="lg"
-                onClick={() => analytics.loginClick("hero")}
-              >
-                Client portal
               </Action>
             </motion.div>
           </div>

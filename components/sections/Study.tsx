@@ -1,4 +1,3 @@
-import { portalUrls } from "@/lib/portal-url";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -618,7 +617,6 @@ export function StudyJourney() {
         <Reveal delay={0.15}>
           <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
             <Action href="/contact#journey">Start your application</Action>
-            <TextLink href={portalUrls.register}>Create a student account</TextLink>
           </div>
         </Reveal>
       </Container>
@@ -669,9 +667,6 @@ export function StudySupport() {
 
         <Reveal delay={0.15}>
           <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <Action href={portalUrls.login} variant="line">
-              Log in to the student portal
-            </Action>
             <TextLink
               href={`https://wa.me/${company.contact.whatsapp}`}
               external

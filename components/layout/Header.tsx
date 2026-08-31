@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { portalUrls } from "@/lib/portal-url";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -185,17 +184,6 @@ export function Header() {
           </nav>
 
           <div className="ml-auto flex items-center gap-3 xl:ml-4">
-            <Link
-              href={portalUrls.login}
-              onClick={() => analytics.loginClick("header")}
-              className="label hidden min-h-11 items-center gap-2 rounded-[var(--radius-sm)] border border-line px-4 text-fg transition-all duration-400 hover:border-moss-400/70 hover:text-accent sm:inline-flex"
-            >
-              <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-3.5 w-3.5">
-                <path d="M6 2h6a2 2 0 012 2v8a2 2 0 01-2 2H6M9 8H2m0 0l2.5-2.5M2 8l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Login
-            </Link>
-
             <ThemeToggle />
 
             <button

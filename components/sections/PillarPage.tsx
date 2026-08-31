@@ -19,7 +19,6 @@ import { videoFeatures } from "@/data/media";
 import { VideoFeature } from "./VideoFeature";
 import { Reviews } from "./Reviews";
 import { StatsBand } from "./StatsBand";
-import { PortalPreview } from "./PortalPreview";
 import { careerStats, businessStats } from "@/data/stats";
 import type { Pillar } from "@/data/pillars";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
@@ -124,11 +123,6 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
           </Container>
         </Section>
       )}
-
-      <PortalPreview
-        audience={pillar.key === "careers" ? "career" : "business"}
-        tone="paper"
-      />
 
       <Reviews />
 

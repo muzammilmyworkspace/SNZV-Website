@@ -36,7 +36,7 @@ export function Why() {
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
 
       <Shell className="relative">
-        <Chapter index="08" label="Why SnZ" className="mb-10" />
+        <Chapter index="07" label="Why SnZ" className="mb-10" />
 
         <MaskedLines
           as="h2"
@@ -144,7 +144,7 @@ export function Insights() {
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
 
       <Shell className="relative">
-        <Chapter index="10" label="Insights" className="mb-10" />
+        <Chapter index="09" label="Insights" className="mb-10" />
 
         {/*
           The heading column was `1fr`, which ate all the spare width and threw
@@ -286,7 +286,7 @@ export function Final() {
 
       <Shell className="relative">
         <div className="max-w-4xl">
-          <Chapter index="11" label="Your move" className="mb-10" />
+          <Chapter index="10" label="Your move" className="mb-10" />
 
           <MaskedLines
             as="h2"

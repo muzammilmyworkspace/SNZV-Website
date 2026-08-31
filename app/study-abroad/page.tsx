@@ -12,7 +12,6 @@ import {
 } from "@/components/sections/Study";
 import { Reviews } from "@/components/sections/Reviews";
 import { StatsBand } from "@/components/sections/StatsBand";
-import { PortalPreview } from "@/components/sections/PortalPreview";
 import { studyStats } from "@/data/stats";
 import { VideoFeature } from "@/components/sections/VideoFeature";
 import { FaqSection, CTASection } from "@/components/sections/PageParts";
@@ -91,7 +90,6 @@ export default function StudyAbroadPage() {
       <StudyScholarships />
       <StudyJourney />
       <StudySupport />
-      <PortalPreview audience="student" tone="paper" index="08" />
 
       {/* Renders an honest placeholder until consented quotes exist. */}
       <Reviews />

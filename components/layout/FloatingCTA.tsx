@@ -30,6 +30,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export function FloatingCTA() {
   const [visible, setVisible] = useState(false);
+  const [waVisible, setWaVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -46,11 +47,31 @@ export function FloatingCTA() {
    * since the footer carries phone, email and WhatsApp in full.
    */
   useEffect(() => {
-    if (suppressed) return setVisible(false);
+    if (suppressed) {
+      setVisible(false);
+      setWaVisible(false);
+      return;
+    }
 
     let footerOnScreen = false;
-    const onScroll = () =>
+    const onScroll = () => {
       setVisible(!footerOnScreen && window.scrollY > window.innerHeight * 0.85);
+      /*
+        WHATSAPP DOES NOT WAIT FOR THE SCROLL.
+
+        The consultation pill deliberately holds back until the visitor has
+        committed to the page — it is an interruption, and it has to earn the
+        interruption. WhatsApp is the opposite: it is the fast exit for someone
+        who wants to ask one question, and making them scroll a full viewport
+        to find it defeats the point. It was reported as simply not being
+        there, which for a button below the fold is a fair description.
+
+        It still retires at the footer, because that is not about earning
+        attention — the footer carries phone, email and WhatsApp in full, and a
+        floating bubble on top of it covers the legal links.
+      */
+      setWaVisible(!footerOnScreen);
+    };
 
     const footer = document.getElementById("site-footer");
     const io = footer
@@ -117,15 +138,21 @@ export function FloatingCTA() {
   return (
     <>
       {/* Desktop */}
-      <AnimatePresence>
-        {visible && !open && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-7 right-7 z-40 hidden flex-col items-end gap-3 lg:flex"
-          >
+      {/*
+        One column, two independent tenants. `pointer-events-none` on the
+        column and `auto` on each child means the empty gap between them never
+        swallows a click on the page underneath.
+      */}
+      <div className="pointer-events-none fixed bottom-7 right-7 z-40 hidden flex-col items-end gap-3 lg:flex">
+        <AnimatePresence>
+          {waVisible && !open && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="pointer-events-auto"
+            >
             {/*
               WHATSAPP, ON DESKTOP TOO.
 
@@ -152,7 +179,19 @@ export function FloatingCTA() {
             >
               <WhatsAppIcon className="h-6 w-6" />
             </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
+        <AnimatePresence>
+          {visible && !open && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              className="pointer-events-auto"
+            >
             <Magnetic strength={0.22}>
               <button
                 type="button"
@@ -178,9 +217,10 @@ export function FloatingCTA() {
                 </svg>
               </button>
             </Magnetic>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Mobile */}
       <AnimatePresence>
