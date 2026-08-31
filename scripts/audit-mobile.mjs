@@ -27,8 +27,6 @@ const ROUTES = [
   "/insights",
   "/services/company-formation",
   "/contact",
-  "/login",
-  "/register",
   "/legal/privacy-policy",
 ];
 const VIEWPORTS = [

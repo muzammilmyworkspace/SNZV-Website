@@ -25,9 +25,6 @@ const ROUTES = [
   "/contact",
   "/legal/privacy-policy",
   "/legal/image-credits",
-  "/login",
-  "/register",
-  "/forgot-password",
   "/this-route-does-not-exist",
 ];
 

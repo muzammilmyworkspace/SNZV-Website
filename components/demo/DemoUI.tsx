@@ -15,7 +15,7 @@ import {
   DocumentCard as KitDocumentCard,
   CardLink as KitCardLink,
   ActivityTimeline as KitActivityTimeline,
-} from "@/components/portal/Pieces";
+} from "@/components/demo/Pieces";
 
 /**
  * DEMO UI — a thin adapter over the real portal design system.

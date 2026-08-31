@@ -17,15 +17,13 @@ import { PathwayPopup } from "./PathwayPopup";
  * rendered the marketing header and footer wrapped around a portal shell, with
  * the consultation popup opening on top of the dashboard.
  */
-const BARE_PREFIXES = [
-  "/portal",
-  "/demo",
-  "/login",
-  "/register",
-  "/forgot-password",
-  "/reset-password",
-  "/verify-email",
-];
+/**
+ * Only /demo remains. The portal and the auth screens moved to their own
+ * origin, so the routes that used to need bare chrome here no longer exist on
+ * this deployment at all — proxy.ts forwards them to the portal host before a
+ * page is ever rendered.
+ */
+const BARE_PREFIXES = ["/demo"];
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

@@ -8,16 +8,16 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         /*
-         * Draft legal text, the API and the authenticated portal stay out.
+         * Draft legal text and the API stay out.
          *
-         * NOTE: /login, /register, /forgot-password and /reset-password are
-         * deliberately NOT listed. They carry `noindex` metadata, and a crawler
-         * blocked by robots.txt can never fetch the page to read that tag —
-         * disallowing them would make the noindex unreadable.
+         * The portal is no longer on this domain, so its paths are not listed
+         * here any more — proxy.ts now 308s them to the portal origin, which
+         * publishes its own robots.txt disallowing everything. Blocking them
+         * here as well would stop a crawler from ever seeing that redirect,
+         * leaving the old URLs indexed against this host forever.
          */
         disallow: [
           "/api/",
-          "/portal/",
           "/legal/privacy-policy",
           "/legal/terms",
           "/legal/cookie-policy",

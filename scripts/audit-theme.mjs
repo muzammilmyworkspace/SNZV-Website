@@ -39,8 +39,6 @@ const ROUTES = [
   "/insights/choosing-a-course-that-leads-to-work",
   "/services/company-formation",
   "/contact",
-  "/login",
-  "/register",
   "/legal/privacy-policy",
 ];
 

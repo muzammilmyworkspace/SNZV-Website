@@ -30,8 +30,6 @@ const ROUTES = [
   "/destinations",
   "/insights",
   "/contact",
-  "/login",
-  "/register",
   "/legal/privacy-policy",
 ];
 

@@ -41,9 +41,6 @@ const ROUTES = [
   "/legal/privacy-policy",
   "/legal/terms",
   "/legal/image-credits",
-  "/login",
-  "/register",
-  "/forgot-password",
 ];
 
 /*
