@@ -1,26 +1,34 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { partners, partnerHorizon } from "@/data/partners";
+import {
+  partners,
+  partnerHorizon,
+  horizonPoster,
+  horizonPosterAlt,
+} from "@/data/partners";
 
 /**
- * The partnerships, as a scroller.
+ * The partnerships, as a scroller of the announcements themselves.
+ *
+ * THE ARTWORK IS SnZ'S OWN. Each card shows the creative published for that
+ * partnership, which is where the institution's logo and its campus
+ * photography come from — the firm's own announcement rather than a mark
+ * reassembled here.
+ *
+ * THE TEXT IS STILL TEXT. Everything baked into a poster is invisible to a
+ * search engine and to a screen reader, so the name, city and highlights sit
+ * beside the image as content. The poster is the picture; it is not the copy.
  *
  * FOUR CARDS: three named institutions and the one that says more are coming.
  * That last card is part of the set rather than a note under it, because "who
- * else" is the next question somebody asks after reading three names, and the
- * answer belongs where they are already looking.
+ * else" is the next question somebody asks after reading three names.
  *
- * SCROLL-SNAP, NOT A SLIDESHOW. No timer, no auto-advance, nothing moving on
- * its own — a card that slides away mid-sentence is the most reliable way to
- * make somebody stop reading. The buttons scroll by one card; the track is an
- * ordinary overflow container, so a trackpad, a touch swipe and the keyboard
- * all work without any of it being reimplemented.
- *
- * COLOUR INSTEAD OF LOGOS. A partner's mark is theirs, and reproducing one is
- * a use of their brand that belongs in a signed agreement. Each card takes the
- * institution's own colour from its crest, which distinguishes the four at a
- * glance and cannot be mistaken for their logo.
+ * SCROLL-SNAP, NOT A SLIDESHOW. Nothing advances on its own — a card that
+ * slides away mid-sentence is the most reliable way to make somebody stop
+ * reading. The track is an ordinary overflow container, so swipe, trackpad and
+ * keyboard all work without being reimplemented.
  */
 export function PartnerScroller() {
   const track = useRef<HTMLUListElement>(null);
@@ -28,9 +36,9 @@ export function PartnerScroller() {
   const [atEnd, setAtEnd] = useState(false);
 
   /*
-    The buttons disable at the ends rather than wrapping around. A scroller
-    that jumps back to the first card hides how many there are, and with four
-    the count is worth knowing.
+    The buttons disable at the ends rather than wrapping. A scroller that jumps
+    back to the first card hides how many there are, and with four the count is
+    worth knowing.
   */
   useEffect(() => {
     const el = track.current;
@@ -53,8 +61,8 @@ export function PartnerScroller() {
   function nudge(direction: 1 | -1) {
     const el = track.current;
     if (!el) return;
-    // One card plus its gap, measured rather than assumed, so this stays
-    // correct at every breakpoint.
+    // Measured from a card rather than assumed, so it stays correct at every
+    // breakpoint.
     const card = el.querySelector("li");
     const step = card ? card.getBoundingClientRect().width + 20 : el.clientWidth * 0.8;
     el.scrollBy({ left: step * direction, behavior: "smooth" });
@@ -66,48 +74,42 @@ export function PartnerScroller() {
         ref={track}
         className="scrollbar-none -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 sm:mx-0 sm:px-0"
       >
-        {partners.map((p) => (
+        {partners.map((p, i) => (
           <li
             key={p.slug}
-            className="group relative flex w-[19rem] shrink-0 snap-start flex-col overflow-hidden rounded-[var(--radius-md)] border border-line bg-raised sm:w-[21rem]"
+            className="group flex w-[17.5rem] shrink-0 snap-start flex-col overflow-hidden rounded-[var(--radius-md)] border border-line bg-raised sm:w-[19.5rem]"
           >
             {/*
-              The colour field. `tint` is an arbitrary hex from the data, so it
-              is set inline — Tailwind cannot generate a class for a value it
-              never sees at build time.
+              4:5, the proportion the artwork was made at. Anything else either
+              crops the institution's logo out of the top or letterboxes it.
             */}
-            <div
-              className="relative px-6 pb-7 pt-8"
-              style={{
-                background: `linear-gradient(150deg, ${p.tint} 0%, ${p.tint}D9 55%, ${p.tint}A6 100%)`,
-              }}
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-white/10 transition-transform duration-500 group-hover:scale-125"
+            <div className="relative aspect-[4/5] w-full overflow-hidden">
+              <Image
+                src={p.poster}
+                alt={p.posterAlt}
+                fill
+                sizes="(max-width: 640px) 80vw, 20rem"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                /* The first two are near the top of the home page. */
+                priority={i < 2}
               />
-              <span className="label relative text-white/70">
-                {p.city} · {p.country}
-              </span>
-              <h3 className="relative mt-2 text-[1.3rem] font-semibold leading-tight tracking-[-0.02em] text-white">
-                {p.name}
-              </h3>
             </div>
 
-            <div className="flex flex-1 flex-col p-6">
-              <p className="text-[0.9rem] leading-relaxed text-muted">{p.blurb}</p>
+            <div className="flex flex-1 flex-col p-5">
+              <span className="label" style={{ color: p.tint }}>
+                {p.city} · {p.country}
+              </span>
+              <h3 className="mt-1.5 text-[1.05rem] font-semibold leading-tight tracking-[-0.015em] text-fg-strong">
+                {p.name}
+              </h3>
+              <p className="mt-2 text-[0.85rem] leading-relaxed text-muted">{p.blurb}</p>
 
-              <ul className="mt-5 flex-1 space-y-2 border-t border-line pt-4">
+              <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5 border-t border-line pt-3.5">
                 {p.highlights.map((h) => (
                   <li
                     key={h}
-                    className="flex gap-2.5 text-[0.85rem] leading-relaxed text-muted"
+                    className="rounded-full border border-line px-2 py-0.5 text-[0.72rem] leading-relaxed text-muted"
                   >
-                    <span
-                      aria-hidden
-                      className="mt-[0.45em] h-1 w-1 shrink-0 rounded-full"
-                      style={{ background: p.tint }}
-                    />
                     {h}
                   </li>
                 ))}
@@ -116,27 +118,33 @@ export function PartnerScroller() {
           </li>
         ))}
 
-        {/* The fourth card. Countries, never institutions — naming a university
+        {/* The fourth. Countries, never institutions — naming a university
             before an agreement exists is the one thing this must not do. */}
-        <li className="relative flex w-[19rem] shrink-0 snap-start flex-col overflow-hidden rounded-[var(--radius-md)] border border-dashed border-line bg-raised sm:w-[21rem]">
-          <div className="relative bg-gradient-to-br from-moss-400 to-[color-mix(in_srgb,var(--color-moss-400)_55%,#0B2E13)] px-6 pb-7 pt-8">
-            <span className="label relative text-navy-950/60">In progress</span>
-            <h3 className="relative mt-2 text-[1.3rem] font-semibold leading-tight tracking-[-0.02em] text-navy-950">
-              More partnerships
-            </h3>
+        <li className="group flex w-[17.5rem] shrink-0 snap-start flex-col overflow-hidden rounded-[var(--radius-md)] border border-dashed border-line bg-raised sm:w-[19.5rem]">
+          <div className="relative aspect-[4/5] w-full overflow-hidden">
+            <Image
+              src={horizonPoster}
+              alt={horizonPosterAlt}
+              fill
+              sizes="(max-width: 640px) 80vw, 20rem"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            />
           </div>
 
-          <div className="flex flex-1 flex-col p-6">
-            <p className="text-[0.9rem] leading-relaxed text-muted">
-              Further institutional partnerships are being formed. Each is named here once it
-              is signed, and not before.
+          <div className="flex flex-1 flex-col p-5">
+            <span className="label text-accent">In progress</span>
+            <h3 className="mt-1.5 text-[1.05rem] font-semibold leading-tight tracking-[-0.015em] text-fg-strong">
+              More partnerships
+            </h3>
+            <p className="mt-2 text-[0.85rem] leading-relaxed text-muted">
+              Each is named here once it is signed, and not before.
             </p>
 
-            <ul className="mt-5 flex flex-wrap gap-2 border-t border-line pt-4">
+            <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5 border-t border-line pt-3.5">
               {partnerHorizon.map((c) => (
                 <li
                   key={c}
-                  className="rounded-full border border-line px-2.5 py-1 text-[0.78rem] text-muted"
+                  className="rounded-full border border-line px-2 py-0.5 text-[0.72rem] leading-relaxed text-muted"
                 >
                   {c}
                 </li>
@@ -146,10 +154,8 @@ export function PartnerScroller() {
         </li>
       </ul>
 
-      {/*
-        Hidden below sm, where swiping is how anybody would move this anyway and
-        two buttons would only take up room.
-      */}
+      {/* Hidden below sm, where swiping is how anybody would move this anyway
+          and two buttons would only take up room. */}
       <div className="mt-5 hidden items-center gap-2 sm:flex">
         {([-1, 1] as const).map((d) => (
           <button

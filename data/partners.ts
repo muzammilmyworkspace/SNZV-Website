@@ -43,11 +43,28 @@ export type Partner = {
    * for one.
    */
   tint: string;
+  /**
+   * SnZ's own announcement creative for this partnership, as published.
+   *
+   * The institution's logo and campus photography are in it because they are
+   * in the announcement — this is the firm's own artwork, not a reproduction
+   * of somebody's mark assembled here.
+   *
+   * The card still carries the name, city and highlights as text. Words baked
+   * into an image are invisible to search engines and to a screen reader, so
+   * the poster is the picture and the text beside it is the content.
+   */
+  poster: string;
+  /** Describes the artwork. Not a place to repeat the copy next to it. */
+  posterAlt: string;
 };
 
 export const partners: Partner[] = [
   {
     slug: "okan-university",
+    poster: "/images/partner-okan.webp",
+    posterAlt:
+      "SnZ Ventures announcement for the Okan University partnership, showing the university campus in Istanbul with the Bosphorus behind it.",
     tint: "#13315C",
     name: "Okan University",
     city: "Istanbul",
@@ -63,6 +80,9 @@ export const partners: Partner[] = [
   },
   {
     slug: "istinye-university",
+    poster: "/images/partner-istinye.webp",
+    posterAlt:
+      "SnZ Ventures announcement for the Istinye University partnership, showing the university building on the Istanbul waterfront.",
     tint: "#9E1B32",
     name: "Istinye University",
     city: "Istanbul",
@@ -78,6 +98,9 @@ export const partners: Partner[] = [
   },
   {
     slug: "c3s-business-school",
+    poster: "/images/partner-c3s.webp",
+    posterAlt:
+      "SnZ Ventures announcement for the C3S Business School partnership, showing the school in Barcelona with the city behind it.",
     tint: "#1B2A4A",
     name: "C3S Business School",
     city: "Barcelona",
@@ -96,6 +119,10 @@ export const partners: Partner[] = [
  * do, and "more coming in these countries" is both true and the same thing the
  * announcement creative says.
  */
+export const horizonPoster = "/images/partner-more.webp";
+export const horizonPosterAlt =
+  "SnZ Ventures announcement that further partnerships are coming, showing the flags of the countries they are being formed in.";
+
 export const partnerHorizon = [
   "Australia",
   "Germany",
