@@ -37,12 +37,20 @@ export function Partners({ variant = "page" }: { variant?: "page" | "home" }) {
       className="anchor-target"
     >
       <Container>
-        <Chapter
-          index="04"
-          label="Partnerships"
-          tone="light"
-          className="mb-8"
-        />
+        {/*
+          NUMBERED ON THE STUDY PAGE, NOT ON THE HOME PAGE.
+
+          Home runs a meridian rail — dream, journeys, reality, method — and
+          those numbers are the order of an argument. Partnerships is a
+          credential rather than a step in it, so taking 01 and pushing the
+          story down would make the rail say something untrue. StatsBand
+          already sits in that flow without being a chapter; this follows it.
+        */}
+        {home ? (
+          <span className="label mb-8 block text-accent">Partnerships</span>
+        ) : (
+          <Chapter index="04" label="Partnerships" tone="light" className="mb-8" />
+        )}
 
         <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-between lg:gap-14">
           <MaskedLines

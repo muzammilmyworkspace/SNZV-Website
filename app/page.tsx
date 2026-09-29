@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { HeroMeridian } from "@/components/sections/HeroMeridian";
 import { Dream } from "@/components/sections/Dream";
+import { Partners } from "@/components/sections/Partners";
 import { Journeys } from "@/components/sections/Journeys";
 import { Pain } from "@/components/sections/Pain";
 import { Method } from "@/components/sections/Method";
@@ -38,6 +39,15 @@ export default function HomePage() {
     <>
       <Meridian chapters={CHAPTERS} />
       <HeroMeridian />
+
+      {/*
+        Straight after the hero, and deliberately NOT a meridian chapter — see
+        the note in Partners. Somebody who has just read what this firm claims
+        to do gets the names it can be checked against, before the argument
+        starts.
+      */}
+      <Partners variant="home" />
+
       <Dream />
       <Journeys />
       <Pain />
