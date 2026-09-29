@@ -33,11 +33,22 @@ export type Partner = {
   blurb: string;
   /** The highlights from that announcement, verbatim. */
   highlights: string[];
+  /**
+   * The institution's own colour, taken from its crest on the announcement.
+   *
+   * Presentation, not a claim — it tints a panel so four cards are
+   * distinguishable at a glance instead of being four identical white boxes.
+   * It is NOT a logo: reproducing a partner's mark is a use of their brand
+   * that belongs in a signed agreement, and a colour field cannot be mistaken
+   * for one.
+   */
+  tint: string;
 };
 
 export const partners: Partner[] = [
   {
     slug: "okan-university",
+    tint: "#13315C",
     name: "Okan University",
     city: "Istanbul",
     country: "Türkiye",
@@ -52,6 +63,7 @@ export const partners: Partner[] = [
   },
   {
     slug: "istinye-university",
+    tint: "#9E1B32",
     name: "Istinye University",
     city: "Istanbul",
     country: "Türkiye",
@@ -66,6 +78,7 @@ export const partners: Partner[] = [
   },
   {
     slug: "c3s-business-school",
+    tint: "#1B2A4A",
     name: "C3S Business School",
     city: "Barcelona",
     country: "Spain",

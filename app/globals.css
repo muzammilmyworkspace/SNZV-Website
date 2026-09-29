@@ -470,6 +470,17 @@
 .border-line-strong { border-color: var(--line-strong); }
 .bg-surface { background-color: var(--surface); }
 .bg-raised { background-color: var(--surface-raised); }
+
+/*
+  A scroll container that keeps its scrollbar out of the layout.
+
+  Used by the partnerships scroller, where a permanent bar under four cards
+  reads as a stray rule. The content is still reachable by swipe, trackpad,
+  keyboard and the buttons beside it, so nothing depends on the bar being
+  visible.
+*/
+.scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
 .divide-line > * + * { border-color: var(--line); }
 
 /* ============================================================================
