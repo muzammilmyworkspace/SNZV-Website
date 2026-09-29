@@ -44,8 +44,8 @@ export const company = {
     country: "Lithuania",
     countryCode: "LT",
     /** Client-supplied — office address. */
-    streetAddress: "T. Ševčenkos g. 16",
-    postalCode: "03223",
+    streetAddress: "Konstitucijos Ave. 21A",
+    postalCode: "08130",
   },
 
   /** [CONTENT REQUIRED] — legal entity details not published. */

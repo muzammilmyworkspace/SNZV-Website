@@ -184,7 +184,7 @@ missed item never reaches a visitor.
 - [ ] Year the company was founded
 - [ ] Team size and key roles, if these should be public
 - [ ] Registered legal entity name, company code, VAT number (address now supplied)
-- [x] ~~Full registered street address~~ — supplied: T. Ševčenkos g. 16, 03223 Vilnius
+- [x] ~~Full registered street address~~ — supplied: Konstitucijos Ave. 21A, 08130 Vilnius
 
 ### Study Abroad (`data/pillars.ts` → `study`)
 - [ ] **Exact scope of university application support** — does SnZ submit
@@ -510,4 +510,4 @@ candid regulatory disclosure — which is a genuine differentiator in this secto
 **Verification**
 - [ ] Verify Google Search Console + Bing Webmaster Tools; submit `/sitemap.xml`
 - [ ] Confirm the WhatsApp number (`+370 603 05146`) is monitored
-- [ ] Confirm the office address is correct: T. Ševčenkos g. 16, 03223 Vilnius
+- [ ] Confirm the office address is correct: Konstitucijos Ave. 21A, 08130 Vilnius (postal code inferred from the street; confirm)
