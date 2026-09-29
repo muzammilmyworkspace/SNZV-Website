@@ -375,10 +375,22 @@ export function StudyUniversities() {
                 Find your university
               </Action>
             </div>
+            {/*
+              THIS USED TO SAY THE OPPOSITE, correctly: there were no named
+              partnerships, so the site claimed none. There are now, and they
+              are listed in the Partnerships section below — leaving the old
+              wording would have had the page deny on one screen what it
+              announces on the next.
+
+              What survives is the part that was never about the count: a
+              shortlist is built around the student, and being a partner is
+              not a reason to be on it.
+            */}
             <Caveat>
-              SnZ Ventures does not claim institutional partnerships on this
-              site. Where an arrangement exists it is named to you directly,
-              in writing, for your specific case.
+              Our named partnerships are listed below. A partner institution is
+              still only shortlisted for you when the programme genuinely fits
+              — and where an arrangement affects your specific case, it is put
+              to you in writing.
             </Caveat>
           </div>
 
@@ -438,7 +450,7 @@ export function StudyProgrammes() {
         className="graticule pointer-events-none absolute inset-0 opacity-40"
       />
       <Container className="relative">
-        <Chapter index="04" label="Programmes" className="mb-8" />
+        <Chapter index="05" label="Programmes" className="mb-8" />
         <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
@@ -514,7 +526,7 @@ export function StudyScholarships() {
       <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
           <div className="lg:sticky lg:top-40 lg:self-start">
-            <Chapter index="05" label="Scholarships" className="mb-8" />
+            <Chapter index="06" label="Scholarships" className="mb-8" />
             <MaskedLines
               as="h2"
               className="d-2 max-w-[13ch] text-fg-strong"
@@ -585,7 +597,7 @@ export function StudyJourney() {
   return (
     <Section id="journey" tone="paper" edge className="anchor-target">
       <Container>
-        <Chapter index="06" label="How it works" tone="light" className="mb-8" />
+        <Chapter index="07" label="How it works" tone="light" className="mb-8" />
         <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"
@@ -634,7 +646,7 @@ export function StudySupport() {
         className="graticule pointer-events-none absolute inset-0 opacity-40"
       />
       <Container className="relative">
-        <Chapter index="07" label="Student support" className="mb-8" />
+        <Chapter index="08" label="Student support" className="mb-8" />
         <div className="grid gap-8 lg:grid-cols-[auto_minmax(0,26rem)] lg:items-end lg:justify-start lg:gap-14">
           <MaskedLines
             as="h2"

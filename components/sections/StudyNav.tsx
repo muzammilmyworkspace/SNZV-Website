@@ -34,6 +34,7 @@ export const STUDY_SECTIONS: StudySection[] = [
   { id: "overview", label: "Overview" },
   { id: "destinations", label: "Destinations" },
   { id: "universities", label: "Universities" },
+  { id: "partners", label: "Partnerships" },
   { id: "programmes", label: "Programmes" },
   { id: "scholarships", label: "Scholarships" },
   { id: "journey", label: "How it works" },

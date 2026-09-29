@@ -10,6 +10,7 @@ import {
   StudyJourney,
   StudySupport,
 } from "@/components/sections/Study";
+import { Partners } from "@/components/sections/Partners";
 import { Reviews } from "@/components/sections/Reviews";
 import { StatsBand } from "@/components/sections/StatsBand";
 import { studyStats } from "@/data/stats";
@@ -83,6 +84,11 @@ export default function StudyAbroadPage() {
       <StudyOverview />
       <StudyDestinations />
       <StudyUniversities />
+
+      {/* Straight after Universities: that section explains how a shortlist is
+          built, and the obvious next question is who it is built from. */}
+      <Partners />
+
       <StudyProgrammes />
 
       <VideoFeature data={videoFeatures.study} />
