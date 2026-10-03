@@ -176,3 +176,55 @@ export const approach = [
     body: "Arrival, registration and the first months of operating — the stretch most advisors stop short of.",
   },
 ] as const;
+
+/**
+ * THE BUSINESS JOURNEY — the six stages, for the drawn flow on the homepage.
+ *
+ * Assembled from what this site already says it does, not written fresh: the
+ * `business` pathway above, and the four services in data/services.ts
+ * (company-formation, fintech-licensing, investor-relocation,
+ * international-recruitment). Each stage names deliverables that appear in one
+ * of those, so nothing here is a capability the rest of the site cannot back.
+ *
+ * NO TIMINGS. "Incorporate in 48 hours" is on the live site and sits in
+ * `company.ts → stats` as `verified: false` for exactly that reason — it is a
+ * claim about how fast a registry moves, which depends on the registry. The
+ * stages describe sequence, which is ours, rather than duration, which is not.
+ *
+ * SIX, AND THE LAST ONE IS NOT A STEP. "Trading across the single market" is
+ * the state the first five produce. It is in the list because a founder's
+ * actual question is what they end up with, and ending on a residence permit
+ * answers a smaller question than the one they came with.
+ */
+export const businessJourney = [
+  {
+    step: "01",
+    name: "First conversation",
+    body: "What the business actually needs, and whether Lithuania is the right answer at all. Structure, licensing exposure and where you intend to trade — before anybody files anything.",
+  },
+  {
+    step: "02",
+    name: "UAB or MB formation",
+    body: "Incorporation, legal address, VAT and EORI registration. One coordinator holds the whole file rather than four firms each holding a quarter of it.",
+  },
+  {
+    step: "03",
+    name: "Licensing, where it applies",
+    body: "EMI, PI, specialised bank and crypto licensing. Applications are built to be assessed rather than merely submitted — they fail on evidence, not on ambition.",
+  },
+  {
+    step: "04",
+    name: "Banking and bookkeeping",
+    body: "The part founders underestimate. A certificate of incorporation is not a company that can transact; payroll, accounting and a working account are what make it one.",
+  },
+  {
+    step: "05",
+    name: "Residence and relocation",
+    body: "Residence permits for you and your family, so the entity you own is one you can actually move to and run from.",
+  },
+  {
+    step: "06",
+    name: "Trading across the single market",
+    body: "A Lithuanian entity reaches all 27 EU member states. That is the position the five stages above exist to produce.",
+  },
+];

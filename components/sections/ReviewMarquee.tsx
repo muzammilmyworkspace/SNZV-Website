@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import type { GoogleReview } from "@/lib/reviews";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +37,7 @@ import { cn } from "@/lib/utils";
 const SECONDS_PER_CARD = 7;
 
 export function ReviewMarquee({ reviews }: { reviews: GoogleReview[] }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const [paused, setPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 

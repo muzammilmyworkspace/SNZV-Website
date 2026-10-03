@@ -155,10 +155,41 @@ export function MobileNav({
             transition={{ delay: 0.6, duration: 0.6 }}
             className="relative border-t border-line px-5 py-6 sm:px-8"
           >
+            {/*
+              THE PORTAL LINK WAS ONLY IN THE DESKTOP HEADER, behind
+              `hidden xl:inline-flex`. On a phone there was no way into the
+              portal from anywhere on the site — the drawer offered a
+              consultation and nothing else, so an existing client had to type
+              the URL. This is the same destination the header button uses.
+
+              PINNED, AND FIRST. It sits in the drawer's fixed footer rather
+              than at the end of the nav list, because somebody who opens this
+              menu to log in should not have to scroll past six marketing pages
+              to do it.
+
+              Outlined while the consultation stays filled. Both are one tap
+              away, and the consultation is the one that still has to persuade
+              — a returning client already knows what they came for and finds
+              a control by position, not by weight.
+            */}
+            <Action
+              href={company.portalUrl}
+              external
+              variant="line"
+              size="lg"
+              className="w-full"
+              onClick={() => {
+                analytics.ctaClick("Portal login", "mobile_nav");
+                onClose();
+              }}
+            >
+              Portal Login
+            </Action>
+
             <Action
               href="/contact#journey"
               size="lg"
-              className="w-full"
+              className="mt-2.5 w-full"
               onClick={() => {
                 analytics.ctaClick("Book a consultation", "mobile_nav");
                 onClose();
@@ -167,13 +198,6 @@ export function MobileNav({
               Book a consultation
             </Action>
 
-            {/*
-              THE PORTAL LINK WAS ONLY IN THE DESKTOP HEADER, behind
-              `hidden sm:inline-flex`. On a phone there was no way into the
-              portal from anywhere on the site — the drawer offered a
-              consultation and nothing else, so an existing client had to type
-              the URL. This is the same destination the header button uses.
-            */}
             {/*
               Phone / email / WhatsApp are the drawer's fastest exits, and at
               `.label` size they were 17px tall — under a fingertip on the one

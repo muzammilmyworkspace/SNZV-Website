@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { HeroMeridian } from "@/components/sections/HeroMeridian";
+import { Countries } from "@/components/sections/Countries";
+import { PortalShowcase } from "@/components/sections/PortalShowcase";
+import { StudentJourney } from "@/components/sections/StudentJourney";
+import { BusinessJourney } from "@/components/sections/BusinessJourney";
 import { Dream } from "@/components/sections/Dream";
 import { Partners } from "@/components/sections/Partners";
 import { Journeys } from "@/components/sections/Journeys";
@@ -11,6 +15,7 @@ import { homeStats } from "@/data/stats";
 import { StudyDestinations } from "@/components/sections/Study";
 import { Why, Insights, Final } from "@/components/sections/Closing";
 import { Reviews } from "@/components/sections/Reviews";
+import { SuccessStories } from "@/components/sections/SuccessStories";
 import { Meridian } from "@/components/visuals/Meridian";
 import { buildMetadata } from "@/lib/seo";
 
@@ -41,6 +46,16 @@ export default function HomePage() {
       <HeroMeridian />
 
       {/*
+        THE FLAGS, IMMEDIATELY AFTER THE HERO.
+
+        The hero makes a promise about borders. This names them — and a student
+        scanning for their own destination finds it in the first screen after
+        the fold rather than six sections down. Deliberately not a meridian
+        chapter, for the same reason as Partners below.
+      */}
+      <Countries />
+
+      {/*
         Straight after the hero, and deliberately NOT a meridian chapter — see
         the note in Partners. Somebody who has just read what this firm claims
         to do gets the names it can be checked against, before the argument
@@ -48,16 +63,42 @@ export default function HomePage() {
       */}
       <Partners variant="home" />
 
+      {/*
+        THE NUMBERS, WITH THE THINGS THEY COUNT STILL ON SCREEN.
+
+        This sat after Method, two thirds down. Moved up because every figure
+        in it is derived from the two sections directly above — partnerships
+        from Partners, destinations from Countries — so a reader can check the
+        count against the list they have just scrolled past rather than taking
+        it on trust six sections later. That is the whole argument of
+        data/stats.ts, and it only works if the two are adjacent.
+
+        `tone="light"` rather than "soft": Partners above is paper and
+        StudentJourney below is deep, so this has to break the run without
+        matching either neighbour.
+      */}
+      <StatsBand
+        stats={homeStats}
+        tone="paper"
+        eyebrow="By the numbers"
+        cta={{ href: "/about", label: "How we work" }}
+      />
+
+      <StudentJourney />
+
+      {/*
+        Straight after the journey that keeps referring to it. The portal is
+        stage 02 of that story, so the thing itself follows the story rather
+        than being introduced cold further down the page.
+      */}
+      <PortalShowcase />
+
       <Dream />
       <Journeys />
       <Pain />
       <Method />
-      <StatsBand
-        stats={homeStats}
-        tone="soft"
-        eyebrow="By the numbers"
-        cta={{ href: "/about", label: "How we work" }}
-      />
+      <BusinessJourney />
+
       <Atlas />
       {/*
         Study destinations follow the atlas deliberately: the atlas answers
@@ -67,6 +108,12 @@ export default function HomePage() {
       */}
       <StudyDestinations variant="home" />
       <Why />
+      {/*
+        Named students before anonymous praise. Renders nothing until there are
+        verified stories — see the component. Reviews below it are real Google
+        reviews and stand on their own in the meantime.
+      */}
+      <SuccessStories />
       <Reviews />
       <Insights />
       <Final />

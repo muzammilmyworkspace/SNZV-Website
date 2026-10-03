@@ -138,6 +138,7 @@ about the EU.** None is a performance claim:
 
 | Counter | Where it comes from |
 |---------|---------------------|
+| 3 university partnerships | `partners.length` — each evidenced by SnZ's own published announcement |
 | 27 EU member states | Objective fact about the European Union |
 | 10 study destinations | `studyDestinations.length` |
 | 8 source markets | `corridors.length` |
@@ -149,11 +150,131 @@ about the EU.** None is a performance claim:
 
 A visitor can verify each of these by scrolling the page. That is deliberate.
 
+**`Stat` now carries its own `verified` flag**, and `StatsBand` filters on it —
+so the rule that governs `data/company.ts` is enforced in the counter component
+rather than depending on somebody remembering it. A figure added without the
+flag being considered ships; one marked unconfirmed cannot ship by being
+forgotten about.
+
+### ⚠ "Students placed" — the one the homepage is waiting for
+
+`data/stats.ts → homeStats` holds a **`Students placed`** counter with
+`verified: false` and a placeholder value of `0`. It renders nowhere.
+
+This is the counter the business most wants on the homepage. There is no
+audited figure for it: nothing on the live site, and the portal only covers
+students enrolled since it existed. A placement number is also precisely the
+claim a regulator or a disappointed family asks to see evidence for.
+
+**To ship it:** confirm the figure in writing, replace the `0`, and delete the
+`verified: false` line. No code change, no design work — the counter is already
+built and already positioned.
+
 **The obvious counters — "5,000+ students placed", "98% visa success rate",
 "300+ partner universities" — are still NOT rendered.** They live in
 `data/company.ts → stats` and `data/study.ts → studyClaims`, both flagged
 `verified: false`. Confirm them and they can replace or join these; until
 then, counting real inventory is the version a sceptical reader can check.
+
+---
+
+## 3c. The client portal section — screenshots and video
+
+The homepage now carries a **portal section** (`components/sections/PortalShowcase`,
+content in `data/portal.ts`): four tabbed screenshots of the real portal, the
+four points it makes, and a walkthrough video slot.
+
+### The screenshots are real and contain nobody real
+
+`public/images/portal-{dashboard,journey,documents,application}.webp` are the
+actual portal, photographed against a **throwaway database seeded with invented
+people** — not the live portal with names blurred. A blur is a filter over data
+that is still in the file, and those screens carry names, email addresses,
+passport numbers and documents.
+
+Regenerate them whenever the portal's interface changes:
+
+```bash
+# in ../SNZ Portal
+npm run devdb:start
+#   create a database called snz_shots, then:
+DATABASE_URL="postgresql://snzv:snzv_dev_only@127.0.0.1:5433/snz_shots?sslmode=disable" \
+  npm run db:migrate && npm run seed:demo
+DATABASE_URL="…/snz_shots?sslmode=disable" npx next dev --port 3030
+
+# back here
+npm run build:portal-shots
+```
+
+`seed:demo` **refuses** to run against anything that is not a local host AND a
+database whose name contains `shots` or `demo` — both conditions, so neither a
+stale `DATABASE_URL` nor a tunnelled port can reach anything real.
+
+### ⚠ The walkthrough video — required
+
+`data/portal.ts → portalVideo` has `src: null`, which renders a clearly-marked
+placeholder instead of a broken player. **Nothing is faked and no URL is
+guessed.**
+
+| Need | Detail |
+|------|--------|
+| The file | ~2 minutes. An `.mp4`/`.webm` in `/public` is best — no third-party request, no cookies. A YouTube ID also works and is only loaded after a click, via `youtube-nocookie.com`. |
+| Captions | A WebVTT track. **Required, not optional.** |
+
+Set `src` and `provider` and the section plays it. Nothing else changes.
+
+---
+
+## 3d. Success stories — nothing is published yet
+
+`data/success-stories.ts` ships **empty**, and
+`components/sections/SuccessStories` renders nothing in production until there
+are verified entries. In development it shows a `[Content required]` marker
+instead.
+
+This is the strongest claim the site can make and the only one about a **real,
+named person**. "Ayesha, from Lahore, now at Vilnius Tech" asserts three things
+at once: that she exists, that we placed her, and that she is happy to be used
+to sell the service.
+
+**Each entry needs, before it can be added:**
+
+1. **Written consent** from the student, naming this website specifically, and
+   saying whether their photograph may be used. Keep it on file — a verbal
+   "sure, go ahead" on a call is not a record anybody can produce later.
+2. **The facts checked against their file in the portal** — institution,
+   programme, year. Not from memory.
+3. **The quote as they actually wrote it.** Tidying grammar is fine; writing a
+   better version of what they meant is not, because the result is a sentence a
+   real person is credited with and did not say.
+
+**What cannot go in one:** a visa approval rate, scholarship amount or salary
+unless it is in that student's file; "rejected elsewhere, accepted with us"
+(a claim about another firm); or a composite of several students presented as
+one person.
+
+If a student agrees to the story but not to their name, use `displayName` for a
+first name or initial and set `anonymised: true` — the card then says so rather
+than implying an attribution it does not have.
+
+---
+
+## 3e. The ten flags
+
+`public/flags/*.svg` are the national flags of the ten study destinations, shown
+immediately after the hero. They come from **flag-icons (MIT)**, pinned to an
+exact version, and every file is recorded in `data/image-manifest.json` so
+`/legal/image-credits` carries the attribution.
+
+Adding an eleventh destination to `data/study.ts`: add its ISO 3166-1 alpha-2
+code to the `ISO` map in `scripts/fetch-flags.mjs` and run `npm run build:flags`.
+A destination with no code there fails the run rather than shipping without a
+flag.
+
+**The section is called "Where our students go", not "Top 10 countries".**
+"Top" is a claim about student numbers or quality and would need a cited source;
+these ten are the countries SnZ actually places students in, read from
+`data/study.ts`, and a reader can check every one by scrolling.
 
 ---
 

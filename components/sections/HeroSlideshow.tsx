@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 
 /**
  * HERO SLIDESHOW
@@ -42,7 +43,7 @@ export function HeroSlideshow({
   images: HeroImage[];
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const frames = images.slice(0, MAX_FRAMES);
   const [index, setIndex] = useState(0);

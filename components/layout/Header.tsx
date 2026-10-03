@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav } from "@/data/navigation";
+import { company } from "@/data/company";
+import { Action } from "@/components/ui/Editorial";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { analytics } from "@/lib/analytics";
@@ -186,6 +188,45 @@ export function Header() {
           <div className="ml-auto flex items-center gap-3 xl:ml-4">
             <ThemeToggle />
 
+            {/*
+              PORTAL LOGIN — the one filled control in the header.
+
+              A returning student has one thing to do here and it is not
+              reading the navigation. Solid rather than outlined because it is
+              the only action in the chrome that serves somebody who has
+              already decided; Contact remains an ordinary nav item, so the
+              two conversion paths do not compete for the same emphasis.
+
+              `external` on a different origin, which gives it
+              rel="noopener noreferrer" — portal.snzventures.com holds a signed
+              -in session and must never be opened with a handle back to the
+              window that launched it.
+
+              Hidden below `xl`, where the header has room for a wordmark and a
+              menu button and nothing else. MobileNav carries it instead, as
+              its first item rather than buried under the nav list.
+            */}
+            {/*
+              THE WRAPPER CARRIES `hidden`, NOT THE ACTION.
+
+              `Action` passes its className to the inner span and always
+              renders its own `inline-block` anchor around it, so
+              `hidden xl:inline-flex` on the component hid the label while
+              leaving the anchor and the flex gap in the row. On a phone that
+              was enough to push the menu button past the right edge — the one
+              control that is the only way into the navigation there.
+            */}
+            <span className="hidden xl:inline-flex">
+              <Action
+                href={company.portalUrl}
+                external
+                size="sm"
+                onClick={() => analytics.ctaClick("Portal login", "header")}
+              >
+                Portal Login
+              </Action>
+            </span>
+
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
@@ -198,10 +239,21 @@ export function Header() {
                  when scrolled, so it fits with room to spare. */
               className="group flex h-11 w-11 items-center justify-center border border-line transition-colors hover:border-line xl:hidden"
             >
+              {/*
+                `bg-fg`, not `bg-paper`.
+
+                These three lines were a literal near-white, which is correct
+                on the dark theme and invisible on the light one — where the
+                header surface is also near-white. The only way into the
+                navigation on a phone was an empty box.
+
+                `--fg` is the band's own foreground, so it is legible on every
+                surface in both themes by construction.
+              */}
               <span className="flex flex-col gap-[5px]">
-                <span className="block h-px w-4 bg-paper transition-transform duration-400 group-hover:translate-x-0.5" />
-                <span className="block h-px w-4 bg-paper" />
-                <span className="block h-px w-2.5 bg-paper transition-all duration-400 group-hover:w-4" />
+                <span className="block h-px w-4 bg-[var(--fg)] transition-transform duration-400 group-hover:translate-x-0.5" />
+                <span className="block h-px w-4 bg-[var(--fg)]" />
+                <span className="block h-px w-2.5 bg-[var(--fg)] transition-all duration-400 group-hover:w-4" />
               </span>
             </button>
           </div>

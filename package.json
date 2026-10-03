@@ -10,6 +10,8 @@
     "build:images": "node scripts/fetch-images.mjs",
     "build:brand": "node scripts/brand-assets.mjs",
     "build:map": "node scripts/build-map.mjs",
+    "build:flags": "node --experimental-strip-types scripts/fetch-flags.mjs",
+    "build:portal-shots": "node scripts/portal-shots.mjs",
     "typecheck": "tsc --noEmit",
     "build:hero": "node scripts/fetch-hero-images.mjs",
     "audit:study": "node scripts/audit-study.mjs",

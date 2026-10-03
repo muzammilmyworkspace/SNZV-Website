@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useRef, Fragment } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { Shell, Chapter, MaskedLines, Action, Reveal } from "@/components/ui/Editorial";
 import { pathways, type Pathway } from "@/data/pathways";
 import { analytics } from "@/lib/analytics";
@@ -58,7 +59,7 @@ const HEADLINES: Record<
 
 function Journey({ pathway, index }: { pathway: Pathway; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const flipped = index % 2 === 1;
   const art = HEADLINES[pathway.key];
 

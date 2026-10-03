@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRef, Fragment } from "react";
-import { motion, useScroll, useSpring, useTransform, useReducedMotion } from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { Shell, Chapter, MaskedLines, Reveal } from "@/components/ui/Editorial";
 import { approach } from "@/data/pathways";
 
@@ -14,7 +15,7 @@ import { approach } from "@/data/pathways";
  */
 export function Method() {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: ref,

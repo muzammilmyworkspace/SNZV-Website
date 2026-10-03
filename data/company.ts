@@ -109,6 +109,23 @@ export const company = {
     the apex with a redirect rather than moving this back.
   */
   siteUrl: "https://snzventures.com",
+
+  /*
+    THE CLIENT PORTAL — a different origin, and that is the point.
+
+    portal.snzventures.com is its own deployment with its own sessions. It is
+    not a route on this site: proxy.ts forwards /portal and the auth paths to
+    that host before a page is rendered here, so linking to a local path would
+    be a redirect at best and a 404 at worst.
+
+    Verified — it is the address the live portal answers on.
+
+    One constant because the link now appears in the header, the mobile menu
+    and the portal section on the homepage. Three hardcoded copies is three
+    places to miss when the hostname moves.
+  */
+  portalUrl: "https://portal.snzventures.com",
+
   locale: "en",
 } as const;
 

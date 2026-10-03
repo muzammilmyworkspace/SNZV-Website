@@ -6,10 +6,10 @@ import {
   motion,
   useScroll,
   useTransform,
-  useReducedMotion,
   useMotionValue,
   useSpring,
 } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { Shell, Action, MaskedLines } from "@/components/ui/Editorial";
 import { RouteField } from "@/components/visuals/RouteField";
 import { analytics } from "@/lib/analytics";
@@ -42,7 +42,7 @@ const HERO_HOLD_MS = 4_500;
 export function HeroMeridian() {
   const [frame, setFrame] = useState(0);
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: ref,

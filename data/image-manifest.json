@@ -264,5 +264,121 @@
     "artist": null,
     "page": null,
     "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoUAA0APzmGuVOvKSWisAgB4CcJYgCdMoADCjPicUBwm0BgAO/999VBiMC1pg43XEoVIFGzKVQRCUyLTg1XwgvKWpBrecKW+zHIodTBAFDX9jXAAAA="
+  },
+  {
+    "key": "flag-lithuania",
+    "file": "/flags/lithuania.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-poland",
+    "file": "/flags/poland.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-hungary",
+    "file": "/flags/hungary.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-latvia",
+    "file": "/flags/latvia.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-germany",
+    "file": "/flags/germany.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-malta",
+    "file": "/flags/malta.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-spain",
+    "file": "/flags/spain.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-italy",
+    "file": "/flags/italy.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-france",
+    "file": "/flags/france.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "flag-estonia",
+    "file": "/flags/estonia.svg",
+    "source": "flag-icons 7.2.3",
+    "licence": "MIT",
+    "artist": "Panayiotis Lipiridis and contributors",
+    "page": "https://github.com/lipis/flag-icons"
+  },
+  {
+    "key": "portal-dashboard",
+    "file": "/images/portal-dashboard.webp",
+    "source": "SnZ Ventures client portal",
+    "licence": "© SnZ Ventures — own product",
+    "artist": "SnZ Ventures",
+    "page": "https://portal.snzventures.com",
+    "note": "Captured against a throwaway database of invented people. No client data."
+  },
+  {
+    "key": "portal-journey",
+    "file": "/images/portal-journey.webp",
+    "source": "SnZ Ventures client portal",
+    "licence": "© SnZ Ventures — own product",
+    "artist": "SnZ Ventures",
+    "page": "https://portal.snzventures.com",
+    "note": "Captured against a throwaway database of invented people. No client data."
+  },
+  {
+    "key": "portal-documents",
+    "file": "/images/portal-documents.webp",
+    "source": "SnZ Ventures client portal",
+    "licence": "© SnZ Ventures — own product",
+    "artist": "SnZ Ventures",
+    "page": "https://portal.snzventures.com",
+    "note": "Captured against a throwaway database of invented people. No client data."
+  },
+  {
+    "key": "portal-application",
+    "file": "/images/portal-application.webp",
+    "source": "SnZ Ventures client portal",
+    "licence": "© SnZ Ventures — own product",
+    "artist": "SnZ Ventures",
+    "page": "https://portal.snzventures.com",
+    "note": "Captured against a throwaway database of invented people. No client data."
   }
 ]

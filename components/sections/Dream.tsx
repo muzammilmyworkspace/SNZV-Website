@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, Fragment } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { Shell, Chapter, MaskedLines, Reveal } from "@/components/ui/Editorial";
 import { pathways } from "@/data/pathways";
 import { analytics } from "@/lib/analytics";
@@ -19,7 +20,7 @@ import { cn } from "@/lib/utils";
 export function Dream() {
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: ref,

@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import geo from "@/data/map-geo.json";
 import { destinations, corridors } from "@/data/destinations";
 import { cn } from "@/lib/utils";
@@ -39,7 +40,7 @@ export function RouteField({
   className?: string;
   showLabels?: boolean;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const hub = useMemo(() => ({ x: px(HUB.lonLat[0]), y: py(HUB.lonLat[1]) }), []);
 
   const inbound = useMemo(

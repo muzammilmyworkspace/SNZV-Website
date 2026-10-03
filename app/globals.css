@@ -87,9 +87,83 @@
 .tone-white {
   color: var(--fg);
   background-color: var(--surface);
-  background-image: var(--surface-wash);
+
+  /*
+    THE LINE FIELD — declared here, on the band itself, and not on :root.
+
+    `--linefield` contains var() references. A custom property's own var()s are
+    substituted at computed-value time ON THE ELEMENT THAT DECLARES IT, so a
+    declaration on :root would bake in :root's hairline colour and inherit the
+    finished value downward — and the per-tone and per-theme overrides below
+    would then do nothing at all. Declaring it on the same element that uses it
+    is what makes those overrides work.
+
+    See the LINE FIELD block further down for what this is and why it is four
+    gradients rather than an SVG.
+  */
+  --linefield-step: 72px;
+  --linefield-fine: rgb(255 255 255 / 0.045);
+  --linefield-major: rgb(255 255 255 / 0.075);
+  --linefield:
+    repeating-linear-gradient(to right, var(--linefield-major) 0 1px, transparent 1px calc(var(--linefield-step) * 4)),
+    repeating-linear-gradient(to bottom, var(--linefield-major) 0 1px, transparent 1px calc(var(--linefield-step) * 4)),
+    repeating-linear-gradient(to right, var(--linefield-fine) 0 1px, transparent 1px var(--linefield-step)),
+    repeating-linear-gradient(to bottom, var(--linefield-fine) 0 1px, transparent 1px var(--linefield-step));
+
+  /*
+    WASH OVER LINES. Earlier layers paint on top in CSS, so the wash sits above
+    the grid and the grid reads as something the light falls across rather than
+    as a decal stuck on the front.
+  */
+  background-image: var(--surface-wash), var(--linefield);
   background-repeat: no-repeat;
 }
+
+/*
+  `tone-light` and `tone-white` are light surfaces even in the DARK theme —
+  that is the whole point of the four-band rhythm. White hairlines on them are
+  invisible, so these two take the brand navy instead. Same specificity as the
+  rule above and declared after it, which is what lets it win.
+*/
+.tone-light,
+.tone-white {
+  --linefield-fine: rgb(30 43 94 / 0.03);
+  --linefield-major: rgb(30 43 94 / 0.05);
+}
+
+/*
+  In the light theme every band is a light surface, so all four take navy.
+  Written as four descendant selectors rather than one declaration on
+  [data-theme="light"] because the bands declare their own value, and an
+  inherited one cannot beat a declaration on the element itself.
+*/
+[data-theme="light"] .tone-deep,
+[data-theme="light"] .tone-soft,
+[data-theme="light"] .tone-light,
+[data-theme="light"] .tone-white {
+  --linefield-fine: rgb(30 43 94 / 0.03);
+  --linefield-major: rgb(30 43 94 / 0.05);
+}
+
+/*
+  Finer on a phone. 72px cells across 375px give five columns, which reads as
+  stripes rather than as a field — the pattern has to be finer than the
+  content for the content to sit on it.
+*/
+@media (max-width: 640px) {
+  .tone-deep,
+  .tone-soft,
+  .tone-light,
+  .tone-white {
+    --linefield-step: 44px;
+  }
+}
+
+/*
+  Opt out where a section draws its own linework and a grid behind it would
+  compete — the journey paths, principally.
+*/
+.no-linefield { --linefield: none; }
 
 /* ============================================================================
    SURFACE WASH — the page ground, lit rather than flat
@@ -155,6 +229,8 @@
 /* A photograph is already the surface. */
 .plate-deep {
   --surface-wash: none;
+  /* A hairline grid over a photograph is noise. Same reason the wash is off. */
+  --linefield: none;
 }
 
 /* ============================================================================
@@ -767,6 +843,56 @@ p { text-wrap: pretty; }
   background: radial-gradient(circle at center, color-mix(in srgb, var(--color-navy-500) 42%, transparent) 0%, transparent 70%);
   filter: blur(36px);
 }
+
+/* ============================================================================
+   LINE FIELD — the page's ground, drawn rather than filled
+   ----------------------------------------------------------------------------
+   Declared in the shared tone rule at the top of this file, for the
+   computed-value reason given there. This block is the why.
+
+   A hairline grid under every tone band. It is the structural idea of the
+   redesign: the site reads as a drawing that content sits on, and the journey
+   paths further down the page are the same hairline language doing something
+   meaningful rather than decorative.
+
+   WHY IT IS A BACKGROUND LAYER ON THE TONE, not a fixed element behind the
+   page. Every band sets `background-color: var(--surface)` and is therefore
+   opaque, so a fixed layer behind the document would be covered by the first
+   section and never seen again. Putting it in the same `background-image` list
+   as the wash means:
+     • no new DOM on any of the ~25 sections that already exist;
+     • no new stacking context, so nothing that currently escapes a section
+       (sticky sub-navs, dropdown panels) changes behaviour;
+     • one declaration governs the whole site, and `.plate-deep` nulls it out
+       the same way it already nulls the wash.
+
+   WHY CSS AND NOT SVG OR CANVAS. Four repeating gradients on an element that
+   already exists: no JavaScript, no node per line, nothing to measure on
+   resize. An SVG grid dense enough for a 4K viewport is thousands of nodes for
+   the same picture; a canvas is that plus a redraw on every resize.
+
+   IT DOES NOT ANIMATE, for the reason given at SURFACE WASH above — a layer
+   this large cannot move without repainting most of the viewport every frame.
+   The movement on this site comes from the paths and the reveals, which are
+   small and composited.
+
+   FOUR LAYERS, AND WHY EACH IS THERE:
+     1+2  a fine cell at --linefield-step. The structure.
+     3+4  a heavier line every fourth cell. Without it the grid reads as flat
+          texture, like graph paper; with it there is a hierarchy and the eye
+          reads a plan.
+
+   ALPHA IS AT THE BOTTOM OF WHAT IS VISIBLE, deliberately. If the grid is
+   NOTICED rather than sensed, it is too strong. It also has to survive
+   `npm run audit:theme`, which measures every heading and paragraph against
+   the surface it actually lands on — the same ceiling the wash runs into.
+
+   The colours are literal rgb() rather than color-mix() on --fg. --fg is not
+   defined on :root, so a color-mix() against it resolves to the
+   guaranteed-invalid value wherever it is evaluated outside a tone band — and
+   an invalid custom property inside this list would take the WASH down with
+   it, because both are layers of the same background-image.
+   ========================================================================== */
 
 /* Graticule adapts to the tone it sits on */
 .graticule {

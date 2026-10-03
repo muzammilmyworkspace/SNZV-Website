@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring, useReducedMotion } from "motion/react";
+import { motion, useScroll, useSpring } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 
 /**
  * THE MERIDIAN — the site's signature device.
@@ -19,7 +20,7 @@ export function Meridian({
 }: {
   chapters: { id: string; index: string; label: string }[];
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
     stiffness: 120,

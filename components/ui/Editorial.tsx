@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRef, type ReactNode, type MouseEvent } from "react";
-import { motion, useReducedMotion, useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { cn } from "@/lib/utils";
 
 /* ═══════════════════════════════════════════════════════ Shell ═══ */
@@ -87,7 +88,7 @@ export function MaskedLines({
   as?: "h1" | "h2" | "h3" | "p" | "div";
   animate?: "inView" | "mount";
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const hostRef = useRef<HTMLElement>(null);
 
   /**
@@ -150,7 +151,7 @@ export function Reveal({
   className?: string;
   as?: "div" | "li" | "p" | "article" | "section";
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const M = motion[as] as typeof motion.div;
   return (
     <M
@@ -208,7 +209,7 @@ export function RevealItem({
   y?: number;
   as?: "div" | "li" | "article";
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const M = motion[as] as typeof motion.div;
   return (
     <M
@@ -243,7 +244,7 @@ export function Magnetic({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   const onMove = (e: MouseEvent<HTMLSpanElement>) => {
     if (reduced || !ref.current) return;
@@ -488,13 +489,28 @@ export function ContentRequired({
 }) {
   if (process.env.NODE_ENV === "production") return null;
   return (
+    /*
+      AMBER IS THE SIGNAL, NOT THE TEXT COLOUR.
+
+      This was amber-200 on amber-400/10, which reads well on navy and sits at
+      1.1:1 on the near-white light theme — `npm run audit:theme` measures
+      every string against the surface it actually lands on and refused it, as
+      it should. A build note nobody can read is a build note nobody acts on.
+
+      The dashed amber border and tint still mark it out at a glance; the words
+      take the band's own foreground, which is legible on all four surfaces in
+      both themes by construction.
+    */
     <aside
       data-content-required
-      className="my-8 rounded-[var(--radius-sm)] border border-dashed border-amber-400/60 bg-amber-400/10 p-5 text-[0.85rem] text-amber-200"
+      className="my-8 rounded-[var(--radius-sm)] border border-dashed border-amber-500/70 bg-amber-400/10 p-5 text-[0.85rem] text-fg"
     >
-      <p className="label text-amber-300">[Content required] — {label}</p>
+      <p className="label text-fg-strong">
+        <span aria-hidden className="mr-2 inline-block h-2 w-2 rounded-full bg-amber-500 align-middle" />
+        [Content required] — {label}
+      </p>
       {items && (
-        <ul className="mt-3 space-y-1.5 pl-4 list-disc marker:text-amber-500/70">
+        <ul className="mt-3 space-y-1.5 pl-4 list-disc marker:text-amber-500">
           {items.map((i) => (
             <li key={i}>{i}</li>
           ))}

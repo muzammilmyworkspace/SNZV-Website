@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { Container, Section, Chapter, Reveal, MaskedLines } from "@/components/ui/Primitives";
 import { analytics } from "@/lib/analytics";
 import type { VideoFeatureData } from "@/data/media";
@@ -23,7 +24,7 @@ import type { VideoFeatureData } from "@/data/media";
 export function VideoFeature({ data }: { data: VideoFeatureData }) {
   const [playing, setPlaying] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: ref,
