@@ -49,7 +49,7 @@ export type Stat = {
 /** Objective: the EU has 27 member states. Not a claim about SnZ. */
 const EU_MEMBER_STATES = 27;
 
-export const homeStats: Stat[] = [
+const homeStatsAuthored: Stat[] = [
   {
     /*
       DERIVED FROM data/partners.ts, not typed as a number here.
@@ -122,7 +122,7 @@ export const homeStats: Stat[] = [
   },
 ];
 
-export const studyStats: Stat[] = [
+const studyStatsAuthored: Stat[] = [
   {
     value: studyDestinations.length,
     label: "Study destinations",
@@ -145,7 +145,7 @@ export const studyStats: Stat[] = [
   },
 ];
 
-export const careerStats: Stat[] = [
+const careerStatsAuthored: Stat[] = [
   {
     value: destinations.length,
     label: "European markets",
@@ -168,7 +168,7 @@ export const careerStats: Stat[] = [
   },
 ];
 
-export const businessStats: Stat[] = [
+const businessStatsAuthored: Stat[] = [
   {
     value: EU_MEMBER_STATES,
     label: "EU member states",
@@ -190,3 +190,43 @@ export const businessStats: Stat[] = [
     detail: "One coordinator, not four disconnected firms.",
   },
 ];
+
+/* ------------------------------------------------------ what actually ships */
+
+/**
+ * WITHHELD FIGURES NEVER LEAVE THE SERVER.
+ *
+ * StatsBand filters on `verified` too, and that was not enough. It is a client
+ * component, so the array handed to it is serialised into the RSC payload
+ * inside the HTML — which meant an unconfirmed "Students placed" counter,
+ * value and all, shipped in the page source on every request. Invisible on
+ * screen and one View Source away, which is the worst of both: the figure is
+ * published without anybody having decided to publish it.
+ *
+ * Filtering here means an unconfirmed figure cannot be imported by a client
+ * component at all. The authored lists above keep every entry, including the
+ * withheld ones, because that record is what somebody chasing the number needs
+ * — and flipping `verified` is still the only edit required to ship one.
+ *
+ * The check inside StatsBand stays as a second line of defence for any caller
+ * that assembles its own list.
+ */
+const shipped = (set: Stat[]) => set.filter((s) => s.verified !== false);
+
+export const homeStats = shipped(homeStatsAuthored);
+export const studyStats = shipped(studyStatsAuthored);
+export const careerStats = shipped(careerStatsAuthored);
+export const businessStats = shipped(businessStatsAuthored);
+
+/**
+ * The full authored sets, withheld entries included.
+ *
+ * For tooling and for the handoff document — never for render. Anything that
+ * imports this and puts it on a page has defeated the point of the flag.
+ */
+export const authoredStats = {
+  home: homeStatsAuthored,
+  study: studyStatsAuthored,
+  career: careerStatsAuthored,
+  business: businessStatsAuthored,
+};
