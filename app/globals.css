@@ -1046,7 +1046,7 @@ p { text-wrap: pretty; }
 .field {
   width: 100%;
   border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--fg) 4%, transparent);
+  background-color: color-mix(in srgb, var(--fg) 4%, transparent);
   color: var(--fg);
   border-radius: var(--radius-sm);
   /*
@@ -1058,12 +1058,69 @@ p { text-wrap: pretty; }
   padding: 0.85rem 1rem;
   font-size: 1rem;
   outline: none;
-  transition: border-color 0.25s, background-color 0.25s;
+
+  /*
+    THE FOCUS LINE — the page's hairline language, on the control you are
+    actually using. A 2px rule draws left-to-right along the underside as the
+    field takes focus, the same gesture as the journey paths and the `.draw`
+    link underline.
+
+    It is an ADDITION to the border colour change, never a replacement: the
+    border is the accessible focus indicator and has to survive forced-colours
+    mode and a background-image nobody painted.
+
+    `background-color` rather than the `background` shorthand from here on —
+    the shorthand resets `background-image`, which would wipe this line out on
+    focus, exactly when it is supposed to appear.
+
+    The global prefers-reduced-motion rule below already collapses the
+    transition, so nothing extra is needed for that.
+  */
+  background-image: linear-gradient(var(--color-moss-400) 0 0);
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+
+  transition:
+    border-color 0.25s,
+    background-color 0.25s,
+    background-size 0.45s var(--ease-out-expo);
 }
+/*
+  THE SAME FOCUS LINE, for controls that are not `.field`.
+
+  The public forms style their inputs with utilities rather than `.field`, so
+  they would otherwise miss the gesture entirely — and the contact form is the
+  one form most visitors actually touch. Applied as a class so the existing
+  padding, border and type stay exactly as they are.
+
+  Tailwind's `bg-white/[0.04]` is a background-COLOR utility, so it does not
+  reset the gradient below. A `background:` shorthand anywhere on these
+  elements would.
+*/
+.focus-line {
+  background-image: linear-gradient(var(--color-moss-400) 0 0);
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition:
+    border-color 0.25s,
+    background-color 0.25s,
+    background-size 0.45s var(--ease-out-expo);
+}
+.focus-line:focus { background-size: 100% 2px; }
+
+/* Invalid takes the warning colour, so the line never says "good" about a
+   field the form has just rejected. */
+.focus-line[aria-invalid="true"] {
+  background-image: linear-gradient(#f87171 0 0);
+}
+
 .field::placeholder { color: var(--fg-faint); }
 .field:focus {
   border-color: var(--color-moss-400);
-  background: color-mix(in srgb, var(--fg) 6%, transparent);
+  background-color: color-mix(in srgb, var(--fg) 6%, transparent);
+  background-size: 100% 2px;
 }
 .field[aria-invalid="true"] { border-color: #f87171; }
 

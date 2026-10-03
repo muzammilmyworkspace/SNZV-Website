@@ -539,7 +539,7 @@ export function JourneyForm({
                   rows={3}
                   value={answers.notes ?? ""}
                   onChange={(e) => set("notes", e.target.value)}
-                  className="w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none transition-colors placeholder:text-faint focus:border-moss-400"
+                  className="focus-line w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none placeholder:text-faint focus:border-moss-400"
                   placeholder="Constraints, deadlines, questions…"
                 />
               </div>
@@ -619,8 +619,11 @@ function Field({
 }) {
   const id = `jf-${field.name}`;
   const errorId = `${id}-error`;
+  /* `focus-line` draws the accent hairline along the underside on focus —
+     the same gesture as the journey paths. It is in addition to the border
+     colour, which remains the accessible focus indicator. */
   const base =
-    "w-full border bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none transition-colors placeholder:text-faint";
+    "focus-line w-full border bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none placeholder:text-faint";
   const border = error
     ? "border-red-400/70 focus:border-red-400"
     : "border-line focus:border-moss-400";

@@ -355,7 +355,10 @@ export function StudentJourney() {
               column is sized by its content's min-content width, and one
               nowrap label in here would widen the whole page. */}
           <ol className="min-w-0 space-y-10 lg:space-y-16">
-            {STAGES.map((s, i) => (
+            {/* No "stage n of six" for assistive tech: this is an <ol>, so
+                position in the list is already announced, and the visible 01–06
+                is read as well. A third copy is noise. */}
+            {STAGES.map((s) => (
               <motion.li
                 key={s.name}
                 initial={{ opacity: 0, y: reduced ? 0 : 24 }}
@@ -393,10 +396,6 @@ export function StudentJourney() {
                     </svg>
                   </Link>
                 )}
-
-                {/* Index {i} is unused in render; kept out of the markup on
-                    purpose so the list order comes from the DOM, not a label. */}
-                <span className="sr-only">{`Stage ${i + 1} of ${STAGES.length}`}</span>
               </motion.li>
             ))}
           </ol>
