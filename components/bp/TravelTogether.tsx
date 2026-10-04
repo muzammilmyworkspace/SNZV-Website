@@ -41,24 +41,24 @@ export function TravelTogether() {
   return (
     <section id="together" aria-labelledby="together-title" className="relative z-10 py-10 sm:py-14">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
-        <div className="bp-pass-dark relative overflow-hidden p-6 sm:p-10 lg:p-12">
+        <div className="bp-pass-dark relative overflow-hidden p-5 sm:p-7 lg:p-8">
           {/* soft glow behind the passes */}
           <div aria-hidden className="pointer-events-none absolute -right-20 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(114,196,60,0.16),transparent)]" />
 
-          <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+          <div className="relative grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-10">
             <div>
               <p className="bp-eyebrow">Married? Travel together</p>
               <Reveal mask>
-                <h2 id="together-title" className="bp-display bp-h2 mt-5">
+                <h2 id="together-title" className="bp-display mt-4 text-[clamp(1.8rem,3.2vw,2.8rem)]">
                   Bring your <span className="bp-mark">spouse</span> with you.
                 </h2>
               </Reveal>
-              <p className="bp-lede mt-5">
+              <p className="bp-body mt-3 max-w-xl">
                 Studying abroad does not have to mean leaving your partner behind. We plan both journeys as one, so you
                 land in Europe together.
               </p>
 
-              <ul className="mt-8 grid gap-5 sm:grid-cols-2">
+              <ul className="mt-5 grid gap-x-6 gap-y-3 sm:grid-cols-2">
                 {POINTS.map((pt, i) => (
                   <motion.li
                     key={pt.t}
@@ -75,25 +75,25 @@ export function TravelTogether() {
                     </span>
                     <span>
                       <span className="block font-semibold text-[var(--bp-strong)]">{pt.t}</span>
-                      <span className="mt-1 block text-[0.92rem] leading-relaxed text-[var(--bp-muted)]">{pt.b}</span>
+                      <span className="mt-0.5 block text-[0.85rem] leading-snug text-[var(--bp-muted)]">{pt.b}</span>
                     </span>
                   </motion.li>
                 ))}
               </ul>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link href="/contact#journey" className="bp-btn bp-btn-primary">
                   Plan our move together <Arrow />
                 </Link>
               </div>
-              <p className="mt-4 max-w-xl text-[0.82rem] leading-relaxed text-[var(--bp-faint)]">
+              <p className="mt-3 max-w-xl text-[0.78rem] leading-relaxed text-[var(--bp-faint)]">
                 Spouse and dependant rules differ by country and by level of study, and decisions rest with the
                 immigration authorities. We confirm the current rules for your destination before you apply.
               </p>
             </div>
 
             {/* Two passes, one flight */}
-            <div className="relative order-first mx-auto w-full max-w-[520px] py-2 lg:order-none lg:py-6">
+            <div className="relative order-first mx-auto w-full max-w-[420px] py-2 lg:order-none">
               <motion.div {...pass(-120, 0.1)} className="relative z-[2]">
                 <TogetherPass n="01" name="You" role="Student" seat="12A" />
               </motion.div>
@@ -107,7 +107,7 @@ export function TravelTogether() {
                 transition={{ delay: 0.75, type: "spring", stiffness: 260, damping: 14 }}
                 className="absolute right-[2%] top-1/2 z-[3] -translate-y-1/2 flex items-center gap-2 rounded-full bg-[var(--color-runway)] px-4 py-2 text-[0.85rem] font-bold text-[var(--bp-on-accent)] shadow-[0_14px_30px_-10px_rgba(0,0,0,0.7)]"
               >
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
+                <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#E5484D] drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]" fill="currentColor" aria-hidden>
                   <path d="M12 21s-7.5-4.6-9.5-9.3C1.2 8.4 3.4 5 6.8 5c2 0 3.6 1.1 5.2 3 1.6-1.9 3.2-3 5.2-3 3.4 0 5.6 3.4 4.3 6.7C19.5 16.4 12 21 12 21z" />
                 </svg>
                 Same flight
@@ -124,14 +124,14 @@ function TogetherPass({ n, name, role, seat }: { n: string; name: string; role: 
   return (
     <div className="bp-ticket relative grid grid-cols-[72%_28%] shadow-[0_30px_60px_-25px_rgba(0,0,0,0.9)]" style={{ ["--tear" as string]: "72%" }}>
       <div className="bp-ticket-tear" />
-      <div className="p-5">
+      <div className="p-4">
         <div className="flex items-center justify-between">
           <p className="bp-mono !text-[0.72rem]">Passenger {n}</p>
           <Image src="/brand/snz-mark.png" alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-full" />
         </div>
-        <p className="mt-2 font-[family-name:var(--font-grotesk)] text-[1.5rem] font-bold leading-none">{name}</p>
+        <p className="mt-2 font-[family-name:var(--font-grotesk)] text-[1.25rem] font-bold leading-none">{name}</p>
         <p className="mt-1 text-[0.85rem] text-[rgb(18_23_38/0.7)]">{role}</p>
-        <div className="mt-4 flex items-end gap-3">
+        <div className="mt-3 flex items-end gap-3">
           <span>
             <span className="bp-mono block !text-[0.72rem]">From</span>
             <span className="font-[family-name:var(--font-grotesk)] text-[1.2rem] font-bold">HOME</span>
