@@ -194,7 +194,7 @@ export function SceneConsultant({ p }: P) {
                 <Image src="/brand/snz-mark.png" alt="" width={14} height={14} className="h-3.5 w-3.5 rounded-full" />
                 <span className="text-[0.72rem] font-bold tracking-wide">Programme shortlist</span>
               </span>
-              <span className="text-[0.72rem] text-[#6B7280]">Draft 1</span>
+              <span className="mr-6 text-[0.72rem] text-[#6B7280]">Draft 1</span>
             </div>
             <ol className="mt-2 space-y-1.5">
               {SHORTLIST.map((r, i) => (
@@ -209,7 +209,7 @@ export function SceneConsultant({ p }: P) {
             </ol>
           </motion.div>
           {/* paper clip */}
-          <svg viewBox="0 0 20 52" className="absolute -top-[10%] left-[44%] z-10 h-[28%] text-[#9CA3AF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+          <svg viewBox="0 0 20 52" className="absolute -top-[10%] right-[2%] z-10 h-[28%] text-[#9CA3AF]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
             <path d="M6 14v26a6 6 0 0012 0V10a8 8 0 00-16 0v30" />
           </svg>
           {/* front panel */}

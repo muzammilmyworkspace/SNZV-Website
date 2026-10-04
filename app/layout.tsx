@@ -75,8 +75,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Matches the light theme's page ground, since that is now the default.
-  themeColor: "#FAFBFD",
+  // Matches the night sky, the default theme's page ground.
+  themeColor: "#070B1A",
   width: "device-width",
   initialScale: 1,
   colorScheme: "light dark",
@@ -97,10 +97,9 @@ export default function RootLayout({
           apart, that flash is a full inversion of the page, which is far worse
           than a moment of unstyled text.
 
-          LIGHT is the default. The dark art direction still exists in full
-          and is one click away, but an unknown visitor now lands on the light
-          theme — which is the brand's own student-site palette and the safer
-          first impression for a consultancy.
+          DARK (night) is the default: it is the Boarding Pass art direction
+          the site is designed in. Day is one click away on the header toggle,
+          and the choice is remembered.
           `suppressHydrationWarning` on <html> is required because this mutates
           the element before React sees it.
         */}
@@ -127,7 +126,7 @@ export default function RootLayout({
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
           }}
         />
         {/*

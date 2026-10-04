@@ -8,10 +8,14 @@
    SCOPE. Everything here hangs off `.bp` or a `bp-` class, so the older tone
    system in globals.css keeps working for any page not yet moved across.
 
-   ALWAYS NIGHT. The `.bp` surface is night in both themes: it is an
-   art-directed scene, and the paper elements inside it carry the light.
-   Components read --bp-* tokens rather than naming colours, so a day
-   variant can be added later by re-pointing the tokens in one place.
+   TWO THEMES. Night is the default and the art direction. Day
+   ([data-theme="light"]) re-points the same tokens: a pale sky, ink type,
+   the logo's green and blue darkened until they pass AA on white. Components
+   never name a colour for the page ground; they read --bp-* tokens.
+
+   NIGHT ISLANDS. Some objects are dark in both themes because they are dark
+   in life: the departure board, devices, photographs. Those wrap in
+   `.bp-night`, which re-declares the night tokens for everything inside.
 
    CONTRAST (measured, AA):
      --bp-fg      #EEF1F8 on night-900   16.9 : 1
@@ -42,6 +46,47 @@
   --bp-chip: rgb(255 255 255 / 0.06);
   --bp-header-bg: rgb(7 11 26 / 0.86);
   --bp-grid: rgb(170 190 230 / 0.055);
+  --runway: #72C43C;
+  --runway-300: #93D667;
+  --aurora: #6FA6F7;
+}
+
+/* Day. Accents darkened so text in them passes AA on the pale ground and on
+   the tinted chips: #2F6B12 on #F4F6FB ≈ 6.1:1, #2D5FB8 ≈ 5.6:1, white on
+   #2F6B12 ≈ 6.5:1. */
+[data-theme="light"] .bp,
+[data-theme="light"] .bp-header {
+  --bp-bg: #F4F6FB;
+  --bp-fg: #101828;
+  --bp-strong: #060B18;
+  --bp-muted: #46526A;
+  --bp-faint: #5A657B;
+  --bp-line: rgb(20 35 80 / 0.12);
+  --bp-line-strong: rgb(20 35 80 / 0.22);
+  --bp-glass: rgb(255 255 255 / 0.8);
+  --bp-on-accent: #FFFFFF;
+  --bp-pass-bg: linear-gradient(160deg, #FFFFFF, #EDF1F8);
+  --bp-card: linear-gradient(160deg, #FFFFFF, #EEF2F9);
+  --bp-chip: rgb(20 35 80 / 0.06);
+  --bp-header-bg: rgb(255 255 255 / 0.88);
+  --bp-grid: rgb(20 35 80 / 0.05);
+  --runway: #2F6B12;
+  --runway-300: #3B7F1A;
+  --aurora: #2D5FB8;
+}
+
+/* A night island inside a day page keeps the night palette. */
+[data-theme="light"] .bp .bp-night {
+  --bp-bg: var(--color-night-900);
+  --bp-fg: #EEF1F8;
+  --bp-strong: #FFFFFF;
+  --bp-muted: #A9B3C9;
+  --bp-faint: #7D89A3;
+  --bp-line: rgb(170 190 230 / 0.12);
+  --bp-line-strong: rgb(170 190 230 / 0.22);
+  --bp-on-accent: var(--color-night-900);
+  --bp-pass-bg: linear-gradient(160deg, rgb(31 43 82 / 0.7), rgb(12 19 40 / 0.85));
+  --bp-chip: rgb(255 255 255 / 0.06);
   --runway: #72C43C;
   --runway-300: #93D667;
   --aurora: #6FA6F7;
@@ -428,4 +473,10 @@ html::-webkit-scrollbar-thumb:hover {
 }
 @supports (-moz-appearance: none) {
   html { scrollbar-color: #72C43C #070B1A; scrollbar-width: thin; }
+}
+
+/* On the day sky, paper needs an edge to sit on. */
+[data-theme="light"] .bp .bp-paper,
+[data-theme="light"] .bp .bp-ticket {
+  box-shadow: 0 0 0 1px rgb(20 35 80 / 0.08), 0 30px 60px -30px rgb(20 35 80 / 0.35);
 }
