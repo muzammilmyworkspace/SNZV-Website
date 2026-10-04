@@ -70,6 +70,8 @@ export const company = {
      * Review CONTENT is fetched separately; see lib/reviews.ts.
      */
     googleReviews: "https://share.google/MNo5ThKseoiGnDEnF",
+    /** Elfsight "SnZ Ventures Google Reviews" widget, shown on the homepage. */
+    googleReviewsWidget: "2611091d-ce8b-4cf5-96d6-57f71163180d",
 
     /**
      * Social profiles, supplied by the client. The footer renders an icon for

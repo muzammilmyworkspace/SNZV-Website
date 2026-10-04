@@ -2,6 +2,7 @@ import { getGoogleReviews } from "@/lib/reviews";
 import { successStories, successIntro } from "@/data/success-stories";
 import { company } from "@/data/company";
 import { Reveal } from "./Reveal";
+import { ElfsightReviews } from "./ElfsightReviews";
 
 /**
  * STUDENT STORIES + REVIEWS.
@@ -21,21 +22,27 @@ export async function Stories() {
   const stories = successStories.filter((s) => s.verified);
   const reviews = data.reviews;
 
+  /*
+    No live API reviews and no consented stories: show the Google reviews
+    widget. The link stays underneath, because the widget stops showing once
+    the plan's monthly views run out and the section must still say something.
+  */
   if (!stories.length && !reviews.length) {
     return (
-      <section aria-label="Reviews" className="relative z-10 py-12">
+      <section aria-labelledby="reviews-title" className="relative z-10 py-10 sm:py-14">
         <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
-          <Reveal className="bp-pass-dark flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-            <div>
-              <p className="bp-mono text-[var(--color-aurora)]">Reviews</p>
-              <p className="bp-display mt-2 text-[1.5rem] leading-tight sm:text-[1.9rem]">
-                Read what our students say on Google, in their own words.
-              </p>
-            </div>
-            <a href={company.social.googleReviews} target="_blank" rel="noopener noreferrer" className="bp-btn bp-btn-ghost shrink-0">
-              Open our Google reviews
-            </a>
+          <Reveal>
+            <p className="bp-eyebrow">Reviews</p>
+            <h2 id="reviews-title" className="bp-display bp-h2 mt-5 max-w-4xl">
+              What our students say on Google.
+            </h2>
           </Reveal>
+          <div className="mt-10">
+            <ElfsightReviews appId={company.social.googleReviewsWidget} />
+          </div>
+          <a href={company.social.googleReviews} target="_blank" rel="noopener noreferrer" className="bp-btn bp-btn-ghost mt-8">
+            Read every review on Google
+          </a>
         </div>
       </section>
     );
