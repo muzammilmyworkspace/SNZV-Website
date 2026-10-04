@@ -93,7 +93,7 @@ export default function ImageCreditsPage() {
                       {e.key}
                     </td>
                     <td className="py-3 pr-4 align-top text-[0.85rem] text-muted">
-                      {e.artist?.split("\n")[0] ?? "—"}
+                      {e.artist?.split("\n")[0] ?? "n/a"}
                     </td>
                     <td className="py-3 pr-4 align-top text-[0.85rem]">
                       {e.page ? (
@@ -110,7 +110,7 @@ export default function ImageCreditsPage() {
                       )}
                     </td>
                     <td className="py-3 align-top text-[0.85rem] text-muted">
-                      {e.licence ?? "—"}
+                      {e.licence ?? "n/a"}
                     </td>
                   </tr>
                 ))}

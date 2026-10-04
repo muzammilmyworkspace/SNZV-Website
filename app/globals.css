@@ -61,6 +61,24 @@
   --color-mist-700: #2E3849;
   --color-ink: #0C1526;
 
+  /* --- Boarding Pass (new site) — see app/boarding.css ------------------ */
+  --color-night-950: #04070F;
+  --color-night-900: #070B1A; /* the sky — homepage ground */
+  --color-night-800: #0C1328;
+  --color-night-700: #141D3A;
+  --color-night-600: #1F2B52;
+  --color-ticket: #F6F3EC;    /* paper documents */
+  --color-ticket-ink: #121726;
+  /* The logo's two hues, and only those. Green is the signal (CTAs, the
+     active node, the plane); blue, lifted for a night ground, is the line. */
+  --color-runway: #72C43C;    /* logo green — the one filled accent */
+  --color-runway-300: #93D667;
+  --color-aurora: #6FA6F7;    /* logo blue #3D71C9, lifted for night */
+  --color-aurora-300: #A9C9FA;
+
+  --font-grotesk: var(--font-space), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, monospace;
+
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 

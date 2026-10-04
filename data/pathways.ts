@@ -32,7 +32,7 @@ export const pathways: Pathway[] = [
     imageAlt:
       "Students working together over a laptop in a university library",
     hook: "Turn ambition into an international education.",
-    body: "Most people choose a course, then hope a career follows. We work the other way round — starting from where the jobs actually are in five years, then back to what you should study now.",
+    body: "Most people choose a course, then hope a career follows. We work the other way round, starting from where the jobs actually are in five years, then back to what you should study now.",
     cta: "Explore study opportunities",
     bullets: [
       "Course and subject choice mapped to real labour demand",
@@ -49,7 +49,7 @@ export const pathways: Pathway[] = [
     image: "/images/path-careers.webp",
     imageAlt: "A quiet modern workspace beside a city-facing window",
     hook: "Take your career where the opportunity is.",
-    body: "We recruit into European SMEs and regulated firms — white-collar and blue-collar. That means the roles are real, the employer is named, and you are told your honest eligibility before anyone takes a fee.",
+    body: "We recruit into European SMEs and regulated firms, white-collar and blue-collar. That means the roles are real, the employer is named, and you are told your honest eligibility before anyone takes a fee.",
     cta: "Explore career opportunities",
     bullets: [
       "Live roles with named European employers",
@@ -66,7 +66,7 @@ export const pathways: Pathway[] = [
     image: "/images/path-business.webp",
     imageAlt: "Modern glass office towers viewed from below",
     hook: "Build your business where the market is.",
-    body: "A Lithuanian company reaches 27 member states from day one. We handle incorporation, accounting, licensing and the residence permits that let you actually move — through one coordinator.",
+    body: "A Lithuanian company reaches 27 member states from day one. We handle incorporation, accounting, licensing and the residence permits that let you actually move, through one coordinator.",
     cta: "Explore business opportunities",
     bullets: [
       "UAB / MB formation, VAT, EORI and payroll",
@@ -94,7 +94,7 @@ export const problems: {
         body: "League tables measure research output. You need a course that leads to work you can actually get.",
       },
       {
-        title: "Scholarships exist — finding the right ones is the work",
+        title: "Scholarships exist, finding the right ones is the work",
         body: "Most are country, subject or nationality specific, and the deadlines sit months before the intake.",
       },
       {
@@ -133,7 +133,7 @@ export const problems: {
       },
       {
         title: "Licensing runs on evidence, not intentions",
-        body: "EMI and PI applications turn on capital, governance and named compliance officers — not the business plan.",
+        body: "EMI and PI applications turn on capital, governance and named compliance officers, not the business plan.",
       },
       {
         title: "The company and the visa are separate problems",
@@ -148,7 +148,7 @@ export const approach = [
   {
     step: "01",
     name: "Discover",
-    body: "A conversation about where you want to end up — not a pitch about what we sell.",
+    body: "A conversation about where you want to end up, not a pitch about what we sell.",
   },
   {
     step: "02",
@@ -173,7 +173,7 @@ export const approach = [
   {
     step: "06",
     name: "Move forward",
-    body: "Arrival, registration and the first months of operating — the stretch most advisors stop short of.",
+    body: "Arrival, registration and the first months of operating, the stretch most advisors stop short of.",
   },
 ] as const;
 
@@ -200,7 +200,7 @@ export const businessJourney = [
   {
     step: "01",
     name: "First conversation",
-    body: "What the business actually needs, and whether Lithuania is the right answer at all. Structure, licensing exposure and where you intend to trade — before anybody files anything.",
+    body: "What the business actually needs, and whether Lithuania is the right answer at all. Structure, licensing exposure and where you intend to trade, before anybody files anything.",
   },
   {
     step: "02",
@@ -210,7 +210,7 @@ export const businessJourney = [
   {
     step: "03",
     name: "Licensing, where it applies",
-    body: "EMI, PI, specialised bank and crypto licensing. Applications are built to be assessed rather than merely submitted — they fail on evidence, not on ambition.",
+    body: "EMI, PI, specialised bank and crypto licensing. Applications are built to be assessed rather than merely submitted, they fail on evidence, not on ambition.",
   },
   {
     step: "04",

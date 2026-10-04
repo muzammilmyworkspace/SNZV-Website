@@ -152,7 +152,7 @@ function MessagesPage({ role }: { role: DemoRole }) {
       <PageHeading
         eyebrow="Contact"
         title="Messages"
-        lead="Your thread with the SnZ desk — one conversation, whole history."
+        lead="Your thread with the SnZ desk, one conversation, whole history."
       />
       <Card>
         <ChatThread messages={d.demoThread} />
@@ -361,11 +361,11 @@ function ProfilePage({ role }: { role: DemoRole }) {
                     "Full name": who.name,
                     Email: who.email,
                     "Current title": "Software Engineer",
-                    "Total experience": "5–10 years",
+                    "Total experience": "5 to 10 years",
                     Industry: "Technology & software",
                     "Target roles": "Backend / Platform Engineer",
-                    "Work authorisation": "None — would need sponsorship",
-                    "Relocation readiness": "1–3 months",
+                    "Work authorisation": "None, would need sponsorship",
+                    "Relocation readiness": "1 to 3 months",
                   }
             ).map(([k, v]) => (
               <div
@@ -459,7 +459,7 @@ function adminSection(section: string, search: Record<string, string>) {
           <PageHeading
             eyebrow="Operations"
             title="Requests"
-            lead="Every open request, longest-waiting first — the one at the top has been waiting most."
+            lead="Every open request, longest-waiting first, the one at the top has been waiting most."
           />
           <Tabs
             active={status}
@@ -682,7 +682,7 @@ function jobSeekerSection(section: string) {
                   <Cell>
                     <StatusBadge status={a.status} />
                   </Cell>
-                  <Cell muted>{a.note ?? "—"}</Cell>
+                  <Cell muted>{a.note ?? "n/a"}</Cell>
                 </Row>
               ))}
             </DataTable>

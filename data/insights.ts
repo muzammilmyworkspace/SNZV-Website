@@ -39,14 +39,14 @@ export const articles: Article[] = [
       {
         heading: "Start at the end, not the beginning",
         paras: [
-          "Most people choose in this order: country, then university, then course, then — years later — career. Reversing that order is the single highest-value decision available to you, and it costs nothing.",
+          "Most people choose in this order: country, then university, then course, then, years later, career. Reversing that order is the single highest-value decision available to you, and it costs nothing.",
           "Ask instead: what work do I want to be doing in five years, in which country, and what does the person doing that job today actually hold? That question narrows a list of thousands of programmes to a handful very quickly.",
         ],
       },
       {
         heading: "Rankings answer a question you did not ask",
         paras: [
-          "Global league tables are weighted heavily toward research output, citations and academic reputation. Those are real measures — of a research institution's standing among other research institutions.",
+          "Global league tables are weighted heavily toward research output, citations and academic reputation. Those are real measures, of a research institution's standing among other research institutions.",
           "They are not measures of teaching quality, graduate employment, industry connection or how a specific employer in a specific city reads that name on a CV. A mid-ranked university with a strong regional placement pipeline can serve your career better than a famous one without it.",
         ],
       },
@@ -54,7 +54,7 @@ export const articles: Article[] = [
         heading: "Check the rights attached to the degree",
         paras: [
           "Post-study work rights vary substantially between countries and change with government policy. So do the rules on switching from a student status to a work status, and on whether time studying counts toward longer-term residence.",
-          "This is the most expensive detail to discover late. Before you commit, verify the current position directly with the destination country's official immigration source — not from a forum post, an agent's brochure, or an article written three years ago.",
+          "This is the most expensive detail to discover late. Before you commit, verify the current position directly with the destination country's official immigration source, not from a forum post, an agent's brochure, or an article written three years ago.",
         ],
       },
       {
@@ -71,7 +71,7 @@ export const articles: Article[] = [
       {
         heading: "On scholarships",
         paras: [
-          "Funding tends to be specific rather than general — tied to a nationality, a subject, a level of study, or a particular institution's own endowment. Broad searches return noise; narrow ones return candidates.",
+          "Funding tends to be specific rather than general, tied to a nationality, a subject, a level of study, or a particular institution's own endowment. Broad searches return noise; narrow ones return candidates.",
           "Deadlines are the recurring trap. Many close months before the intake they fund, and several require admission or a language certificate already in hand. Build the funding calendar before the application calendar, not after it.",
         ],
       },
@@ -98,13 +98,13 @@ export const articles: Article[] = [
       {
         heading: "1. Payment before process",
         paras: [
-          "A demand for a significant upfront fee — especially for a 'reservation', 'slot' or 'guarantee' — before any interview or documented offer is the most common pattern. Legitimate third-party costs do exist: government fees, translation, credential evaluation, medical checks. The difference is that these are payable to the named institution charging them, are itemised, and can be verified independently.",
+          "A demand for a significant upfront fee, especially for a 'reservation', 'slot' or 'guarantee' before any interview or documented offer is the most common pattern. Legitimate third-party costs do exist: government fees, translation, credential evaluation, medical checks. The difference is that these are payable to the named institution charging them, are itemised, and can be verified independently.",
         ],
       },
       {
         heading: "2. A guarantee nobody can give",
         paras: [
-          "No recruiter controls a visa decision, and no recruiter can guarantee a job. Both outcomes rest with parties who are not in the room — the employer and a national authority. A guarantee is either a misunderstanding of the process or a deliberate misrepresentation of it.",
+          "No recruiter controls a visa decision, and no recruiter can guarantee a job. Both outcomes rest with parties who are not in the room, the employer and a national authority. A guarantee is either a misunderstanding of the process or a deliberate misrepresentation of it.",
         ],
       },
       {
@@ -154,7 +154,7 @@ export const articles: Article[] = [
       {
         heading: "What an EU licence actually gives you",
         paras: [
-          "The commercial logic is passporting. An institution authorised in one member state can, subject to notification procedures, provide its services across the others. You are not authorising into a country of under three million people — you are authorising into the single market.",
+          "The commercial logic is passporting. An institution authorised in one member state can, subject to notification procedures, provide its services across the others. You are not authorising into a country of under three million people, you are authorising into the single market.",
           "This is why the jurisdiction's own size is largely beside the point, and why comparing Lithuania to a domestic market misreads the decision entirely.",
         ],
       },
@@ -181,7 +181,7 @@ export const articles: Article[] = [
       {
         heading: "Before you commit",
         paras: [
-          "Requirements and thresholds are set by EU and Lithuanian law and are revised over time. Confirm the current position for your specific licence category with a licensed advisor before making capital or hiring commitments on the basis of any article — including this one.",
+          "Requirements and thresholds are set by EU and Lithuanian law and are revised over time. Confirm the current position for your specific licence category with a licensed advisor before making capital or hiring commitments on the basis of any article, including this one.",
         ],
       },
     ],
@@ -209,7 +209,7 @@ export const articles: Article[] = [
         heading: "Banking is the real bottleneck",
         paras: [
           "Account opening is a compliance decision made by the bank, not an administrative formality. Institutions assess the ownership structure, the business model, the origin of funds and the substance of the operation.",
-          "Non-resident ownership, complex holding chains and higher-risk sectors all extend the process. Prepare the application as the compliance document it is — and be sceptical of anyone who guarantees the outcome, because it is not theirs to guarantee.",
+          "Non-resident ownership, complex holding chains and higher-risk sectors all extend the process. Prepare the application as the compliance document it is, and be sceptical of anyone who guarantees the outcome, because it is not theirs to guarantee.",
         ],
       },
       {
@@ -228,7 +228,7 @@ export const articles: Article[] = [
         heading: "Build the reporting calendar on day one",
         paras: [
           "Monthly and annual obligations begin from the first period, not from the first sale. Penalties for late filing accrue automatically and are entirely avoidable.",
-          "Assign the responsibility explicitly. The most common failure is not a missed rule — it is an obligation that everyone assumed someone else was handling.",
+          "Assign the responsibility explicitly. The most common failure is not a missed rule, it is an obligation that everyone assumed someone else was handling.",
         ],
       },
     ],
@@ -280,7 +280,7 @@ export const articles: Article[] = [
       {
         heading: "Explain gaps rather than hiding them",
         paras: [
-          "Unexplained gaps generate questions; explained ones rarely do. A short factual note — study, caregiving, relocation, health, a failed venture — closes the loop and costs you nothing.",
+          "Unexplained gaps generate questions; explained ones rarely do. A short factual note, study, caregiving, relocation, health, a failed venture, closes the loop and costs you nothing.",
         ],
       },
     ],
@@ -300,7 +300,7 @@ export const articles: Article[] = [
       {
         heading: "Why we published this",
         paras: [
-          "The international mobility industry has a trust problem, and vague answers are how most bad engagements begin. These are the questions we would want a member of our own family to ask — and they apply to us as much as to anyone else.",
+          "The international mobility industry has a trust problem, and vague answers are how most bad engagements begin. These are the questions we would want a member of our own family to ask, and they apply to us as much as to anyone else.",
         ],
       },
       {
@@ -317,7 +317,7 @@ export const articles: Article[] = [
         heading: "On the process",
         paras: [],
         list: [
-          "Who actually performs the regulated steps — you, or a licensed partner firm?",
+          "Who actually performs the regulated steps, you, or a licensed partner firm?",
           "What is your honest assessment of my chances, including the weak points?",
           "What is the realistic timeline, and what most often causes it to slip?",
           "What is required from me, and by when?",

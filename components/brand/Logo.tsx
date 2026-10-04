@@ -59,7 +59,7 @@ export function Logo({
   if (!href) return inner;
 
   return (
-    <Link href={href} aria-label="SnZ Ventures — home" className="inline-flex">
+    <Link href={href} aria-label="SnZ Ventures, home" className="inline-flex">
       {inner}
     </Link>
   );

@@ -57,7 +57,7 @@ export const services: Service[] = [
     deliverables: [
       {
         title: "UAB or MB Incorporation",
-        body: "Entity type chosen against your capital, ownership and liability position — not by default.",
+        body: "Entity type chosen against your capital, ownership and liability position, not by default.",
       },
       {
         title: "Legal Address",
@@ -92,7 +92,7 @@ export const services: Service[] = [
     faqs: [
       {
         q: "How long does registration take?",
-        a: "Lithuanian company registration typically completes within a 48-hour window once documents are correctly prepared and signed. Preparation and notarisation before that point, and banking afterwards, both take longer — plan for the full sequence rather than the filing alone.",
+        a: "Lithuanian company registration typically completes within a 48-hour window once documents are correctly prepared and signed. Preparation and notarisation before that point, and banking afterwards, both take longer, plan for the full sequence rather than the filing alone.",
       },
       {
         q: "Do I need to be in Lithuania in person?",
@@ -104,10 +104,10 @@ export const services: Service[] = [
       },
       {
         q: "Can you guarantee a bank account?",
-        a: "No, and treat anyone who does with caution. Account opening is the bank's decision, made on their own compliance assessment. We prepare the application to the standard they expect and make the introduction — the outcome remains theirs.",
+        a: "No, and treat anyone who does with caution. Account opening is the bank's decision, made on their own compliance assessment. We prepare the application to the standard they expect and make the introduction, the outcome remains theirs.",
       },
       {
-        q: "UAB or MB — which one?",
+        q: "UAB or MB, which one?",
         a: "An MB is lighter and cheaper to run with fewer members and no minimum share capital, but it restricts ownership and investment structure. A UAB is the standard private limited company and is usually required for licensing, outside investment or hiring at scale. We advise on your specific case.",
       },
     ],
@@ -144,7 +144,7 @@ export const services: Service[] = [
     deliverables: [
       {
         title: "Licence Scoping",
-        body: "EMI, PI, specialised bank or crypto — matched to what you actually intend to do.",
+        body: "EMI, PI, specialised bank or crypto, matched to what you actually intend to do.",
       },
       {
         title: "Entity & Capital Structure",
@@ -170,7 +170,7 @@ export const services: Service[] = [
       "Groups restructuring an existing licence footprint",
     ],
     process: [
-      { step: "01", name: "Scope", body: "Which licence your model genuinely requires — often not the one assumed." },
+      { step: "01", name: "Scope", body: "Which licence your model genuinely requires, often not the one assumed." },
       { step: "02", name: "Structure", body: "Entity, ownership, capital and governance put in place." },
       { step: "03", name: "Build", body: "Compliance framework, policies and controls drafted to your risk profile." },
       { step: "04", name: "Staff", body: "Compliance and MLRO appointments arranged with qualified individuals." },
@@ -183,11 +183,11 @@ export const services: Service[] = [
       },
       {
         q: "Can you guarantee the licence is granted?",
-        a: "No. Authorisation is the regulator's decision alone. What can be controlled is the quality, completeness and credibility of what is submitted — which is where most applications are actually lost.",
+        a: "No. Authorisation is the regulator's decision alone. What can be controlled is the quality, completeness and credibility of what is submitted, which is where most applications are actually lost.",
       },
       {
         q: "Is SnZ Ventures regulated?",
-        a: "No. SnZ Ventures is an advisory and coordination firm. Regulated activities — legal representation, audit, and the compliance officer functions themselves — are delivered by licensed partner firms and qualified individuals, named to you before you commit.",
+        a: "No. SnZ Ventures is an advisory and coordination firm. Regulated activities, legal representation, audit, and the compliance officer functions themselves, are delivered by licensed partner firms and qualified individuals, named to you before you commit.",
       },
       {
         q: "What capital will I need?",
@@ -212,7 +212,7 @@ export const services: Service[] = [
     hero: {
       eyebrow: "Business Setup",
       title: "Moving the Company Is One Project. Moving Your Family Is Another.",
-      lead: "Founders routinely underestimate the second one. Permits, schooling, housing, tax residency and healthcare registration run on their own timelines — and they do not wait for the business.",
+      lead: "Founders routinely underestimate the second one. Permits, schooling, housing, tax residency and healthcare registration run on their own timelines, and they do not wait for the business.",
     },
     problem: {
       title: "The Permit Is Not the Hard Part. The Sequencing Is.",
@@ -226,7 +226,7 @@ export const services: Service[] = [
     },
     solution: {
       title: "One Timeline Covering the Company, the Permit and the Household",
-      body: "We map the dependencies once, in order, and run them in parallel where the law allows — so the residence track and the business track arrive at roughly the same time.",
+      body: "We map the dependencies once, in order, and run them in parallel where the law allows, so the residence track and the business track arrive at roughly the same time.",
     },
     deliverables: [
       {
@@ -295,7 +295,7 @@ export const services: Service[] = [
     hero: {
       eyebrow: "Global Careers",
       title: "Real Roles, Named Employers, Honest Eligibility.",
-      lead: "We work as the outsourced hiring function for European SMEs and regulated firms — and we recruit from South Asia and the Middle East. Both sides of that corridor are our client.",
+      lead: "We work as the outsourced hiring function for European SMEs and regulated firms, and we recruit from South Asia and the Middle East. Both sides of that corridor are our client.",
     },
     problem: {
       title: "This Industry Has an Honesty Problem, and Everyone Knows It",
@@ -349,11 +349,11 @@ export const services: Service[] = [
     faqs: [
       {
         q: "Do candidates pay a fee?",
-        a: "Our recruitment mandates come from employers. Any candidate-side costs are stated in writing before you commit to anything, and we will always tell you what a third party — a government, a translator, an authority — will charge separately. If a fee structure is ever unclear to you, ask us to put it in writing.",
+        a: "Our recruitment mandates come from employers. Any candidate-side costs are stated in writing before you commit to anything, and we will always tell you what a third party, a government, a translator, an authority, will charge separately. If a fee structure is ever unclear to you, ask us to put it in writing.",
       },
       {
         q: "Can you guarantee me a job in Europe?",
-        a: "No. No recruiter can, and it is the clearest warning sign in this industry. What we can tell you is whether your profile is genuinely competitive for the roles we are mandated on — including when it is not.",
+        a: "No. No recruiter can, and it is the clearest warning sign in this industry. What we can tell you is whether your profile is genuinely competitive for the roles we are mandated on, including when it is not.",
       },
       {
         q: "Will my qualifications be recognised?",
@@ -361,7 +361,7 @@ export const services: Service[] = [
       },
       {
         q: "Which countries do you place into?",
-        a: "The destinations named on our Destinations page. Availability varies by role, sector and permit category at any given time — ask us about your specific profession rather than assuming from the list.",
+        a: "The destinations named on our Destinations page. Availability varies by role, sector and permit category at any given time, ask us about your specific profession rather than assuming from the list.",
       },
       {
         q: "Do I need to speak the local language?",

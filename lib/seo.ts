@@ -5,7 +5,7 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? company.siteUrl;
 
 const DEFAULT_DESCRIPTION =
-  "SnZ Ventures is a Vilnius-based advisory firm helping students, professionals and founders move into Europe — company formation, fintech licensing, international recruitment and investor relocation.";
+  "SnZ Ventures is a Vilnius-based advisory firm helping students, professionals and founders move into Europe, company formation, fintech licensing, international recruitment and investor relocation.";
 
 type PageSeo = {
   title: string;

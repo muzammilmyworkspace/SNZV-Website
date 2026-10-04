@@ -92,9 +92,9 @@ export function Section({
 }) {
   // Rhythm tightened for density — the old scale left large dead bands.
   const pad = {
-    tight: "py-12 md:py-14",
-    default: "py-16 md:py-20",
-    loose: "py-20 md:py-28",
+    tight: "py-8 md:py-10",
+    default: "py-10 md:py-12",
+    loose: "py-12 md:py-16",
   }[size];
 
   const resolved = TONE_ALIAS[tone] ?? "deep";

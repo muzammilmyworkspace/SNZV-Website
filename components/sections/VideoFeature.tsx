@@ -60,7 +60,7 @@ export function VideoFeature({ data }: { data: VideoFeatureData }) {
       />
 
       <Container className="relative">
-        <Chapter index="—" label={data.eyebrow} className="mb-6" />
+        <Chapter index="n/a" label={data.eyebrow} className="mb-6" />
 
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-14">
           <MaskedLines as="h2" className="d-2 max-w-[18ch] text-fg-strong" lines={[data.title]} />
@@ -151,7 +151,7 @@ export function VideoFeature({ data }: { data: VideoFeatureData }) {
 
             <p className="mt-3 text-[0.75rem] text-faint">
               {hasVideo
-                ? "Video loads only when you press play — nothing is requested from a third party before that."
+                ? "Video loads only when you press play, nothing is requested from a third party before that."
                 : data.captionsNote}
             </p>
           </div>

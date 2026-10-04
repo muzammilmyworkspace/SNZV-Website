@@ -40,6 +40,8 @@ const DWELL_MS = 6_000;
 const SCROLL_TRIGGER = 0.35;
 
 const SUPPRESSED = [
+  // Rebuilt on the Boarding Pass system: header CTA + closing form already.
+  "/about",
   "/study-abroad",
   "/global-careers",
   "/business-setup",
@@ -80,7 +82,15 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
   const restore = useRef<HTMLElement | null>(null);
   const fired = useRef(false);
 
-  const suppressed = SUPPRESSED.some((p) => pathname.startsWith(p));
+  /*
+    Not on the homepage. The new homepage is one continuous scroll-driven
+    story — the hero's flight loop, then the journey — and a modal six seconds
+    in lands on top of the moment that is meant to hook. The homepage already
+    answers "which route?" by being about the student route, and the header's
+    Book a Consultation is on screen the whole time.
+  */
+  const suppressed =
+    pathname === "/" || SUPPRESSED.some((p) => pathname.startsWith(p));
 
   useEffect(() => {
     if (suppressed || dismissedRecently()) return;
@@ -251,7 +261,7 @@ export function PathwayPopup({ pathname }: { pathname: string }) {
               </h2>
               <p className="pp-lede mx-auto mt-2 max-w-lg text-[0.85rem] leading-relaxed text-muted sm:mt-3 sm:text-[0.95rem]">
                 Pick the one closest to your situation. We&rsquo;ll show you what
-                that route actually involves — no sign-up needed.
+                that route actually involves, no sign-up needed.
               </p>
             </div>
 

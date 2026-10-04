@@ -74,7 +74,7 @@ export function PageHero({
   breadcrumbs,
   primaryCta,
   secondaryCta,
-  index = "—",
+  index = "n/a",
 }: {
   eyebrow: string;
   title: string;
@@ -435,7 +435,7 @@ export function TalkToUs() {
   return (
     <CTASection
       title="Not Sure Which Pathway Is Yours?"
-      lead="Tell us roughly where you want to end up. We'll tell you what the route looks like — and whether it's realistic."
+      lead="Tell us roughly where you want to end up. We'll tell you what the route looks like, and whether it's realistic."
       primary={{ label: "Start your journey", href: "/contact#journey" }}
       secondary={{
         label: "Message on WhatsApp",

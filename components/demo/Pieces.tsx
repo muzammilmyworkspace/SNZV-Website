@@ -913,7 +913,7 @@ export function BackendRequired({
       data-dev-note
       className="rounded-[var(--radius-md)] border border-dashed border-line p-5"
     >
-      <p className="label text-faint">Dev note — {feature}</p>
+      <p className="label text-faint">Dev note, {feature}</p>
       <p className="mt-2 text-[0.85rem] leading-relaxed text-muted">
         Hidden in production. Populates once these exist:
       </p>

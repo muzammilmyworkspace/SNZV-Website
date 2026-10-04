@@ -3,11 +3,12 @@ import { sendMail, mailConfigured, DEFAULT_TO } from "@/lib/mail";
 import { createEnquiry, markDelivered } from "@/lib/db/repos/enquiries";
 import { company } from "@/data/company";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
+import { enquiryEmailSubject } from "@/lib/enquiry-message";
 
 /**
  * Enquiry intake — every public form on the site posts here.
  *
- * Delivery goes to info@snzventures.com via lib/mail (Resend or a webhook,
+ * Delivery goes to study@snzventures.com via lib/mail (Resend or a webhook,
  * chosen by environment variable). If no transport is configured the route
  * returns 503 and the form surfaces the direct email and WhatsApp details,
  * rather than showing a success screen for a message nobody received.
@@ -56,14 +57,14 @@ function format({ pathway, answers }: Payload): string {
   void consent;
 
   const lines = [
-    `New enquiry — ${LABELS[pathway] ?? pathway}`,
+    `New enquiry: ${LABELS[pathway] ?? pathway}`,
     "",
     `Name:      ${name}`,
     `Email:     ${email}`,
     phone ? `Phone:     ${phone}` : null,
     preferredContact ? `Prefers:   ${preferredContact}` : null,
     "",
-    "— Details —",
+    "Details",
     ...Object.entries(rest).map(
       ([k, v]) => `${k.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase())}: ${v}`
     ),
@@ -148,7 +149,7 @@ export async function POST(request: Request) {
       try {
         await sendMail({
           to: fallbackAddress,
-          subject: `SnZ enquiry — ${LABELS[payload.pathway] ?? payload.pathway} — ${payload.answers.name}`,
+          subject: enquiryEmailSubject(LABELS[payload.pathway] ?? payload.pathway, payload.answers.name),
           text: format(payload),
           replyTo: payload.answers.email,
         });
@@ -165,7 +166,7 @@ export async function POST(request: Request) {
     }
 
     // eslint-disable-next-line no-console
-    console.error("[enquiry] COULD NOT STORE OR SEND — the enquiry has been lost.");
+    console.error("[enquiry] COULD NOT STORE OR SEND, the enquiry has been lost.");
     return NextResponse.json(
       {
         ok: false,
@@ -187,7 +188,7 @@ export async function POST(request: Request) {
     */
     // eslint-disable-next-line no-console
     console.warn(
-      `[enquiry] stored ${enquiryId} but NOT EMAILED — no mail transport configured. ` +
+      `[enquiry] stored ${enquiryId} but NOT EMAILED, no mail transport configured. ` +
         "Set RESEND_API_KEY or MAIL_WEBHOOK_URL. Enquiries are visible at /portal/admin/requests."
     );
     return NextResponse.json({ ok: true, stored: true, delivered: false });
@@ -198,7 +199,7 @@ export async function POST(request: Request) {
       // Consultation enquiries go to the client-specified consultation
       // address; MAIL_TO still overrides it from the environment.
       to: process.env.MAIL_TO ?? company.contact.consultationEmail ?? DEFAULT_TO,
-      subject: `SnZ enquiry — ${LABELS[payload.pathway] ?? payload.pathway} — ${payload.answers.name}`,
+      subject: enquiryEmailSubject(LABELS[payload.pathway] ?? payload.pathway, payload.answers.name),
       text: format(payload),
       replyTo: payload.answers.email,
     });

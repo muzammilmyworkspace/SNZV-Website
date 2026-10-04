@@ -149,7 +149,7 @@ export default async function ArticlePage({
 
           <Caveat>
             This article is general orientation, not legal, tax, immigration or
-            financial advice. Rules differ by country and change over time —
+            financial advice. Rules differ by country and change over time, 
             confirm the current position for your own circumstances with a
             qualified advisor or the relevant official authority before acting.
           </Caveat>

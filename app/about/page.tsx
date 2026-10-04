@@ -1,75 +1,59 @@
 import type { Metadata } from "next";
-import {
-  Container,
-  Section,
-  SectionHeading,
-  Caveat,
-  JsonLd,
-  Eyebrow,
-} from "@/components/ui/Primitives";
-import { PageHero, ProcessTimeline, TalkToUs } from "@/components/sections/PageParts";
-import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { JsonLd } from "@/components/ui/Primitives";
+import { BpPage } from "@/components/bp/page/BpPage";
+import { PageHero } from "@/components/bp/page/PageHero";
+import { PhotoStack } from "@/components/bp/page/PhotoStack";
+import { Band, SectionHead } from "@/components/bp/page/SectionHead";
+import { Reveal } from "@/components/bp/Reveal";
+import { InlineCta } from "@/components/bp/InlineCta";
+import { FinalCall } from "@/components/bp/FinalCall";
+import { TrustTicker } from "@/components/bp/TrustTicker";
+import { MissionScroll, ApproachPath, CorridorFlow } from "@/components/bp/about/AboutParts";
 import { approach } from "@/data/pathways";
-import {
-  company,
-  trustPoints,
-  ecosystem,
-  ecosystemDisclaimer,
-  sourceMarkets,
-} from "@/data/company";
+import { company, trustPoints, ecosystem, ecosystemDisclaimer, sourceMarkets } from "@/data/company";
+import { studyDestinations } from "@/data/study";
 import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "About — A Gateway to Possibility",
+  title: "About SnZ Ventures | Students First, From Vilnius",
   description:
-    "A woman-owned advisory firm in Vilnius, Lithuania, working across company formation, fintech licensing, recruitment and investor relocation.",
+    "A woman-owned advisory firm in Vilnius, Lithuania, helping students from South Asia and the Middle East study in Europe, with one named consultant from first call to first week.",
   path: "/about",
 });
 
 /**
- * The corridor as three numbers, read left to right. Every figure is derived
- * from data already on this site — no new claim is introduced here.
+ * /about — who SnZ is, told for a student and their family.
+ *
+ * Copy is built from what data/company.ts and data/pathways.ts already state
+ * (mission, attributes, trust points, approach, ecosystem), reframed for the
+ * student audience the site now leads with. Nothing here is a new claim: no
+ * founding year, no team size, no placement figure beyond the owner-confirmed
+ * one on the homepage board. The ecosystem list keeps its disclaimer — those
+ * bodies are context, never partners.
  */
-const CORRIDOR_FLOW = [
-  {
-    value: sourceMarkets.length.toString(),
-    label: "Source markets",
-    detail: "Across South Asia and the Middle East.",
-  },
-  {
-    value: "1",
-    label: "Coordination hub",
-    detail: "Vilnius — entities, licences and filings.",
-  },
-  {
-    value: "27",
-    label: "EU member states",
-    detail: "Where a Lithuanian entity can operate.",
-  },
-];
 
 const beliefs = [
   {
-    title: "Geography is a starting point, not a ceiling",
-    body: "Where someone is born shapes their options far more than their ability does. Closing that gap — for a student, a welder, a founder — is the entire reason this firm exists.",
+    title: "Geography is a starting point, not a ceiling.",
+    body: "Where someone is born shapes their options far more than their ability does. Closing that gap, for a student first of all, is the reason this firm exists.",
   },
   {
-    title: "The honest answer is worth more than the hopeful one",
-    body: "Telling someone their profile isn't competitive costs us a fee and saves them a year. We would rather lose the engagement than sell false hope.",
+    title: "The honest answer beats the hopeful one.",
+    body: "Telling a student their profile isn't competitive yet costs us a fee and saves them a year. We would rather lose the engagement than sell false hope.",
   },
   {
-    title: "Coordination is the actual product",
-    body: "Almost nobody fails because a single step was impossible. They fail because six steps ran through six firms in the wrong order.",
+    title: "Coordination is the real product.",
+    body: "Almost nobody fails because one step was impossible. They fail because six steps ran through six people in the wrong order. We run them in one order, with one person.",
   },
   {
-    title: "Regulated work belongs with regulated people",
-    body: "We are not auditors, lawyers or compliance officers. We say so plainly, and we name the licensed partners who are before you commit.",
+    title: "Regulated work belongs with regulated people.",
+    body: "We are advisors, not a university, not an embassy, not a law firm. We say so plainly, and we name the licensed partners who handle regulated steps before you commit.",
   },
 ];
 
 export default function AboutPage() {
   return (
-    <>
+    <BpPage>
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
@@ -78,208 +62,158 @@ export default function AboutPage() {
       />
 
       <PageHero
-        eyebrow="About SnZ Ventures"
-        title="More than Guidance. A Gateway to Possibility."
-        lead={company.missionQuote}
-        image="/images/dest-vilnius.webp"
-        imageAlt="Vilnius skyline at dusk"
-        breadcrumbs={[
-          { name: "Home", path: "/" },
-          { name: "About", path: "/about" },
+        crumbs={[
+          { name: "Home", href: "/" },
+          { name: "About", href: "/about" },
         ]}
-        primaryCta={{ label: "Start your journey", href: "/contact#journey" }}
+        eyebrow="About SnZ Ventures"
+        lines={[{ text: "Based in Vilnius." }, { text: "Built for students" }, { text: "going further.", mark: true }]}
+        lede="SnZ Ventures is a woman-owned advisory firm inside the European Union. We help students from South Asia and the Middle East reach European universities, and we stay with them until they've landed."
+        primary={{ label: "Meet a consultant", href: "/contact#journey" }}
+        secondary={{ label: "How we work", href: "#approach" }}
+        visual={
+          <PhotoStack
+            photos={[
+              { src: "/images/dest-vilnius-old.webp", alt: "Rooftops of Vilnius old town with the cathedral and palace", caption: "Vilnius, our home" },
+              { src: "/images/dest-vilnius.webp", alt: "Vilnius skyline at dusk across the river", caption: "Where we work" },
+              { src: "/images/plate-departure.webp", alt: "Aircraft wing above the clouds at sunrise", caption: "Where students go" },
+            ]}
+          />
+        }
       />
 
-      {/* Who we are */}
-      <Section tone="light">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
-            <SectionHeading
-              eyebrow="Who we are"
-              title="A Vilnius Firm Built Around One Corridor."
-              lead="SnZ Ventures is a woman-owned advisory business operating between South Asia, the Middle East and the European Union. We work at both ends of that route — which is unusual, and is the reason we can be straight with people at either end."
-            />
-            <Reveal>
-              <div className="space-y-4 text-[0.95rem] leading-relaxed text-fg">
-                <p>
-                  We do four things: form and run European companies, prepare
-                  fintech licence applications, recruit into European employers,
-                  and relocate the founders and families who come with all of
-                  that.
-                </p>
-                <p>
-                  They look like separate businesses. In practice they are the
-                  same problem viewed from different sides — someone is trying
-                  to cross a border, and the administrative reality is more
-                  complicated than anyone told them.
-                </p>
-                <p>
-                  Lithuania is where we are based and where most of the
-                  structural work happens. It has the largest licensed fintech
-                  population in the European Union, runs its processes in
-                  English, and gives a company access to all 27 member states.
-                </p>
-              </div>
+      <TrustTicker />
 
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {company.attributes.map((a) => (
-                  <li
-                    key={a}
-                    className="rounded-[var(--radius-xs)] border border-line px-3 py-1 text-[0.8rem] text-muted"
-                  >
-                    {a}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
+      <Band labelledBy="mission-title">
+        <h2 id="mission-title" className="sr-only">
+          Our mission
+        </h2>
+        <p className="bp-eyebrow mb-8">Why we exist</p>
+        <MissionScroll text={company.missionQuote} by={company.name} />
+      </Band>
 
-        </Container>
-      </Section>
-
-      {/* What we believe */}
-      <Section tone="dark" className="grain overflow-hidden">
-        <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-50" />
-        <Container className="relative">
-          <SectionHeading
-            tone="dark"
-            eyebrow="What we believe"
-            title="Four Positions We're Willing to Be Held To."
+      <Band id="who" labelledBy="who-title">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+          <SectionHead
+            id="who-title"
+            eyebrow="Who we are"
+            title={
+              <>
+                A Vilnius firm built <span className="bp-outline">around one route.</span>
+              </>
+            }
           />
-          <RevealGroup className="mt-9 grid gap-px overflow-hidden border border-line bg-raised md:grid-cols-2">
-            {beliefs.map((b) => (
-              <RevealItem key={b.title} className="bg-surface p-6">
-                <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-fg">
-                  {b.title}
-                </h3>
-                <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
-                  {b.body}
-                </p>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </Container>
-      </Section>
+          <Reveal className="space-y-5 text-[1.05rem] leading-relaxed text-[var(--bp-fg)]">
+            <p>
+              We work between South Asia, the Middle East and the European Union, at both ends of the route. That is
+              unusual, and is exactly why we can be straight with students and families on either side of it.
+            </p>
+            <p>
+              Most of our work is students: choosing the right country and course, building an application an
+              admissions office takes seriously, finding the funding you actually qualify for, preparing the visa
+              file, and handling arrival. Alongside that we place professionals with European employers and set up
+              companies for founders, so the route doesn&apos;t end at graduation.
+            </p>
+            <p>
+              We&apos;re based at {company.contact.streetAddress}, {company.contact.city}. Lithuania runs its processes
+              in English and sits inside the EU: a good place to stand when your job is opening doors across{" "}
+              {studyDestinations.length} countries.
+            </p>
+            <ul className="flex flex-wrap gap-2 pt-2">
+              {company.attributes.map((a) => (
+                <li key={a} className="rounded-full border border-[var(--color-runway)] px-3.5 py-1.5 text-[0.85rem] font-semibold text-[var(--color-runway)]">
+                  {a}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+        <CorridorFlow
+          from={{ value: String(sourceMarkets.length), label: "Home countries", detail: sourceMarkets.join(" · ") }}
+          hub={{ value: "1", label: "Vilnius office", detail: "One team coordinating every application, file and filing." }}
+          to={{ value: String(studyDestinations.length), label: "Study destinations", detail: "Across the EU's single market of 27 member states." }}
+        />
+      </Band>
 
-      {/* Global vision — corridor map */}
-      <Section tone="mist">
-        <Container>
-          <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
-            <SectionHeading
-              eyebrow="Our global vision"
-              title="Both Ends of the Route, or Neither."
-              lead="Most agencies sit at one end of a corridor and guess about the other. We recruit in the source markets and place into the destination markets, so what we tell each side is grounded in the other."
-            />
-            {/*
-              An infographic, not a map.
+      <Band id="beliefs" labelledBy="beliefs-title">
+        <SectionHead
+          id="beliefs-title"
+          eyebrow="What we believe"
+          title={
+            <>
+              Four positions <span className="bp-outline">we&apos;ll be held to.</span>
+            </>
+          }
+        />
+        <ol className="mt-10 grid gap-4 md:grid-cols-2">
+          {beliefs.map((b, i) => (
+            <li key={b.title}>
+              <Reveal delay={(i % 2) * 0.1} className="h-full">
+                <article className="bp-pass-dark group relative h-full overflow-hidden p-7 transition-transform duration-500 hover:-translate-y-1">
+                  {/* Watermark numeral — SVG text, because it is decoration, not copy. */}
+                  <svg aria-hidden viewBox="0 0 140 110" className="pointer-events-none absolute -right-3 -top-5 h-28 w-36 text-[var(--bp-chip)] transition-colors duration-500 group-hover:text-[var(--color-runway)]/15">
+                    <text x="140" y="96" textAnchor="end" fill="currentColor" style={{ font: "600 112px var(--font-grotesk)", letterSpacing: "-0.04em" }}>
+                      0{i + 1}
+                    </text>
+                  </svg>
+                  <h3 className="relative font-[family-name:var(--font-grotesk)] text-[1.5rem] font-semibold leading-tight text-[var(--bp-strong)]">{b.title}</h3>
+                  <p className="bp-body relative mt-3">{b.body}</p>
+                </article>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </Band>
 
-              This section is about the SHAPE of the business — talent in one
-              direction, companies the other, Lithuania in the middle. A second
-              map said none of that; it repeated the homepage atlas and left a
-              scatter of green dots with no legend to explain them. Numbers and
-              a direction of travel carry the idea in a glance.
-            */}
-            <Reveal>
-              <div className="rounded-[var(--radius-lg)] border border-line bg-raised p-6 sm:p-8">
-                <div className="grid gap-6 sm:grid-cols-3 sm:gap-4">
-                  {CORRIDOR_FLOW.map((step, i) => (
-                    <div key={step.label} className="relative">
-                      <span className="num block text-[2.4rem] leading-none tracking-[-0.03em] text-fg">
-                        {step.value}
-                      </span>
-                      <span className="label mt-2 block text-accent">
-                        {step.label}
-                      </span>
-                      <span className="mt-1.5 block text-[0.8rem] leading-snug text-muted">
-                        {step.detail}
-                      </span>
+      <Band id="approach" labelledBy="approach-title">
+        <SectionHead
+          id="approach-title"
+          eyebrow="How we work"
+          title={
+            <>
+              The same six steps, <span className="bp-outline">for every student.</span>
+            </>
+          }
+          aside="Only the content changes. The structure, the honesty and the person you speak to don't."
+        />
+        <ApproachPath steps={approach} />
+        <InlineCta className="mt-12" lead="Step one is a conversation." label="Book yours, it's free" href="/contact#journey" />
+      </Band>
 
-                      {/* Direction of travel, drawn between the columns. */}
-                      {i < CORRIDOR_FLOW.length - 1 && (
-                        <svg
-                          viewBox="0 0 24 12"
-                          aria-hidden
-                          className="absolute -right-3 top-3 hidden h-3 w-6 text-accent sm:block"
-                        >
-                          <path
-                            d="M1 6h20M17 2l4 4-4 4"
-                            stroke="currentColor"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            opacity="0.65"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                  ))}
-                </div>
+      <Band id="commitments" labelledBy="commit-title">
+        <SectionHead
+          id="commit-title"
+          eyebrow="Checkable commitments"
+          title={
+            <>
+              Promises you can test <span className="bp-outline">in the first call.</span>
+            </>
+          }
+        />
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {trustPoints.map((t, i) => (
+            <li key={t.title}>
+              <Reveal delay={i * 0.08} className="h-full">
+                <article className="h-full border-t-2 border-[var(--color-runway)] pt-5">
+                  <h3 className="font-[family-name:var(--font-grotesk)] text-[1.2rem] font-semibold text-[var(--bp-strong)]">{t.title}</h3>
+                  <p className="bp-body mt-2 text-[0.95rem]">{t.body}</p>
+                </article>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
 
-                <p className="mt-7 border-t border-line pt-5 text-[0.85rem] leading-relaxed text-muted">
-                  Both ends of the same route. We recruit where the talent is
-                  and place where the demand is, so neither side is guesswork.
-                </p>
-              </div>
-            </Reveal>
+        <div className="mt-14 grid gap-6 rounded-[22px] border border-[var(--bp-line)] p-6 md:grid-cols-[1fr_2fr] md:p-8">
+          <p className="bp-mono text-[var(--color-aurora)]">The ecosystem we operate within</p>
+          <div>
+            <p className="text-[1rem] text-[var(--bp-fg)]">{ecosystem.join(" · ")}</p>
+            <p className="mt-3 text-[0.85rem] leading-relaxed text-[var(--bp-faint)]">{ecosystemDisclaimer}</p>
+            <p className="mt-3 text-[0.85rem] leading-relaxed text-[var(--bp-faint)]">{company.regulatoryNotice}</p>
           </div>
+        </div>
+      </Band>
 
-          <div className="mt-10 grid gap-8 border-t border-line pt-8 md:grid-cols-2">
-            <div>
-              <Eyebrow className="mb-3">Talent source markets</Eyebrow>
-              <p className="text-[0.9rem] leading-relaxed text-muted">
-                {sourceMarkets.join(" · ")}
-              </p>
-            </div>
-            <div>
-              <Eyebrow className="mb-3">
-                Operating within Lithuania&rsquo;s ecosystem
-              </Eyebrow>
-              <p className="text-[0.9rem] leading-relaxed text-muted">
-                {ecosystem.join(" · ")}
-              </p>
-              <Caveat>{ecosystemDisclaimer}</Caveat>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      {/* How we work */}
-      <ProcessTimeline
-        steps={approach.slice(0, 5)}
-        eyebrow="How we work"
-        title="The Same Six Steps, Whoever You Are."
-        lead="A student, a nurse and a payments founder get the same structure. Only the content changes."
-      />
-
-      {/* Why clients choose us */}
-      <Section tone="light">
-        <Container>
-          <SectionHeading
-            eyebrow="Why clients choose us"
-            title="Checkable Commitments, Not Adjectives."
-            lead="We have deliberately avoided claims we cannot evidence. These are the four you can test in the first conversation."
-          />
-          <RevealGroup className="mt-9 grid gap-5 md:grid-cols-2">
-            {trustPoints.map((t) => (
-              <RevealItem
-                key={t.title}
-                className="border border-line bg-white/[0.03] p-6"
-              >
-                <h3 className="text-[1rem] font-semibold tracking-[-0.01em] text-fg">
-                  {t.title}
-                </h3>
-                <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">
-                  {t.body}
-                </p>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-
-          <Caveat>{company.regulatoryNotice}</Caveat>
-        </Container>
-      </Section>
-
-      <TalkToUs />
-    </>
+      <FinalCall />
+    </BpPage>
   );
 }

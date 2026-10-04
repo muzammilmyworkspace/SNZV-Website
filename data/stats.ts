@@ -50,68 +50,72 @@ export type Stat = {
 const EU_MEMBER_STATES = 27;
 
 const homeStatsAuthored: Stat[] = [
-  {
-    /*
-      DERIVED FROM data/partners.ts, not typed as a number here.
+  /*
+    OWNER-CONFIRMED FIGURES — 2026-10-03, raised 2026-10-04 to students
+    placed "100+" and university partnerships "10+".
 
-      Each of these is evidenced by SnZ's own published announcement for that
-      institution, which is what makes it the one performance-shaped figure on
-      this page that can ship. Add a fourth partnership and this becomes 4 on
-      its own; hardcoding it would leave a number on the homepage that the
-      partnerships section below it contradicts.
-    */
-    value: partners.length,
+    The owner supplied these in writing during the homepage review: students
+    placed "50+", university partnerships "05+", study destinations "10+".
+    That written confirmation is what this file's rule asks for before a
+    company claim ships, so they now render.
+
+    They are typed, not derived, and that is deliberate:
+      • Students placed has no data source in this repo at all.
+      • Partnerships: data/partners.ts names three institutions with a
+        published announcement each; the owner states there are more than
+        five, the rest not yet announced. The partnerships section shows the
+        named three plus "more coming" — it never names an institution that
+        has no announcement on file. When the others are announced, add them
+        to partners.ts.
+      • Destinations: studyDestinations lists ten; "10+" is the owner's
+        framing that more are available on request.
+
+    If any figure changes, change it here — this is the only place it lives.
+  */
+  {
+    value: 100,
+    suffix: "+",
+    label: "Students placed",
+    detail: "Students we have taken from first call to a European campus.",
+  },
+  {
+    value: Math.max(10, partners.length),
+    suffix: "+",
     label: "University partnerships",
-    detail: "Named institutions we work with directly on admissions.",
+    detail: "Institutions we work with directly on admissions.",
   },
   {
-    value: studyDestinations.length,
+    value: Math.max(10, studyDestinations.length),
+    suffix: "+",
     label: "Study destinations",
-    detail: "European countries on the study pathway.",
+    detail: "Countries on the study pathway, with tuition we can quote upfront.",
   },
   {
-    value: scholarships.length,
-    label: "Funding schemes",
-    detail: "Government and EU programmes we help students apply to.",
-  },
-  {
+    // Objective fact about the EU, not a company claim. On the board at the
+    // owner's request (2026-10-04), replacing "Home countries".
     value: EU_MEMBER_STATES,
     label: "EU member states",
-    detail: "The single market a Lithuanian entity operates across.",
+    detail: "Where an EU degree is recognised, and where your career can start.",
   },
 
   /*
     ------------------------------------------------------------------------
-    WITHHELD. Everything below this line renders nowhere until it is confirmed.
+    WITHHELD. Everything below this line renders nowhere.
     ------------------------------------------------------------------------
-
-    "Students placed" is the counter the business most wants on this page and
-    the one it cannot have yet. There is no audited figure: nothing on the live
-    site, nothing in the portal that covers the years before it existed, and a
-    placement number is precisely the kind of claim a regulator or a
-    disappointed family asks to see evidence for.
-
-    It is written here rather than left out so that the gap is visible to
-    whoever is chasing it, and so that shipping it is deleting one line rather
-    than designing a counter. The value is a PLACEHOLDER and must be replaced
-    with the confirmed figure at the same time — see CONTENT-HANDOFF.md § 3.
+    Funding schemes and home countries were on the board before the owner's
+    reviews replaced them with the figures above. Both are true; they
+    stay here for any page that wants them.
   */
   {
-    value: 0,
-    suffix: "+",
-    label: "Students placed",
-    detail: "Students we have moved into a European institution.",
+    value: scholarships.length,
+    label: "Funding schemes",
+    detail: "Government and EU programmes we help students apply to.",
     verified: false,
   },
   {
     value: corridors.length,
-    label: "Source markets",
-    detail: "Where we recruit, across South Asia and the Middle East.",
-    /*
-      True, and cut for space rather than for doubt: the band is a four-column
-      grid and a fifth figure wraps to a second row holding one number. It
-      stays in the file because /about and the careers pages can use it.
-    */
+    label: "Home countries",
+    detail: "Where our students come from, across South Asia and the Middle East.",
     verified: false,
   },
   {

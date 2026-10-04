@@ -507,7 +507,7 @@ export function ContentRequired({
     >
       <p className="label text-fg-strong">
         <span aria-hidden className="mr-2 inline-block h-2 w-2 rounded-full bg-amber-500 align-middle" />
-        [Content required] — {label}
+        [Content required], {label}
       </p>
       {items && (
         <ul className="mt-3 space-y-1.5 pl-4 list-disc marker:text-amber-500">

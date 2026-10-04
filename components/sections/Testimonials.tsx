@@ -70,7 +70,7 @@ export function Testimonials() {
           className="bloom-moss pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 opacity-25"
         />
         <Container className="relative">
-          <Chapter index="—" label="Trust" className="mb-6" />
+          <Chapter index="n/a" label="Trust" className="mb-6" />
           {/* Stretch so the panel's top and bottom edges line up with the
               copy beside it rather than floating centred against it. */}
           <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-stretch lg:gap-16">
@@ -85,7 +85,7 @@ export function Testimonials() {
                   We don&rsquo;t publish testimonials we can&rsquo;t verify, and
                   we won&rsquo;t write them ourselves. Our clients&rsquo; own
                   words are on our Google listing, where we cannot edit or
-                  remove them — read them there.
+                  remove them, read them there.
                 </p>
               </Reveal>
               <Reveal delay={0.18}>
@@ -128,7 +128,7 @@ export function Testimonials() {
                 </span>
 
                 <blockquote className="mt-6 font-display text-[1.35rem] leading-[1.3] tracking-[-0.015em] text-fg">
-                  Read what our students and clients actually wrote — on a
+                  Read what our students and clients actually wrote, on a
                   platform where we can&rsquo;t edit a word of it.
                 </blockquote>
 
@@ -191,7 +191,7 @@ export function Testimonials() {
         className="bloom-moss pointer-events-none absolute -left-32 top-1/3 h-[26rem] w-[26rem] opacity-25"
       />
       <Container className="relative">
-        <Chapter index="—" label="Trust" className="mb-6" />
+        <Chapter index="n/a" label="Trust" className="mb-6" />
         <MaskedLines
           as="h2"
           className="d-2 max-w-[16ch] text-fg-strong"

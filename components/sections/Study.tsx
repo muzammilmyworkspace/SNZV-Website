@@ -99,7 +99,7 @@ export function StudyHero() {
           </ol>
         </nav>
 
-        <Chapter index="—" label="For students" className="mb-8" />
+        <Chapter index="n/a" label="For students" className="mb-8" />
 
         <MaskedLines
           as="h1"
@@ -117,7 +117,7 @@ export function StudyHero() {
         <Reveal delay={0.3}>
           <p className="lede mt-8 max-w-2xl">
             From choosing a destination and a university through application,
-            admission, visa and departure — one advisory team, one named
+            admission, visa and departure, one advisory team, one named
             advisor, and honest answers at every step of the journey.
           </p>
         </Reveal>
@@ -163,7 +163,7 @@ export function StudyHero() {
 const WHY_STUDY = [
   {
     title: "A qualification that travels",
-    body: "A degree from an EU institution is recognised across all 27 member states as a matter of law — not as a favour, and not subject to a case-by-case decision.",
+    body: "A degree from an EU institution is recognised across all 27 member states as a matter of law, not as a favour, and not subject to a case-by-case decision.",
   },
   {
     title: "Tuition that is not the American number",
@@ -281,7 +281,7 @@ export function StudyDestinations({
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
               {home
                 ? "Our study pathway covers ten EU destinations, with indicative annual tuition published for each so you can compare honestly before you commit."
-                : "Indicative annual tuition, published so you can compare before you invest a year in an application. The right country is the one where your field is taught well and hired for — not the one with the best photographs."}
+                : "Indicative annual tuition, published so you can compare before you invest a year in an application. The right country is the one where your field is taught well and hired for, not the one with the best photographs."}
             </p>
           </Reveal>
         </div>
@@ -295,7 +295,7 @@ export function StudyDestinations({
           readable measure; five returns at xl where there is genuinely width
           for it, keeping the ten-up composition on large screens.
         */}
-        <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-6 md:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-14 grid grid-cols-1 gap-4 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
           {shown.map((d, i) => (
             <StudyDestinationCard
               key={d.slug}
@@ -335,7 +335,7 @@ export function StudyDestinations({
 const SHORTLIST_CRITERIA = [
   {
     title: "Is the programme accredited where it matters?",
-    body: "For regulated fields — medicine, engineering, law — accreditation decides whether you can practise. It is checked before you apply, not after you graduate.",
+    body: "For regulated fields, medicine, engineering, law, accreditation decides whether you can practise. It is checked before you apply, not after you graduate.",
   },
   {
     title: "Who hires from this course?",
@@ -389,7 +389,7 @@ export function StudyUniversities() {
             <Caveat>
               Our named partnerships are listed below. A partner institution is
               still only shortlisted for you when the programme genuinely fits
-              — and where an arrangement affects your specific case, it is put
+              and where an arrangement affects your specific case, it is put
               to you in writing.
             </Caveat>
           </div>

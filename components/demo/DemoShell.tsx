@@ -172,7 +172,7 @@ export function DemoShell({ role, children }: { role: DemoRole; children: ReactN
         fabricated metric can be quoted back as a real one months later.
       */}
       <div className="sticky top-0 z-[60] flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-amber-400 px-4 py-2 text-center text-[0.8rem] font-semibold text-[#3B2A02]">
-        <span>DEMO PREVIEW — all names, numbers and records on these screens are invented.</span>
+        <span>DEMO PREVIEW, all names, numbers and records on these screens are invented.</span>
         <Link
           href="/demo"
           className="inline-flex min-h-11 items-center px-2 underline underline-offset-2"

@@ -75,7 +75,7 @@ export default async function LegalPage({
           {/* Unmissable draft warning — these documents are not launch-ready. */}
           <div className="mb-9 border border-amber-300 bg-amber-50 p-4">
             <p className="text-[0.85rem] font-semibold uppercase tracking-wide text-amber-900">
-              Draft — legal review required
+              Draft, legal review required
             </p>
             <p className="mt-1.5 text-[0.85rem] leading-relaxed text-amber-900">
               This document provides structure only. Sections marked{" "}

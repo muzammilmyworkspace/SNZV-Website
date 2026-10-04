@@ -23,6 +23,15 @@ plausible-sounding text. This document is the list of gaps.
 
 ## 2. Email delivery — one variable away
 
+> **Contact details changed, 2026-10-04 (owner instruction).** One email and
+> one number everywhere: **study@snzventures.com** and **+370 623 93857**
+> (calls and WhatsApp). The old number (+370 603 05146) and the old addresses
+> (info@snzventures.com, info@maincharacter.nl) are removed from the site,
+> the privacy policy and the default enquiry delivery. **On the live server,
+> check `MAIL_TO`:** if it is set, it overrides this, so it must be unset or
+> `study@snzventures.com`.
+
+
 Delivery is implemented in `lib/mail.ts` and wired into both the enquiry API
 and password resets. Choose a transport in `.env.local`:
 
@@ -170,6 +179,22 @@ claim a regulator or a disappointed family asks to see evidence for.
 `verified: false` line. No code change, no design work — the counter is already
 built and already positioned.
 
+> **Update 2026-10-04:** the owner raised the figures to **100+ students placed** and **10+ university partnerships**. Board order: students, partnerships, destinations (10+), EU member states (27).
+>
+> **Update 2026-10-03 — owner-confirmed, now live on the new homepage.** During
+> the homepage review the owner supplied, in writing: **50+ students placed**,
+> **5+ university partnerships**, **10+ study destinations**. They render on the
+> departure board in that order, with "Home countries" (8, derived from
+> `corridors`) replacing EU member states. Funding schemes and EU member states
+> are kept in `data/stats.ts`, withheld.
+>
+> **Still needed:** `data/partners.ts` names three partnerships (Okan, Istinye,
+> C3S), each with a published announcement. The owner says there are more than
+> five. Send the **names and announcement posters** for the others and they get
+> a card each in the partnerships section. Until then the section shows the
+> three plus the "more partnerships coming" poster, and never names a
+> university that has no announcement.
+
 **The obvious counters — "5,000+ students placed", "98% visa success rate",
 "300+ partner universities" — are still NOT rendered.** They live in
 `data/company.ts → stats` and `data/study.ts → studyClaims`, both flagged
@@ -222,6 +247,13 @@ guessed.**
 | Captions | A WebVTT track. **Required, not optional.** |
 
 Set `src` and `provider` and the section plays it. Nothing else changes.
+
+> **New homepage (Boarding Pass, `new-site` branch):** the portal section there
+> shows the real screenshots and an animated portal reel, and does **not**
+> render a video slot at all while `src` is null — a "video required" box in
+> the centrepiece would be the first thing a visitor reads. When the video
+> arrives, it still needs placing in `components/bp/PortalSection.tsx`; it is
+> not wired up there yet.
 
 ---
 

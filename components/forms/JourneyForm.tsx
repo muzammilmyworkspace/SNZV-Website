@@ -92,7 +92,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
       name: "intake",
       label: "Preferred intake",
       type: "select",
-      options: ["Next 6 months", "6–12 months", "Over a year away", "Undecided"],
+      options: ["Next 6 months", "6 to 12 months", "Over a year away", "Undecided"],
     },
     {
       name: "funding",
@@ -114,7 +114,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
       label: "Years of experience",
       type: "select",
       required: true,
-      options: ["Under 2", "2–5", "5–10", "10+"],
+      options: ["Under 2", "2 to 5", "5 to 10", "10+"],
     },
     {
       name: "destination",
@@ -168,7 +168,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
         "Crypto authorisation",
         "Residence permit & relocation",
         "Hiring a team",
-        "Not sure — need guidance",
+        "Not sure, need guidance",
       ],
     },
     {
@@ -181,7 +181,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
       name: "timeline",
       label: "Timeline",
       type: "select",
-      options: ["Immediately", "1–3 months", "3–6 months", "Exploring"],
+      options: ["Immediately", "1 to 3 months", "3 to 6 months", "Exploring"],
     },
   ],
 };
@@ -315,10 +315,10 @@ export function JourneyForm({
             />
           </svg>
         </div>
-        <h3 className="d-3 mt-6 text-fg">Thank you — that's enough to work with.</h3>
+        <h3 className="d-3 mt-6 text-fg">Thank you, that's enough to work with.</h3>
         <p className="mx-auto mt-4 max-w-md text-[0.95rem] leading-relaxed text-muted">
           We'll review what you've told us and come back with an honest read on
-          your options — including if we think the route isn't right for you.
+          your options, including if we think the route isn't right for you.
         </p>
         <p className="mt-6 text-[0.85rem] text-faint">
           Prefer to talk now?{" "}
@@ -389,7 +389,7 @@ export function JourneyForm({
               What are you looking to achieve?
             </legend>
             <p className="mb-7 text-[0.9rem] text-faint">
-              This decides what we ask next — so you only answer what's
+              This decides what we ask next, so you only answer what's
               relevant.
             </p>
 

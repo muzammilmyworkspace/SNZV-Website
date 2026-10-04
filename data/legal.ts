@@ -34,7 +34,7 @@ export const legalDocs: LegalDoc[] = [
         heading: "Who we are",
         paras: [
           "SnZ Ventures is an advisory firm based in Vilnius, Lithuania. For the purposes of the EU General Data Protection Regulation (GDPR), the data controller is [CONFIRM: registered legal entity name, company code and registered address].",
-          "Questions about this policy or your data can be sent to info@snzventures.com.",
+          "Questions about this policy or your data can be sent to study@snzventures.com.",
         ],
       },
       {
@@ -52,7 +52,7 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Why we use it, and our lawful basis",
         paras: [
-          "[CONFIRM with legal advisor: the lawful basis relied on for each processing purpose — typically consent for marketing analytics, and legitimate interests or steps prior to entering a contract for responding to enquiries.]",
+          "[CONFIRM with legal advisor: the lawful basis relied on for each processing purpose, typically consent for marketing analytics, and legitimate interests or steps prior to entering a contract for responding to enquiries.]",
         ],
         list: [
           "To respond to your enquiry and assess whether we can assist",
@@ -64,8 +64,8 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Who we share it with",
         paras: [
-          "We do not sell personal data. Where a matter requires regulated work, we share only what is necessary with the licensed partner firms involved — for example auditors, law firms, notaries or compliance officers — and we identify them to you beforehand.",
-          "[CONFIRM: list of processors — hosting provider, email/CRM provider, analytics providers — and whether any transfer data outside the EEA, plus the safeguards used.]",
+          "We do not sell personal data. Where a matter requires regulated work, we share only what is necessary with the licensed partner firms involved, for example auditors, law firms, notaries or compliance officers, and we identify them to you beforehand.",
+          "[CONFIRM: list of processors, hosting provider, email/CRM provider, analytics providers, and whether any transfer data outside the EEA, plus the safeguards used.]",
         ],
       },
       {
@@ -78,7 +78,7 @@ export const legalDocs: LegalDoc[] = [
         heading: "Your rights",
         paras: [
           "Under the GDPR you have the right to access your data, correct it, request erasure, restrict or object to processing, and request portability. Where processing is based on consent, you may withdraw that consent at any time.",
-          "To exercise any of these rights, contact info@snzventures.com. You also have the right to lodge a complaint with the Lithuanian State Data Protection Inspectorate (Valstybinė duomenų apsaugos inspekcija).",
+          "To exercise any of these rights, contact study@snzventures.com. You also have the right to lodge a complaint with the Lithuanian State Data Protection Inspectorate (Valstybinė duomenų apsaugos inspekcija).",
         ],
       },
       {
@@ -154,9 +154,9 @@ export const legalDocs: LegalDoc[] = [
           "Where configured, cookies and similar technologies fall into the following categories.",
         ],
         list: [
-          "Strictly necessary — required to deliver the site and its security. These cannot be switched off.",
-          "Analytics — measure how the site is used so it can be improved (for example Google Analytics 4, Microsoft Clarity).",
-          "Advertising — measure and target campaigns (for example Google Ads, Meta Pixel).",
+          "Strictly necessary, required to deliver the site and its security. These cannot be switched off.",
+          "Analytics, measure how the site is used so it can be improved (for example Google Analytics 4, Microsoft Clarity).",
+          "Advertising, measure and target campaigns (for example Google Ads, Meta Pixel).",
         ],
       },
       {

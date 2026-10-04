@@ -22,24 +22,28 @@ export const company = {
   missionQuote:
     "Geography should not be a barrier to ambition. SnZ Ventures dismantles the borders between European opportunity.",
 
-  /** Verified — published on the live site. */
+  /**
+   * ONE NUMBER, ONE EMAIL. Owner instruction, 2026-10-04: use
+   * +370 623 93857 and study@snzventures.com everywhere, and remove the old
+   * number (+370 603 05146) and the old addresses (info@snzventures.com,
+   * info@maincharacter.nl). The same number serves calls and WhatsApp.
+   */
   contact: {
-    phone: "+370 603 05146",
-    phoneHref: "+37060305146",
-    email: "info@snzventures.com",
+    phone: "+370 623 93857",
+    phoneHref: "+37062393857",
+    email: "study@snzventures.com",
     /**
-     * Where consultation enquiries are delivered.
-     *
-     * ⚠ DIFFERENT DOMAIN, ON PURPOSE — client-specified. General contact
-     * remains info@snzventures.com (above); the consultation form goes here.
-     * `MAIL_TO` overrides this at runtime without a code change, so if this
-     * address is ever wrong it can be corrected from the environment.
-     *
-     * See CONTENT-HANDOFF § 2 — this one needs confirming before launch.
+     * Where website enquiries are delivered. `MAIL_TO` in the server
+     * environment overrides this, so make sure it is unset or also
+     * study@snzventures.com on the live deployment.
      */
-    consultationEmail: "info@maincharacter.nl",
-    /** Live site links a WhatsApp channel on the same published number. */
-    whatsapp: "37060305146",
+    consultationEmail: "study@snzventures.com",
+    /**
+     * WhatsApp: the same number as the phone line. `whatsapp` is the wa.me
+     * form (digits only); `whatsappDisplay` is what a visitor reads.
+     */
+    whatsapp: "37062393857",
+    whatsappDisplay: "+370 623 93857",
     city: "Vilnius",
     country: "Lithuania",
     countryCode: "LT",
@@ -88,7 +92,7 @@ export const company = {
    * This is a TRUST asset, not a liability. Never imply direct regulation.
    */
   regulatoryNotice:
-    "SnZ Ventures is an advisory firm. Regulated activities — audit, legal representation, licensing submissions and AML officer functions — are delivered through licensed partner firms. SnZ Ventures is not itself a regulated financial institution.",
+    "SnZ Ventures is an advisory firm. Regulated activities (audit, legal representation, licensing submissions and AML officer functions) are delivered through licensed partner firms. SnZ Ventures is not itself a regulated financial institution.",
 
   /*
     THE APEX, NOT www.
@@ -184,7 +188,7 @@ export const trustPoints = [
   },
   {
     title: "We Tell You When the Answer Is No",
-    body: "If a market, a licence or a route doesn't fit your case, you hear it in the first conversation — not after the invoice.",
+    body: "If a market, a licence or a route doesn't fit your case, you hear it in the first conversation, not after the invoice.",
   },
   {
     title: "Built on Both Sides of the Corridor",

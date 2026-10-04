@@ -83,7 +83,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
         },
         {
           title: "Scholarships Are Specific, Not General",
-          body: "Most funding is tied to a nationality, a subject or an institution — and the deadlines close months before the intake they fund.",
+          body: "Most funding is tied to a nationality, a subject or an institution, and the deadlines close months before the intake they fund.",
         },
         {
           title: "The Rights Attached to the Degree Get Checked Last",
@@ -112,7 +112,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       items: [
         {
           title: "Education and Career Mapping",
-          body: "We start from where demand is heading in your field, then work back to the subjects and qualifications that put you there. Our recruitment side sees which profiles European employers actually hire — that evidence feeds this conversation.",
+          body: "We start from where demand is heading in your field, then work back to the subjects and qualifications that put you there. Our recruitment side sees which profiles European employers actually hire, that evidence feeds this conversation.",
         },
         {
           title: "Country and Market Orientation",
@@ -131,7 +131,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       ],
     },
     process: [
-      { step: "01", name: "Discover", body: "What you want to be doing in five years — before we discuss any course." },
+      { step: "01", name: "Discover", body: "What you want to be doing in five years, before we discuss any course." },
       { step: "02", name: "Assess", body: "Your academic record, budget and language position, read honestly." },
       { step: "03", name: "Map", body: "Fields and markets where that ambition is realistic, with the trade-offs stated." },
       { step: "04", name: "Prepare", body: "Documents, evidence and applications built to the expected standard." },
@@ -140,15 +140,15 @@ export const pillars: Record<PathwayKey, Pillar> = {
     faqs: [
       {
         q: "Does SnZ Ventures place students into universities?",
-        a: "Our verified strength is education and career pathway advisory — helping you choose subjects and qualifications against real labour-market demand, and preparing your profile. The specific scope of institutional application support is confirmed with you directly, so ask us about your case rather than assuming from this page.",
+        a: "Our verified strength is education and career pathway advisory, helping you choose subjects and qualifications against real labour-market demand, and preparing your profile. The specific scope of institutional application support is confirmed with you directly, so ask us about your case rather than assuming from this page.",
       },
       {
         q: "Can you get me a scholarship?",
-        a: "No advisor awards funding — institutions and governments do. What we can do is help you identify which programmes realistically match your nationality, subject and level, and make sure the calendar is built around their deadlines rather than the intake date.",
+        a: "No advisor awards funding, institutions and governments do. What we can do is help you identify which programmes realistically match your nationality, subject and level, and make sure the calendar is built around their deadlines rather than the intake date.",
       },
       {
         q: "Which countries should I be looking at?",
-        a: "That depends on your field, budget and language position more than on any general ranking. Our published destinations are the markets we work in — availability of specific support varies by country, and we tell you which is which.",
+        a: "That depends on your field, budget and language position more than on any general ranking. Our published destinations are the markets we work in, availability of specific support varies by country, and we tell you which is which.",
       },
       {
         q: "Can I work in Europe after I graduate?",
@@ -156,14 +156,14 @@ export const pillars: Record<PathwayKey, Pillar> = {
       },
       {
         q: "What does it cost?",
-        a: "Fees depend on scope and are confirmed in writing before you commit to anything. Third-party costs — institutions, translation, credential evaluation, government charges — are always identified separately so you can see what goes where.",
+        a: "Fees depend on scope and are confirmed in writing before you commit to anything. Third-party costs, institutions, translation, credential evaluation, government charges, are always identified separately so you can see what goes where.",
       },
     ],
     caveat:
       "SnZ Ventures does not guarantee admission, scholarship awards, visas or employment. Admission decisions rest with institutions and immigration decisions with national authorities.",
     contentRequired: [
       "Confirm exact scope of university application support (does SnZ submit applications, or advise only?)",
-      "Confirm whether any institutional partnerships exist — none are currently claimed on this site",
+      "Confirm whether any institutional partnerships exist, none are currently claimed on this site",
       "Supply student testimonials with written consent, if any exist",
       "Confirm which destination countries the study pathway actively covers",
     ],
@@ -176,7 +176,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
     hero: {
       eyebrow: "For professionals",
       title: "Your Career Shouldn't Be Limited by a Border.",
-      lead: "We are the outsourced hiring function for European SMEs and regulated firms — and we recruit across South Asia and the Middle East. Both ends of that corridor are our client, which is why we tell you the truth about your chances.",
+      lead: "We are the outsourced hiring function for European SMEs and regulated firms, and we recruit across South Asia and the Middle East. Both ends of that corridor are our client, which is why we tell you the truth about your chances.",
       image: "/images/path-careers.webp",
       images: [
         {
@@ -185,7 +185,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
         },
         {
           src: "/images/dest-berlin.webp",
-          alt: "Museum Island on the Spree, Berlin — Europe's largest labour market",
+          alt: "Museum Island on the Spree, Berlin, Europe's largest labour market",
         },
         {
           src: "/images/plate-europe-dawn.webp",
@@ -210,7 +210,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
         },
         {
           title: "Eligibility Decided Before You Ever Apply",
-          body: "Qualification recognition, language level and permit category rule most applicants in or out early — usually without anyone explaining that.",
+          body: "Qualification recognition, language level and permit category rule most applicants in or out early, usually without anyone explaining that.",
         },
         {
           title: "A CV that Doesn't Travel",
@@ -228,7 +228,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       items: [
         "A real vacancy at a named, verifiable employer",
         "Qualifications recognised in the destination country for your profession",
-        "The language level the role genuinely requires — not the one you hope it does",
+        "The language level the role genuinely requires, not the one you hope it does",
         "A permit category you actually fall inside",
         "Documentation prepared to the standard the employer and authority expect",
       ],
@@ -239,7 +239,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       items: [
         {
           title: "Access to Real, Mandated Roles",
-          body: "We place white-collar and blue-collar candidates into European SMEs and regulated firms. You are told which employer and which role — not a category.",
+          body: "We place white-collar and blue-collar candidates into European SMEs and regulated firms. You are told which employer and which role, not a category.",
           href: "/services/international-recruitment",
         },
         {
@@ -271,7 +271,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       },
       {
         q: "Do I have to pay to be considered?",
-        a: "Our recruitment mandates come from employers. Any candidate-side cost is stated in writing before you commit, and third-party charges — government fees, translation, credential evaluation, medical checks — are always identified separately. If any fee structure is unclear, ask us to put it in writing.",
+        a: "Our recruitment mandates come from employers. Any candidate-side cost is stated in writing before you commit, and third-party charges, government fees, translation, credential evaluation, medical checks, are always identified separately. If any fee structure is unclear, ask us to put it in writing.",
       },
       {
         q: "Will my qualifications be recognised?",
@@ -287,7 +287,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       },
       {
         q: "What if I'm not eligible right now?",
-        a: "We will tell you, and where possible we will tell you what would change that — a language level, a credential evaluation, a period of experience. That is more useful than being kept on a list indefinitely.",
+        a: "We will tell you, and where possible we will tell you what would change that, a language level, a credential evaluation, a period of experience. That is more useful than being kept on a list indefinitely.",
       },
     ],
     caveat:
@@ -307,7 +307,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
     hero: {
       eyebrow: "For founders & investors",
       title: "Take Your Business Beyond Borders.",
-      lead: "A Lithuanian company reaches 27 member states from day one. We handle the entity, the licensing and the residence permits that let you actually move — coordinated through one point of contact.",
+      lead: "A Lithuanian company reaches 27 member states from day one. We handle the entity, the licensing and the residence permits that let you actually move, coordinated through one point of contact.",
       image: "/images/path-business.webp",
       images: [
         {
@@ -355,7 +355,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
     },
     requires: {
       title: "What Expanding into the EU Actually Requires",
-      lead: "Six things, in roughly this order. Skipping one does not save time — it moves the delay later.",
+      lead: "Six things, in roughly this order. Skipping one does not save time, it moves the delay later.",
       items: [
         "An entity type matched to your capital, ownership and liability position",
         "Tax and trade registrations that match what you actually do",
@@ -376,7 +376,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
         },
         {
           title: "Fintech Establishment",
-          body: "EMI, PI, specialised bank and crypto licensing — scoped, structured and prepared with licensed partner firms and qualified officers.",
+          body: "EMI, PI, specialised bank and crypto licensing, scoped, structured and prepared with licensed partner firms and qualified officers.",
           href: "/services/fintech-licensing",
         },
         {
@@ -393,7 +393,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
     },
     process: [
       { step: "01", name: "Scope", body: "What you intend to do, where, and which structure that genuinely requires." },
-      { step: "02", name: "Structure", body: "Entity, ownership, capital and — where regulated — governance." },
+      { step: "02", name: "Structure", body: "Entity, ownership, capital and, where regulated, governance." },
       { step: "03", name: "Establish", body: "Incorporation, registrations and banking introduction." },
       { step: "04", name: "Authorise", body: "Where applicable, licensing prepared and submitted via licensed partners." },
       { step: "05", name: "Operate", body: "Accounting, payroll, reporting and hiring from the first period." },
@@ -401,7 +401,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
     faqs: [
       {
         q: "Why Lithuania rather than a larger market?",
-        a: "Because of passporting. An entity authorised in one member state can, subject to notification procedures, operate across the others — so you are entering the single market, not a country of under three million people. Lithuania also runs its processes in English and has the EU's largest licensed fintech population.",
+        a: "Because of passporting. An entity authorised in one member state can, subject to notification procedures, operate across the others, so you are entering the single market, not a country of under three million people. Lithuania also runs its processes in English and has the EU's largest licensed fintech population.",
       },
       {
         q: "How fast can the company be registered?",
@@ -409,7 +409,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       },
       {
         q: "Can you guarantee a bank account or a licence?",
-        a: "No — and be cautious with anyone who does. Banking is the institution's compliance decision and authorisation is the regulator's. We control the quality and completeness of what is submitted, which is where most applications are actually won or lost.",
+        a: "No, and be cautious with anyone who does. Banking is the institution's compliance decision and authorisation is the regulator's. We control the quality and completeness of what is submitted, which is where most applications are actually won or lost.",
       },
       {
         q: "Is SnZ Ventures regulated?",
@@ -417,7 +417,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       },
       {
         q: "Do I have to move to Lithuania?",
-        a: "Not to own a company. But licensed institutions face substance expectations — genuine local presence and decision-making — and if the founders intend to relocate, that is a separate process with its own criteria. We scope both together.",
+        a: "Not to own a company. But licensed institutions face substance expectations, genuine local presence and decision-making, and if the founders intend to relocate, that is a separate process with its own criteria. We scope both together.",
       },
       {
         q: "What does it cost?",
@@ -429,7 +429,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
     contentRequired: [
       "Confirm indicative pricing tiers, if these should be published",
       "Confirm named licensed partner firms that may be disclosed publicly",
-      "Confirm whether business setup is offered outside Lithuania — currently claimed for Lithuania only",
+      "Confirm whether business setup is offered outside Lithuania, currently claimed for Lithuania only",
       "Supply client case studies with written consent, if any exist",
     ],
   },

@@ -14,9 +14,9 @@ import { roleLabel } from "@/lib/demo/nav";
 
 const BLURB = {
   admin: "See the whole operation: every user, request, document and conversation across the platform.",
-  student: "Follow one student's study abroad journey — applications, documents, scholarships and progress.",
-  "job-seeker": "Follow one job seeker's search — matches, applications, interviews and CV status.",
-  business: "Follow one company's setup — service requests, documents and consultations.",
+  student: "Follow one student's study abroad journey, applications, documents, scholarships and progress.",
+  "job-seeker": "Follow one job seeker's search, matches, applications, interviews and CV status.",
+  business: "Follow one company's setup, service requests, documents and consultations.",
 } as const;
 
 const CTA = {
@@ -30,7 +30,7 @@ export default function DemoChooser() {
   return (
     <div className="tone-soft flex min-h-screen flex-col">
       <div className="flex flex-wrap items-center justify-center gap-x-3 bg-amber-400 px-4 py-2 text-center text-[0.8rem] font-semibold text-[#3B2A02]">
-        DEMO PREVIEW — every name, number and record inside is invented.
+        DEMO PREVIEW, every name, number and record inside is invented.
       </div>
 
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-5 py-14 sm:px-8">
@@ -54,7 +54,7 @@ export default function DemoChooser() {
         </h1>
         <p className="mt-4 max-w-2xl text-[1.05rem] leading-relaxed text-muted">
           Four roles, one platform. Each has its own dashboard, navigation and
-          purpose. Pick one to step into it — no sign-in needed, and you can
+          purpose. Pick one to step into it, no sign-in needed, and you can
           switch at any point from inside.
         </p>
 

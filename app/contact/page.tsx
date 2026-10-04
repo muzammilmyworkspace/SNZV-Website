@@ -1,36 +1,51 @@
 import type { Metadata } from "next";
-import { Container, Section, JsonLd, Eyebrow, Caveat } from "@/components/ui/Primitives";
-import { Breadcrumbs } from "@/components/sections/PageParts";
-import { JourneyForm } from "@/components/forms/JourneyForm";
-import { ContactLinks } from "@/components/layout/ContactLinks";
-import { Reveal } from "@/components/ui/Reveal";
+import Image from "next/image";
+import { JsonLd } from "@/components/ui/Primitives";
+import { BpPage } from "@/components/bp/page/BpPage";
+import { Band, SectionHead } from "@/components/bp/page/SectionHead";
+import { Faq } from "@/components/bp/page/Faq";
+import { FinalCall } from "@/components/bp/FinalCall";
+import { Reveal } from "@/components/bp/Reveal";
+import { ContactHero } from "@/components/bp/contact/ContactHero";
+import { company } from "@/data/company";
+import { studyFaqs } from "@/data/study";
 import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Contact — Start Your Journey",
+  title: "Contact | Book a Free Consultation",
   description:
-    "Tell us roughly where you want to end up and we'll tell you what the route looks like. Three short steps, no obligation. Vilnius, Lithuania.",
+    "Book a free consultation with SnZ Ventures, or message a counsellor on WhatsApp. Office in Vilnius, Lithuania.",
   path: "/contact",
 });
 
-const expectations = [
-  {
-    title: "A real person reads it",
-    body: "Not an autoresponder sequence. Someone who can actually assess your case.",
-  },
-  {
-    title: "You'll get an honest read",
-    body: "Including when we think the route is weak, or when you don't need us at all.",
-  },
-  {
-    title: "No obligation, no hard sell",
-    body: "You'll get an answer and the option to take it further. Nothing is committed by asking.",
-  },
+/**
+ * /contact — the page every CTA on the site points at.
+ *
+ * The boarding-pass form is the page, at `#journey` (the anchor every
+ * "Book a consultation" link already uses). Above it, the four ways to reach a
+ * person; below it, what happens after you press send, and the questions
+ * people ask before they do.
+ *
+ * The form posts to /api/enquiry like every other form on the site. The
+ * multi-pathway JourneyForm (careers / business) stays in the codebase for the
+ * pillar pages; this page leads with the student enquiry because that is who
+ * the site is for now.
+ */
+
+const AFTER = [
+  { t: "A person reads it", b: "A consultant reads your request (not an autoresponder) and replies by email or WhatsApp, whichever you prefer." },
+  { t: "Your free consultation", b: "A call about where you want to end up, your budget and your timing. An honest read on your options, including when the answer is no." },
+  { t: "Your shortlist, in writing", b: "If you go ahead: a short list of programmes and countries, with the costs and the trade-offs stated plainly." },
+  { t: "Your portal login", b: "Your file opens in the SnZ portal, so every document, deadline and decision is visible to you from then on." },
 ];
 
 export default function ContactPage() {
+  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    `${company.contact.streetAddress}, ${company.contact.postalCode} ${company.contact.city}`
+  )}`;
+
   return (
-    <>
+    <BpPage>
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
@@ -38,94 +53,103 @@ export default function ContactPage() {
         ])}
       />
 
-      <section className="grain relative overflow-hidden bg-surface pb-16 pt-36 text-fg md:pb-20 md:pt-44">
-        <div aria-hidden className="graticule mask-radial absolute inset-0 opacity-55" />
-        <div
-          aria-hidden
-          className="bloom-moss pointer-events-none absolute -bottom-40 left-1/4 h-[420px] w-[420px] opacity-30"
-        />
+      <ContactHero />
 
-        <Container className="relative">
-          <Breadcrumbs
-            items={[
-              { name: "Home", path: "/" },
-              { name: "Contact", path: "/contact" },
-            ]}
-          />
-
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
-            {/* Left: context */}
-            <div>
-              <Eyebrow tone="dark" className="mb-4">
-                Start your journey
-              </Eyebrow>
-              <h1 className="d-1 text-fg">
-                Tell us where you want to end up.
-              </h1>
-              <p className="lede mt-5 max-w-lg text-muted">
-                You don&rsquo;t need a plan. You need to know whether the one
-                you&rsquo;re considering is realistic — and what it would
-                actually involve. That&rsquo;s what this form starts.
-              </p>
-
-              <ul className="mt-9 space-y-5 border-t border-line pt-7">
-                {expectations.map((e) => (
-                  <li key={e.title} className="flex items-start gap-3.5">
-                    <span
-                      aria-hidden
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-moss-400"
-                    />
-                    <span>
-                      <span className="block text-[0.95rem] font-semibold tracking-[-0.01em] text-fg">
-                        {e.title}
-                      </span>
-                      <span className="mt-0.5 block text-[0.85rem] leading-relaxed text-muted">
-                        {e.body}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-9 border-t border-line pt-7">
-                <Eyebrow tone="dark" className="mb-3">
-                  Prefer to reach us directly
-                </Eyebrow>
-                {/* ContactLinks already renders the city/country. */}
-                <ContactLinks location="contact_page" />
-              </div>
+      <Band labelledBy="form-title" className="!pt-4">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <div>
+            <p className="bp-eyebrow">Check in</p>
+            <h2 id="form-title" className="bp-display bp-h3 mt-4">
+              Your boarding pass to a free consultation.
+            </h2>
+            <div className="mt-6">
+              <FinalCall compact anchorId="journey" />
             </div>
-
-            {/* Right: the form */}
-            <Reveal>
-              <div
-                id="journey"
-                className="scroll-mt-28 border border-line bg-raised p-6 text-fg shadow-[0_30px_70px_-40px_rgba(0,0,0,0.6)] md:p-8"
-              >
-                <JourneyForm />
-              </div>
-            </Reveal>
           </div>
-        </Container>
-      </section>
 
-      <Section tone="light" size="tight">
-        <Container size="narrow">
-          <Caveat>
-            SnZ Ventures is an advisory firm and does not guarantee admission,
-            employment, banking, licensing or immigration outcomes. Regulated
-            activities are delivered by licensed partner firms. Information you
-            submit is handled in line with our{" "}
-            <a
-              href="/legal/privacy-policy"
-              className="font-medium underline underline-offset-2"
-            >
-              Privacy Policy
-            </a>
-            .
-          </Caveat>
-        </Container>
-      </Section>
-    </>
+          <aside className="lg:pt-16">
+            <Reveal>
+              <a
+                href={maps}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bp-pass-dark group block overflow-hidden"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-[#04070F]">
+                  <Image
+                    src="/images/dest-vilnius-old.webp"
+                    alt="Rooftops of Vilnius old town"
+                    fill
+                    sizes="(min-width: 1024px) 30vw, 92vw"
+                    className="object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <span className="absolute bottom-3 left-4 flex items-center gap-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-white">
+                    <span className="h-2 w-2 rounded-full bg-[#72C43C] shadow-[0_0_10px_#72C43C]" /> Our office · VNO
+                  </span>
+                </div>
+                <div className="p-5">
+                  <address className="not-italic text-[1rem] leading-relaxed text-[var(--bp-fg)]">
+                    {company.contact.streetAddress}
+                    <br />
+                    {company.contact.postalCode} {company.contact.city}, {company.contact.country}
+                  </address>
+                  <p className="mt-3 text-[0.9rem] font-semibold text-[var(--bp-strong)] underline decoration-[var(--color-runway)] underline-offset-4">
+                    Open in Google Maps
+                  </p>
+                </div>
+              </a>
+            </Reveal>
+          </aside>
+        </div>
+      </Band>
+
+      <Band id="after" labelledBy="after-title">
+        <SectionHead
+          id="after-title"
+          eyebrow="What happens next"
+          title={
+            <>
+              You press send. <span className="bp-outline">Here&apos;s the rest.</span>
+            </>
+          }
+        />
+        <ol className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {AFTER.map((a, i) => (
+            <li key={a.t}>
+              <Reveal delay={i * 0.08} className="h-full">
+                <article className="bp-pass-dark h-full p-6">
+                  <span className="bp-mono text-[var(--color-runway)]">Step {String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-3 font-[family-name:var(--font-grotesk)] text-[1.25rem] font-semibold text-[var(--bp-strong)]">{a.t}</h3>
+                  <p className="bp-body mt-2 text-[0.95rem]">{a.b}</p>
+                </article>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </Band>
+
+      <Band id="faqs" labelledBy="cfaq-title">
+        <SectionHead
+          id="cfaq-title"
+          eyebrow="Before you ask"
+          title={
+            <>
+              The questions <span className="bp-outline">everyone asks first.</span>
+            </>
+          }
+        />
+        <Faq items={studyFaqs.slice(0, 4)} />
+        <p className="mt-8 max-w-4xl text-[0.85rem] leading-relaxed text-[var(--bp-faint)]">
+          SnZ Ventures is an advisory firm and does not guarantee admission, employment, banking, licensing or
+          immigration outcomes. Regulated activities are delivered by licensed partner firms. Information you submit
+          is handled in line with our{" "}
+          <a href="/legal/privacy-policy" className="underline underline-offset-2">
+            Privacy Policy
+          </a>
+          .
+        </p>
+      </Band>
+    </BpPage>
   );
 }

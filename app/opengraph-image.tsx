@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
 export const alt =
-  "SnZ Ventures — European Gateway for Business, Fintech & Talent";
+  "SnZ Ventures, European Gateway for Business, Fintech & Talent";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -113,7 +113,7 @@ export default async function OpengraphImage() {
             }}
           >
             Company formation, fintech licensing, international recruitment and
-            investor relocation — across all 27 EU member states.
+            investor relocation, across all 27 EU member states.
           </div>
         </div>
 

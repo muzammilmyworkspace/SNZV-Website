@@ -119,8 +119,8 @@ export function SocialLinks({ className }: { className?: string }) {
             ) : (
               <span
                 role="img"
-                aria-label={`${n.label} — profile not published yet`}
-                title={`${n.label} — coming soon`}
+                aria-label={`${n.label}, profile not published yet`}
+                title={`${n.label}, coming soon`}
                 className={cn(box, "cursor-default text-faint opacity-40")}
               >
                 {glyph}

@@ -6,7 +6,7 @@ import { articles } from "@/data/insights";
 import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Insights — Know Before You Go",
+  title: "Insights | Know Before You Go",
   description:
     "Practical guides on studying, working and building a business in Europe. Written to be useful whether or not you ever contact us.",
   path: "/insights",
@@ -27,7 +27,7 @@ export default function InsightsPage() {
       <PageHero
         eyebrow="Insights"
         title="Know Before You Go."
-        lead="Orientation on the parts of international moves that people get wrong — written plainly, with no sales pitch attached. Several of these will save you money whether you work with us or not."
+        lead="Orientation on the parts of international moves that people get wrong, written plainly, with no sales pitch attached. Several of these will save you money whether you work with us or not."
         breadcrumbs={[
           { name: "Home", path: "/" },
           { name: "Insights", path: "/insights" },

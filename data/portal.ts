@@ -32,7 +32,7 @@ export const portalShots: PortalShot[] = [
     key: "dashboard",
     tab: "Dashboard",
     caption:
-      "What is outstanding, what we are waiting on, and the one thing to do next — named, not implied.",
+      "What is outstanding, what we are waiting on, and the one thing to do next. Named, not implied.",
     file: "/images/portal-dashboard.webp",
     alt: "The portal dashboard, showing the next step a student needs to take, counts of open documents and tasks, and how far the application has progressed.",
   },
@@ -48,7 +48,7 @@ export const portalShots: PortalShot[] = [
     key: "documents",
     tab: "Documents",
     caption:
-      "What is approved, what is being read, and what came back — with the reason it came back.",
+      "What is approved, what is being read, and what came back, with the reason it came back.",
     file: "/images/portal-documents.webp",
     alt: "The documents screen, listing uploaded files with a status against each one and a note explaining what needs replacing.",
   },
@@ -108,7 +108,7 @@ export const portalPoints = [
 export const portalVideo = {
   eyebrow: "A look inside",
   title: "Two minutes in the portal.",
-  lead: "What a student sees after their first call with us — the file, the form, and where an application actually is.",
+  lead: "What a student sees after their first call with us: the file, the form, and where an application actually is.",
   src: null as string | null,
   provider: "file" as "file" | "youtube" | "vimeo",
   poster: "/images/portal-dashboard.webp",

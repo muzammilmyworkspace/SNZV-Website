@@ -80,7 +80,7 @@ export const adminMetrics = [
 
 export const adminActivity = [
   { who: "Sarah Ahmed", role: "Student", what: "uploaded Passport", when: "12 minutes ago", kind: "document" },
-  { who: "Example Technologies Ltd.", role: "Business", what: "submitted a new request — European Company Setup", when: "1 hour ago", kind: "request" },
+  { who: "Example Technologies Ltd.", role: "Business", what: "submitted a new request, European Company Setup", when: "1 hour ago", kind: "request" },
   { who: "Ali Khan", role: "Job Seeker", what: "updated their CV", when: "3 hours ago", kind: "document" },
   { who: "Fatima Noor", role: "Student", what: "application moved to Offer Received", when: "5 hours ago", kind: "status" },
   { who: "Hassan Raza", role: "Job Seeker", what: "interview scheduled with Siemens Energy", when: "Yesterday", kind: "status" },
@@ -100,25 +100,25 @@ export const adminUsers = [
 ];
 
 export const adminRequests = [
-  { ref: "SNZ-2026-0041", who: "Sarah Ahmed", type: "Student", subject: "MSc Computer Science — Vilnius University", status: "under_review" as DemoStatus, submitted: "2026-08-09", waiting: "8 days", priority: "normal" },
-  { ref: "SNZ-2026-0040", who: "Example Technologies Ltd.", type: "Business", subject: "European company setup — Lithuania", status: "in_progress" as DemoStatus, submitted: "2026-08-07", waiting: "10 days", priority: "high" },
-  { ref: "SNZ-2026-0039", who: "Ali Khan", type: "Job Seeker", subject: "Software Engineer placement — Germany", status: "action_required" as DemoStatus, submitted: "2026-08-05", waiting: "12 days", priority: "high" },
-  { ref: "SNZ-2026-0038", who: "Fatima Noor", type: "Student", subject: "BSc Business Administration — Riga", status: "completed" as DemoStatus, submitted: "2026-07-28", waiting: "—", priority: "normal" },
-  { ref: "SNZ-2026-0037", who: "Nordwind Logistics GmbH", type: "Business", subject: "Document verification — shareholder records", status: "action_required" as DemoStatus, submitted: "2026-07-25", waiting: "23 days", priority: "urgent" },
-  { ref: "SNZ-2026-0036", who: "Hassan Raza", type: "Job Seeker", subject: "Mechanical Engineer — Netherlands", status: "new" as DemoStatus, submitted: "2026-08-14", waiting: "3 days", priority: "normal" },
+  { ref: "SNZ-2026-0041", who: "Sarah Ahmed", type: "Student", subject: "MSc Computer Science, Vilnius University", status: "under_review" as DemoStatus, submitted: "2026-08-09", waiting: "8 days", priority: "normal" },
+  { ref: "SNZ-2026-0040", who: "Example Technologies Ltd.", type: "Business", subject: "European company setup, Lithuania", status: "in_progress" as DemoStatus, submitted: "2026-08-07", waiting: "10 days", priority: "high" },
+  { ref: "SNZ-2026-0039", who: "Ali Khan", type: "Job Seeker", subject: "Software Engineer placement, Germany", status: "action_required" as DemoStatus, submitted: "2026-08-05", waiting: "12 days", priority: "high" },
+  { ref: "SNZ-2026-0038", who: "Fatima Noor", type: "Student", subject: "BSc Business Administration, Riga", status: "completed" as DemoStatus, submitted: "2026-07-28", waiting: "n/a", priority: "normal" },
+  { ref: "SNZ-2026-0037", who: "Nordwind Logistics GmbH", type: "Business", subject: "Document verification, shareholder records", status: "action_required" as DemoStatus, submitted: "2026-07-25", waiting: "23 days", priority: "urgent" },
+  { ref: "SNZ-2026-0036", who: "Hassan Raza", type: "Job Seeker", subject: "Mechanical Engineer, Netherlands", status: "new" as DemoStatus, submitted: "2026-08-14", waiting: "3 days", priority: "normal" },
 ];
 
 export const adminDocuments = [
   { owner: "Sarah Ahmed", role: "Student", document: "Passport", uploaded: "Today", status: "pending" as DemoStatus },
-  { owner: "Ali Khan", role: "Job Seeker", document: "CV — updated", uploaded: "3 hours ago", status: "pending" as DemoStatus },
+  { owner: "Ali Khan", role: "Job Seeker", document: "CV, updated", uploaded: "3 hours ago", status: "pending" as DemoStatus },
   { owner: "Example Technologies Ltd.", role: "Business", document: "Certificate of incorporation", uploaded: "Yesterday", status: "pending" as DemoStatus },
   { owner: "Fatima Noor", role: "Student", document: "Academic transcript", uploaded: "Yesterday", status: "approved" as DemoStatus },
-  { owner: "Nordwind Logistics GmbH", role: "Business", document: "Shareholder register", uploaded: "2 days ago", status: "rejected" as DemoStatus, note: "Page 2 is unreadable — please re-scan at higher resolution." },
+  { owner: "Nordwind Logistics GmbH", role: "Business", document: "Shareholder register", uploaded: "2 days ago", status: "rejected" as DemoStatus, note: "Page 2 is unreadable, please re-scan at higher resolution." },
   { owner: "Hassan Raza", role: "Job Seeker", document: "Degree certificate", uploaded: "3 days ago", status: "pending" as DemoStatus },
 ];
 
 export const adminConversations = [
-  { who: "Sarah Ahmed", group: "Students", preview: "Thank you — I've uploaded the passport scan now.", when: "12 min", unread: 2 },
+  { who: "Sarah Ahmed", group: "Students", preview: "Thank you, I've uploaded the passport scan now.", when: "12 min", unread: 2 },
   { who: "Ali Khan", group: "Job Seekers", preview: "Could we move the interview prep call to Thursday?", when: "3 hr", unread: 1 },
   { who: "Example Technologies Ltd.", group: "Businesses", preview: "Confirming the registered address for the filing.", when: "1 hr", unread: 3 },
   { who: "Fatima Noor", group: "Students", preview: "That's brilliant news, thank you for the update.", when: "Yesterday", unread: 0 },
@@ -159,7 +159,7 @@ export const studentApplications = [
 ];
 
 export const studentDocuments = [
-  { name: "Passport", category: "Identity", status: "action_required" as DemoStatus, note: "Not yet uploaded — required before an offer can be issued." },
+  { name: "Passport", category: "Identity", status: "action_required" as DemoStatus, note: "Not yet uploaded, required before an offer can be issued." },
   { name: "Academic transcript", category: "Education", status: "approved" as DemoStatus, uploaded: "02 Jul 2026" },
   { name: "Degree certificate", category: "Education", status: "approved" as DemoStatus, uploaded: "02 Jul 2026" },
   { name: "IELTS result", category: "Education", status: "under_review" as DemoStatus, uploaded: "09 Aug 2026" },
@@ -174,8 +174,8 @@ export const studentScholarships = [
 ];
 
 export const studentUniversities = [
-  { name: "Vilnius University", country: "Lithuania", city: "Vilnius", founded: "1579", note: "Shortlisted — application submitted" },
-  { name: "Riga Technical University", country: "Latvia", city: "Riga", founded: "1862", note: "Shortlisted — preparing application" },
+  { name: "Vilnius University", country: "Lithuania", city: "Vilnius", founded: "1579", note: "Shortlisted, application submitted" },
+  { name: "Riga Technical University", country: "Latvia", city: "Riga", founded: "1862", note: "Shortlisted, preparing application" },
   { name: "University of Warsaw", country: "Poland", city: "Warsaw", founded: "1816", note: "Considering for February intake" },
   { name: "Tallinn University of Technology", country: "Estonia", city: "Tallinn", founded: "1918", note: "Suggested by your advisor" },
 ];
@@ -214,13 +214,13 @@ export const jobSeekerApplications = [
 ];
 
 export const jobSeekerMatches = [
-  { role: "Senior Backend Engineer", employer: "Bolt", country: "Estonia", salary: "€60,000 – €78,000", match: "Strong match" },
-  { role: "Cloud Engineer", employer: "Nord Security", country: "Lithuania", salary: "€48,000 – €62,000", match: "Strong match" },
-  { role: "Software Engineer (Java)", employer: "ING Tech", country: "Poland", salary: "€42,000 – €55,000", match: "Worth a look" },
+  { role: "Senior Backend Engineer", employer: "Bolt", country: "Estonia", salary: "€60,000 to €78,000", match: "Strong match" },
+  { role: "Cloud Engineer", employer: "Nord Security", country: "Lithuania", salary: "€48,000 to €62,000", match: "Strong match" },
+  { role: "Software Engineer (Java)", employer: "ING Tech", country: "Poland", salary: "€42,000 to €55,000", match: "Worth a look" },
 ];
 
 export const jobSeekerInterviews = [
-  { employer: "Deutsche Telekom", role: "Software Engineer", when: "22 Aug 2026, 16:00", format: "Video — 45 minutes", status: "scheduled" as DemoStatus },
+  { employer: "Deutsche Telekom", role: "Software Engineer", when: "22 Aug 2026, 16:00", format: "Video, 45 minutes", status: "scheduled" as DemoStatus },
   { employer: "Wise", role: "Backend Developer", when: "Awaiting confirmation", format: "Technical screen", status: "pending" as DemoStatus },
 ];
 
@@ -259,8 +259,8 @@ export const businessServices = [
 
 export const businessDocuments = [
   { name: "Certificate of incorporation", category: "Company", status: "under_review" as DemoStatus, uploaded: "Yesterday" },
-  { name: "Shareholder register", category: "Company", status: "rejected" as DemoStatus, note: "Page 2 is unreadable — please re-scan at higher resolution." },
-  { name: "Passport — director", category: "Identity", status: "approved" as DemoStatus, uploaded: "21 Apr 2026" },
+  { name: "Shareholder register", category: "Company", status: "rejected" as DemoStatus, note: "Page 2 is unreadable, please re-scan at higher resolution." },
+  { name: "Passport, director", category: "Identity", status: "approved" as DemoStatus, uploaded: "21 Apr 2026" },
   { name: "Proof of registered address", category: "Company", status: "approved" as DemoStatus, uploaded: "21 Apr 2026" },
   { name: "Source of funds evidence", category: "Compliance", status: "pending" as DemoStatus },
 ];
@@ -269,7 +269,7 @@ export const businessProfile = {
   company: "Example Technologies Ltd.",
   incorporation: "Incorporated outside the EU",
   industry: "Technology & software",
-  headcount: "11–50",
+  headcount: "11 to 50",
   currentMarkets: "United Arab Emirates, Pakistan",
   targetMarkets: "Lithuania, Germany, EU-wide",
   contact: "Operations Director",
@@ -279,9 +279,9 @@ export const businessProfile = {
 
 /** A conversation thread, reused by all three client roles. */
 export const demoThread = [
-  { from: "advisor", name: "Marta Kazlauskienė", body: "Welcome to SnZ Ventures. I'll be handling your case from here — anything you're unsure about, ask me directly rather than guessing.", when: "14 Jun, 09:12" },
-  { from: "client", name: "You", body: "Thank you. I've uploaded my transcripts — is there anything else you need right away?", when: "14 Jun, 10:40" },
-  { from: "advisor", name: "Marta Kazlauskienė", body: "Transcripts look good. The next thing is your passport scan — the university can't issue a conditional offer without it.", when: "14 Jun, 11:05" },
+  { from: "advisor", name: "Marta Kazlauskienė", body: "Welcome to SnZ Ventures. I'll be handling your case from here, anything you're unsure about, ask me directly rather than guessing.", when: "14 Jun, 09:12" },
+  { from: "client", name: "You", body: "Thank you. I've uploaded my transcripts, is there anything else you need right away?", when: "14 Jun, 10:40" },
+  { from: "advisor", name: "Marta Kazlauskienė", body: "Transcripts look good. The next thing is your passport scan, the university can't issue a conditional offer without it.", when: "14 Jun, 11:05" },
   { from: "client", name: "You", body: "Understood, I'll get that over this week.", when: "15 Jun, 08:20" },
   { from: "advisor", name: "Marta Kazlauskienė", body: "No rush, but the September intake closes for document submission on 1 September, so earlier is safer than later.", when: "15 Jun, 09:00" },
 ];

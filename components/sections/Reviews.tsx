@@ -43,7 +43,7 @@ export async function Reviews() {
         className="bloom-moss pointer-events-none absolute -left-32 top-1/3 h-[26rem] w-[26rem] opacity-25"
       />
       <Container className="relative">
-        <Chapter index="—" label="Trust" className="mb-6" />
+        <Chapter index="n/a" label="Trust" className="mb-6" />
 
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <MaskedLines
@@ -94,7 +94,7 @@ export async function Reviews() {
 
         <p className="mt-8 max-w-2xl border-l border-line pl-5 text-[0.8rem] leading-relaxed text-faint">
           Reviews are published by their authors on Google and shown here
-          unedited. SnZ Ventures cannot alter or remove them — follow the link
+          unedited. SnZ Ventures cannot alter or remove them, follow the link
           above to read all of them, including any not shown here.
         </p>
       </Container>

@@ -202,7 +202,16 @@ export function StudyDestinationCard({
         onClick={() => analytics.destinationView(destination.slug)}
         className="flex h-full flex-col"
       >
-        <div className="plate relative aspect-[4/5] overflow-hidden">
+        {/*
+          EVERYTHING ON THE PHOTOGRAPH.
+
+          The copy used to sit under the image, and the blurbs are different
+          lengths, so every row of the grid ended in a ragged band of empty
+          space. Now the card IS the photograph: tuition top-left, and the
+          country, city, blurb and the reason students pick it on a gradient
+          at the bottom. Every card is the same height by construction.
+        */}
+        <div className="plate relative aspect-[3/4] overflow-hidden rounded-[14px]">
           <Image
             src={destination.image}
             alt={destination.imageAlt}
@@ -211,9 +220,9 @@ export function StudyDestinationCard({
             loading="lazy"
             className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
           />
+          <div aria-hidden className="absolute inset-0 z-[2] bg-gradient-to-t from-black/90 via-black/45 to-black/10" />
 
-          {/* Tuition sits on the plate — it is the first thing students look for. */}
-          <span className="absolute left-3 top-3 z-[3] label border border-white/25 bg-black/35 px-2 py-1 text-white backdrop-blur-sm">
+          <span className="absolute left-3 top-3 z-[3] label rounded-full border border-white/25 bg-black/45 px-2.5 py-1 text-white backdrop-blur-sm">
             {destination.tuitionFrom}
           </span>
 
@@ -221,23 +230,14 @@ export function StudyDestinationCard({
             <h3 className="font-display text-[1.5rem] leading-none tracking-[-0.02em] text-white">
               {destination.country}
             </h3>
-            <span className="label mt-1.5 block ink-on-photo-soft">
-              {destination.city}
-            </span>
+            <span className="label mt-1.5 block text-white/80">{destination.city}</span>
+            <p className="mt-3 line-clamp-3 text-[0.82rem] leading-relaxed text-white/90">{destination.blurb}</p>
+            <p className="mt-3 flex items-start gap-2 border-t border-white/20 pt-2.5 text-[0.75rem] leading-snug text-white">
+              <span aria-hidden className="mt-[0.42em] block h-1 w-1 shrink-0 rounded-full bg-moss-400" />
+              {destination.draw}
+            </p>
           </div>
         </div>
-
-        <p className="mt-4 text-[0.85rem] leading-relaxed text-muted">
-          {destination.blurb}
-        </p>
-
-        <p className="mt-auto flex items-start gap-2.5 border-t border-line pt-3 text-[0.75rem] leading-snug text-faint">
-          <span
-            aria-hidden
-            className="mt-[0.42em] block h-1 w-1 shrink-0 rounded-full bg-moss-400/70"
-          />
-          {destination.draw}
-        </p>
       </Link>
     </motion.article>
   );

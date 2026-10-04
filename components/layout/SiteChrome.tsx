@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { FloatingCTA } from "./FloatingCTA";
+import { WhatsAppButton } from "./WhatsAppButton";
 import { PathwayPopup } from "./PathwayPopup";
 
 /**
@@ -36,7 +36,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <Header />
       <main id="main">{children}</main>
       <Footer />
-      <FloatingCTA />
+      <WhatsAppButton />
       <PathwayPopup pathname={pathname} />
     </>
   );

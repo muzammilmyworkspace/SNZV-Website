@@ -246,7 +246,7 @@ export function ChatThread({
         <DemoButton tone="solid">Send</DemoButton>
       </div>
       <p className="mt-2 text-[0.7rem] text-faint">
-        Preview only — messages are not sent in demo mode.
+        Preview only, messages are not sent in demo mode.
       </p>
     </div>
   );

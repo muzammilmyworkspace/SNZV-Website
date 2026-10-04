@@ -35,11 +35,17 @@ export type StudyDestination = {
   blurb: string;
   /** The concrete reason a student shortlists this country. */
   draw: string;
+  /**
+   * IATA code of the city's main airport. An objective fact, not a claim —
+   * it labels the boarding passes and departure board on the homepage.
+   */
+  airport: string;
 };
 
 export const studyDestinations: StudyDestination[] = [
   {
     slug: "lithuania",
+    airport: "VNO",
     country: "Lithuania",
     city: "Vilnius",
     image: "/images/dest-vilnius.webp",
@@ -47,10 +53,11 @@ export const studyDestinations: StudyDestination[] = [
     tuitionFrom: "From €1,500 / year",
     blurb:
       "An EU degree with living costs that leave room to breathe, in the city SnZ Ventures calls home.",
-    draw: "Our home market — advisors on the ground.",
+    draw: "Our home market, with advisors on the ground.",
   },
   {
     slug: "poland",
+    airport: "WAW",
     country: "Poland",
     city: "Warsaw",
     image: "/images/dest-warsaw.webp",
@@ -62,6 +69,7 @@ export const studyDestinations: StudyDestination[] = [
   },
   {
     slug: "hungary",
+    airport: "BUD",
     country: "Hungary",
     city: "Budapest",
     image: "/images/dest-budapest.webp",
@@ -73,39 +81,43 @@ export const studyDestinations: StudyDestination[] = [
   },
   {
     slug: "latvia",
+    airport: "RIX",
     country: "Latvia",
     city: "Riga",
     image: "/images/dest-riga.webp",
     imageAlt: "Aerial view over Riga, Latvia",
     tuitionFrom: "From €2,000 / year",
     blurb:
-      "Small, safe and digital-first — an underrated route to an EU qualification.",
+      "Small, safe and digital-first: an underrated route to an EU qualification.",
     draw: "Low living costs, full EU degree.",
   },
   {
     slug: "germany",
+    airport: "BER",
     country: "Germany",
     city: "Berlin",
     image: "/images/dest-berlin.webp",
     imageAlt: "Museum Island on the Spree, Berlin, Germany",
-    tuitionFrom: "From €0 – €1,500 / semester",
+    tuitionFrom: "From €0 to €1,500 / semester",
     blurb:
       "World-class engineering, minimal tuition at public universities, and Europe's largest economy on graduation day.",
     draw: "The EU's strongest engineering market.",
   },
   {
     slug: "malta",
+    airport: "MLA",
     country: "Malta",
     city: "Valletta",
     image: "/images/dest-valletta.webp",
     imageAlt: "City Gate and fortifications, Valletta, Malta",
     tuitionFrom: "From €4,000 / year",
     blurb:
-      "An English-speaking EU island — study, work and build a network in the Mediterranean.",
+      "An English-speaking EU island. Study, work and build a network in the Mediterranean.",
     draw: "English is an official language.",
   },
   {
     slug: "spain",
+    airport: "MAD",
     country: "Spain",
     city: "Madrid",
     image: "/images/dest-madrid.webp",
@@ -117,6 +129,7 @@ export const studyDestinations: StudyDestination[] = [
   },
   {
     slug: "italy",
+    airport: "FCO",
     country: "Italy",
     city: "Rome",
     image: "/images/dest-rome.webp",
@@ -128,6 +141,7 @@ export const studyDestinations: StudyDestination[] = [
   },
   {
     slug: "france",
+    airport: "CDG",
     country: "France",
     city: "Paris",
     image: "/images/dest-paris.webp",
@@ -139,6 +153,7 @@ export const studyDestinations: StudyDestination[] = [
   },
   {
     slug: "estonia",
+    airport: "TLL",
     country: "Estonia",
     city: "Tallinn",
     image: "/images/dest-tallinn.webp",
@@ -171,7 +186,7 @@ export const studyFields: StudyField[] = [
     name: "Business & MBA",
     icon: "business",
     examples: "Management, Finance, Marketing, MBA",
-    body: "Widest intake, widest spread of outcomes — so the school matters most here.",
+    body: "Widest intake, widest spread of outcomes, so the school matters most here.",
   },
   {
     name: "IT & Data",
@@ -224,7 +239,7 @@ export const studyJourney: JourneyStep[] = [
   {
     step: "01",
     name: "Discovery Call",
-    body: "A free consultation that maps your profile, your budget and the destinations you are actually weighing — before any course is discussed.",
+    body: "A free consultation that maps your profile, your budget and the destinations you are actually weighing, before any course is discussed.",
   },
   {
     step: "02",
@@ -244,7 +259,7 @@ export const studyJourney: JourneyStep[] = [
   {
     step: "05",
     name: "Visa & Departure",
-    body: "Documentation, interview preparation, and the practical end — housing, flights and the first week on the ground.",
+    body: "Documentation, interview preparation, and the practical end: housing, flights and the first week on the ground.",
   },
 ];
 
@@ -261,7 +276,7 @@ export const scholarshipNotes = [
   },
   {
     title: "Government Schemes Are Worth the Paperwork",
-    body: "National programmes — Hungary's Stipendium Hungaricum among them — are competitive and document-heavy, but they are real, published and open to international applicants.",
+    body: "National programmes, Hungary's Stipendium Hungaricum among them, are competitive and document-heavy, but they are real, published and open to international applicants.",
   },
   {
     title: "Low Tuition Can Beat a Scholarship",
@@ -374,7 +389,7 @@ export const scholarships: Scholarship[] = [
 ];
 
 export const scholarshipCaveat =
-  "Award values, eligibility and deadlines are set by each awarding body and change from year to year. Treat this as a starting point for your shortlist, not a quotation — we confirm the current terms of any scheme against its official source before you build a plan around it.";
+ "Award values, eligibility and deadlines are set by each awarding body and change from year to year. Treat this as a starting point for your shortlist, not a quotation, we confirm the current terms of any scheme against its official source before you build a plan around it.";
 
 /* ----------------------------------------------------------------- Support */
 
@@ -397,7 +412,7 @@ export const supportServices = [
   },
   {
     title: "Tracked in the Student Portal",
-    body: "Applications, documents and messages in one place — you always know what is outstanding.",
+    body: "Applications, documents and messages in one place, so you always know what is outstanding.",
   },
   {
     title: "The Bridge into Work",
@@ -411,15 +426,15 @@ export const supportServices = [
 export const studyFaqs: FAQ[] = [
   {
     q: "How much does studying in Europe actually cost?",
-    a: "Indicative tuition runs from about €900 a year in Italy to roughly €4,000 in Malta, and German public universities charge little or nothing. Living costs vary more by city than by country. We build a full-year budget — tuition, living, insurance and government charges — so you compare total cost, not headline fees.",
+    a: "Indicative tuition runs from about €900 a year in Italy to roughly €4,000 in Malta, and German public universities charge little or nothing. Living costs vary more by city than by country. We build a full-year budget, tuition, living, insurance and government charges, so you compare total cost, not headline fees.",
   },
   {
     q: "Do I need IELTS?",
-    a: "It depends on the university and the programme, not on the country. Many institutions accept alternative evidence of English — a previous degree taught in English, another recognised test, or their own assessment. We confirm the current requirement for each programme on your shortlist before you book a test you may not need.",
+    a: "It depends on the university and the programme, not on the country. Many institutions accept alternative evidence of English, a previous degree taught in English, another recognised test, or their own assessment. We confirm the current requirement for each programme on your shortlist before you book a test you may not need.",
   },
   {
     q: "Can I work while studying?",
-    a: "Most EU countries permit international students to work a limited number of hours during term, but the limit, the permit conditions and the tax treatment differ by country and change with policy. We will not quote a figure here that might not hold when you arrive — we check the current official position for your destination before you commit to it.",
+    a: "Most EU countries permit international students to work a limited number of hours during term, but the limit, the permit conditions and the tax treatment differ by country and change with policy. We will not quote a figure here that might not hold when you arrive, we check the current official position for your destination before you commit to it.",
   },
   {
     q: "Will I get a scholarship?",
@@ -431,7 +446,7 @@ export const studyFaqs: FAQ[] = [
   },
   {
     q: "What happens if my visa is rejected?",
-    a: "Refusals happen, and they are usually about the evidence rather than the applicant. You are entitled to written reasons; we go through them with you and determine whether the correct response is an appeal, a re-application with better documentation, or a deferral to the next intake. We cannot promise an outcome — immigration decisions rest with national authorities — but you will not be left to work it out alone.",
+    a: "Refusals happen, and they are usually about the evidence rather than the applicant. You are entitled to written reasons; we go through them with you and determine whether the correct response is an appeal, a re-application with better documentation, or a deferral to the next intake. We cannot promise an outcome, immigration decisions rest with national authorities, but you will not be left to work it out alone.",
   },
 ];
 
