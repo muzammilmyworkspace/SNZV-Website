@@ -38,6 +38,7 @@ export function WhatsAppButton() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with a counsellor on WhatsApp"
+          data-wa="floating"
           onClick={() => analytics.whatsapp("floating")}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}

@@ -7,6 +7,7 @@ import { company } from "@/data/company";
 import { Action } from "@/components/ui/Editorial";
 import { cn } from "@/lib/utils";
 import type { PathwayKey } from "@/data/pathways";
+import { attribution } from "@/lib/attribution";
 
 /**
  * THE SMART JOURNEY FORM
@@ -274,7 +275,7 @@ export function JourneyForm({
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pathway, answers }),
+        body: JSON.stringify({ pathway, answers, meta: attribution() }),
       });
       if (!res.ok) {
         // The server tells us when delivery is unavailable so we can show the

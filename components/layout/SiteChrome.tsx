@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { PathwayPopup } from "./PathwayPopup";
+import { AttributionTracker } from "./AttributionTracker";
 
 /**
  * Public-site chrome. The portal renders its own shell, so header, footer,
@@ -37,6 +38,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <main id="main">{children}</main>
       <Footer />
       <WhatsAppButton />
+      <AttributionTracker />
       <PathwayPopup pathname={pathname} />
     </>
   );

@@ -4,6 +4,7 @@ import { createEnquiry, markDelivered } from "@/lib/db/repos/enquiries";
 import { company } from "@/data/company";
 import { rateLimit, clientIp } from "@/lib/auth/rate-limit";
 import { enquiryEmailSubject } from "@/lib/enquiry-message";
+import { cleanAttribution } from "@/lib/attribution";
 
 /**
  * Enquiry intake — every public form on the site posts here.
@@ -20,7 +21,7 @@ const PATHWAYS = new Set(["study", "careers", "business", "general"]);
 const MAX_FIELD = 2000;
 const MAX_FIELDS = 25;
 
-type Payload = { pathway: string; answers: Record<string, string> };
+type Payload = { pathway: string; answers: Record<string, string>; meta: ReturnType<typeof cleanAttribution> };
 
 const LABELS: Record<string, string> = {
   study: "Study abroad",
@@ -31,7 +32,7 @@ const LABELS: Record<string, string> = {
 
 function validate(body: unknown): Payload | null {
   if (typeof body !== "object" || body === null) return null;
-  const { pathway, answers } = body as Record<string, unknown>;
+  const { pathway, answers, meta } = body as Record<string, unknown>;
 
   if (typeof pathway !== "string" || !PATHWAYS.has(pathway)) return null;
   if (typeof answers !== "object" || answers === null) return null;
@@ -49,10 +50,10 @@ function validate(body: unknown): Payload | null {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(clean.email?.trim() ?? "")) return null;
   if (clean.consent !== "yes") return null;
 
-  return { pathway, answers: clean };
+  return { pathway, answers: clean, meta: cleanAttribution(meta) };
 }
 
-function format({ pathway, answers }: Payload): string {
+function format({ pathway, answers, meta }: Payload): string {
   const { name, email, phone, preferredContact, notes, consent, ...rest } = answers;
   void consent;
 
@@ -70,6 +71,8 @@ function format({ pathway, answers }: Payload): string {
     ),
     notes ? `\nNotes:\n${notes}` : null,
     "",
+    meta ? `Came from: ${meta.source}${meta.utm.utm_campaign ? ` (campaign: ${meta.utm.utm_campaign})` : ""}` : null,
+    meta?.page ? `Form on:   ${meta.page}${meta.landing && meta.landing !== meta.page ? `, landed on ${meta.landing}` : ""}` : null,
     `Received: ${new Date().toISOString()}`,
   ].filter(Boolean) as string[];
 
@@ -123,6 +126,7 @@ export async function POST(request: Request) {
     notes: payload.answers.notes ?? null,
     answers: payload.answers,
     ip,
+    attribution: payload.meta,
   });
 
   const fallbackAddress =
@@ -191,7 +195,7 @@ export async function POST(request: Request) {
       `[enquiry] stored ${enquiryId} but NOT EMAILED, no mail transport configured. ` +
         "Set RESEND_API_KEY or MAIL_WEBHOOK_URL. Enquiries are visible at /portal/admin/requests."
     );
-    return NextResponse.json({ ok: true, stored: true, delivered: false });
+    return NextResponse.json({ ok: true, id: enquiryId, stored: true, delivered: false });
   }
 
   try {
@@ -213,8 +217,8 @@ export async function POST(request: Request) {
     */
     // eslint-disable-next-line no-console
     console.error(`[enquiry] stored ${enquiryId} but delivery failed:`, error);
-    return NextResponse.json({ ok: true, stored: true, delivered: false });
+    return NextResponse.json({ ok: true, id: enquiryId, stored: true, delivered: false });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, id: enquiryId });
 }

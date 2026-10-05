@@ -8,6 +8,7 @@ import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { Arrow } from "./Glyphs";
 import { enquiryWhatsAppText } from "@/lib/enquiry-message";
+import { attribution } from "@/lib/attribution";
 import { useReduced } from "@/components/bp/useReduced";
 import { Reveal } from "./Reveal";
 
@@ -32,6 +33,7 @@ type Status = "idle" | "sending" | "done" | "error";
 export function FinalCall({ compact = false, anchorId = "book" }: { compact?: boolean; anchorId?: string } = {}) {
   const reduce = useReduced();
   const [status, setStatus] = useState<Status>("idle");
+  const [enquiryId, setEnquiryId] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   /*
@@ -71,9 +73,11 @@ export function FinalCall({ compact = false, anchorId = "book" }: { compact?: bo
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pathway: "study", answers }),
+        body: JSON.stringify({ pathway: "study", answers, meta: attribution() }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      const data = (await res.json().catch(() => ({}))) as { id?: string };
+      setEnquiryId(data.id ?? null);
       analytics.formSubmit(FORM_ID, "study");
       setStatus("done");
     } catch {
@@ -149,6 +153,8 @@ export function FinalCall({ compact = false, anchorId = "book" }: { compact?: bo
                         href={waHref(sent)}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-wa="form_success"
+                        data-enquiry-id={enquiryId ?? undefined}
                         onClick={() => analytics.whatsapp("form_success")}
                         className="bp-btn mt-6 bg-[#25D366] text-[#062E16] hover:bg-[#3BE07A]"
                       >

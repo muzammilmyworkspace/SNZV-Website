@@ -49,8 +49,46 @@ export async function createEnquiry(input: {
   notes?: string | null;
   answers?: Record<string, unknown>;
   ip?: string | null;
+  attribution?: {
+    source: string;
+    page: string;
+    landing: string | null;
+    referrer: string | null;
+    utm: Record<string, string>;
+  } | null;
 }): Promise<string | null> {
   if (!isDatabaseConfigured()) return null;
+  const at = input.attribution;
+  if (at) {
+    /*
+      With where it came from. If the columns are not there yet (the portal's
+      migration 023 runs on the portal's deploy, which may land after this
+      one), fall through to the plain insert: an enquiry without its source is
+      worth far more than no enquiry.
+    */
+    const id = await safeQuery(async () => {
+      const [row] = await db()`
+        INSERT INTO enquiries
+          (pathway, name, email, phone, preferred_contact, notes, answers, ip,
+           source, page, landing, referrer, utm)
+        VALUES (
+          ${input.pathway},
+          ${input.name.slice(0, 200)},
+          ${input.email.slice(0, 200)},
+          ${input.phone?.slice(0, 60) ?? null},
+          ${input.preferredContact?.slice(0, 40) ?? null},
+          ${input.notes?.slice(0, 4000) ?? null},
+          ${db().json((input.answers ?? {}) as never)},
+          ${input.ip ?? null},
+          ${at.source}, ${at.page || null}, ${at.landing}, ${at.referrer},
+          ${Object.keys(at.utm).length ? db().json(at.utm as never) : null}
+        )
+        RETURNING id
+      `;
+      return row ? String(row.id) : null;
+    }, null);
+    if (id) return id;
+  }
   return safeQuery(async () => {
     const [row] = await db()`
       INSERT INTO enquiries
@@ -68,6 +106,38 @@ export async function createEnquiry(input: {
       RETURNING id
     `;
     return row ? String(row.id) : null;
+  }, null);
+}
+
+/** The visitor pressed "Send on WhatsApp" after this enquiry. Best effort. */
+export async function markWhatsApp(id: string): Promise<void> {
+  if (!isDatabaseConfigured()) return;
+  await safeQuery(async () => {
+    await db()`UPDATE enquiries SET whatsapp_at = COALESCE(whatsapp_at, now()) WHERE id = ${id}`;
+    return null;
+  }, null);
+}
+
+/** One press of a WhatsApp link anywhere on the site. Best effort. */
+export async function recordWhatsAppClick(input: {
+  placement: string;
+  page: string;
+  landing: string | null;
+  source: string;
+  referrer: string | null;
+  utm: Record<string, string>;
+  enquiryId: string | null;
+  ip: string | null;
+}): Promise<void> {
+  if (!isDatabaseConfigured()) return;
+  await safeQuery(async () => {
+    await db()`
+      INSERT INTO whatsapp_clicks (placement, page, landing, source, referrer, utm, enquiry_id, ip)
+      VALUES (${input.placement}, ${input.page || null}, ${input.landing}, ${input.source},
+              ${input.referrer}, ${Object.keys(input.utm).length ? db().json(input.utm as never) : null},
+              ${input.enquiryId}, ${input.ip})
+    `;
+    return null;
   }, null);
 }
 
