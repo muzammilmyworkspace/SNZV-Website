@@ -45,15 +45,6 @@ const MOVED = [
   "/forgot-password",
   "/reset-password",
   "/verify-email",
-  /*
-    The portal builds its emailed links on this domain, so these must reach it
-    too: a consultant's student invite (/join/<token>) and the set-up link for a
-    new consultant or employee (/set-up?token=). Without them both were a 404
-    here, and an invited student signed up on their own instead, arriving with
-    no consultant.
-  */
-  "/join",
-  "/set-up",
 ];
 
 export function proxy(request: NextRequest) {
@@ -86,15 +77,11 @@ export const config = {
     "/forgot-password/:path*",
     "/reset-password/:path*",
     "/verify-email/:path*",
-    "/join/:path*",
-    "/set-up/:path*",
     "/portal",
     "/login",
     "/register",
     "/forgot-password",
     "/reset-password",
     "/verify-email",
-    "/join",
-    "/set-up",
   ],
 };

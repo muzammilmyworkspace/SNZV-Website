@@ -3,9 +3,8 @@
 import { usePathname } from "next/navigation";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { WhatsAppButton } from "./WhatsAppButton";
+import { FloatingCTA } from "./FloatingCTA";
 import { PathwayPopup } from "./PathwayPopup";
-import { AttributionTracker } from "./AttributionTracker";
 
 /**
  * Public-site chrome. The portal renders its own shell, so header, footer,
@@ -37,8 +36,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <Header />
       <main id="main">{children}</main>
       <Footer />
-      <WhatsAppButton />
-      <AttributionTracker />
+      <FloatingCTA />
       <PathwayPopup pathname={pathname} />
     </>
   );

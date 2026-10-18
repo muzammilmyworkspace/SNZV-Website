@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
-import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+import { motion, useReducedMotion } from "motion/react";
 import { useMemo } from "react";
 import geo from "@/data/map-geo.json";
 import { destinations, corridors } from "@/data/destinations";
@@ -87,7 +86,7 @@ export function CorridorMap({
    */
   land?: "dots" | "solid";
 }) {
-  const reduced = useSafeReducedMotion();
+  const reduced = useReducedMotion();
   const play = animate && !reduced;
 
   const hub = useMemo(

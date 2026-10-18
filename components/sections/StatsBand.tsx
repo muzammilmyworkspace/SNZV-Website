@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "motion/react";
-import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+import { useInView, useReducedMotion } from "motion/react";
 import type { Stat } from "@/data/stats";
 import { Container, Section } from "@/components/ui/Primitives";
 import { cn } from "@/lib/utils";
@@ -29,7 +28,7 @@ import { cn } from "@/lib/utils";
  */
 
 function useCountUp(target: number, play: boolean, durationMs = 1400) {
-  const reduced = useSafeReducedMotion();
+  const reduced = useReducedMotion();
   const [value, setValue] = useState(reduced ? target : 0);
 
   useEffect(() => {
@@ -106,21 +105,6 @@ export function StatsBand({
   // already moving by the time the reader's eye arrives.
   const inView = useInView(ref, { once: true, margin: "0px 0px -15% 0px" });
 
-  /*
-    UNCONFIRMED FIGURES NEVER REACH THE PAGE.
-
-    `verified: false` on a Stat withholds it here rather than at every call
-    site. That is the difference between a rule and a habit: a number added to
-    a stat set without the flag being considered ships, and one marked
-    unconfirmed cannot ship by being forgotten about. See the Stat type in
-    data/stats.ts.
-
-    Rendering nothing — not a placeholder, not a dash. A gap where a number
-    should be is itself a claim about the company.
-  */
-  const shown = stats.filter((s) => s.verified !== false);
-  if (shown.length === 0) return null;
-
   return (
     <Section tone={tone} size="tight" className={cn("overflow-hidden", className)}>
       <Container>
@@ -156,7 +140,7 @@ export function StatsBand({
           ref={ref}
           className="grid grid-cols-2 gap-x-6 gap-y-9 border-t border-line pt-9 lg:grid-cols-4"
         >
-          {shown.map((s) => (
+          {stats.map((s) => (
             <div key={s.label}>
               <dt className="sr-only">{s.label}</dt>
               <dd>

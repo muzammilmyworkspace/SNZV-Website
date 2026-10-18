@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import "./boarding.css";
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { AnalyticsScripts } from "@/components/layout/AnalyticsScripts";
@@ -26,31 +25,10 @@ const jakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-/**
- * The Boarding Pass faces. Space Grotesk carries the display type — it has the
- * engineered, slightly mechanical character of airport signage without being a
- * novelty face. JetBrains Mono is for "ticket data" only: flight codes, step
- * numbers, the departure board. Body copy stays on Jakarta, which is the most
- * readable of the three at paragraph length.
- */
-const space = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space",
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono-face",
-  display: "swap",
-  weight: ["400", "500", "700"],
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
- default: "SnZ Ventures | Your Ambition Has No Borders",
+    default: "SnZ Ventures — Your Ambition Has No Borders",
     template: "%s | SnZ Ventures",
   },
   description: DEFAULT_DESCRIPTION,
@@ -75,8 +53,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Matches the night sky, the default theme's page ground.
-  themeColor: "#070B1A",
+  // Matches the light theme's page ground, since that is now the default.
+  themeColor: "#FAFBFD",
   width: "device-width",
   initialScale: 1,
   colorScheme: "light dark",
@@ -86,7 +64,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${space.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={jakarta.variable} suppressHydrationWarning>
       <head>
         {/*
           Theme, applied BEFORE first paint.
@@ -97,36 +75,16 @@ export default function RootLayout({
           apart, that flash is a full inversion of the page, which is far worse
           than a moment of unstyled text.
 
-          DARK (night) is the default: it is the Boarding Pass art direction
-          the site is designed in. Day is one click away on the header toggle,
-          and the choice is remembered.
+          LIGHT is the default. The dark art direction still exists in full
+          and is one click away, but an unknown visitor now lands on the light
+          theme — which is the brand's own student-site palette and the safer
+          first impression for a consultancy.
           `suppressHydrationWarning` on <html> is required because this mutates
           the element before React sees it.
         */}
-        {/*
-          A raw <script>, deliberately, NOT next/script.
-
-          next/script with `beforeInteractive` was tried: in the App Router an
-          inline script with that strategy is queued (`self.__next_s`) and run
-          by the Next runtime after its chunks load. That is after first paint,
-          so the page flashed the wrong theme and `npm run audit:theme`
-          ("choice persists across reload") failed.
-
-          The raw script runs during HTML parsing, and React does not warn on a
-          normal load: the warning ("Encountered a script tag while rendering
-          React component") only fires when React CREATES the element in the
-          browser rather than hydrating it. That happens in two cases:
-            - a hydration failure elsewhere on the page, which makes React
-              throw the server tree away and client-render everything,
-              including this script. Browser extensions that inject nodes
-              before hydration (LastPass, on the homepage form) were the
-              cause; see the note in components/bp/FinalCall.tsx.
-            - Fast Refresh after editing this file in dev.
-          So if this warning reappears, look for a hydration error first.
-        */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`,
           }}
         />
         {/*

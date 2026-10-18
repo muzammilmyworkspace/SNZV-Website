@@ -7,7 +7,6 @@ import { company } from "@/data/company";
 import { Action } from "@/components/ui/Editorial";
 import { cn } from "@/lib/utils";
 import type { PathwayKey } from "@/data/pathways";
-import { attribution } from "@/lib/attribution";
 
 /**
  * THE SMART JOURNEY FORM
@@ -93,7 +92,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
       name: "intake",
       label: "Preferred intake",
       type: "select",
-      options: ["Next 6 months", "6 to 12 months", "Over a year away", "Undecided"],
+      options: ["Next 6 months", "6–12 months", "Over a year away", "Undecided"],
     },
     {
       name: "funding",
@@ -115,7 +114,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
       label: "Years of experience",
       type: "select",
       required: true,
-      options: ["Under 2", "2 to 5", "5 to 10", "10+"],
+      options: ["Under 2", "2–5", "5–10", "10+"],
     },
     {
       name: "destination",
@@ -169,7 +168,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
         "Crypto authorisation",
         "Residence permit & relocation",
         "Hiring a team",
-        "Not sure, need guidance",
+        "Not sure — need guidance",
       ],
     },
     {
@@ -182,7 +181,7 @@ const STEP_TWO: Record<PathwayKey, FieldDef[]> = {
       name: "timeline",
       label: "Timeline",
       type: "select",
-      options: ["Immediately", "1 to 3 months", "3 to 6 months", "Exploring"],
+      options: ["Immediately", "1–3 months", "3–6 months", "Exploring"],
     },
   ],
 };
@@ -275,7 +274,7 @@ export function JourneyForm({
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pathway, answers, meta: attribution() }),
+        body: JSON.stringify({ pathway, answers }),
       });
       if (!res.ok) {
         // The server tells us when delivery is unavailable so we can show the
@@ -316,10 +315,10 @@ export function JourneyForm({
             />
           </svg>
         </div>
-        <h3 className="d-3 mt-6 text-fg">Thank you, that's enough to work with.</h3>
+        <h3 className="d-3 mt-6 text-fg">Thank you — that's enough to work with.</h3>
         <p className="mx-auto mt-4 max-w-md text-[0.95rem] leading-relaxed text-muted">
           We'll review what you've told us and come back with an honest read on
-          your options, including if we think the route isn't right for you.
+          your options — including if we think the route isn't right for you.
         </p>
         <p className="mt-6 text-[0.85rem] text-faint">
           Prefer to talk now?{" "}
@@ -390,7 +389,7 @@ export function JourneyForm({
               What are you looking to achieve?
             </legend>
             <p className="mb-7 text-[0.9rem] text-faint">
-              This decides what we ask next, so you only answer what's
+              This decides what we ask next — so you only answer what's
               relevant.
             </p>
 
@@ -540,7 +539,7 @@ export function JourneyForm({
                   rows={3}
                   value={answers.notes ?? ""}
                   onChange={(e) => set("notes", e.target.value)}
-                  className="focus-line w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none placeholder:text-faint focus:border-moss-400"
+                  className="w-full resize-y border border-line bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none transition-colors placeholder:text-faint focus:border-moss-400"
                   placeholder="Constraints, deadlines, questions…"
                 />
               </div>
@@ -620,11 +619,8 @@ function Field({
 }) {
   const id = `jf-${field.name}`;
   const errorId = `${id}-error`;
-  /* `focus-line` draws the accent hairline along the underside on focus —
-     the same gesture as the journey paths. It is in addition to the border
-     colour, which remains the accessible focus indicator. */
   const base =
-    "focus-line w-full border bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none placeholder:text-faint";
+    "w-full border bg-white/[0.04] px-4 py-3 text-[0.95rem] text-fg outline-none transition-colors placeholder:text-faint";
   const border = error
     ? "border-red-400/70 focus:border-red-400"
     : "border-line focus:border-moss-400";

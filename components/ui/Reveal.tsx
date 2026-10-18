@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
-import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { EASE } from "@/lib/utils";
 
@@ -25,7 +24,7 @@ export function Reveal({
   once?: boolean;
   as?: "div" | "li" | "section" | "article";
 }) {
-  const reduced = useSafeReducedMotion();
+  const reduced = useReducedMotion();
   const M = motion[as] as typeof motion.div;
 
   return (
@@ -83,7 +82,7 @@ export function RevealItem({
   y?: number;
   as?: "div" | "li" | "article";
 }) {
-  const reduced = useSafeReducedMotion();
+  const reduced = useReducedMotion();
   const M = motion[as] as typeof motion.div;
   const variants: Variants = {
     hidden: { opacity: 0, y: reduced ? 0 : y },
@@ -115,7 +114,7 @@ export function StaggerText({
   delay?: number;
   as?: "span" | "h1" | "h2";
 }) {
-  const reduced = useSafeReducedMotion();
+  const reduced = useReducedMotion();
   const words = text.split(" ");
 
   if (reduced) return <As className={className}>{text}</As>;
