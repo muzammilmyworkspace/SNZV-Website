@@ -44,12 +44,12 @@ export const company = {
      */
     whatsapp: "37062393857",
     whatsappDisplay: "+370 623 93857",
-    city: "Vilnius",
+    city: "Molėtų r.",
     country: "Lithuania",
     countryCode: "LT",
     /** Client-supplied — office address. */
-    streetAddress: "Konstitucijos Ave. 21A",
-    postalCode: "08130",
+    streetAddress: "Lėlių g. 6, Lėlių k.",
+    postalCode: "LT-33157",
   },
 
   /** [CONTENT REQUIRED] — legal entity details not published. */

@@ -95,12 +95,14 @@ async function resolvePlaceId(key: string): Promise<string | null> {
         "X-Goog-FieldMask": "places.id,places.displayName",
       },
       body: JSON.stringify({
-        textQuery: `${company.name} ${company.contact.streetAddress} ${company.contact.city}`,
+        // By name only: the Google Business listing does not have to move
+        // with the office address for the reviews to keep loading.
+        textQuery: `${company.name} Lithuania`,
         maxResultCount: 1,
         locationBias: {
           circle: {
             center: { latitude: 54.6872, longitude: 25.2797 },
-            radius: 25000,
+            radius: 100000,
           },
         },
       }),
