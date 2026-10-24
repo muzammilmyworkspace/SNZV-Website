@@ -68,7 +68,7 @@ function StatItem({ stat, play }: { stat: Stat; play: boolean }) {
       */}
       <span
         aria-hidden
-        className="num block text-[2.6rem] leading-none tracking-[-0.03em] text-fg sm:text-[3rem]"
+        className="num block font-display text-[2.8rem] font-bold leading-none tracking-[-0.05em] text-fg-strong sm:text-[3.6rem]"
       >
         {value}
         {stat.suffix}
@@ -112,7 +112,7 @@ export function StatsBand({
           <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
             {eyebrow && (
               <p className="label flex items-center gap-3 text-accent">
-                <span aria-hidden className="inline-block h-px w-8 bg-current opacity-50" />
+                <span aria-hidden className="inline-block h-[2px] w-7 rounded-full bg-[#6CBF3B]" />
                 {eyebrow}
               </p>
             )}
@@ -126,7 +126,7 @@ export function StatsBand({
             {cta && (
               <Link
                 href={cta.href}
-                className="group inline-flex min-h-11 items-center gap-2 border border-line px-4 text-[0.85rem] font-medium text-fg transition-colors hover:border-moss-400/70 hover:text-accent"
+                className="group inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-[0.88rem] font-semibold text-fg shadow-[inset_0_0_0_1.5px_var(--line-strong)] transition-shadow hover:shadow-[inset_0_0_0_1.5px_var(--fg)]"
               >
                 {cta.label}
                 <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">

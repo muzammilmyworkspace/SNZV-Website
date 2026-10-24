@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Bricolage_Grotesque, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import "./skin.css";
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { AnalyticsScripts } from "@/components/layout/AnalyticsScripts";

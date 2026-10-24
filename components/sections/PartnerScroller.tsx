@@ -96,7 +96,7 @@ export function PartnerScroller() {
             </div>
 
             <div className="flex flex-1 flex-col p-5">
-              <span className="label" style={{ color: p.tint }}>
+              <span className="label text-accent">
                 {p.city} · {p.country}
               </span>
               <h3 className="mt-1.5 text-[1.05rem] font-semibold leading-tight tracking-[-0.015em] text-fg-strong">

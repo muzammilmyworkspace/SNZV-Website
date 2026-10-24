@@ -34,6 +34,12 @@ export default function DestinationsPage() {
         eyebrow="Destinations"
         title="Eight Markets, and an Honest Map of What We Do in Each."
         lead="Plenty of firms list every country in Europe. We list the eight we actually work in — and mark clearly where a service is a flagship, where it's available, and where you should simply ask."
+        images={[
+          { src: "/images/dest-vilnius.webp", alt: "Vilnius skyline at dusk, Lithuania" },
+          { src: "/images/dest-warsaw.webp", alt: "Aerial view of central Warsaw, Poland" },
+          { src: "/images/dest-riga.webp", alt: "Aerial view over Riga, Latvia" },
+        ]}
+        chip={{ title: "Eight markets", body: "and what we do in each, marked plainly" }}
         breadcrumbs={[
           { name: "Home", path: "/" },
           { name: "Destinations", path: "/destinations" },

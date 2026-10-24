@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { FloatingCTA } from "./FloatingCTA";
 import { PathwayPopup } from "./PathwayPopup";
+import { FxObserver, ScrollProgress } from "@/components/fx/FxObserver";
 
 /**
  * Public-site chrome. The portal renders its own shell, so header, footer,
@@ -33,6 +34,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <ScrollProgress />
+      <FxObserver />
       <Header />
       <main id="main">{children}</main>
       <Footer />

@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   Container,
   Section,
   SectionHeading,
-  Chapter,
+  Eyebrow,
+  accentLast,
   Action,
   Reveal,
   RevealGroup,
@@ -13,7 +13,9 @@ import {
   Caveat,
 } from "@/components/ui/Primitives";
 import { FaqAccordion } from "@/components/ui/Accordion";
-import { HeroSlideshow, type HeroImage } from "./HeroSlideshow";
+import { type HeroImage } from "./HeroSlideshow";
+import { ArchHero } from "@/components/fx/ArchHero";
+import { Stamp } from "@/components/fx/Stamp";
 import { company } from "@/data/company";
 import type { FAQ } from "@/data/services";
 import { cn } from "@/lib/utils";
@@ -61,8 +63,8 @@ export function Breadcrumbs({
 /* ------------------------------------------------------------- PageHero */
 
 /**
- * Inner-page opener. Full-bleed duotone plate, chapter marker, display line
- * revealed from behind a mask — the hero language, at a smaller register.
+ * Inner-page opener: the Horizon arch hero (components/fx/ArchHero). Copy on
+ * the left, the page's photographs in an arch on the right.
  */
 export function PageHero({
   eyebrow,
@@ -74,7 +76,7 @@ export function PageHero({
   breadcrumbs,
   primaryCta,
   secondaryCta,
-  index = "—",
+  chip = { title: "One named advisor", body: "from the first call to arrival" },
 }: {
   eyebrow: string;
   title: string;
@@ -87,6 +89,7 @@ export function PageHero({
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
   index?: string;
+  chip?: { title: string; body: string };
 }) {
   const frames: HeroImage[] =
     images && images.length > 0
@@ -96,70 +99,46 @@ export function PageHero({
         : [];
 
   return (
-    <section className="plate plate-deep grain relative flex min-h-[62svh] items-end overflow-hidden tone-deep pb-14 pt-32 md:pb-16 md:pt-40">
-      {frames.length > 0 && <HeroSlideshow images={frames} />}
-
-      {/*
-        Reading scrim. Hero photographs vary from near-black to pale stone,
-        and once the plate cycles through four of them a single grade cannot
-        serve all four. This pins the contrast under the copy regardless of
-        which frame is showing.
-      */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(6,13,28,0.85)_0%,rgba(6,13,28,0.6)_42%,rgba(6,13,28,0.3)_72%,rgba(6,13,28,0.45)_100%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-[linear-gradient(to_top,rgba(6,13,28,0.88)_0%,transparent_100%)]"
-      />
-      <div
-        aria-hidden
-        className="graticule mask-radial pointer-events-none absolute inset-0 -z-10 opacity-60"
-      />
-      <div
-        aria-hidden
-        className="bloom-royal pointer-events-none absolute -right-40 top-0 -z-10 h-[40rem] w-[40rem] opacity-50"
-      />
-      <div
-        aria-hidden
-        className="bloom-moss pointer-events-none absolute -bottom-48 left-[12%] -z-10 h-[30rem] w-[30rem] opacity-35"
-      />
-
-      <Container className="relative z-10">
-        <Breadcrumbs items={breadcrumbs} />
-        <Chapter index={index} label={eyebrow} className="mb-8" />
-
+    <ArchHero
+      images={frames}
+      chip={chip}
+      top={
+        <>
+          <Breadcrumbs items={breadcrumbs} />
+          <Eyebrow>{eyebrow}</Eyebrow>
+        </>
+      }
+      title={
         <MaskedLines
           as="h1"
           animate="mount"
           delay={0.12}
-          className="d-1 max-w-[18ch] text-fg"
-          lines={[title]}
+          className="d-1 max-w-[16ch] text-fg-strong is-in"
+          lines={[accentLast(title)]}
         />
+      }
+    >
+      <Reveal delay={0.28}>
+        <p className="lede mt-7 max-w-xl">{lead}</p>
+      </Reveal>
 
-        <Reveal delay={0.28}>
-          <p className="lede mt-7 max-w-2xl">{lead}</p>
+      {(primaryCta || secondaryCta) && (
+        <Reveal delay={0.36}>
+          <div className="mt-9 flex flex-wrap gap-3">
+            {primaryCta && (
+              <Action href={primaryCta.href} size="lg" magnetic>
+                {primaryCta.label}
+              </Action>
+            )}
+            {secondaryCta && (
+              <Action href={secondaryCta.href} variant="line" size="lg">
+                {secondaryCta.label}
+              </Action>
+            )}
+          </div>
         </Reveal>
-
-        {(primaryCta || secondaryCta) && (
-          <Reveal delay={0.36}>
-            <div className="mt-10 flex flex-wrap gap-3">
-              {primaryCta && (
-                <Action href={primaryCta.href} size="lg" magnetic>
-                  {primaryCta.label}
-                </Action>
-              )}
-              {secondaryCta && (
-                <Action href={secondaryCta.href} variant="line" size="lg">
-                  {secondaryCta.label}
-                </Action>
-              )}
-            </div>
-          </Reveal>
-        )}
-      </Container>
-    </section>
+      )}
+    </ArchHero>
   );
 }
 
@@ -378,55 +357,50 @@ export function CTASection({
   lead,
   primary = { label: "Start your journey", href: "/contact#journey" },
   secondary,
-  plate = "/images/plate-departure.webp",
 }: {
   title: string;
   lead?: string;
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string; external?: boolean };
+  /** Kept for old call sites; the closing panel no longer uses a photograph. */
   plate?: string;
 }) {
   return (
-    <section className="plate plate-deep grain relative flex min-h-[52svh] items-center overflow-hidden tone-deep py-16">
-      <div className="absolute inset-0 -z-10">
-        <Image src={plate} alt="" fill sizes="100vw" loading="lazy" className="object-cover" />
-      </div>
-      <div
-        aria-hidden
-        className="bloom-moss pointer-events-none absolute -bottom-40 right-1/4 -z-10 h-[30rem] w-[30rem] opacity-40"
-      />
-      <div
-        aria-hidden
-        className="graticule mask-radial pointer-events-none absolute inset-0 -z-10 opacity-50"
-      />
-
-      <Container className="relative">
-        <div className="max-w-3xl">
-          <MaskedLines as="h2" className="d-1 text-fg" lines={[title]} />
-          {lead && (
-            <Reveal delay={0.15}>
-              <p className="lede mt-6 max-w-xl">{lead}</p>
+    <section className="sk-cta-wrap tone-deep">
+      <div className="sk-cta" data-fx="tilt">
+        <span aria-hidden className="sk-ring sk-ring-a" />
+        <span aria-hidden className="sk-ring sk-ring-b" />
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto]">
+          <div className="max-w-3xl">
+            <MaskedLines as="h2" className="d-1" lines={[accentLast(title)]} />
+            {lead && (
+              <Reveal delay={0.15}>
+                <p className="mt-6 max-w-xl text-[1.1rem] leading-relaxed">{lead}</p>
+              </Reveal>
+            )}
+            <Reveal delay={0.22}>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link href={primary.href} className="sk-btn sk-btn-navy">
+                  {primary.label} <span aria-hidden className="sk-arrow">→</span>
+                </Link>
+                {secondary &&
+                  (secondary.external ? (
+                    <a href={secondary.href} target="_blank" rel="noopener noreferrer" className="sk-btn sk-btn-ghost-dark">
+                      {secondary.label}
+                    </a>
+                  ) : (
+                    <Link href={secondary.href} className="sk-btn sk-btn-ghost-dark">
+                      {secondary.label}
+                    </Link>
+                  ))}
+              </div>
             </Reveal>
-          )}
-          <Reveal delay={0.22}>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Action href={primary.href} size="lg" magnetic>
-                {primary.label}
-              </Action>
-              {secondary && (
-                <Action
-                  href={secondary.href}
-                  external={secondary.external}
-                  variant="line"
-                  size="lg"
-                >
-                  {secondary.label}
-                </Action>
-              )}
-            </div>
-          </Reveal>
+          </div>
+          <div className="hidden lg:block">
+            <Stamp className="sk-float scale-[1.35]" text="Your ambition · has no borders · " />
+          </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

@@ -4,6 +4,7 @@ import {
   Container,
   Section,
   Chapter,
+  Eyebrow,
   Action,
   Reveal,
   RevealGroup,
@@ -14,7 +15,8 @@ import {
 } from "@/components/ui/Primitives";
 import { StudyDestinationCard } from "@/components/cards/Cards";
 import { ScholarshipCard } from "@/components/cards/ScholarshipCard";
-import { HeroSlideshow } from "./HeroSlideshow";
+import { ArchHero } from "@/components/fx/ArchHero";
+import { Breadcrumbs } from "./PageParts";
 import {
   studyDestinations,
   studyFields,
@@ -45,116 +47,72 @@ import { Fragment } from "react";
 
 export function StudyHero() {
   return (
-    <section className="plate plate-deep grain relative flex min-h-[86svh] items-end overflow-hidden tone-deep pb-16 pt-32 md:pb-20 md:pt-40">
-      <HeroSlideshow images={pillars.study.hero.images ?? []} />
-      {/*
-        Reading scrim, fixed while the plate parallaxes behind it.
-
-        The building is a pale limestone facade, so the standard `.plate-deep`
-        grade alone left white type sitting at roughly 2.6:1 over the brightest
-        areas — fine for the display line, not for the stats row beneath it.
-        This darkens the left and the foot of the frame, which is exactly where
-        the copy sits, and leaves the rest of the photograph alone.
-      */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(6,13,28,0.88)_0%,rgba(6,13,28,0.66)_38%,rgba(6,13,28,0.28)_68%,rgba(6,13,28,0.42)_100%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-[linear-gradient(to_top,rgba(6,13,28,0.9)_0%,transparent_100%)]"
-      />
-      <div
-        aria-hidden
-        className="graticule mask-radial pointer-events-none absolute inset-0 -z-10 opacity-60"
-      />
-      <div
-        aria-hidden
-        className="bloom-royal pointer-events-none absolute -right-40 top-0 -z-10 h-[42rem] w-[42rem] opacity-50"
-      />
-      <div
-        aria-hidden
-        className="bloom-moss pointer-events-none absolute -bottom-52 left-[10%] -z-10 h-[32rem] w-[32rem] opacity-35"
-      />
-
-      <Container className="relative z-10">
-        <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link
-                href="/"
-                className="label inline-flex min-h-8 items-center text-faint transition-colors hover:text-accent"
-              >
-                Home
-              </Link>
-            </li>
-            <li aria-hidden className="text-faint">
-              /
-            </li>
-            <li>
-              <span aria-current="page" className="label text-faint">
-                Study Abroad
-              </span>
-            </li>
-          </ol>
-        </nav>
-
-        <Chapter index="—" label="For students" className="mb-8" />
-
+    <ArchHero
+      images={pillars.study.hero.images ?? []}
+      chip={{ title: `${studyDestinations.length} study countries`, body: "across the European Union" }}
+      top={
+        <>
+          <Breadcrumbs
+            items={[
+              { name: "Home", path: "/" },
+              { name: "Study Abroad", path: "/study-abroad" },
+            ]}
+          />
+          <Eyebrow>For students</Eyebrow>
+        </>
+      }
+      title={
         <MaskedLines
           as="h1"
           animate="mount"
           delay={0.12}
-          className="d-hero max-w-[15ch] text-fg"
+          className="d-hero max-w-[13ch] text-fg-strong is-in"
           lines={[
             "Study in Europe.",
             <Fragment key="Plan">
-              Graduate With a <span className="d-em">Plan</span>.
+              Graduate with a <span className="d-em">plan</span>.
             </Fragment>,
           ]}
         />
+      }
+    >
+      <Reveal delay={0.3}>
+        <p className="lede mt-7 max-w-xl">
+          From choosing a destination and a university through application,
+          admission, visa and departure: one advisory team, one named
+          advisor, and honest answers at every step of the journey.
+        </p>
+      </Reveal>
 
-        <Reveal delay={0.3}>
-          <p className="lede mt-8 max-w-2xl">
-            From choosing a destination and a university through application,
-            admission, visa and departure — one advisory team, one named
-            advisor, and honest answers at every step of the journey.
-          </p>
-        </Reveal>
+      <Reveal delay={0.4}>
+        <div className="mt-9 flex flex-wrap gap-3">
+          <Action href="/contact#journey" size="lg" magnetic>
+            Book a consultation
+          </Action>
+          <Action href="#destinations" variant="line" size="lg">
+            Explore destinations
+          </Action>
+        </div>
+      </Reveal>
 
-        <Reveal delay={0.4}>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Action href="/contact#journey" size="lg" magnetic>
-              Book a consultation
-            </Action>
-            <Action href="#destinations" variant="line" size="lg">
-              Explore destinations
-            </Action>
-          </div>
-        </Reveal>
-
-        {/* Facts, not claims. Every number here is checkable from this page. */}
-        <Reveal delay={0.5}>
-          <dl className="mt-14 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-4">
-            {studyFacts.map((f) => (
-              <div key={f.label}>
-                <dt className="sr-only">{f.label}</dt>
-                <dd>
-                  <span className="num block text-[2.4rem] leading-none tracking-[-0.03em] text-fg">
-                    {f.value}
-                    {f.suffix}
-                  </span>
-                  <span className="label mt-2 block text-accent">{f.label}</span>
-                  <span className="mt-1.5 block text-[0.75rem] leading-snug text-faint">
-                    {f.detail}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
-      </Container>
-    </section>
+      {/* Facts, not claims. Every number here is checkable from this page. */}
+      <Reveal delay={0.5}>
+        <dl className="mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-7 sm:grid-cols-4">
+          {studyFacts.map((f) => (
+            <div key={f.label}>
+              <dt className="sr-only">{f.label}</dt>
+              <dd>
+                <span className="num block font-display text-[2.3rem] font-bold leading-none tracking-[-0.04em] text-fg-strong">
+                  {f.value}
+                  {f.suffix}
+                </span>
+                <span className="label mt-2 block text-accent">{f.label}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Reveal>
+    </ArchHero>
   );
 }
 

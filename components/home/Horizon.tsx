@@ -9,7 +9,9 @@ import { articles } from "@/data/insights";
 import { Reveal } from "@/components/ui/Reveal";
 import { Rail } from "./Rail";
 import { CtaLink, WhatsAppLink, PhoneLink, EmailLink } from "./Tracked";
-import { Arrow, Check, Globe, Cap, Person, Shield, Handshake, Message, Route } from "./Icons";
+import { Arrow, Check, Shield, Handshake, Message, Route } from "./Icons";
+import { HzCollage, CountUp } from "./HzCollage";
+import { Stamp } from "@/components/fx/Stamp";
 
 const BOOK = "/contact#journey";
 
@@ -60,31 +62,7 @@ export function HzHero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.1} y={30}>
-          <div className="hz-collage">
-            <div className="hz-arch hz-arch-a">
-              <Image src="/images/study-graduation.webp" alt="Graduates throwing their caps in the air" fill priority sizes="(min-width:1024px) 30vw, 52vw" />
-            </div>
-            <div className="hz-arch hz-arch-b">
-              <Image src="/images/dest-vilnius-old.webp" alt="The old town of Vilnius, Lithuania" fill priority sizes="(min-width:1024px) 25vw, 44vw" />
-            </div>
-            <div className="hz-arch hz-arch-c">
-              <Image src="/images/careers-airport.webp" alt="A traveller walking through an airport terminal" fill sizes="(min-width:1024px) 22vw, 38vw" />
-            </div>
-            <div className="hz-chip hz-chip-1">
-              <span className="hz-chip-icon"><Globe /></span>
-              <span><b>{homeStats[0].value} EU states</b>from one Lithuanian base</span>
-            </div>
-            <div className="hz-chip hz-chip-2">
-              <span className="hz-chip-icon"><Cap /></span>
-              <span><b>{studyDestinations.length} study countries</b>across the European Union</span>
-            </div>
-            <div className="hz-chip hz-chip-3">
-              <span className="hz-chip-icon"><Person /></span>
-              <span><b>1 advisor</b>from first call to arrival</span>
-            </div>
-          </div>
-        </Reveal>
+        <HzCollage euStates={homeStats[0].value} studyCountries={studyDestinations.length} />
       </div>
     </section>
   );
@@ -94,12 +72,21 @@ export function HzHero() {
 export function HzMarquee() {
   const items = studyDestinations.map((d) => ({ city: d.city, country: d.country }));
   const row = [...items, ...items];
+  const words = ["Study", "Work", "Build", "Relocate", "Belong"];
+  const row2 = [...words, ...words, ...words, ...words];
   return (
     <div className="hz-marquee" aria-hidden>
       <div className="hz-marquee-track">
         {row.map((d, i) => (
           <span className="hz-marquee-item" key={i}>
             <i /> {d.city} <small>{d.country}</small>
+          </span>
+        ))}
+      </div>
+      <div className="hz-marquee-track hz-marquee-rev">
+        {row2.map((w, i) => (
+          <span className="hz-marquee-word" key={i}>
+            {w} <em className="hz-serif">in Europe</em> <i />
           </span>
         ))}
       </div>
@@ -132,7 +119,7 @@ export function HzPaths() {
           {pathways.map((p, i) => (
             <Reveal key={p.key} delay={i * 0.08} className="h-full">
               <article className="hz-path h-full">
-                <div className="hz-path-img">
+                <div className="hz-path-img" data-fx="unveil" style={{ ["--fx-delay" as string]: `${i * 0.12}s` }}>
                   <Image src={p.image} alt={p.imageAlt} fill sizes="(min-width:900px) 33vw, 100vw" />
                   <span className="hz-path-tag">{PATH_TAGS[p.key]}</span>
                 </div>
@@ -238,6 +225,7 @@ export function HzJourney() {
             </p>
           </Reveal>
         </div>
+        <span aria-hidden className="hz-steps-line" data-fx="grow" />
         <ol className="hz-steps">
           {studyJourney.map((s, i) => (
             <Reveal key={s.step} as="li" delay={i * 0.07} className="hz-step">
@@ -330,8 +318,7 @@ export function HzWhy() {
             <Reveal key={s.label} delay={i * 0.06}>
               <div className={`hz-tile h-full ${i === 0 ? "hz-tile-green" : ""}`}>
                 <div className="hz-tile-num">
-                  {s.value}
-                  {s.suffix}
+                  <CountUp value={s.value} suffix={s.suffix} />
                 </div>
                 <div className="hz-tile-label">{s.label}</div>
                 <p>{s.detail}</p>
@@ -342,6 +329,7 @@ export function HzWhy() {
 
         <div className="hz-why">
           <Reveal className="hz-why-photo">
+            <span aria-hidden className="hz-why-sweep" data-fx="sweep" />
             <Image src="/images/study-campus.webp" alt="Students walking across a European university campus" fill sizes="(min-width:900px) 36vw, 100vw" />
             <blockquote>
               <span className="hz-serif">&ldquo;{company.missionQuote}&rdquo;</span>
@@ -413,6 +401,9 @@ export function HzCta() {
     <section className="hz-wrap pb-24 lg:pb-32" aria-labelledby="hz-cta">
       <Reveal>
         <div className="hz-cta">
+          <div aria-hidden className="hz-cta-stamp hidden md:block">
+            <Stamp className="sk-float" text="Your ambition · has no borders · " />
+          </div>
           <div className="relative">
             <h2 id="hz-cta" className="hz-display mx-auto max-w-[16ch]">
               Let&rsquo;s plan your move to <span className="hz-serif">Europe</span>.

@@ -306,3 +306,88 @@
 .hz-cta .hz-btn-primary,
 [data-theme="dark"] .hz-cta .hz-btn-primary { background: var(--hz-navy); color: #fff; }
 [data-theme="dark"] .hz-cta .hz-btn-primary:hover { background: #111A3A; }
+
+/* ============================================================== motion ===
+   October 2026: the homepage in motion (components/home/HzCollage, the
+   `data-fx` hooks switched on by components/fx/FxObserver, app/skin.css). */
+
+/* Hero: the hand-drawn stroke under "borders." draws itself in. */
+.hz-underline path { stroke-dasharray: 220; stroke-dashoffset: 220; animation: hz-draw 1.2s var(--ease-out-expo) 0.9s forwards; }
+@keyframes hz-draw { to { stroke-dashoffset: 0; } }
+
+.hz-stamp { position: absolute; z-index: 3; left: 40%; bottom: -18px; }
+@media (max-width: 520px) { .hz-stamp { left: auto; right: 34%; bottom: -10px; transform: scale(0.75); } }
+
+/* Section headlines: the serif word gets a green stroke once on screen. */
+.hz-h2 .hz-serif {
+  background-image: linear-gradient(var(--hz-green), var(--hz-green));
+  background-repeat: no-repeat; background-position: 0 94%; background-size: 0% 0.07em;
+  transition: background-size 1.1s var(--ease-out-expo) 0.35s;
+}
+.hz-h2.is-in .hz-serif { background-size: 100% 0.07em; }
+.hz-cta h2 .hz-serif {
+  background-image: linear-gradient(var(--hz-navy), var(--hz-navy));
+  background-repeat: no-repeat; background-position: 0 94%; background-size: 0% 0.07em;
+  transition: background-size 1.1s var(--ease-out-expo) 0.35s;
+}
+.hz-cta h2.is-in .hz-serif { background-size: 100% 0.07em; }
+
+/* Marquee: a second row of words running the other way. */
+.hz-marquee-rev { animation-direction: reverse; animation-duration: 60s; border-top: 1px solid var(--hz-line); }
+.hz-marquee-word {
+  display: inline-flex; align-items: center; gap: 16px; padding: 14px 22px;
+  font-family: var(--font-bricolage), sans-serif; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap;
+  color: var(--hz-muted);
+}
+.hz-marquee-word em { color: var(--hz-green-ink); font-size: 1.2em; }
+.hz-marquee-word i { width: 6px; height: 6px; border-radius: 50%; background: var(--hz-line); }
+
+/* Journey: a green line runs across the five steps as they arrive. */
+.hz-steps-line { display: none; }
+@media (min-width: 1024px) {
+  .hz-steps-line {
+    display: block; position: relative; top: 49px; height: 2px; margin: 0 40px -2px;
+    background: linear-gradient(90deg, var(--hz-green), rgb(108 191 59 / 0.2));
+    transition-duration: 1.6s !important;
+  }
+}
+.hz-step { transition: background-color 0.3s, transform 0.4s var(--ease-out-expo); }
+.hz-step:hover { transform: translateY(-6px); }
+.hz-step-n { position: relative; }
+.hz-step-n::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--hz-green);
+  opacity: 0; animation: hz-ping 3.2s ease-out infinite;
+}
+.hz-step:nth-child(2) .hz-step-n::after { animation-delay: 0.6s; }
+.hz-step:nth-child(3) .hz-step-n::after { animation-delay: 1.2s; }
+.hz-step:nth-child(4) .hz-step-n::after { animation-delay: 1.8s; }
+.hz-step:nth-child(5) .hz-step-n::after { animation-delay: 2.4s; }
+@keyframes hz-ping { 0% { opacity: 0.7; transform: scale(0.9); } 70%, 100% { opacity: 0; transform: scale(1.35); } }
+
+/* Tiles lift and the stat tiles tilt slightly toward the pointer side. */
+.hz-tile { transition: transform 0.45s var(--ease-out-expo), box-shadow 0.45s; }
+.hz-tile:hover { transform: translateY(-6px) rotate(-0.6deg); }
+.hz-partner { transition: transform 0.45s var(--ease-out-expo); }
+.hz-partner:hover { transform: translateY(-6px); }
+.hz-partner-img img { transition: transform 0.9s var(--ease-out-expo); }
+.hz-partner:hover .hz-partner-img img { transform: scale(1.05); }
+
+/* Why: a green panel slides off the photograph when it comes on screen. */
+.hz-why-sweep { position: absolute; inset: 0; z-index: 2; background: var(--hz-green); transform-origin: 50% 0; pointer-events: none; }
+html:not(.fx-ready) .hz-why-sweep, .hz-why-sweep.is-in { transform: scaleY(0); transition: transform 1.2s var(--ease-in-out-quart) 0.2s; }
+
+/* Final CTA: the stamp turns in the corner. */
+.hz-cta-stamp { position: absolute; right: 48px; top: 40px; }
+.hz-cta-stamp .sk-stamp { background: var(--hz-navy); color: #fff; }
+.hz-cta::before { animation: sk-drift 16s ease-in-out infinite; }
+.hz-cta::after { animation: sk-drift 20s ease-in-out infinite reverse; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hz-underline path { animation: none; stroke-dashoffset: 0; }
+  .hz-step-n::after, .hz-cta::before, .hz-cta::after { animation: none; }
+  .hz-h2 .hz-serif { transition: none; background-size: 100% 0.07em; }
+  .hz-why-sweep { display: none; }
+}
+.hz-cta-contacts a { display: inline-flex; align-items: center; min-height: 40px; }
+/* A dark ground under each destination photo, so its white type stays readable before the image loads. */
+.hz-dest { background: #1F2D5C; }

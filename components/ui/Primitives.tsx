@@ -9,9 +9,26 @@
  * working; long-form reading surfaces are routed to the light bands.
  */
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Action as MeridianAction } from "./Editorial";
+
+/**
+ * The last word of a heading in the italic serif (`.d-em`, app/skin.css), the
+ * way the homepage headlines carry one word. Trailing punctuation stays upright.
+ */
+export function accentLast(title: string): ReactNode {
+  const m = title.match(/^(.*\s)(\S+?)([.!?]?)$/);
+  if (!m) return title;
+  // Keyed: it is also passed inside the `lines` array of MaskedLines.
+  return (
+    <Fragment key="accent">
+      {m[1]}
+      <span className="d-em">{m[2]}</span>
+      {m[3]}
+    </Fragment>
+  );
+}
 
 export {
   Reveal,
@@ -121,7 +138,7 @@ export function Eyebrow({
 }) {
   return (
     <p className={cn("label flex items-center gap-3 text-accent", className)}>
-      <span aria-hidden className="inline-block h-px w-8 bg-current opacity-50" />
+      <span aria-hidden className="inline-block h-[2px] w-7 rounded-full bg-[#6CBF3B]" />
       {children}
     </p>
   );
@@ -158,7 +175,9 @@ export function SectionHeading({
           {eyebrow}
         </Eyebrow>
       )}
-      <As className={cn(As === "h1" ? "d-1" : "d-2", "text-fg-strong")}>{title}</As>
+      <As className={cn(As === "h1" ? "d-1" : "d-2", "text-fg-strong")}>
+        {typeof title === "string" ? accentLast(title) : title}
+      </As>
       {lead && <p className="lede mt-4">{lead}</p>}
     </div>
   );

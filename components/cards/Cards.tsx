@@ -110,7 +110,8 @@ export function DestinationCard({
       onViewportEnter={() => analytics.destinationView(destination.slug)}
       className="group"
     >
-      <div className="plate relative aspect-[4/5] overflow-hidden">
+      {/* plate-deep: the photo stays dark in both themes, so its type stays light. */}
+      <div className="plate plate-deep relative aspect-[4/5] overflow-hidden rounded-[22px]">
         <Image
           src={destination.image}
           alt={`${destination.city}, ${destination.country}`}
@@ -120,10 +121,11 @@ export function DestinationCard({
           className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
         />
         {destination.featured && (
-          <span className="absolute right-3 top-3 z-[3] label bg-moss-400 px-2 py-1 text-void">
+          <span className="absolute right-3 top-3 z-[3] label rounded-full bg-moss-400 px-2.5 py-1 text-void">
             Core
           </span>
         )}
+        <div aria-hidden className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,transparent_45%,rgba(10,16,40,0.85)_100%)]" />
         <div className="absolute inset-x-4 bottom-4 z-[3]">
           <h3 className="font-display text-[1.5rem] leading-none tracking-[-0.02em] text-fg">
             {destination.country}

@@ -277,8 +277,8 @@ export function Magnetic({
 type ActionVariant = "solid" | "line" | "ghost" | "quiet";
 
 /**
- * The CTA. A slab with a travelling sheen and an arrow that departs its slot —
- * deliberately not a rounded pill.
+ * The CTA: a Horizon pill with a travelling sheen and an arrow that departs
+ * its slot.
  */
 export function Action({
   children,
@@ -304,9 +304,9 @@ export function Action({
   ariaLabel?: string;
 }) {
   const sizes = {
-    sm: "h-9 px-4 text-[0.75rem]",
-    md: "h-12 px-6 text-[0.8rem]",
-    lg: "h-14 px-8 text-[0.8rem]",
+    sm: "h-10 px-5 text-[0.85rem]",
+    md: "h-12 px-6 text-[0.95rem]",
+    lg: "h-[3.25rem] px-7 text-[0.98rem]",
   }[size];
 
   const variants = {
@@ -316,14 +316,10 @@ export function Action({
      * shadow blends both hues so the glow reads as the mark rather than as a
      * green light source.
      */
+    /** Horizon pill (app/skin.css): green on navy, navy on paper. */
     solid:
-      "grad-brand bg-moss-400 text-void shadow-[0_10px_34px_-14px_rgba(61,113,201,0.55),0_10px_34px_-14px_rgba(114,196,60,0.55)] hover:-translate-y-0.5 hover:shadow-[0_18px_46px_-12px_rgba(61,113,201,0.75),0_18px_46px_-12px_rgba(114,196,60,0.75)]",
-    /**
-     * Outline variants lift and pick up a tinted ground on hover, not just a
-     * border colour. A border-only change is easy to miss on a busy plate; the
-     * lift is what reads as "this is a control" at a glance.
-     */
-    line: "border border-line text-fg backdrop-blur-[2px] hover:-translate-y-0.5 hover:border-moss-400/70 hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-accent",
+      "bg-[var(--sk-btn)] text-[var(--sk-btn-ink)] shadow-[0_14px_30px_-16px_rgba(17,26,58,0.8)] hover:-translate-y-0.5 hover:bg-[var(--sk-btn-hover)]",
+    line: "shadow-[inset_0_0_0_1.5px_var(--line-strong)] text-fg hover:-translate-y-0.5 hover:shadow-[inset_0_0_0_1.5px_var(--fg)]",
     ghost: "border border-line text-fg hover:-translate-y-0.5 hover:border-moss-400/70 hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-accent",
     quiet: "text-muted hover:text-fg",
   }[variant];
@@ -331,7 +327,7 @@ export function Action({
   const inner = (
     <span
       className={cn(
-        "group/act relative inline-flex items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-[var(--radius-sm)] font-semibold uppercase tracking-[0.12em] transition-all duration-400 ease-[var(--ease-out-expo)] active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none",
+        "group/act relative inline-flex items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-full font-bold tracking-[-0.005em] transition-all duration-400 ease-[var(--ease-out-expo)] active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none",
         sizes,
         variants,
         className
