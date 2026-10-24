@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Bricolage_Grotesque, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
@@ -23,6 +23,20 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
+});
+
+/** Homepage display face and its italic serif companion (app/horizon.css). */
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
+  display: "swap",
+});
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-instrument",
+  display: "swap",
+  weight: "400",
+  style: ["italic"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +68,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   // Matches the light theme's page ground, since that is now the default.
-  themeColor: "#FAFBFD",
+  themeColor: "#17224B",
   width: "device-width",
   initialScale: 1,
   colorScheme: "light dark",
@@ -64,7 +78,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={jakarta.variable} suppressHydrationWarning>
+    <html lang="en" className={`${jakarta.variable} ${bricolage.variable} ${instrument.variable}`} suppressHydrationWarning>
       <head>
         {/*
           Theme, applied BEFORE first paint.
@@ -84,7 +98,7 @@ export default function RootLayout({
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('snz-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
           }}
         />
         {/*
