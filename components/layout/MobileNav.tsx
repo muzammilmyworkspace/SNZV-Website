@@ -7,6 +7,7 @@ import { primaryNav } from "@/data/navigation";
 import { company } from "@/data/company";
 import { Action } from "@/components/ui/Editorial";
 import { analytics } from "@/lib/analytics";
+import { portalLoginUrl } from "@/lib/portal-url";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
@@ -174,6 +175,16 @@ export function MobileNav({
               consultation and nothing else, so an existing client had to type
               the URL. This is the same destination the header button uses.
             */}
+            <a
+              href={portalLoginUrl}
+              onClick={() => {
+                analytics.loginClick("mobile_nav");
+                onClose();
+              }}
+              className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-full border border-line text-[0.95rem] font-semibold transition-colors hover:border-[#6CBF3B] hover:text-[#6CBF3B]"
+            >
+              Client login
+            </a>
             {/*
               Phone / email / WhatsApp are the drawer's fastest exits, and at
               `.label` size they were 17px tall — under a fingertip on the one

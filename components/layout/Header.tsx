@@ -9,6 +9,7 @@ import { primaryNav } from "@/data/navigation";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { analytics } from "@/lib/analytics";
+import { portalLoginUrl } from "@/lib/portal-url";
 import { cn } from "@/lib/utils";
 
 /**
@@ -185,6 +186,19 @@ export function Header() {
 
           <div className="ml-auto flex items-center gap-3 xl:ml-4">
             <ThemeToggle />
+
+            {/* Into the client portal, on its own subdomain. */}
+            <a
+              href={portalLoginUrl}
+              onClick={() => analytics.loginClick("header")}
+              className="hidden min-h-10 items-center gap-2 rounded-full border border-current/30 px-4 text-[0.88rem] font-semibold transition-colors hover:border-[#6CBF3B] hover:text-[#6CBF3B] sm:inline-flex"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-4 w-4">
+                <circle cx="8" cy="5.5" r="2.75" stroke="currentColor" strokeWidth="1.4" />
+                <path d="M2.75 13.5c.8-2.4 2.8-3.75 5.25-3.75s4.45 1.35 5.25 3.75" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+              </svg>
+              Login
+            </a>
 
             <button
               type="button"
