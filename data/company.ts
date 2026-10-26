@@ -24,8 +24,8 @@ export const company = {
 
   /** Verified — published on the live site. */
   contact: {
-    phone: "+370 623 93857",
-    phoneHref: "+37062393857",
+    phone: "+370 603 05146",
+    phoneHref: "+37060305146",
     email: "study@snzventures.com",
     /**
      * Where consultation enquiries are delivered.
@@ -39,7 +39,7 @@ export const company = {
      */
     consultationEmail: "study@snzventures.com",
     /** Live site links a WhatsApp channel on the same published number. */
-    whatsapp: "37062393857",
+    whatsapp: "37060305146",
     city: "Molėtų r.",
     country: "Lithuania",
     countryCode: "LT",

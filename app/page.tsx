@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import "./horizon.css";
+import "./journey.css";
 import {
   HzHero,
   HzMarquee,
   HzPaths,
-  HzPartners,
-  HzJourney,
+  HzRoutes,
   HzDestinations,
   HzWhy,
   HzInsights,
   HzCta,
 } from "@/components/home/Horizon";
+import { Journey } from "@/components/bp/journey/Journey";
+import { MotionRoot } from "@/components/bp/MotionRoot";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -31,8 +33,13 @@ export default function HomePage() {
       <HzHero />
       <HzMarquee />
       <HzPaths />
-      <HzPartners />
-      <HzJourney />
+      <HzRoutes />
+      {/* The seven-step scroll story from the Boarding Pass site (10288af), on its night sky. */}
+      <MotionRoot>
+        <div className="bp hz-journey">
+          <Journey />
+        </div>
+      </MotionRoot>
       <HzDestinations />
       <HzWhy />
       <HzInsights />

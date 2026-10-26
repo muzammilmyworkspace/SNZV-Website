@@ -9,9 +9,10 @@ import { articles } from "@/data/insights";
 import { Reveal } from "@/components/ui/Reveal";
 import { Rail } from "./Rail";
 import { CtaLink, WhatsAppLink, PhoneLink, EmailLink } from "./Tracked";
-import { Arrow, Check, Shield, Handshake, Message, Route } from "./Icons";
+import { Arrow, Check, Globe, Shield, Handshake, Message, Route } from "./Icons";
 import { HzCollage, CountUp } from "./HzCollage";
 import { Stamp } from "@/components/fx/Stamp";
+import { FlagArt } from "@/components/cards/FlagArt";
 
 const BOOK = "/contact#journey";
 
@@ -250,6 +251,92 @@ export function HzJourney() {
   );
 }
 
+/* ---------------------------------------------------------------- routes */
+const ROUTES = [
+  {
+    tag: "Balkans & Cyprus",
+    title: "Closer to home, still in Europe.",
+    body: "Universities across the Balkans and in Cyprus teach in English and look at a wider range of profiles.",
+    countries: ["Albania", "Bosnia & Herzegovina", "Montenegro", "Serbia", "Cyprus"],
+  },
+  {
+    tag: "Non-Schengen",
+    title: "Routes outside the Schengen area.",
+    body: "Countries with their own entry rules, which can suit a profile that the Schengen route does not.",
+    countries: ["Serbia", "Albania", "Georgia", "Türkiye"],
+  },
+];
+
+/**
+ * Where the university partners used to sit (removed on the owner's
+ * request, 2026-10-26): the routes for students whose grades are under 50%
+ * or who hold a diploma rather than a degree. No outcome is promised; the
+ * section says these routes exist and that we check the fit first.
+ */
+export function HzRoutes() {
+  return (
+    <section className="hz-section pt-0" aria-labelledby="hz-routes">
+      <div className="hz-wrap">
+        <div className="hz-head">
+          <Reveal>
+            <span className="hz-eyebrow">More routes</span>
+            <h2 id="hz-routes" className="hz-display hz-h2 mt-5">
+              Under 50%? A diploma? There is <span className="hz-serif">still a route</span>.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="hz-lead">
+              A lower percentage or a diploma instead of a degree does not end the conversation. These countries consider
+              a wider range of profiles, and we tell you honestly which one fits yours before you apply anywhere.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="hz-routes">
+          {ROUTES.map((r, i) => (
+            <Reveal key={r.tag} delay={i * 0.1} className="h-full">
+              <article className="hz-route h-full" data-fx="watch">
+                <span className="hz-route-tag">{r.tag}</span>
+                <h3>{r.title}</h3>
+                <p>{r.body}</p>
+                <ul className="hz-route-flags">
+                  {r.countries.map((c, j) => (
+                    <li key={c} style={{ animationDelay: `${0.15 + j * 0.08}s` }}>
+                      <Globe /> {c}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+
+          <Reveal delay={0.2} className="h-full">
+            <article className="hz-route hz-route-who h-full">
+              <span className="hz-route-tag">Who it is for</span>
+              <h3>Made for profiles like these.</h3>
+              <ul className="hz-route-list">
+                <li><Check /> Grades under 50% in your last qualification</li>
+                <li><Check /> A diploma instead of a bachelor&rsquo;s degree</li>
+                <li><Check /> Refused or unsure about a Schengen route</li>
+              </ul>
+              <div className="mt-auto flex flex-wrap gap-3 pt-6">
+                <CtaLink href={BOOK} label="Check my options" location="home_routes" className="hz-btn hz-btn-primary">
+                  Check my options <Arrow />
+                </CtaLink>
+                <WhatsAppLink location="home_routes" className="hz-btn hz-btn-ghost" />
+              </div>
+            </article>
+          </Reveal>
+        </div>
+        <p className="hz-note">
+          Admission decisions are always the institution&rsquo;s and visa decisions the authority&rsquo;s. We assess your
+          profile first and only suggest a route that is realistic for it.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 /* ---------------------------------------------------------- destinations */
 export function HzDestinations() {
   return (
@@ -264,7 +351,7 @@ export function HzDestinations() {
           </Reveal>
           <Reveal delay={0.08}>
             <p className="hz-lead">
-              Indicative yearly tuition is shown for each country, so you can compare honestly before you commit.
+              Indicative yearly tuition is shown where it is published, so you can compare honestly before you commit. For the rest, ask us for current fees.
             </p>
           </Reveal>
         </div>
@@ -272,7 +359,7 @@ export function HzDestinations() {
           <Rail label="Study destinations">
             {studyDestinations.map((d) => (
               <Link key={d.slug} href="/study-abroad" className="hz-dest">
-                <Image src={d.image} alt={d.imageAlt} fill sizes="300px" />
+                {d.image ? <Image src={d.image} alt={d.imageAlt} fill sizes="300px" /> : <FlagArt colours={d.flag ?? []} />}
                 <span className="hz-dest-fee">{d.tuitionFrom}</span>
                 <span className="hz-dest-body">
                   <small>{d.city}</small>

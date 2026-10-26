@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Bricolage_Grotesque, Instrument_Serif } from "next/font/google";
+import { Plus_Jakarta_Sans, Bricolage_Grotesque, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "./skin.css";
 
@@ -31,6 +31,13 @@ const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage",
   display: "swap",
+});
+/** Typewriter face for the paper documents in the homepage journey (app/journey.css). */
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-face",
+  display: "swap",
+  weight: ["400", "500", "700"],
 });
 const instrument = Instrument_Serif({
   subsets: ["latin"],
@@ -79,7 +86,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${bricolage.variable} ${instrument.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${jakarta.variable} ${bricolage.variable} ${instrument.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         {/*
           Theme, applied BEFORE first paint.

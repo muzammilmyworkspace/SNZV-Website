@@ -391,3 +391,48 @@ html:not(.fx-ready) .hz-why-sweep, .hz-why-sweep.is-in { transform: scaleY(0); t
 .hz-cta-contacts a { display: inline-flex; align-items: center; min-height: 40px; }
 /* A dark ground under each destination photo, so its white type stays readable before the image loads. */
 .hz-dest { background: #1F2D5C; }
+
+/* ============================================================== routes ===
+   HzRoutes (where the partners were): two route cards with their countries
+   as chips that pop in one by one, and a navy "who it is for" card. */
+.hz-routes { display: grid; gap: 20px; }
+@media (min-width: 900px) { .hz-routes { grid-template-columns: repeat(3, 1fr); } }
+.hz-route {
+  position: relative; display: flex; flex-direction: column; gap: 12px; overflow: hidden;
+  padding: 28px 26px; border-radius: 26px; background: var(--hz-card); box-shadow: var(--hz-shadow);
+  transition: transform 0.45s var(--ease-out-expo);
+}
+.hz-route:hover { transform: translateY(-6px); }
+.hz-route::after {
+  content: ""; position: absolute; width: 260px; height: 260px; right: -120px; top: -120px; border-radius: 50%;
+  background: radial-gradient(circle, rgb(108 191 59 / 0.18), transparent 65%); pointer-events: none;
+}
+.hz-route-tag { align-self: flex-start; padding: 6px 12px; border-radius: 999px; background: var(--hz-green-soft); color: var(--hz-green-ink); font-size: 0.78rem; font-weight: 700; }
+.hz-route h3 { font-family: var(--font-bricolage), sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.hz-route p { color: var(--hz-ink-2); line-height: 1.6; }
+.hz-route-flags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.hz-route-flags li {
+  display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 999px;
+  background: var(--hz-bg-2); color: var(--hz-ink); font-size: 0.88rem; font-weight: 600;
+  opacity: 0; animation: hz-chip-in 0.6s var(--ease-out-expo) forwards;
+}
+.hz-route-flags li svg { width: 15px; height: 15px; color: var(--hz-green); }
+@keyframes hz-chip-in { from { opacity: 0; transform: translateY(10px) scale(0.92); } to { opacity: 1; transform: none; } }
+.hz-route-who { background: var(--hz-navy); color: #F3F1EA; box-shadow: none; }
+[data-theme="dark"] .hz-route-who { background: var(--hz-navy-deep); box-shadow: inset 0 0 0 1px var(--hz-line); }
+.hz-route-who .hz-route-tag { background: rgb(108 191 59 / 0.2); color: #A7E07F; }
+.hz-route-who h3 { color: #fff; }
+.hz-route-list { display: grid; gap: 12px; margin-top: 4px; }
+.hz-route-list li { display: flex; gap: 10px; color: #D6DAEA; line-height: 1.45; }
+.hz-route-list li svg { flex-shrink: 0; margin-top: 3px; color: #8FD65F; }
+.hz-route-who .hz-btn-primary { background: var(--hz-green); color: #0B1A05; }
+.hz-route-who .hz-btn-primary:hover { background: #82CF55; }
+.hz-route-who .hz-btn-ghost { color: #fff; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.3); }
+.hz-route-who .hz-btn-ghost:hover { box-shadow: inset 0 0 0 1.5px #fff; }
+
+/* The journey's night sky sits in a rounded band like the rest of the page. */
+.hz-journey { border-radius: 40px; margin: 0 12px; }
+@media (min-width: 768px) { .hz-journey { margin: 0 24px; border-radius: 48px; } }
+@media (prefers-reduced-motion: reduce) { .hz-route-flags li { animation: none; opacity: 1; } }
+/* Chips wait until their card is on screen (FxObserver marks it .is-in). */
+html.fx-ready .hz-route:not(.is-in) .hz-route-flags li { animation-play-state: paused; }

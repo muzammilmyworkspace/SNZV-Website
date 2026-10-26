@@ -35,6 +35,12 @@ export type StudyDestination = {
   blurb: string;
   /** The concrete reason a student shortlists this country. */
   draw: string;
+  /**
+   * Flag colours, for a destination added before it has a licensed
+   * photograph: the card draws them instead (an empty `image`). Add a photo
+   * and its line in data/image-manifest.json, then drop this.
+   */
+  flag?: string[];
 };
 
 export const studyDestinations: StudyDestination[] = [
@@ -48,17 +54,6 @@ export const studyDestinations: StudyDestination[] = [
     blurb:
       "An EU degree with living costs that leave room to breathe, in the city SnZ Ventures calls home.",
     draw: "Our home market — advisors on the ground.",
-  },
-  {
-    slug: "poland",
-    country: "Poland",
-    city: "Warsaw",
-    image: "/images/dest-warsaw.webp",
-    imageAlt: "Aerial view of central Warsaw, Poland",
-    tuitionFrom: "From €2,000 / year",
-    blurb:
-      "One of the EU's fastest-growing economies, with a deep bench of English-taught degrees.",
-    draw: "A labour market still expanding.",
   },
   {
     slug: "hungary",
@@ -147,6 +142,72 @@ export const studyDestinations: StudyDestination[] = [
     blurb:
       "Europe's most digital state, with startup culture running through the curriculum.",
     draw: "Dense startup scene, English-taught tech.",
+  },
+  {
+    slug: "romania",
+    country: "Romania",
+    city: "Bucharest",
+    image: "/images/dest-bucharest.webp",
+    imageAlt: "University Square in central Bucharest, Romania",
+    tuitionFrom: "Ask for current fees",
+    blurb:
+      "Public universities with English-taught programmes, well known for medicine and engineering, and low living costs.",
+    draw: "Low living costs, full EU degree.",
+  },
+  {
+    slug: "czech-republic",
+    country: "Czech Republic",
+    city: "Prague",
+    image: "/images/dest-prague.webp",
+    imageAlt: "The rooftops of Prague, Czech Republic",
+    tuitionFrom: "Ask for current fees",
+    blurb:
+      "Long-established universities in the heart of Central Europe, with English-taught degrees across many subjects.",
+    draw: "Historic universities, central location.",
+  },
+  {
+    slug: "slovakia",
+    country: "Slovakia",
+    city: "Bratislava",
+    image: "",
+    imageAlt: "",
+    tuitionFrom: "Ask for current fees",
+    blurb: "A eurozone country next to Vienna, with English-taught programmes and modest living costs.",
+    draw: "Eurozone, with low living costs.",
+    flag: ["#FFFFFF", "#0B4EA2", "#EE1C25"],
+  },
+  {
+    slug: "slovenia",
+    country: "Slovenia",
+    city: "Ljubljana",
+    image: "",
+    imageAlt: "",
+    tuitionFrom: "Ask for current fees",
+    blurb: "A small, safe eurozone country between the Alps and the Adriatic, with English-taught programmes.",
+    draw: "Safe, compact and in the eurozone.",
+    flag: ["#FFFFFF", "#005DA4", "#ED1C24"],
+  },
+  {
+    slug: "sweden",
+    country: "Sweden",
+    city: "Stockholm",
+    image: "",
+    imageAlt: "",
+    tuitionFrom: "Ask for current fees",
+    blurb: "Research-led universities with English-taught Master's degrees in most subjects.",
+    draw: "Research-led, English-taught Master's.",
+    flag: ["#006AA7", "#FECC00", "#006AA7"],
+  },
+  {
+    slug: "finland",
+    country: "Finland",
+    city: "Helsinki",
+    image: "",
+    imageAlt: "",
+    tuitionFrom: "Ask for current fees",
+    blurb: "A highly regarded education system, with English-taught degrees and scholarships for many non-EU students.",
+    draw: "A highly regarded education system.",
+    flag: ["#FFFFFF", "#003580", "#FFFFFF"],
   },
 ];
 
@@ -309,12 +370,6 @@ export const scholarships: Scholarship[] = [
     country: "Germany",
     name: "DAAD Scholarships",
     value: "Full funding",
-    level: "Master / PhD",
-  },
-  {
-    country: "Poland",
-    name: "NAWA Scholarships",
-    value: "Tuition waiver + stipend",
     level: "Master / PhD",
   },
   {

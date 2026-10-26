@@ -25,7 +25,7 @@ import { breadcrumbSchema, buildMetadata, faqSchema, SITE_URL } from "@/lib/seo"
 export const metadata: Metadata = buildMetadata({
   title: "Study Abroad in Europe — Degrees & Visas",
   description:
-    "Ten EU destinations, English-taught degrees from €900 a year, and one named advisor from choosing a university through to departure.",
+    "Fifteen EU destinations, English-taught degrees from €900 a year, and one named advisor from choosing a university through to departure.",
   path: "/study-abroad",
 });
 

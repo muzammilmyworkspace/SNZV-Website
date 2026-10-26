@@ -88,6 +88,6 @@ Vercel deploys the `main` branch to production automatically. Work happens on a 
 
 ## Contact
 
-SnZ Ventures · Lėlių g. 6, Lėlių k., LT-33157 Molėtų r., Lithuania · +370 623 93857 · study@snzventures.com
+SnZ Ventures · Lėlių g. 6, Lėlių k., LT-33157 Molėtų r., Lithuania · +370 603 05146 · study@snzventures.com
 
 © SnZ Ventures. All rights reserved.

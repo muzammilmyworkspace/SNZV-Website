@@ -231,14 +231,14 @@ export function StudyDestinations({
             className="d-2 max-w-[17ch] text-fg-strong"
             lines={
               home
-                ? ["Ten European", "starting points."]
-                : ["Ten countries.", "One European degree."]
+                ? [`${studyDestinations.length} European`, "starting points."]
+                : [`${studyDestinations.length} countries.`, "One European degree."]
             }
           />
           <Reveal delay={0.12}>
             <p className="max-w-sm text-[0.95rem] leading-relaxed text-muted">
               {home
-                ? "Our study pathway covers ten EU destinations, with indicative annual tuition published for each so you can compare honestly before you commit."
+                ? `Our study pathway covers ${studyDestinations.length} EU destinations, with indicative annual tuition shown where it is published, so you can compare honestly before you commit.`
                 : "Indicative annual tuition, published so you can compare before you invest a year in an application. The right country is the one where your field is taught well and hired for — not the one with the best photographs."}
             </p>
           </Reveal>
@@ -268,7 +268,7 @@ export function StudyDestinations({
           <Reveal delay={0.15}>
             <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Action href="/study-abroad#destinations" size="md">
-                See all ten destinations
+                See all {studyDestinations.length} destinations
               </Action>
               <TextLink href="/study-abroad">
                 Explore the study pathway

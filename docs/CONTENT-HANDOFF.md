@@ -24,7 +24,7 @@ plausible-sounding text. This document is the list of gaps.
 ## 2. Email delivery — one variable away
 
 > **Contact details changed, 2026-10-04 (owner instruction).** One email and
-> one number everywhere: **study@snzventures.com** and **+370 623 93857**
+> one number everywhere: **study@snzventures.com** and **+370 603 05146**
 > (calls and WhatsApp). The old number (+370 603 05146) and the old addresses
 > (info@snzventures.com, info@maincharacter.nl) are removed from the site,
 > the privacy policy and the default enquiry delivery. **On the live server,

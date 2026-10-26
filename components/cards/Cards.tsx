@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FlagArt } from "./FlagArt";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { analytics } from "@/lib/analytics";
@@ -205,14 +206,18 @@ export function StudyDestinationCard({
         className="flex h-full flex-col"
       >
         <div className="plate relative aspect-[4/5] overflow-hidden">
-          <Image
-            src={destination.image}
-            alt={destination.imageAlt}
-            fill
-            sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 22vw"
-            loading="lazy"
-            className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
-          />
+          {destination.image ? (
+            <Image
+              src={destination.image}
+              alt={destination.imageAlt}
+              fill
+              sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 22vw"
+              loading="lazy"
+              className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
+            />
+          ) : (
+            <FlagArt colours={destination.flag ?? ["#1F2D5C", "#6CBF3B"]} />
+          )}
 
           {/* Tuition sits on the plate — it is the first thing students look for. */}
           <span className="absolute left-3 top-3 z-[3] label border border-white/25 bg-black/35 px-2 py-1 text-white backdrop-blur-sm">
