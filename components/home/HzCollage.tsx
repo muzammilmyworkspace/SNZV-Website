@@ -1,17 +1,65 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { EASE } from "@/lib/utils";
 import { Stamp } from "@/components/fx/Stamp";
 import { Globe, Cap, Person } from "./Icons";
 
 /**
- * The hero collage, in motion: each arch opens upward in turn, the three
- * photographs drift at different speeds as the page scrolls, the chips float
- * and the stamp turns. Reduced motion shows the finished collage, still.
+ * The hero collage, in motion: each arch opens upward in turn, cycles
+ * through its own photographs with a slow zoom, the three drift at different
+ * speeds as the page scrolls, the whole collage leans toward the pointer, the
+ * chips float and the stamp turns. Reduced motion shows the finished collage,
+ * still, on its first photographs.
  */
+type Frame = { src: string; alt: string };
+const ARCH_A: Frame[] = [
+  { src: "/images/study-graduation.webp", alt: "Graduates throwing their caps in the air" },
+  { src: "/images/study-vienna.webp", alt: "The arcaded courtyard of the University of Vienna" },
+];
+const ARCH_B: Frame[] = [
+  { src: "/images/dest-vilnius-old.webp", alt: "The old town of Vilnius, Lithuania" },
+  { src: "/images/dest-prague.webp", alt: "The rooftops of Prague, Czech Republic" },
+];
+const ARCH_C: Frame[] = [
+  { src: "/images/careers-airport.webp", alt: "A traveller walking through an airport terminal" },
+  { src: "/images/plate-departure.webp", alt: "An aircraft wing above the clouds" },
+];
+
+/** One arch's photographs: a crossfade every few seconds, each with a slow zoom. */
+function Cycle({ frames, every, offset, priority, sizes }: { frames: Frame[]; every: number; offset: number; priority?: boolean; sizes: string }) {
+  const reduced = useReducedMotion();
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduced) return;
+    let t: ReturnType<typeof setInterval>;
+    const start = setTimeout(() => {
+      setI((n) => (n + 1) % frames.length);
+      t = setInterval(() => setI((n) => (n + 1) % frames.length), every);
+    }, every + offset);
+    return () => {
+      clearTimeout(start);
+      clearInterval(t);
+    };
+  }, [reduced, frames.length, every, offset]);
+  const f = frames[i];
+  return (
+    <AnimatePresence initial={false}>
+      <motion.div
+        key={f.src}
+        className="absolute inset-0"
+        initial={{ opacity: 0, scale: 1.12 }}
+        animate={{ opacity: 1, scale: 1.02 }}
+        exit={{ opacity: 0 }}
+        transition={{ opacity: { duration: 1.2 }, scale: { duration: every / 1000 + 1.5, ease: "linear" } }}
+      >
+        <Image src={f.src} alt={f.alt} fill priority={priority && i === 0} sizes={sizes} />
+      </motion.div>
+    </AnimatePresence>
+  );
+}
 export function HzCollage({ euStates, studyCountries }: { euStates: number | string; studyCountries: number }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -26,6 +74,22 @@ export function HzCollage({ euStates, studyCountries }: { euStates: number | str
     animate: { clipPath: "inset(0% 0% 0% 0%)" },
     transition: { duration: reduced ? 0 : 1.2, ease: EASE, delay },
   });
+  // Lean toward the pointer, a few degrees at most, springing back on leave.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const rotY = useSpring(useTransform(px, [-0.5, 0.5], [r(-7), r(7)]), { stiffness: 120, damping: 18 });
+  const rotX = useSpring(useTransform(py, [-0.5, 0.5], [r(6), r(-6)]), { stiffness: 120, damping: 18 });
+  const onMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse") return;
+    const b = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - b.left) / b.width - 0.5);
+    py.set((e.clientY - b.top) / b.height - 0.5);
+  };
+  const onLeave = () => {
+    px.set(0);
+    py.set(0);
+  };
+
   const pop = (delay: number) => ({
     initial: { opacity: 0, y: reduced ? 0 : 18, scale: reduced ? 1 : 0.92 },
     animate: { opacity: 1, y: 0, scale: 1 },
@@ -33,15 +97,21 @@ export function HzCollage({ euStates, studyCountries }: { euStates: number | str
   });
 
   return (
-    <div ref={ref} className="hz-collage">
+    <motion.div
+      ref={ref}
+      className="hz-collage"
+      onPointerMove={onMove}
+      onPointerLeave={onLeave}
+      style={{ rotateX: rotX, rotateY: rotY, transformPerspective: 1100 }}
+    >
       <motion.div className="hz-arch hz-arch-a" style={{ y: yA }} {...open(0.1)}>
-        <Image src="/images/study-graduation.webp" alt="Graduates throwing their caps in the air" fill priority sizes="(min-width:1024px) 30vw, 52vw" />
+        <Cycle frames={ARCH_A} every={5200} offset={0} priority sizes="(min-width:1024px) 30vw, 52vw" />
       </motion.div>
       <motion.div className="hz-arch hz-arch-b" style={{ y: yB }} {...open(0.3)}>
-        <Image src="/images/dest-vilnius-old.webp" alt="The old town of Vilnius, Lithuania" fill priority sizes="(min-width:1024px) 25vw, 44vw" />
+        <Cycle frames={ARCH_B} every={5200} offset={1700} priority sizes="(min-width:1024px) 25vw, 44vw" />
       </motion.div>
       <motion.div className="hz-arch hz-arch-c" style={{ y: yC }} {...open(0.5)}>
-        <Image src="/images/careers-airport.webp" alt="A traveller walking through an airport terminal" fill sizes="(min-width:1024px) 22vw, 38vw" />
+        <Cycle frames={ARCH_C} every={5200} offset={3400} sizes="(min-width:1024px) 22vw, 38vw" />
       </motion.div>
 
       <motion.div className="hz-chip hz-chip-1" {...pop(0.9)}>
@@ -71,7 +141,7 @@ export function HzCollage({ euStates, studyCountries }: { euStates: number | str
       >
         <Stamp />
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

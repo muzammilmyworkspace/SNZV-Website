@@ -1,3 +1,4 @@
+import { SkyLines } from "@/components/fx/SkyLines";
 import Link from "next/link";
 import Image from "next/image";
 import { Shell } from "@/components/ui/Editorial";
@@ -16,6 +17,8 @@ export function Footer() {
       className="grain relative overflow-hidden border-t border-line bg-surface"
     >
       <div aria-hidden className="graticule pointer-events-none absolute inset-0 opacity-40" />
+      {/* A last flight across the foot of every page. */}
+      <SkyLines className="sky-footer" />
       <div
         aria-hidden
         className="bloom-moss pointer-events-none absolute -bottom-56 left-1/3 h-[32rem] w-[32rem] opacity-25"

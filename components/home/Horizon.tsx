@@ -13,6 +13,7 @@ import { Arrow, Check, Globe, Shield, Handshake, Message, Route } from "./Icons"
 import { HzCollage, CountUp } from "./HzCollage";
 import { Stamp } from "@/components/fx/Stamp";
 import { FlagArt } from "@/components/cards/FlagArt";
+import { SkyLines, Waves, SectionSky } from "@/components/fx/SkyLines";
 
 const BOOK = "/contact#journey";
 
@@ -20,6 +21,8 @@ const BOOK = "/contact#journey";
 export function HzHero() {
   return (
     <section className="hz-hero" aria-labelledby="hz-title">
+      <SkyLines />
+      <Waves />
       <div className="hz-wrap relative grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
         <div>
           <Reveal>
@@ -100,7 +103,8 @@ const PATH_TAGS = { study: "For students", careers: "For professionals", busines
 
 export function HzPaths() {
   return (
-    <section className="hz-section" aria-labelledby="hz-paths">
+    <section className="hz-section relative" aria-labelledby="hz-paths">
+      <SectionSky variant={1} />
       <div className="hz-wrap">
         <div className="hz-head">
           <Reveal>
@@ -275,7 +279,8 @@ const ROUTES = [
  */
 export function HzRoutes() {
   return (
-    <section className="hz-section pt-0" aria-labelledby="hz-routes">
+    <section className="hz-section relative pt-0" aria-labelledby="hz-routes">
+      <SectionSky variant={2} />
       <div className="hz-wrap">
         <div className="hz-head">
           <Reveal>
@@ -340,7 +345,8 @@ export function HzRoutes() {
 /* ---------------------------------------------------------- destinations */
 export function HzDestinations() {
   return (
-    <section className="hz-section" aria-labelledby="hz-dest">
+    <section className="hz-section relative" aria-labelledby="hz-dest">
+      <SectionSky variant={3} />
       <div className="hz-wrap">
         <div className="hz-head">
           <Reveal>
@@ -384,7 +390,8 @@ const WHY_ICONS = [Route, Handshake, Message, Shield];
 
 export function HzWhy() {
   return (
-    <section className="hz-section pt-0" aria-labelledby="hz-why">
+    <section className="hz-section relative pt-0" aria-labelledby="hz-why">
+      <SectionSky variant={1} />
       <div className="hz-wrap">
         <div className="hz-head">
           <Reveal>
@@ -446,7 +453,8 @@ export function HzWhy() {
 export function HzInsights() {
   const posts = [...articles].sort((a, b) => b.updated.localeCompare(a.updated)).slice(0, 3);
   return (
-    <section className="hz-section pt-0" aria-labelledby="hz-insights">
+    <section className="hz-section relative pt-0" aria-labelledby="hz-insights">
+      <SectionSky variant={2} waves={false} />
       <div className="hz-wrap">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <Reveal>
@@ -488,6 +496,7 @@ export function HzCta() {
     <section className="hz-wrap pb-24 lg:pb-32" aria-labelledby="hz-cta">
       <Reveal>
         <div className="hz-cta">
+          <SkyLines variant={3} className="sky-on-green" />
           <div aria-hidden className="hz-cta-stamp hidden md:block">
             <Stamp className="sk-float" text="Your ambition · has no borders · " />
           </div>

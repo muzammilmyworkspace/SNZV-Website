@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { EASE } from "@/lib/utils";
 import { Stamp } from "./Stamp";
+import { SkyLines, Waves } from "./SkyLines";
 
 export type ArchImage = { src: string; alt: string };
 
@@ -52,6 +53,8 @@ export function ArchHero({
   return (
     <section ref={ref} className="sk-hero tone-deep">
       <div aria-hidden className="sk-dots" />
+      <SkyLines />
+      <Waves />
       <div className="relative mx-auto grid w-full max-w-[1320px] items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14 lg:px-10">
         <div className="relative z-10">
           {top}

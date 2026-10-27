@@ -16,6 +16,7 @@ import { FaqAccordion } from "@/components/ui/Accordion";
 import { type HeroImage } from "./HeroSlideshow";
 import { ArchHero } from "@/components/fx/ArchHero";
 import { Stamp } from "@/components/fx/Stamp";
+import { SkyLines } from "@/components/fx/SkyLines";
 import { company } from "@/data/company";
 import type { FAQ } from "@/data/services";
 import { cn } from "@/lib/utils";
@@ -370,6 +371,7 @@ export function CTASection({
       <div className="sk-cta" data-fx="tilt">
         <span aria-hidden className="sk-ring sk-ring-a" />
         <span aria-hidden className="sk-ring sk-ring-b" />
+        <SkyLines variant={1} className="sky-on-green" />
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto]">
           <div className="max-w-3xl">
             <MaskedLines as="h2" className="d-1" lines={[accentLast(title)]} />

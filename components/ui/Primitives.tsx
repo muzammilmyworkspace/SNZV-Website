@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Action as MeridianAction } from "./Editorial";
+import { SectionSky } from "@/components/fx/SkyLines";
 
 /**
  * The last word of a heading in the italic serif (`.d-em`, app/skin.css), the
@@ -98,6 +99,7 @@ export function Section({
   id,
   size = "default",
   edge = false,
+  decor = true,
 }: {
   children: ReactNode;
   className?: string;
@@ -106,6 +108,8 @@ export function Section({
   size?: "default" | "tight" | "loose";
   /** Adds the gradient hairline used to separate tone bands. */
   edge?: boolean;
+  /** Flight routes, a plane and waves behind the content (on by default). */
+  decor?: boolean;
 }) {
   // Rhythm tightened for density — the old scale left large dead bands.
   const pad = {
@@ -121,6 +125,8 @@ export function Section({
       id={id}
       className={cn("relative", pad, TONE_CLASS[resolved], edge && "edge-top", className)}
     >
+      {/* A different flight per tone, so neighbouring bands never repeat. */}
+      {decor && <SectionSky variant={{ deep: 1, soft: 2, paper: 3, white: 1 }[resolved]} />}
       {children}
     </section>
   );

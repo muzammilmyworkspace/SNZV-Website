@@ -268,3 +268,72 @@ html.fx-ready [data-fx="grow"]:not(.is-in) { transform: scaleX(0); }
   .sk-float, .sk-float-2, .sk-float-3, .sk-stamp svg, .sk-ring-a, .sk-ring-b { animation: none; }
   html.fx-ready [data-fx] { transition: none; opacity: 1 !important; transform: none !important; clip-path: none !important; }
 }
+
+/* ================================================================ sky ===
+   components/fx/SkyLines: flight routes behind a hero, a plane flying the
+   main one, pulsing city dots. components/fx/Waves: drifting swells along
+   the foot of a section. Ink follows the theme through --sky-ink. */
+.sky, .waves { position: absolute; pointer-events: none; z-index: -1; }
+/* Every section that carries a sky is its own stacking context, so the sky
+   sits over the section's background and under its content. */
+.hz-hero, .sk-hero, .hz-section, .hz-band, .sk-cta-wrap, #site-footer, main section { isolation: isolate; }
+.sky { inset: 0; overflow: hidden; --sky-ink: rgb(243 241 234 / 0.16); }
+[data-theme="light"] .sky { --sky-ink: rgb(19 32 74 / 0.14); }
+.sky svg { width: 100%; height: 100%; }
+.sky-route { fill: none; stroke: var(--sky-ink); stroke-width: 1.4; stroke-dasharray: 2 9; stroke-linecap: round; animation: sky-flow 30s linear infinite; }
+.sky-route-b { animation-duration: 42s; animation-direction: reverse; }
+.sky-route-c { animation-duration: 36s; opacity: 0.7; }
+.sky-main { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1800; stroke-dashoffset: 1800; animation: sky-draw 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; }
+.sky-city circle { fill: #6CBF3B; }
+.sky-city .sky-ping { fill: none; stroke: #6CBF3B; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: sky-ping 2.8s ease-out infinite; }
+.sky-city-2 .sky-ping { animation-delay: 1.4s; }
+.sky-plane { fill: #6CBF3B; filter: drop-shadow(0 4px 10px rgb(108 191 59 / 0.55)); }
+@keyframes sky-flow { to { stroke-dashoffset: -440; } }
+@keyframes sky-draw { to { stroke-dashoffset: 0; } }
+@keyframes sky-ping { 0% { transform: scale(1); opacity: 0.9; } 80%, 100% { transform: scale(4.5); opacity: 0; } }
+
+.waves { left: 0; right: 0; bottom: 0; height: 90px; overflow: hidden; }
+.wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; animation: wave-drift 18s linear infinite; }
+.wave-1 { fill: rgb(108 191 59 / 0.10); animation-duration: 22s; }
+.wave-2 { fill: rgb(108 191 59 / 0.07); height: 75%; animation-duration: 15s; animation-direction: reverse; }
+.wave-3 { fill: rgb(31 45 92 / 0.10); height: 55%; animation-duration: 11s; }
+[data-theme="dark"] .wave-3 { fill: rgb(255 255 255 / 0.04); }
+@keyframes wave-drift { to { transform: translateX(-50%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-route, .sky-city .sky-ping, .wave { animation: none; }
+  .sky-main { animation: none; stroke-dashoffset: 0; }
+  .sky-plane { display: none; }
+}
+.sky-footer { opacity: 0.7; }
+
+/* In ordinary sections the sky is quieter than in a hero. */
+.sky-section { opacity: 0.75; }
+.waves-section { height: 70px; }
+.waves-top { top: 0; bottom: auto; transform: scaleY(-1); }
+
+/* On the green closing panels: navy ink and a navy plane. */
+.hz-cta, .sk-cta { isolation: isolate; }
+.sky-on-green { --sky-ink: rgb(11 26 5 / 0.2); }
+.sky-on-green .sky-main { stroke: rgb(31 45 92 / 0.45); }
+.sky-on-green .sky-plane { fill: #1F2D5C; filter: none; }
+.sky-on-green .sky-city circle { fill: #1F2D5C; }
+.sky-on-green .sky-city .sky-ping { stroke: #1F2D5C; fill: none; }
+
+/* ============================================================== cards ===
+   Every card (FxObserver tags them `data-card`): a soft green light that
+   follows the pointer, a small lift, and photographs that settle from a
+   slight zoom as the card comes in. */
+[data-card="1"], [data-card="0"] { transition: transform 0.45s var(--ease-out-expo), box-shadow 0.45s var(--ease-out-expo); }
+@media (hover: hover) {
+  [data-card="1"]:hover, [data-card="0"]:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -26px rgb(0 0 0 / 0.55); }
+  [data-card="1"]:hover {
+    background-image: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgb(108 191 59 / 0.24), transparent 70%);
+  }
+}
+html.fx-ready [data-fx-auto="1"] img { transition: transform 1.3s var(--ease-out-expo); }
+html.fx-ready [data-fx-auto="1"]:not(.is-in) img { transform: scale(1.14); }
+@media (prefers-reduced-motion: reduce) {
+  [data-card="1"]:hover, [data-card="0"]:hover { transform: none; }
+  html.fx-ready [data-fx-auto="1"]:not(.is-in) img { transform: none; }
+}

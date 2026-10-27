@@ -315,7 +315,7 @@
 .hz-underline path { stroke-dasharray: 220; stroke-dashoffset: 220; animation: hz-draw 1.2s var(--ease-out-expo) 0.9s forwards; }
 @keyframes hz-draw { to { stroke-dashoffset: 0; } }
 
-.hz-stamp { position: absolute; z-index: 3; left: 40%; bottom: -18px; }
+.hz-stamp { position: absolute; z-index: 3; left: 49%; bottom: -34px; }
 @media (max-width: 520px) { .hz-stamp { left: auto; right: 34%; bottom: -10px; transform: scale(0.75); } }
 
 /* Section headlines: the serif word gets a green stroke once on screen. */
