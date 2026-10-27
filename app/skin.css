@@ -108,7 +108,10 @@
   --sk-btn-ink: #0B1A05;
   --sk-btn-hover: #82CF55;
 }
-.plate img { filter: saturate(0.9) brightness(0.86); }
+/* Photographs in their own colours: the old dimming grade made them look dated.
+   Cards round their corners; type over a photo sits on its own gradient. */
+.plate img, .plate-deep img { filter: none; }
+.plate:not(section), .snz-photo { border-radius: 22px; isolation: isolate; box-shadow: 0 1px 2px rgb(0 0 0 / 0.2), 0 22px 40px -26px rgb(0 0 0 / 0.6); }
 
 /* The blue-teal atmosphere belonged to MERIDIAN. */
 .tone-deep .graticule,

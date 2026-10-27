@@ -33,8 +33,8 @@ export const articles: Article[] = [
     pathway: "study",
     readMinutes: 6,
     updated: "2026-08-01",
-    image: "/images/atmos-library.webp",
-    imageAlt: "Rows of books on library shelves",
+    image: "/images/library-modern.webp",
+    imageAlt: "A bright modern university library with tall windows, shelves and study tables",
     body: [
       {
         heading: "Start at the end, not the beginning",
@@ -86,8 +86,8 @@ export const articles: Article[] = [
     pathway: "careers",
     readMinutes: 5,
     updated: "2026-08-01",
-    image: "/images/path-careers.webp",
-    imageAlt: "A quiet workspace beside a window overlooking a city",
+    image: "/images/work-team.webp",
+    imageAlt: "Four colleagues smiling around a laptop in a bright office",
     body: [
       {
         heading: "Why this is the first thing to learn",
@@ -142,8 +142,8 @@ export const articles: Article[] = [
     pathway: "business",
     readMinutes: 7,
     updated: "2026-08-01",
-    image: "/images/atmos-fintech.webp",
-    imageAlt: "Earth at night from orbit, city lights forming a network",
+    image: "/images/fintech-payment.webp",
+    imageAlt: "A person paying contactless with a smartphone over a card reader",
     body: [
       {
         heading: "The short version",
@@ -195,8 +195,8 @@ export const articles: Article[] = [
     pathway: "business",
     readMinutes: 6,
     updated: "2026-08-01",
-    image: "/images/path-business.webp",
-    imageAlt: "Modern glass office towers seen from below",
+    image: "/images/business-meeting.webp",
+    imageAlt: "A team talking around a table in a modern workspace",
     body: [
       {
         heading: "Registration is not operation",

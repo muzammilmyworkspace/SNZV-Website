@@ -205,7 +205,7 @@ export function StudyDestinationCard({
         onClick={() => analytics.destinationView(destination.slug)}
         className="flex h-full flex-col"
       >
-        <div className="plate relative aspect-[4/5] overflow-hidden">
+        <div className="snz-photo relative aspect-[4/5] overflow-hidden rounded-[24px] bg-[#1F2D5C]">
           {destination.image ? (
             <Image
               src={destination.image}
@@ -219,16 +219,26 @@ export function StudyDestinationCard({
             <FlagArt university={destination.university} />
           )}
 
-          {/* Tuition sits on the plate — it is the first thing students look for. */}
-          <span className="absolute left-3 top-3 z-[3] label border border-white/25 bg-black/35 px-2 py-1 text-white backdrop-blur-sm">
+          <div aria-hidden className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(10,16,40,0)_40%,rgba(10,16,40,0.88)_100%)]" />
+
+          {/* Tuition sits on the photo — it is the first thing students look for. */}
+          <span className="absolute left-3 top-3 z-[3] rounded-full bg-[#6CBF3B] px-3 py-1.5 text-[0.75rem] font-bold text-[#0B1A05] shadow-[0_6px_16px_-6px_rgba(0,0,0,0.5)]">
             {destination.tuitionFrom}
           </span>
 
           <div className="absolute inset-x-4 bottom-4 z-[3]">
-            <h3 className="font-display text-[1.5rem] leading-none tracking-[-0.02em] text-white">
+            {destination.university && destination.image && (
+              <span className="mb-2.5 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[0.72rem] font-semibold text-white backdrop-blur-md">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <path d="M12 4l9 5-9 5-9-5zM6 11v5c0 1.2 2.7 2.5 6 2.5s6-1.3 6-2.5v-5" strokeLinejoin="round" />
+                </svg>
+                {destination.university}
+              </span>
+            )}
+            <h3 className="font-display text-[1.6rem] font-bold leading-none tracking-[-0.03em] text-white">
               {destination.country}
             </h3>
-            <span className="label mt-1.5 block ink-on-photo-soft">
+            <span className="mt-1.5 block text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[#CFE9BB]">
               {destination.city}
             </span>
           </div>
@@ -286,7 +296,7 @@ export function InsightCard({
             loading="lazy"
             className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
           />
-          <span className="absolute left-4 top-4 z-[3] label bg-moss-400 px-2.5 py-1 text-void">
+          <span className="absolute left-4 top-4 z-[3] rounded-full bg-[#6CBF3B] px-3 py-1.5 text-[0.75rem] font-bold text-[#0B1A05]">
             {article.category}
           </span>
         </div>

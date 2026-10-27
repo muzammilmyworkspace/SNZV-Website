@@ -50,7 +50,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       eyebrow: "For students",
       title: "Your Postcode Shouldn't Decide Your Ceiling.",
       lead: "Studying abroad is not really an education decision. It is a career decision that happens to start with a course. We help you make it in that order.",
-      image: "/images/atmos-library.webp",
+      image: "/images/library-modern.webp",
       images: [
         {
           src: "/images/study-campus.webp",
@@ -61,15 +61,15 @@ export const pillars: Record<PathwayKey, Pillar> = {
           alt: "The arcaded courtyard of the University of Vienna",
         },
         {
-          src: "/images/atmos-library.webp",
-          alt: "Reading room lined with books at a European university library",
+          src: "/images/library-modern.webp",
+          alt: "A bright modern university library with tall windows, shelves and study tables",
         },
         {
           src: "/images/study-graduation.webp",
           alt: "Graduates holding their diplomas and caps after a degree ceremony",
         },
       ],
-      imageAlt: "Rows of books lining library shelves",
+      imageAlt: "A bright modern university library with tall windows, shelves and study tables",
       primaryCta: "Explore your study path",
       secondaryCta: "Read the guide",
     },
@@ -177,7 +177,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
       eyebrow: "For professionals",
       title: "Your Career Shouldn't Be Limited by a Border.",
       lead: "We are the outsourced hiring function for European SMEs and regulated firms — and we recruit across South Asia and the Middle East. Both ends of that corridor are our client, which is why we tell you the truth about your chances.",
-      image: "/images/path-careers.webp",
+      image: "/images/work-team.webp",
       images: [
         {
           src: "/images/careers-office.webp",
@@ -196,7 +196,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
           alt: "Check-in hall at Frankfurt Airport Terminal 3",
         },
       ],
-      imageAlt: "A modern workspace beside a window overlooking the city",
+      imageAlt: "Four colleagues smiling around a laptop in a bright office",
       primaryCta: "Explore global careers",
       secondaryCta: "How to spot a fake offer",
     },
@@ -308,11 +308,11 @@ export const pillars: Record<PathwayKey, Pillar> = {
       eyebrow: "For founders & investors",
       title: "Take Your Business Beyond Borders.",
       lead: "A Lithuanian company reaches 27 member states from day one. We handle the entity, the licensing and the residence permits that let you actually move — coordinated through one point of contact.",
-      image: "/images/path-business.webp",
+      image: "/images/business-meeting.webp",
       images: [
         {
-          src: "/images/path-business.webp",
-          alt: "Glass office towers seen from below",
+          src: "/images/business-meeting.webp",
+          alt: "A team talking around a table in a modern workspace",
         },
         {
           src: "/images/business-vilnius.webp",
@@ -327,7 +327,7 @@ export const pillars: Record<PathwayKey, Pillar> = {
           alt: "An empty corporate conference room set up for a meeting",
         },
       ],
-      imageAlt: "Glass office towers viewed from street level",
+      imageAlt: "A team talking around a table in a modern workspace",
       primaryCta: "Plan your expansion",
       secondaryCta: "Why Lithuania",
     },

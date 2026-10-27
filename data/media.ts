@@ -44,8 +44,8 @@ export const videoFeatures: Record<PathwayKey, VideoFeatureData> = {
     lead: "Six minutes on how we work backwards from the labour market — and the questions we ask before anyone mentions a university.",
     src: null,
     provider: "file",
-    poster: "/images/atmos-library.webp",
-    posterAlt: "Library stacks receding into shadow",
+    poster: "/images/library-modern.webp",
+    posterAlt: "A bright modern university library with tall windows, shelves and study tables",
     requirement: "[STUDY VIDEO REQUIRED]",
     captionsNote:
       "Supply a WebVTT caption track with the video file. Captions are required, not optional.",
@@ -57,8 +57,8 @@ export const videoFeatures: Record<PathwayKey, VideoFeatureData> = {
     lead: "From eligibility screening to the first day — including the point where we tell candidates their profile isn't competitive yet.",
     src: null,
     provider: "file",
-    poster: "/images/path-careers.webp",
-    posterAlt: "A quiet modern workspace beside a city-facing window",
+    poster: "/images/work-team.webp",
+    posterAlt: "Four colleagues smiling around a laptop in a bright office",
     requirement: "[JOBS VIDEO REQUIRED]",
     captionsNote:
       "Supply a WebVTT caption track with the video file. Captions are required, not optional.",
@@ -70,8 +70,8 @@ export const videoFeatures: Record<PathwayKey, VideoFeatureData> = {
     lead: "What happens between the decision and a company that can actually transact — banking, registrations and the parts founders underestimate.",
     src: null,
     provider: "file",
-    poster: "/images/path-business.webp",
-    posterAlt: "Modern glass office towers viewed from below",
+    poster: "/images/business-meeting.webp",
+    posterAlt: "A team talking around a table in a modern workspace",
     requirement: "[BUSINESS VIDEO REQUIRED]",
     captionsNote:
       "Supply a WebVTT caption track with the video file. Captions are required, not optional.",

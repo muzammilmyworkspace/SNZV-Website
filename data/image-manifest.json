@@ -89,36 +89,40 @@
     "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwAwCdASoUAA0APzmGuVOvKSWisAgB4CcJYwC06BuxiTV3129ww39AAP7GrB+nAAhZDpr56EY4+G94sPMVfA1a4I7MzXglzXQQe/GZ+q7IteVY4J7YtsWJpwiS+YiadqGiRAAA"
   },
   {
-    "key": "path-careers",
-    "file": "/images/path-careers.webp",
+    "key": "work-team",
+    "file": "/images/work-team.webp",
     "source": "Unsplash",
     "licence": "Unsplash Licence",
-    "page": "https://unsplash.com/photos/1497215728101-856f4ea42174",
-    "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAwCdASoUAA0APzmGuVOvKSWisAgB4CcJZwDGfBexJ55tJW6U8pIAAM4wnNpKSXd71SRWMAJ6FV2bLy37DcXP7vq2qpNHkqGJ4nukK4Mfs3YeGXm2lCczlWSFC4kZp/d4gSxFxBjIAA=="
+    "artist": "Jud Mackrill",
+    "page": "https://unsplash.com/photos/four-coworkers-smiling-around-laptop-at-table-Of_m3hMsoAA",
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAADQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JQBOmUAAuQD1s4UBrrfAA/skjXVRD2EF/6eoe1u0PfvqYF6OTXM+KO0ZugRBH/Mlt2l12f7By3dhmd54MGKtRF7ojEyx0i/r/uAsg5TAB5XBZaXbiHx+EjzlMnam6eOKmzVZl41R6WXNC4Aoon+DFHTh9gBAgAAA="
   },
   {
-    "key": "path-business",
-    "file": "/images/path-business.webp",
+    "key": "business-meeting",
+    "file": "/images/business-meeting.webp",
     "source": "Unsplash",
     "licence": "Unsplash Licence",
-    "page": "https://unsplash.com/photos/1486406146926-c627a92ad1ab",
-    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAADQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJYwCdABw9WXF+HC5PLAAA/f0QW14mdQWZHj1fvdi6qDBXd4+gUpBvDDOAHEN/k1rY/lJXYgJ+WHPx6TlkOh73e+bmj1OT2AwgUYTXiJxNK1w/elueKRE0pgZ3sVAA"
+    "artist": "Redd Francisco",
+    "page": "https://unsplash.com/photos/talking-people-sitting-beside-table-PTRzqc_h1r4",
+    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAADwAwCdASoUAAsAPu1iqU2ppaOiMAgBMB2JZACdACPwn+Z/19snpD0AAPzqNAMZUZ2elkHQbxTrrimjqwg/RyYDDLf3y72weY3WLTcgFVpQJfe+sdOMZ7gLftvcH+QXQ4L0Tt8SpULzq4sxQpFxL4n4JyVme0AA"
   },
   {
-    "key": "atmos-library",
-    "file": "/images/atmos-library.webp",
+    "key": "library-modern",
+    "file": "/images/library-modern.webp",
     "source": "Unsplash",
     "licence": "Unsplash Licence",
-    "page": "https://unsplash.com/photos/1521587760476-6c12a4b040da",
-    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAADQAwCdASoUAA0APzmGuVOvKSWisAgB4CcJYgCdAB9TCMyFrNmGC0AA/tEsIzMPS3QmWOCBVV+iVf8TViJBJy7u2FuAMdzmHsC7XTWx1wn111JsganF9zE/Dh6wNXmqLc/LXx2P98LMX77UxLWz0wM6loZMRXAA"
+    "artist": "Drahomír Hugo Posteby-Mach",
+    "page": "https://unsplash.com/photos/library-interior-with-bookshelves-and-tables-n4y3eiQSIoc",
+    "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAADwAwCdASoUAA8APu1iqU2ppaOiMAgBMB2JaACdIExCzfuKAY6ELSiAAP3nytUifzkFoJcnRTIkKbzncs5NeaNa0bGRoD4DrBjudQLRPf0E89pqjEfnR5o0gZM4hC4a+zzpwHsuPPf7R245vvmpDVQS0AA="
   },
   {
-    "key": "atmos-fintech",
-    "file": "/images/atmos-fintech.webp",
+    "key": "fintech-payment",
+    "file": "/images/fintech-payment.webp",
     "source": "Unsplash",
     "licence": "Unsplash Licence",
-    "page": "https://unsplash.com/photos/1451187580459-43490279c0fa",
-    "blur": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAACwAwCdASoUAA0APzmEuVOvKKWisAgB4CcJZwDDNCHfJZ3VsEa1iAD+69OmGpR8bWewRaBQ3JCWBITuAAA="
+    "artist": "CardMapr.nl",
+    "page": "https://unsplash.com/photos/person-using-smartphone-for-contactless-payment-XH2JFgT4Abc",
+    "blur": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAAAQBQCdASoUAA0APu1iqU2ppaOiMAgBMB2JYwC/Sf/3ZmVIAwfnyL6QNelpO8KVJRQAAP7tCSmoRTVRbi/Ml9XY5bTd2qwjopuZRudeiEnh2+cnFlP40OaFH42MSMi70qVG/iXb4z5ZMU7NoQg6rnE4XSK/vEtWcqpOaOH67+7dGu27zbiZqnVOaKHfbOI1v9x78p6ElAAAAA=="
   },
   {
     "key": "hero-aerial",
@@ -264,5 +268,41 @@
     "artist": null,
     "page": null,
     "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoUAA0APzmGuVOvKSWisAgB4CcJYgCdMoADCjPicUBwm0BgAO/999VBiMC1pg43XEoVIFGzKVQRCUyLTg1XwgvKWpBrecKW+zHIodTBAFDX9jXAAAA="
+  },
+  {
+    "key": "dest-bratislava",
+    "file": "/images/dest-bratislava.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "artist": "Bharani Dharan R",
+    "page": "https://unsplash.com/photos/historic-church-steeple-dominates-a-city-skyline-with-modern-buildings-O-M7bugBFSA",
+    "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQBACdASoUAAsAPu1iqU2ppaQiMAgBMB2JYwCdMoADOi8HRYTI1RnCgAD+3yKK5ocsuYl7QfDFgKtNKRfU78VXRKUAUMh96w9cXFujkAYJYkaioNz/gfWgcB29OgpVQqIaVAAA"
+  },
+  {
+    "key": "dest-ljubljana",
+    "file": "/images/dest-ljubljana.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "artist": "ALEKO KEZEVADZE",
+    "page": "https://unsplash.com/photos/ljubljana-castle-overlooks-a-city-with-autumn-trees-wwKLeuAmwtM",
+    "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAwCdASoUAAsAPu1iqU2ppaQiMAgBMB2JQBOmUABpMQ6cmVxdiMaaAPEjk+bkQ/x/f75vLGrslFIG0nAA+x4H+J1nZJb7GD77nVte4fQKCAQNnEtwAA=="
+  },
+  {
+    "key": "dest-helsinki",
+    "file": "/images/dest-helsinki.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "artist": "Martti Salmi",
+    "page": "https://unsplash.com/photos/a-view-of-a-city-from-across-the-water-tFnZnjYrd9g",
+    "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAwCdASoUAAwAPu1iqU2ppaQiMAgBMB2JYgC06DAgUFkgAP7G4/+R2Qt+Q1glcvaT1kD/Khqu8J/k3mG8q7k+WQ2extT6WY/Gi/BMR47QsuRHom9dvkkeA0QgoAAA"
+  },
+  {
+    "key": "dest-uppsala",
+    "file": "/images/dest-uppsala.webp",
+    "source": "Unsplash",
+    "licence": "Unsplash Licence",
+    "artist": "Syawish Rehman",
+    "page": "https://unsplash.com/photos/uppsala-cathedral-with-a-river-in-the-foreground-Dh-Cl8i02ak",
+    "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADwAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JZQC7MoADNcGkbSXZIWkAAP36QxCAE5yPJFzlq9j0gqkBixPJRScr74Hu4axCxhtpkSunv+QodBcMmd9jIF4fqDxaoU0WwL9VsC0ew5UYW/+mCL6/AAAA"
   }
 ]

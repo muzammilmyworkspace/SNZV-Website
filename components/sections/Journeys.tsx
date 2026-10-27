@@ -29,8 +29,8 @@ const HEADLINES: Record<
         Limited by <span className="d-em">Geography</span>.
       </Fragment>,
     ],
-    plate: "/images/atmos-library.webp",
-    alt: "Library stacks receding into shadow",
+    plate: "/images/library-modern.webp",
+    alt: "A bright modern university library with tall windows, shelves and study tables",
   },
   careers: {
     kicker: "For professionals",
@@ -51,8 +51,8 @@ const HEADLINES: Record<
         Bigger Than <span className="d-em">One</span> Market.
       </Fragment>,
     ],
-    plate: "/images/path-business.webp",
-    alt: "Glass towers seen from below",
+    plate: "/images/business-meeting.webp",
+    alt: "A team talking around a table in a modern workspace",
   },
 };
 

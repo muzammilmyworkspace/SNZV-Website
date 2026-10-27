@@ -33,8 +33,8 @@ export const services: Service[] = [
     pathway: "business",
     name: "Company Formation & Accounting",
     tagline: "UAB / MB incorporation, VAT, EORI, payroll and ongoing filings.",
-    image: "/images/path-business.webp",
-    imageAlt: "Glass office towers rising against the sky",
+    image: "/images/business-meeting.webp",
+    imageAlt: "A team talking around a table in a modern workspace",
     hero: {
       eyebrow: "Business Setup",
       title: "An EU Company Is the Key. Not the Door.",
@@ -120,8 +120,8 @@ export const services: Service[] = [
     pathway: "business",
     name: "Fintech Establishment & Licensing",
     tagline: "EMI, PI, specialised bank and crypto authorisation.",
-    image: "/images/atmos-fintech.webp",
-    imageAlt: "Earth at night from orbit, city lights forming a connected network",
+    image: "/images/fintech-payment.webp",
+    imageAlt: "A person paying contactless with a smartphone over a card reader",
     hero: {
       eyebrow: "Business Setup",
       title: "Lithuania Licenses More Fintechs than Anywhere Else in the EU.",
@@ -290,8 +290,8 @@ export const services: Service[] = [
     pathway: "careers",
     name: "International Recruitment",
     tagline: "White-collar and blue-collar placement across Europe.",
-    image: "/images/path-careers.webp",
-    imageAlt: "A calm modern office workspace beside a large window",
+    image: "/images/work-team.webp",
+    imageAlt: "Four colleagues smiling around a laptop in a bright office",
     hero: {
       eyebrow: "Global Careers",
       title: "Real Roles, Named Employers, Honest Eligibility.",

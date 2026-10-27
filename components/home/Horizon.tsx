@@ -368,6 +368,7 @@ export function HzDestinations() {
                 {d.image ? <Image src={d.image} alt={d.imageAlt} fill sizes="300px" /> : <FlagArt university={d.university} />}
                 <span className="hz-dest-fee">{d.tuitionFrom}</span>
                 <span className="hz-dest-body">
+                  {d.university && <em className="hz-dest-uni">{d.university}</em>}
                   <small>{d.city}</small>
                   <h3>{d.country}</h3>
                   <p>{d.draw}</p>

@@ -29,7 +29,7 @@ export default function InsightsPage() {
         title="Know Before You Go."
         lead="Orientation on the parts of international moves that people get wrong — written plainly, with no sales pitch attached. Several of these will save you money whether you work with us or not."
         images={[
-          { src: "/images/atmos-library.webp", alt: "Rows of books on library shelves" },
+          { src: "/images/library-modern.webp", alt: "A bright modern university library with tall windows, shelves and study tables" },
           { src: "/images/study-vienna.webp", alt: "The arcaded courtyard of the University of Vienna" },
         ]}
         chip={{ title: "Written plainly", body: "no sales pitch attached" }}

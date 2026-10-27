@@ -436,3 +436,25 @@ html:not(.fx-ready) .hz-why-sweep, .hz-why-sweep.is-in { transform: scaleY(0); t
 @media (prefers-reduced-motion: reduce) { .hz-route-flags li { animation: none; opacity: 1; } }
 /* Chips wait until their card is on screen (FxObserver marks it .is-in). */
 html.fx-ready .hz-route:not(.is-in) .hz-route-flags li { animation-play-state: paused; }
+
+/* Rail: no system scrollbar; a slim green progress bar, the buttons and a count. */
+.hz-rail { scrollbar-width: none; }
+.hz-rail::-webkit-scrollbar { display: none; }
+.hz-rail-foot { display: flex; align-items: center; gap: 18px; margin-top: 10px; }
+.hz-rail-btn:disabled { opacity: 0.35; cursor: default; }
+.hz-rail-btn:not(:disabled):hover { background: var(--hz-green); color: #0B1A05; box-shadow: none; }
+.hz-rail-track { position: relative; flex: 1; height: 4px; border-radius: 999px; background: var(--hz-line); overflow: hidden; }
+.hz-rail-track span {
+  position: absolute; top: 0; bottom: 0; border-radius: 999px;
+  background: linear-gradient(90deg, #6CBF3B, #A7E07F);
+  box-shadow: 0 0 12px rgb(108 191 59 / 0.6);
+  transition: left 0.35s var(--ease-out-expo), width 0.35s var(--ease-out-expo);
+}
+.hz-rail-count { font-family: var(--font-bricolage), sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--hz-ink); font-variant-numeric: tabular-nums; }
+.hz-rail-count i { font-style: normal; color: var(--hz-muted); font-weight: 600; }
+/* The country's best-known university, on its destination card. */
+.hz-dest-uni {
+  display: inline-block; margin-bottom: 10px; padding: 5px 10px; border-radius: 999px;
+  background: rgb(255 255 255 / 0.16); backdrop-filter: blur(8px);
+  font-style: normal; font-size: 0.72rem; font-weight: 700; color: #fff;
+}
