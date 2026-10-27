@@ -365,7 +365,7 @@ export function HzDestinations() {
           <Rail label="Study destinations">
             {studyDestinations.map((d) => (
               <Link key={d.slug} href="/study-abroad" className="hz-dest">
-                {d.image ? <Image src={d.image} alt={d.imageAlt} fill sizes="300px" /> : <FlagArt colours={d.flag ?? []} />}
+                {d.image ? <Image src={d.image} alt={d.imageAlt} fill sizes="300px" /> : <FlagArt university={d.university} />}
                 <span className="hz-dest-fee">{d.tuitionFrom}</span>
                 <span className="hz-dest-body">
                   <small>{d.city}</small>

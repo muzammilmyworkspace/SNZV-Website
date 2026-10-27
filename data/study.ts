@@ -41,6 +41,8 @@ export type StudyDestination = {
    * and its line in data/image-manifest.json, then drop this.
    */
   flag?: string[];
+  /** The country's best-known university, named on the card until a photograph of it is added. */
+  university?: string;
 };
 
 export const studyDestinations: StudyDestination[] = [
@@ -175,6 +177,7 @@ export const studyDestinations: StudyDestination[] = [
     blurb: "A eurozone country next to Vienna, with English-taught programmes and modest living costs.",
     draw: "Eurozone, with low living costs.",
     flag: ["#FFFFFF", "#0B4EA2", "#EE1C25"],
+    university: "Comenius University Bratislava",
   },
   {
     slug: "slovenia",
@@ -186,6 +189,7 @@ export const studyDestinations: StudyDestination[] = [
     blurb: "A small, safe eurozone country between the Alps and the Adriatic, with English-taught programmes.",
     draw: "Safe, compact and in the eurozone.",
     flag: ["#FFFFFF", "#005DA4", "#ED1C24"],
+    university: "University of Ljubljana",
   },
   {
     slug: "sweden",
@@ -197,6 +201,7 @@ export const studyDestinations: StudyDestination[] = [
     blurb: "Research-led universities with English-taught Master's degrees in most subjects.",
     draw: "Research-led, English-taught Master's.",
     flag: ["#006AA7", "#FECC00", "#006AA7"],
+    university: "Uppsala University",
   },
   {
     slug: "finland",
@@ -208,6 +213,7 @@ export const studyDestinations: StudyDestination[] = [
     blurb: "A highly regarded education system, with English-taught degrees and scholarships for many non-EU students.",
     draw: "A highly regarded education system.",
     flag: ["#FFFFFF", "#003580", "#FFFFFF"],
+    university: "University of Helsinki",
   },
 ];
 

@@ -216,7 +216,7 @@ export function StudyDestinationCard({
               className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
             />
           ) : (
-            <FlagArt colours={destination.flag ?? ["#1F2D5C", "#6CBF3B"]} />
+            <FlagArt university={destination.university} />
           )}
 
           {/* Tuition sits on the plate — it is the first thing students look for. */}

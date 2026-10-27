@@ -20,7 +20,16 @@ import type { VideoFeatureData } from "@/data/media";
  * broken player — the frame, motion and layout are all final, so dropping the
  * real video in later is a one-line data change.
  */
+/**
+ * No video supplied yet: show nothing rather than an empty player (owner's
+ * request, 2026-10-27). Setting `src` in data/media.ts brings it back.
+ */
 export function VideoFeature({ data }: { data: VideoFeatureData }) {
+  if (!data.src) return null;
+  return <VideoFeatureBody data={data} />;
+}
+
+function VideoFeatureBody({ data }: { data: VideoFeatureData }) {
   const [playing, setPlaying] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
