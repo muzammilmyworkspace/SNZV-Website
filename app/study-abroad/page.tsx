@@ -10,7 +10,6 @@ import {
   StudyJourney,
   StudySupport,
 } from "@/components/sections/Study";
-import { Reviews } from "@/components/sections/Reviews";
 import { StatsBand } from "@/components/sections/StatsBand";
 import { studyStats } from "@/data/stats";
 import { VideoFeature } from "@/components/sections/VideoFeature";
@@ -93,8 +92,6 @@ export default function StudyAbroadPage() {
       <StudyJourney />
       <StudySupport />
 
-      {/* Renders an honest placeholder until consented quotes exist. */}
-      <Reviews />
 
       <div id="faqs" className="anchor-target">
         <FaqSection

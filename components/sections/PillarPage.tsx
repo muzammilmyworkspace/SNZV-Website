@@ -17,7 +17,6 @@ import { InsightCard } from "@/components/cards/Cards";
 import { articles } from "@/data/insights";
 import { videoFeatures } from "@/data/media";
 import { VideoFeature } from "./VideoFeature";
-import { Reviews } from "./Reviews";
 import { StatsBand } from "./StatsBand";
 import { careerStats, businessStats } from "@/data/stats";
 import type { Pillar } from "@/data/pillars";
@@ -124,7 +123,6 @@ export function PillarPage({ pillar }: { pillar: Pillar }) {
         </Section>
       )}
 
-      <Reviews />
 
       <FaqSection
         faqs={pillar.faqs}
